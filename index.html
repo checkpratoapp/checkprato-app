@@ -1195,6 +1195,22 @@
           : `Faltam ${new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(falta)} para atingir R$ 50.`;
       }
     }
+    function solicitarSaque(){
+  const bal = getBalance();
+  const out = document.getElementById("saqueStatus");
+      const btnSaque = document.getElementById("btnSaque");
+if(btnSaque) btnSaque.style.display = bal >= 50 ? "block" : "none";
+
+  if(bal < 50){
+    out.style.display = "block";
+    out.textContent = "❌ Você ainda não atingiu R$ 50.";
+    return;
+  }
+
+  out.style.display = "block";
+  out.textContent = "✅ Solicitação enviada (DEMO). Em breve Pix automático.";
+}
+window.solicitarSaque = solicitarSaque;
 
     // escape
     function escapeHtml(s){
