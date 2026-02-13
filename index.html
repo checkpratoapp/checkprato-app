@@ -11,6 +11,13 @@
 
   <style>
     :root{
+     html,body{height:100%}
+      html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    *{box-sizing:border-box}
+      }
       --bg:#07121f;
       --bg2:#0b2033;
       --card:rgba(255,255,255,.04);
@@ -23,10 +30,11 @@
       --orange:#f6b23a;
       --shadow:0 20px 60px rgba(0,0,0,.45);
       --r:22px;
+      
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    
+    
      body{
   margin:0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -200,7 +208,22 @@
   margin-left: auto;
   margin-right: auto;
   padding: 0 16px 120px;
-  }
+/* 1) garante que a tela sempre tenha fundo sólido */
+  background: #07121f;
+  width: 100%;
+}
+
+/* 2) aumenta o espaço no final pra não aparecer “vão” */
+.screen{
+  padding-bottom: calc(140px + env(safe-area-inset-bottom));
+}
+
+/* 3) garante que o body não “vaze” azul embaixo */
+body{
+  background: #07121f !important;
+}
+    }
+    
 
 .screen.active{
   display:block;
