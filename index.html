@@ -641,37 +641,53 @@
     </section>
 
     <!-- CONVITES -->
-    <section id="viewConvites" class="screen">
-      <div class="h1">CONVITES</div>
-      <div class="card">
-        <div class="hint">
-          Convide amigos e ganhe: <b>R$ 5</b> por cada pessoa que assinar usando seu link.
-          Ao atingir <b>R$ 50</b>, você pode solicitar saque (futuro) e ainda ganha <b>1 mês grátis</b>.
-        </div>
+  <section id="viewConvites" class="screen">
+  <div class="h1">CONVITES</div>
 
-        <div style="margin-top:12px" class="payBox">
-          <div class="label">Seu código</div>
-          <div id="myCode" style="font-weight:1000; font-size:18px">—</div>
+  <div class="card">
+    <div class="hint">
+      Convide amigos e ganhe: <b>R$ 5</b> por cada pessoa que assinar usando seu link.
+      Ao atingir <b>R$ 50</b>, você pode solicitar saque e ainda ganha <b>1 mês grátis</b>.
+    </div>
 
-          <div class="label" style="margin-top:12px">Seu link</div>
-          <div id="myLink" class="muted" style="word-break:break-all">—</div>
+    <div style="margin-top:12px" class="payBox">
 
-          <div class="label" style="margin-top:12px">Saldo (demo)</div>
-          <div id="balTxt" style="font-weight:1000; font-size:18px">R$ 0,00</div>
-          <div id="progressTxt" class="muted" style="margin-top:6px"></div>
+      <div class="label">Seu código</div>
+      <div id="myCode" style="font-weight:1000; font-size:18px">—</div>
 
-          <div class="miniRow" style="margin-top:12px">
-            <button class="miniBtn" type="button" onclick="copyInviteLink()">Copiar link</button>
-            <button class="miniBtn" type="button" onclick="shareInvite()">Compartilhar</button>
-          </div>
+      <div class="label" style="margin-top:12px">Seu link</div>
+      <div id="myLink" class="muted" style="word-break:break-all">—</div>
 
-          <div class="miniRow" style="margin-top:10px">
-            <button class="miniBtn" type="button" onclick="setBalance(getBalance()+5)">+R$5 (teste)</button>
-            <button class="miniBtn" type="button" onclick="setBalance(0)">Zerar (teste)</button>
-          </div>
-        </div>
+      <div class="label" style="margin-top:12px">Saldo</div>
+      <div id="balTxt" style="font-weight:1000; font-size:18px">R$ 0,00</div>
+
+      <div id="progressTxt" class="muted" style="margin-top:6px"></div>
+
+      <!-- compartilhar -->
+      <div class="miniRow" style="margin-top:12px">
+        <button class="miniBtn" type="button" onclick="copyInviteLink()">Copiar link</button>
+        <button class="miniBtn" type="button" onclick="shareInvite()">Compartilhar</button>
       </div>
-    </section>
+
+      <!-- botão saque -->
+      <div class="miniRow" style="margin-top:12px">
+        <button class="miniBtn" type="button" id="btnSaque" onclick="solicitarSaque()" style="display:none">
+          💸 Solicitar saque (Pix)
+        </button>
+      </div>
+
+      <div id="saqueStatus" class="status" style="display:none"></div>
+
+      <!-- botões teste (pode apagar depois) -->
+      <div class="miniRow" style="margin-top:10px">
+        <button class="miniBtn" type="button" onclick="setBalance(getBalance()+5)">+R$5 (teste)</button>
+        <button class="miniBtn" type="button" onclick="setBalance(0)">Zerar</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+    
 
     <!-- SAÚDE -->
     <section id="viewSaude" class="screen">
