@@ -11,13 +11,6 @@
 
   <style>
     :root{
-     html,body{height:100%}
-      html, body {
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-    *{box-sizing:border-box}
-      }
       --bg:#07121f;
       --bg2:#0b2033;
       --card:rgba(255,255,255,.04);
@@ -33,8 +26,14 @@
       
     }
 
-    
-    
+    *{ box-sizing: border-box; }
+
+html, body{
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
      body{
   margin:0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -42,7 +41,6 @@
   background:#07121f; /* fundo sólido */
   padding-bottom: 90px; /* espaço para navbar */
 } 
-    }
 
     .app{
       max-width: 540px;
@@ -1254,5 +1252,20 @@ z-index:999;
 cursor:pointer;">
 ↑
   </button>
+  
+<!-- NAV -->
+<div class="nav">
+  <div class="navInner">
+    <button class="navBtn active" data-view="cadastro" type="button">CADASTRO</button>
+    <button class="navBtn" data-view="dieta" type="button">DIETA</button>
+    <button class="navBtn" data-view="treino" type="button">TREINO</button>
+    <button class="navBtn" data-view="loja" type="button">LOJA</button>
+    <button class="navBtn" data-view="parceiros" type="button">PARCEIROS</button>
+    <button class="navBtn" data-view="premium" type="button">PREMIUM</button>
+    <button class="navBtn" data-view="saude" type="button">SAÚDE</button>
+    <button class="navBtn" data-view="convites" type="button">CONVITES</button>
+    <button id="btnTop" onclick="scrollToTop()" style="...">↑</button>
+  </div>
+</div>
 </body>
 </html>
