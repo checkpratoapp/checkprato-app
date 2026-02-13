@@ -2,8 +2,9 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Confira o Prato Elite</title>
+
   <meta name="theme-color" content="#0a1320"/>
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" sizes="192x192" href="./icon-192.png">
@@ -23,26 +24,28 @@
       --orange:#f6b23a;
       --shadow:0 20px 60px rgba(0,0,0,.45);
       --r:22px;
+      --max:540px;
     }
 
-    *{ box-sizing: border-box; }
-
+    *{ box-sizing:border-box; }
     html, body{
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-    }
-
-    body{
+      height:100%;
+      margin:0;
+      padding:0;
+      background: var(--bg);
+      color: var(--txt);
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--txt);
-      background:#07121f; /* fundo sólido */
-      padding-bottom: 110px; /* espaço para navbar + botão ↑ */
+      overflow-x:hidden;
     }
 
-    .app{
-      max-width: 540px;
+    /* espaço pro navbar fixo */
+    body{ padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
+
+    a{ color: var(--green); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+
+    .wrap{
+      max-width: var(--max);
       margin: 0 auto;
       padding: 16px 14px 24px;
     }
@@ -63,7 +66,10 @@
       color:var(--green);
       box-shadow: var(--shadow);
       flex:0 0 auto;
+      overflow:hidden;
     }
+    .logo img{ width:100%; height:100%; object-fit:cover; display:block; }
+
     .brand{
       display:flex;flex-direction:column;gap:2px;
       min-width: 0;
@@ -80,6 +86,7 @@
       color:var(--muted);
       font-weight:700;
       flex:0 0 auto;
+      white-space:nowrap;
     }
     .pill .dot{
       width:10px;height:10px;border-radius:99px;background:var(--green);
@@ -87,11 +94,12 @@
     }
 
     .h1{
-      font-size:40px;
+      font-size:34px;
       margin:12px 2px 14px;
       letter-spacing:.02em;
       color:var(--green);
-      font-weight: 900;
+      font-weight: 1000;
+      line-height: 1.05;
     }
 
     .card{
@@ -101,11 +109,13 @@
       padding: 16px;
       box-shadow: var(--shadow);
     }
+
     .hint{
       color: var(--muted);
-      font-weight: 600;
+      font-weight: 650;
       line-height: 1.35;
     }
+    .muted{ opacity:.85; }
 
     .row{display:flex; gap:12px; flex-wrap:wrap}
     .col{flex:1 1 140px; min-width: 140px}
@@ -113,13 +123,13 @@
     .label{
       margin: 12px 2px 6px;
       color: rgba(234,242,255,.65);
-      font-weight: 900;
+      font-weight: 950;
       letter-spacing:.12em;
       text-transform: uppercase;
       font-size: 12px;
     }
 
-    input, select{
+    input, select, textarea{
       width:100%;
       padding:14px 14px;
       border-radius: 18px;
@@ -129,6 +139,7 @@
       outline: none;
       font-size: 15px;
     }
+    textarea{ min-height: 90px; resize: vertical; }
     input::placeholder{color: rgba(234,242,255,.35)}
     select{appearance:none}
 
@@ -138,7 +149,7 @@
       border-radius: 18px;
       border: 0;
       cursor: pointer;
-      font-weight: 900;
+      font-weight: 950;
       font-size: 16px;
       letter-spacing: .02em;
       background: linear-gradient(135deg, var(--green), var(--green2));
@@ -164,19 +175,21 @@
       border-radius: 18px;
       border: 0;
       cursor: pointer;
-      font-weight: 900;
+      font-weight: 950;
       font-size: 16px;
       background: linear-gradient(135deg, #ffcc5a, #f6b23a);
       color:#201400;
       margin-top: 12px;
       box-shadow: 0 18px 45px rgba(246,178,58,.18);
     }
+
     .status{
       margin-top: 10px;
       font-weight: 800;
-      color: rgba(234,242,255,.78);
+      color: rgba(234,242,255,.86);
     }
 
+    /* chips esportes */
     .chips{
       display:flex;
       flex-wrap:wrap;
@@ -200,32 +213,27 @@
       box-shadow: 0 0 0 6px rgba(33,230,182,.08);
     }
 
-    /* TELAS */
+    /* telas */
     .screen{
       display:none;
       margin-top: 8px;
-      max-width: 540px;
-      margin-left: auto;
-      margin-right: auto;
-      padding: 0 16px calc(140px + env(safe-area-inset-bottom));
-      background: #07121f;
-      width: 100%;
+      width:100%;
+      background: var(--bg);
+      padding-bottom: calc(140px + env(safe-area-inset-bottom));
     }
     .screen.active{ display:block; }
 
-    /* NAV */
+    /* nav fixo */
     .nav{
-      position: fixed;
-      left:0;
-      right:0;
-      bottom:0;
-      padding: 10px;
+      position:fixed;
+      left:0; right:0; bottom:0;
+      padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
       background: #07121f;
       border-top: 1px solid rgba(255,255,255,.08);
       z-index: 1000;
     }
     .navInner{
-      max-width: 540px;
+      max-width: var(--max);
       margin: 0 auto;
       display:flex;
       gap:10px;
@@ -239,7 +247,7 @@
       border:1px solid rgba(255,255,255,.08);
       background: rgba(255,255,255,.03);
       color: rgba(234,242,255,.6);
-      font-weight: 900;
+      font-weight: 950;
       padding: 12px 14px;
       border-radius: 999px;
       cursor:pointer;
@@ -253,7 +261,7 @@
       box-shadow: 0 0 0 6px rgba(33,230,182,.08);
     }
 
-    /* Diet cards */
+    /* cards dieta */
     .meal{
       display:flex;
       justify-content:space-between;
@@ -265,14 +273,14 @@
       margin-top: 12px;
     }
     .meal .title{
-      font-weight: 900;
+      font-weight: 950;
       color: var(--green);
       letter-spacing:.08em;
       text-transform: uppercase;
       font-size: 12px;
       margin-bottom: 6px;
     }
-    .meal p{margin:0; color: rgba(234,242,255,.85); font-weight:700; line-height:1.35}
+    .meal p{margin:0; color: rgba(234,242,255,.88); font-weight:750; line-height:1.35}
     .kcal{
       display:flex; align-items:center; justify-content:center;
       min-width: 88px;
@@ -285,7 +293,7 @@
       text-align:center;
     }
 
-    /* Treino */
+    /* treino */
     .dayCard{
       margin-top: 12px;
       padding: 14px;
@@ -321,7 +329,7 @@
       min-width: 110px;
     }
 
-    /* Loja & Parceiros */
+    /* loja/parceiros */
     .shopGrid{display:flex; flex-direction:column; gap:12px; margin-top: 12px}
     .shopItem{
       padding: 16px;
@@ -330,7 +338,6 @@
       background: rgba(255,255,255,.03);
     }
     .shopItem h3{margin:0 0 6px; font-weight: 1000}
-    .muted{opacity:.82}
 
     .partnerList{display:flex; flex-direction:column; gap:12px; margin-top:12px}
     .partnerRow{
@@ -343,23 +350,7 @@
     .partnerName{display:flex; flex-direction:column; gap:4px}
     .partnerName b{font-weight: 1000}
 
-    /* Premium */
-    .payBox{
-      padding: 14px;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-      margin-top: 12px;
-    }
-    .payTitle{
-      font-size: 28px;
-      font-weight: 1000;
-      color: var(--orange);
-      margin: 0 0 6px;
-      letter-spacing:.02em;
-    }
-
-    /* Plate (foto prato) */
+    /* prato */
     .plateBox{margin-top: 12px}
     .platePreview{
       width: 100%;
@@ -369,6 +360,7 @@
       overflow:hidden;
     }
     .platePreview img{width:100%; display:block}
+
     .miniRow{display:flex; gap:10px; flex-wrap:wrap}
     .miniBtn{
       flex: 1 1 160px;
@@ -380,25 +372,127 @@
       font-weight: 900;
       cursor: pointer;
     }
+
+    /* modal simples */
+    .modalBack{
+      display:none;
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      z-index: 2000;
+      padding: 20px;
+      overflow:auto;
+    }
+    .modal{
+      max-width: 560px;
+      margin: 40px auto;
+      background: #0b1726;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      box-shadow: 0 25px 80px rgba(0,0,0,.55);
+      padding: 16px;
+    }
+    .modal h3{ margin: 0 0 10px; }
+    .modal .closeRow{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .xBtn{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--txt);
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-weight: 900;
+      cursor:pointer;
+    }
+
+    /* botão topo */
+    #btnTop{
+      position:fixed;
+      bottom:110px;
+      right:18px;
+      width:48px;
+      height:48px;
+      border-radius:50%;
+      border:none;
+      background:linear-gradient(135deg,#21e6b6,#17caa0);
+      color:#042019;
+      font-size:22px;
+      font-weight:900;
+      box-shadow:0 10px 25px rgba(0,0,0,.4);
+      display:none;
+      z-index:999;
+      cursor:pointer;
+    }
+
+    /* esconder app quando não logado */
+    .hidden{ display:none !important; }
   </style>
 </head>
 
 <body>
-  <div class="app">
+  <div class="wrap">
     <div class="topbar">
-      <div class="logo">E</div>
+      <div class="logo" id="logoBox">E</div>
       <div class="brand">
         <small>ELITE TERMINAL</small>
         <b>Confira o Prato Elite</b>
       </div>
-      <div class="pill"><span class="dot"></span>Modo: PWA</div>
+      <div class="pill" id="pillAuth"><span class="dot"></span><span id="authTxt">Modo: Local</span></div>
     </div>
 
-    <!-- CADASTRO -->
-    <section id="viewCadastro" class="screen active">
+    <!-- BOAS VINDAS -->
+    <section id="viewWelcome" class="screen active">
+      <div class="h1">Bem-vindo 👋</div>
+
+      <div class="card">
+        <div class="hint">
+          Aqui você monta seu perfil, gera dieta e treino, e analisa seu prato (IA).
+          <br><br>
+          <b>Recomendado:</b> entrar com Google/Email para salvar tudo na nuvem.
+        </div>
+
+        <div style="margin-top:14px" class="row">
+          <div class="col">
+            <button class="btn" type="button" onclick="openAuthModal()">Entrar / Criar conta</button>
+          </div>
+          <div class="col">
+            <button class="btnSecondary" type="button" onclick="enterGuest()">Entrar como convidado</button>
+          </div>
+        </div>
+
+        <div class="status" style="margin-top:12px">
+          Ao entrar, você pode preencher o cadastro e começar.
+        </div>
+      </div>
+    </section>
+
+    <!-- CADASTRO / PERFIL -->
+    <section id="viewCadastro" class="screen">
       <div class="h1">CADASTRO</div>
 
       <div class="card">
+        <div class="label">Foto do perfil</div>
+        <div class="row" style="align-items:center">
+          <div style="width:64px;height:64px;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.2)">
+            <img id="avatarImg" alt="Foto" style="width:100%;height:100%;object-fit:cover;display:none"/>
+            <div id="avatarFallback" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-weight:1000;color:rgba(234,242,255,.7)">👤</div>
+          </div>
+          <div style="flex:1">
+            <button class="btnSecondary" type="button" onclick="pickAvatar()">Escolher foto</button>
+            <input id="avatarFile" type="file" accept="image/*" style="display:none">
+            <div class="hint" style="margin-top:6px">A foto fica salva no seu perfil.</div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:6px">
+          <div class="col">
+            <div class="label">Nome</div>
+            <input id="nome" placeholder="Ex: Jonatan" />
+          </div>
+          <div class="col">
+            <div class="label">Email (opcional)</div>
+            <input id="emailPerfil" inputmode="email" placeholder="Ex: voce@gmail.com" />
+          </div>
+        </div>
+
         <div class="row">
           <div class="col">
             <div class="label">Peso (kg)</div>
@@ -462,9 +556,9 @@
         <div style="margin-top:10px">
           <label style="display:flex; gap:10px; align-items:center; font-weight:900; color:rgba(234,242,255,.9)">
             <input id="termo" type="checkbox" style="width:22px; height:22px"/>
-            Aceito o termo
+            Aceito o termo (conteúdo informativo)
           </label>
-          <div class="hint" style="margin-top:6px">As sugestões são informativas.</div>
+          <div class="hint" style="margin-top:6px">As sugestões são informativas e não substituem profissional.</div>
         </div>
 
         <button class="btn" type="button" onclick="salvarCadastro()">SALVAR / ATUALIZAR</button>
@@ -473,9 +567,13 @@
         <div id="outCadastro" class="status" style="display:none"></div>
       </div>
 
+      <!-- FOTO DO PRATO + IA -->
       <div class="card plateBox" style="margin-top:14px">
-        <div class="label">Foto do prato (demo)</div>
-        <div class="hint">Por enquanto é uma simulação (sem IA real). Depois ligamos no Firebase + IA.</div>
+        <div class="label">Análise do prato (IA)</div>
+        <div class="hint">
+          Fluxo: enviar foto → analisar → revisar → confirmar.
+          <br>Evita repetir a mesma foto e salva histórico.
+        </div>
 
         <div class="miniRow" style="margin-top:12px">
           <button class="miniBtn" type="button" id="btnCamera">Tirar foto</button>
@@ -489,17 +587,33 @@
           <img id="plateImg" alt="Prato"/>
         </div>
 
-        <button class="btnSecondary" type="button" onclick="analisarPratoDemo()">Analisar (demo)</button>
+        <button class="btnSecondary" type="button" onclick="analisarPrato()">Analisar com IA</button>
+
         <div id="plateResult" class="status" style="display:none"></div>
+
+        <div id="plateConfirmBox" style="display:none; margin-top:10px">
+          <div class="label">Confirmação</div>
+          <div class="hint">A IA sugeriu isso. Se quiser, edite antes de confirmar:</div>
+          <textarea id="plateEdit"></textarea>
+          <button class="btn" type="button" onclick="confirmarPrato()">Confirmar que é isso</button>
+          <button class="btnSecondary" type="button" onclick="refazerAnalise()">Refazer análise</button>
+        </div>
       </div>
     </section>
 
     <!-- DIETA -->
     <section id="viewDieta" class="screen">
       <div class="h1">DIETA</div>
+
       <div class="card">
-        <div class="hint">Sugestões simples e fáceis. Você pode gerar outra dieta se não gostar.</div>
-        <button class="btn" type="button" onclick="gerarDieta()">GERAR NOVA DIETA</button>
+        <div class="hint">
+          Dieta simples (demo), adaptada ao objetivo.
+          Se você não gostar ou não tiver algum alimento, clique em <b>Refazer</b>.
+        </div>
+
+        <button class="btn" type="button" onclick="gerarDieta()">GERAR DIETA</button>
+        <button class="btnSecondary" type="button" onclick="refazerDieta()">REFazer / Trocar alimentos</button>
+
         <div id="dietaBox"></div>
       </div>
     </section>
@@ -507,6 +621,7 @@
     <!-- TREINO -->
     <section id="viewTreino" class="screen">
       <div class="h1">TREINO</div>
+
       <div class="card">
         <div class="hint">Treino semanal baseado no seu cadastro. Cada exercício tem botão “YouTube”.</div>
 
@@ -542,22 +657,26 @@
     <!-- LOJA -->
     <section id="viewLoja" class="screen">
       <div class="h1">LOJA</div>
+
       <div class="card">
         <div class="hint">Depois trocamos por seus links de afiliado/parcerias.</div>
+
         <div class="shopGrid">
           <div class="shopItem">
             <h3>Suplementos</h3>
             <p class="muted">Whey, creatina, vitaminas e pré-treinos para performance e recuperação.</p>
             <button class="btnSecondary" type="button" onclick="switchView('parceiros')">Ver parceiros</button>
           </div>
+
           <div class="shopItem">
             <h3>Roupas fitness</h3>
             <p class="muted">Tênis, camisetas, shorts e roupas para treino/corrida com conforto e durabilidade.</p>
             <button class="btnSecondary" type="button" onclick="switchView('parceiros')">Ver parceiros</button>
           </div>
+
           <div class="shopItem">
             <h3>Equipamentos</h3>
-            <p class="muted">Acessórios para treino em casa: elásticos, corda, luvas, garrafas, etc.</p>
+            <p class="muted">Elásticos, corda, luvas, garrafas, etc.</p>
             <button class="btnSecondary" type="button" onclick="switchView('parceiros')">Ver parceiros</button>
           </div>
         </div>
@@ -567,6 +686,7 @@
     <!-- PARCEIROS -->
     <section id="viewParceiros" class="screen">
       <div class="h1">PARCEIROS</div>
+
       <div class="card">
         <div class="hint">Sites oficiais. Depois trocamos por links de afiliado quando você tiver.</div>
 
@@ -625,135 +745,111 @@
     <!-- PREMIUM -->
     <section id="viewPremium" class="screen">
       <div class="h1">PREMIUM</div>
+
       <div class="card">
-        <div class="payTitle">ASSINATURA ELITE</div>
+        <div class="label" style="margin-top:0">Assinatura</div>
         <div class="hint">Preço mensal. O pagamento abre no Mercado Pago.</div>
 
-        <div class="payBox">
-          <div class="label">Plano</div>
-          <div style="font-weight:1000; font-size:18px">Elite Premium — R$ 29,90/mês</div>
-          <div class="muted" style="margin-top:8px">Benefícios: dietas ilimitadas, treinos completos, convites com recompensa, parceiros e novidades.</div>
+        <div class="card" style="margin-top:12px">
+          <div class="label" style="margin-top:0">Plano</div>
+          <div style="font-weight:1000; font-size:18px">Elite Premium — <span id="premiumPriceTxt">R$ 29,90/mês</span></div>
+          <div class="muted" style="margin-top:8px">
+            Benefícios: dietas ilimitadas, treinos completos, convites com recompensa, parceiros e novidades.
+          </div>
         </div>
 
-        <button id="btnPremium" class="btnOrange" type="button" onclick="openCheckout()">CONFIRMAR R$ 29,90/MÊS</button>
+        <button id="btnPremium" class="btnOrange" type="button" onclick="openCheckout()">CONFIRMAR</button>
         <div class="hint" style="margin-top:10px">Ambiente seguro • SSL</div>
       </div>
     </section>
 
     <!-- CONVITES -->
-  <section id="viewConvites" class="screen">
-  <div class="h1">CONVITES</div>
+    <section id="viewConvites" class="screen">
+      <div class="h1">CONVITES</div>
 
-  <div class="card">
-    <div class="hint">
-      Convide amigos e ganhe: <b>R$ 5</b> por cada pessoa que assinar usando seu link.
-      Ao atingir <b>R$ 50</b>, você pode solicitar saque e ainda ganha <b>1 mês grátis</b>.
-    </div>
+      <div class="card">
+        <div class="hint">
+          Convide amigos e ganhe: <b>R$ 5</b> por cada pessoa que assinar usando seu link.
+          Ao atingir <b>R$ 50</b>, você pode solicitar saque (demo) e ainda ganha <b>1 mês grátis</b>.
+        </div>
 
-    <div style="margin-top:12px" class="payBox">
+        <div style="margin-top:12px" class="card">
+          <div class="label" style="margin-top:0">Seu código</div>
+          <div id="myCode" style="font-weight:1000; font-size:18px">—</div>
 
-      <div class="label">Seu código</div>
-      <div id="myCode" style="font-weight:1000; font-size:18px">—</div>
+          <div class="label" style="margin-top:12px">Seu link</div>
+          <div id="myLink" class="muted" style="word-break:break-all">—</div>
 
-      <div class="label" style="margin-top:12px">Seu link</div>
-      <div id="myLink" class="muted" style="word-break:break-all">—</div>
+          <div class="label" style="margin-top:12px">Saldo (demo)</div>
+          <div id="balTxt" style="font-weight:1000; font-size:18px">R$ 0,00</div>
+          <div id="progressTxt" class="muted" style="margin-top:6px"></div>
 
-      <div class="label" style="margin-top:12px">Saldo</div>
-      <div id="balTxt" style="font-weight:1000; font-size:18px">R$ 0,00</div>
+          <div class="miniRow" style="margin-top:12px">
+            <button class="miniBtn" type="button" onclick="copyInviteLink()">Copiar link</button>
+            <button class="miniBtn" type="button" onclick="shareInvite()">Compartilhar</button>
+          </div>
 
-      <div id="progressTxt" class="muted" style="margin-top:6px"></div>
+          <div id="saqueBox" style="margin-top:10px; display:none">
+            <button class="btn" type="button" onclick="solicitarSaque()">Solicitar saque (Pix) ✅</button>
+            <div id="saqueStatus" class="status" style="display:none"></div>
+          </div>
 
-      <!-- compartilhar -->
-      <div class="miniRow" style="margin-top:12px">
-        <button class="miniBtn" type="button" onclick="copyInviteLink()">Copiar link</button>
-        <button class="miniBtn" type="button" onclick="shareInvite()">Compartilhar</button>
+          <!-- botões de teste (pode remover depois) -->
+          <div class="miniRow" style="margin-top:10px">
+            <button class="miniBtn" type="button" onclick="setBalance(getBalance()+5)">+R$5 (teste)</button>
+            <button class="miniBtn" type="button" onclick="setBalance(0)">Zerar (teste)</button>
+          </div>
+        </div>
       </div>
-
-      <!-- botão saque -->
-      <div class="miniRow" style="margin-top:12px">
-        <button class="miniBtn" type="button" id="btnSaque" onclick="solicitarSaque()" style="display:none">
-          💸 Solicitar saque (Pix)
-        </button>
-      </div>
-
-      <div id="saqueStatus" class="status" style="display:none"></div>
-
-      <!-- botões teste (pode apagar depois) -->
-      <div class="miniRow" style="margin-top:10px">
-        <button class="miniBtn" type="button" onclick="setBalance(getBalance()+5)">+R$5 (teste)</button>
-        <button class="miniBtn" type="button" onclick="setBalance(0)">Zerar</button>
-      </div>
-
-    </div>
-  </div>
-</section>
-    
+    </section>
 
     <!-- SAÚDE -->
     <section id="viewSaude" class="screen">
       <div class="h1">SAÚDE</div>
+
       <div class="card">
         <div class="hint">
-          Conteúdo educativo. Não substitui médico. Em caso de sintomas ou dúvidas, procure um profissional.
+          Conteúdo educativo. <b>Não substitui médico.</b>
+          <br><br>
+          <b>Sobre anabolizantes/esteroides:</b> podem afetar coração, pressão, colesterol, fígado, humor e hormônios.
+          Se houver sintomas (dor no peito, falta de ar, palpitação, desmaio, inchaço, pele/olhos amarelados, urina escura),
+          <b>procure atendimento imediato</b>.
         </div>
 
         <div class="meal" style="margin-top:14px">
           <div>
-            <div class="title">Riscos gerais</div>
-            <p>Uso de anabolizantes pode causar efeitos no coração, pressão, colesterol, fígado, humor e hormônios.</p>
+            <div class="title">Exemplos comuns (educativo)</div>
+            <p>
+              <b>Testosterona (ésteres)</b>: pode aumentar acne, retenção, pressão; risco cardiovascular depende de vários fatores.<br>
+              <b>Nandrolona</b>: pode alterar perfil lipídico; possíveis efeitos em libido/humor.<br>
+              <b>Oxandrolona</b>: pode impactar colesterol e fígado (especialmente em uso inadequado).<br>
+              <b>Stanozolol</b>: maior impacto em colesterol; risco articular/tendões e hepático.<br>
+              <b>Trembolona</b>: associado a efeitos fortes em sono/ansiedade/pressão; riscos elevados.<br>
+              <b>Dianabol (metandrostenolona)</b>: retenção e impacto hepático/lipídico.
+            </p>
           </div>
         </div>
 
         <div class="meal">
           <div>
-            <div class="title">Sinais de alerta</div>
-            <p>Dor no peito, falta de ar, palpitação, desmaio, inchaço, pele/olhos amarelados, urina escura: pare e procure atendimento.</p>
-          </div>
-        </div>
-
-        <div class="meal">
-          <div>
-            <div class="title">Exames</div>
-            <p>Antes e durante: pressão, hemograma, lipidograma, glicemia, TGO/TGP, creatinina, testosterona, estradiol. Com médico.</p>
-          </div>
-        </div>
-
-        <div class="meal">
-          <div>
-            <div class="title">Hábitos que ajudam</div>
-            <p>Sono 7–9h, hidratação, dieta com fibras, controle de álcool, treino com progressão e descanso.</p>
+            <div class="title">Cuidados e redução de risco</div>
+            <p>
+              Evite misturar substâncias; não use sem acompanhamento. Faça check-ups com profissional.
+              Priorize sono, dieta com fibras, hidratação, e monitoramento de pressão.
+              Exames comuns: hemograma, lipidograma, glicemia, TGO/TGP, creatinina, hormônios (com médico).
+            </p>
           </div>
         </div>
 
         <button class="btnSecondary" type="button" onclick="abrirLink('https://bvsms.saude.gov.br/')">
-          Ler mais (fontes de saúde)
+          Ler mais (fontes oficiais de saúde)
         </button>
       </div>
     </section>
-
   </div>
 
-  <!-- BOTÃO SUBIR -->
-  <button id="btnTop" onclick="scrollToTop()" style="
-    position:fixed;
-    bottom:110px;
-    right:18px;
-    width:48px;
-    height:48px;
-    border-radius:50%;
-    border:none;
-    background:linear-gradient(135deg,#21e6b6,#17caa0);
-    color:#042019;
-    font-size:22px;
-    font-weight:900;
-    box-shadow:0 10px 25px rgba(0,0,0,.4);
-    display:none;
-    z-index:999;
-    cursor:pointer;
-  ">↑</button>
-
-  <!-- NAV (ÚNICA) -->
-  <div class="nav">
+  <!-- NAVBAR (aparece só após entrar no app) -->
+  <div class="nav hidden" id="navBar">
     <div class="navInner">
       <button class="navBtn active" data-view="cadastro" type="button">CADASTRO</button>
       <button class="navBtn" data-view="dieta" type="button">DIETA</button>
@@ -766,19 +862,67 @@
     </div>
   </div>
 
+  <button id="btnTop" onclick="scrollToTop()">↑</button>
+
+  <!-- MODAL AUTH -->
+  <div class="modalBack" id="authModalBack">
+    <div class="modal">
+      <div class="closeRow">
+        <h3 style="margin:0">Entrar / Criar conta</h3>
+        <button class="xBtn" onclick="closeAuthModal()">Fechar</button>
+      </div>
+
+      <div class="hint" style="margin-top:8px">
+        Para login Google/Email funcionar, você precisa configurar Firebase (é rápido).
+        Se não quiser agora, use “Convidado”.
+      </div>
+
+      <div style="margin-top:12px">
+        <button class="btn" type="button" onclick="loginGoogle()">Entrar com Google</button>
+      </div>
+
+      <div class="label">Email</div>
+      <input id="authEmail" inputmode="email" placeholder="email@exemplo.com">
+
+      <div class="label">Senha</div>
+      <input id="authPass" type="password" placeholder="********">
+
+      <div class="miniRow" style="margin-top:12px">
+        <button class="miniBtn" type="button" onclick="loginEmail()">Entrar</button>
+        <button class="miniBtn" type="button" onclick="signupEmail()">Criar conta</button>
+      </div>
+
+      <button class="btnSecondary" type="button" onclick="enterGuest()">Entrar como convidado</button>
+
+      <div id="authMsg" class="status" style="display:none"></div>
+
+      <div style="margin-top:12px; border-top:1px solid rgba(255,255,255,.08); padding-top:12px">
+        <button class="btnSecondary" type="button" onclick="logout()">Sair da conta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase (opcional) - pode deixar, mesmo sem configurar não quebra -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
   <script>
-    // PWA
+    /***********************
+     * 0) PWA / SERVICE WORKER
+     ***********************/
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
     }
 
-    // Premium / pagamento
+    /***********************
+     * 1) CONFIG GERAL
+     ***********************/
     const PREMIUM_PRICE = 29.90;
     const PREMIUM_CHECKOUT_URL = "https://mpago.la/2BRjpaP";
     function openCheckout(){ window.open(PREMIUM_CHECKOUT_URL, "_blank"); }
     window.openCheckout = openCheckout;
 
-    // Helpers
     const $ = (id)=> document.getElementById(id);
     function abrirLink(url){ window.open(url, "_blank"); }
     window.abrirLink = abrirLink;
@@ -788,57 +932,198 @@
       window.open(`https://www.youtube.com/results?search_query=${q}`, "_blank");
     }
 
-    // Storage keys
-    const KEY_PROFILE = "checkprato_profile_v1";
-    const KEY_PLATE = "checkprato_plate_v1";
-    const KEY_DIETA = "checkprato_dieta_v1";
-    const KEY_TREINO = "checkprato_treino_v1";
-    const KEY_INV_CODE = "checkprato_inv_code_v1";
-    const KEY_BAL = "checkprato_inv_balance_v1";
-
-    // Esportes
-    const ESPORTES = [
-      "Musculação","Futebol","Corrida","Crossfit","Ciclismo","Natação",
-      "Luta","Basquete","Vôlei","Yoga","Pilates","Caminhada"
-    ];
-    let selectedSports = new Set();
-
-    function carregarCadastro(){
-      try{ return JSON.parse(localStorage.getItem(KEY_PROFILE) || "null"); }catch{ return null; }
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"]/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m]));
     }
 
-    function buildSportsChips(){
-      const box = $("chipsEsportes");
-      if(!box) return;
-      box.innerHTML = "";
-      ESPORTES.forEach(name=>{
-        const div = document.createElement("div");
-        div.className = "chip";
-        div.textContent = name;
-        div.addEventListener("click", ()=>{
-          if(selectedSports.has(name)) selectedSports.delete(name);
-          else selectedSports.add(name);
-          div.classList.toggle("on");
-        });
-        box.appendChild(div);
-      });
+    /***********************
+     * 2) STORAGE KEYS
+     ***********************/
+    const KEY_PROFILE = "checkprato_profile_v2";
+    const KEY_AVATAR  = "checkprato_avatar_v1";   // dataURL
+    const KEY_PLATE_LAST = "checkprato_plate_last_v2"; // dataURL
+    const KEY_PLATE_HISTORY = "checkprato_plate_history_v1"; // array {hash,ts,desc}
+    const KEY_DIETA = "checkprato_dieta_v2";
+    const KEY_TREINO = "checkprato_treino_v2";
+    const KEY_INV_CODE = "checkprato_inv_code_v1";
+    const KEY_BAL = "checkprato_inv_balance_v1";
+    const KEY_GUEST = "checkprato_guest_v1"; // "1" se convidado
 
-      // se tiver perfil salvo, marca
-      const p = carregarCadastro();
-      if(p && Array.isArray(p.esportes)){
-        selectedSports = new Set(p.esportes);
-        [...box.querySelectorAll(".chip")].forEach(ch=>{
-          if(selectedSports.has(ch.textContent)) ch.classList.add("on");
+    /***********************
+     * 3) FIREBASE (OPCIONAL)
+     * - Preencha o config abaixo quando criar projeto no Firebase.
+     * - Se não preencher, o app funciona local (guest/localStorage).
+     ***********************/
+    const FIREBASE_CONFIG = {
+      // 🔥 COLE AQUI SUAS CHAVES DO FIREBASE:
+      // apiKey: "....",
+      // authDomain: "....firebaseapp.com",
+      // projectId: "....",
+      // storageBucket: "....appspot.com",
+      // messagingSenderId: "....",
+      // appId: "...."
+    };
+
+    let firebaseEnabled = false;
+    let auth = null;
+    let db = null;
+    let currentUser = null;
+
+    function initFirebaseIfPossible(){
+      try{
+        const hasKeys = FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId;
+        if(!hasKeys) return;
+        firebase.initializeApp(FIREBASE_CONFIG);
+        auth = firebase.auth();
+        db = firebase.firestore();
+        firebaseEnabled = true;
+
+        auth.onAuthStateChanged(async (user)=>{
+          currentUser = user || null;
+          if(currentUser){
+            localStorage.removeItem(KEY_GUEST);
+            setAuthBadge(`Logado: ${currentUser.email || "Google"}`);
+            await syncFromCloud();
+            enterApp();
+          }else{
+            if(!localStorage.getItem(KEY_GUEST)){
+              setAuthBadge("Modo: Local");
+              // mantém na welcome se não for guest
+              showOnly("viewWelcome");
+              $("navBar").classList.add("hidden");
+            }
+          }
         });
+      }catch(e){
+        console.log("Firebase init error:", e);
       }
     }
 
-    // NAV
+    function setAuthBadge(txt){
+      const el = $("authTxt");
+      if(el) el.textContent = txt;
+    }
+
+    /***********************
+     * 4) AUTH UI
+     ***********************/
+    function openAuthModal(){ $("authModalBack").style.display = "block"; }
+    function closeAuthModal(){ $("authModalBack").style.display = "none"; hideAuthMsg(); }
+    window.openAuthModal = openAuthModal;
+    window.closeAuthModal = closeAuthModal;
+
+    function showAuthMsg(text){
+      const box = $("authMsg");
+      box.style.display = "block";
+      box.textContent = text;
+    }
+    function hideAuthMsg(){
+      const box = $("authMsg");
+      box.style.display = "none";
+      box.textContent = "";
+    }
+
+    async function loginGoogle(){
+      if(!firebaseEnabled){ showAuthMsg("⚠️ Firebase não configurado. Use Convidado ou configure o FIREBASE_CONFIG."); return; }
+      hideAuthMsg();
+      try{
+        const provider = new firebase.auth.GoogleAuthProvider();
+        await auth.signInWithPopup(provider);
+        closeAuthModal();
+      }catch(e){
+        showAuthMsg("Erro no Google: " + (e.message || e));
+      }
+    }
+    window.loginGoogle = loginGoogle;
+
+    async function loginEmail(){
+      if(!firebaseEnabled){ showAuthMsg("⚠️ Firebase não configurado. Use Convidado ou configure o FIREBASE_CONFIG."); return; }
+      hideAuthMsg();
+      const email = ($("authEmail").value||"").trim();
+      const pass  = $("authPass").value||"";
+      if(!email || !pass){ showAuthMsg("Preencha email e senha."); return; }
+      try{
+        await auth.signInWithEmailAndPassword(email, pass);
+        closeAuthModal();
+      }catch(e){
+        showAuthMsg("Erro: " + (e.message || e));
+      }
+    }
+    window.loginEmail = loginEmail;
+
+    async function signupEmail(){
+      if(!firebaseEnabled){ showAuthMsg("⚠️ Firebase não configurado. Use Convidado ou configure o FIREBASE_CONFIG."); return; }
+      hideAuthMsg();
+      const email = ($("authEmail").value||"").trim();
+      const pass  = $("authPass").value||"";
+      if(!email || !pass){ showAuthMsg("Preencha email e senha."); return; }
+      if(pass.length < 6){ showAuthMsg("Senha precisa ter pelo menos 6 caracteres."); return; }
+      try{
+        await auth.createUserWithEmailAndPassword(email, pass);
+        closeAuthModal();
+      }catch(e){
+        showAuthMsg("Erro: " + (e.message || e));
+      }
+    }
+    window.signupEmail = signupEmail;
+
+    async function logout(){
+      try{
+        if(firebaseEnabled && auth){
+          await auth.signOut();
+        }
+        currentUser = null;
+        localStorage.removeItem(KEY_GUEST);
+        setAuthBadge("Modo: Local");
+        showOnly("viewWelcome");
+        $("navBar").classList.add("hidden");
+      }catch(e){
+        showAuthMsg("Erro ao sair: " + (e.message || e));
+      }
+    }
+    window.logout = logout;
+
+    function enterGuest(){
+      localStorage.setItem(KEY_GUEST, "1");
+      setAuthBadge("Modo: Convidado");
+      closeAuthModal();
+      enterApp();
+    }
+    window.enterGuest = enterGuest;
+
+    /***********************
+     * 5) NAVEGAÇÃO ENTRE TELAS
+     ***********************/
+    function showOnly(id){
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      const el = document.getElementById(id);
+      if(el) el.classList.add("active");
+      window.scrollTo({ top:0, behavior:"instant" });
+      updateTopBtn();
+    }
+
+    function enterApp(){
+      $("navBar").classList.remove("hidden");
+      switchView("cadastro");
+      aplicarCadastroNaTela();
+      buildSportsChips();
+      wirePlateInput();
+      loadLastPlate();
+      renderDieta(carregarDieta());
+      renderTreino(carregarTreino());
+      renderInviteUI();
+      applyAvatarFromStorage();
+      updatePremiumText();
+      maybeShowSaque();
+    }
+
     function switchView(view){
+      // remove active
       document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
       document.querySelectorAll(".navBtn").forEach(b => b.classList.remove("active"));
 
       const map = {
+        welcome:"viewWelcome",
         cadastro:"viewCadastro",
         dieta:"viewDieta",
         treino:"viewTreino",
@@ -866,8 +1151,63 @@
       });
     }
 
-    // Cadastro
-    function salvarCadastro(){
+    /***********************
+     * 6) ESPORTES
+     ***********************/
+    const ESPORTES = [
+      "Musculação","Futebol","Corrida","Crossfit","Ciclismo","Natação",
+      "Luta","Basquete","Vôlei","Yoga","Pilates","Caminhada"
+    ];
+    let selectedSports = new Set();
+
+    function buildSportsChips(){
+      const box = $("chipsEsportes");
+      if(!box) return;
+      box.innerHTML = "";
+      ESPORTES.forEach(name=>{
+        const div = document.createElement("div");
+        div.className = "chip";
+        div.textContent = name;
+        div.addEventListener("click", ()=>{
+          if(selectedSports.has(name)) selectedSports.delete(name);
+          else selectedSports.add(name);
+          div.classList.toggle("on");
+        });
+        box.appendChild(div);
+      });
+
+      // se tiver perfil salvo, marca
+      const p = carregarCadastro();
+      if(p && Array.isArray(p.esportes)){
+        selectedSports = new Set(p.esportes);
+        [...box.querySelectorAll(".chip")].forEach(ch=>{
+          if(selectedSports.has(ch.textContent)) ch.classList.add("on");
+        });
+      }
+    }
+
+    /***********************
+     * 7) PERFIL / CADASTRO (SALVAR)
+     ***********************/
+    function carregarCadastro(){
+      try{ return JSON.parse(localStorage.getItem(KEY_PROFILE) || "null"); }catch{ return null; }
+    }
+
+    function aplicarCadastroNaTela(){
+      const p = carregarCadastro();
+      if(!p) return;
+      if($("nome")) $("nome").value = p.nome || "";
+      if($("emailPerfil")) $("emailPerfil").value = p.email || "";
+      if($("peso")) $("peso").value = p.peso || "";
+      if($("altura")) $("altura").value = p.altura || "";
+      if($("objetivo")) $("objetivo").value = p.objetivo || "";
+      if($("nivel")) $("nivel").value = p.nivel || "";
+      if($("condicao")) $("condicao").value = p.condicao || "";
+      if($("restricao")) $("restricao").value = p.restricao || "";
+      if($("termo")) $("termo").checked = !!p.termo;
+    }
+
+    async function salvarCadastro(){
       const termo = $("termo")?.checked;
       if(!termo){
         alert("Marque 'Aceito o termo' para salvar.");
@@ -875,6 +1215,8 @@
       }
 
       const perfil = {
+        nome: ($("nome")?.value || "").trim(),
+        email: ($("emailPerfil")?.value || "").trim(),
         peso: ($("peso")?.value || "").trim(),
         altura: ($("altura")?.value || "").trim(),
         objetivo: $("objetivo")?.value || "",
@@ -882,10 +1224,25 @@
         condicao: $("condicao")?.value || "",
         restricao: $("restricao")?.value || "",
         esportes: Array.from(selectedSports),
+        termo: true,
         updatedAt: Date.now()
       };
 
       localStorage.setItem(KEY_PROFILE, JSON.stringify(perfil));
+
+      // salva na nuvem se logado
+      if(firebaseEnabled && currentUser && db){
+        try{
+          await db.collection("users").doc(currentUser.uid).set({
+            profile: perfil,
+            avatar: localStorage.getItem(KEY_AVATAR) || null,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge:true });
+        }catch(e){
+          console.log("cloud save error:", e);
+        }
+      }
+
       const out = $("outCadastro");
       if(out){
         out.style.display = "block";
@@ -894,53 +1251,108 @@
     }
     window.salvarCadastro = salvarCadastro;
 
-    function limparCadastro(){
+    async function limparCadastro(){
       localStorage.removeItem(KEY_PROFILE);
-      ["peso","altura"].forEach(id=>{ if($(id)) $(id).value=""; });
+      ["nome","emailPerfil","peso","altura"].forEach(id=>{ if($(id)) $(id).value=""; });
       ["objetivo","nivel","condicao","restricao"].forEach(id=>{ if($(id)) $(id).value=""; });
       if($("termo")) $("termo").checked = false;
       selectedSports = new Set();
       buildSportsChips();
       const out = $("outCadastro");
       if(out){ out.style.display="block"; out.textContent="🧹 Cadastro limpo."; }
+
+      // opcional: limpar na nuvem
+      if(firebaseEnabled && currentUser && db){
+        try{
+          await db.collection("users").doc(currentUser.uid).set({ profile: null }, { merge:true });
+        }catch(e){}
+      }
     }
     window.limparCadastro = limparCadastro;
 
-    function aplicarCadastroNaTela(){
-      const p = carregarCadastro();
-      if(!p) return;
-      if($("peso")) $("peso").value = p.peso || "";
-      if($("altura")) $("altura").value = p.altura || "";
-      if($("objetivo")) $("objetivo").value = p.objetivo || "";
-      if($("nivel")) $("nivel").value = p.nivel || "";
-      if($("condicao")) $("condicao").value = p.condicao || "";
-      if($("restricao")) $("restricao").value = p.restricao || "";
-      if($("termo")) $("termo").checked = true;
+    /***********************
+     * 8) AVATAR (FOTO PERFIL)
+     ***********************/
+    function pickAvatar(){
+      $("avatarFile").click();
+    }
+    window.pickAvatar = pickAvatar;
+
+    $("avatarFile").addEventListener("change", async ()=>{
+      const file = $("avatarFile").files?.[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = async ()=>{
+        const dataUrl = String(reader.result || "");
+        localStorage.setItem(KEY_AVATAR, dataUrl);
+        applyAvatarFromStorage();
+
+        // salva na nuvem se logado
+        if(firebaseEnabled && currentUser && db){
+          try{
+            await db.collection("users").doc(currentUser.uid).set({
+              avatar: dataUrl,
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge:true });
+          }catch(e){ console.log(e); }
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function applyAvatarFromStorage(){
+      const dataUrl = localStorage.getItem(KEY_AVATAR);
+      const img = $("avatarImg");
+      const fb = $("avatarFallback");
+      const logoBox = $("logoBox");
+
+      if(dataUrl){
+        img.src = dataUrl;
+        img.style.display = "block";
+        fb.style.display = "none";
+
+        // logo também
+        logoBox.innerHTML = `<img src="${dataUrl}" alt="E">`;
+      }else{
+        img.style.display = "none";
+        fb.style.display = "flex";
+        logoBox.textContent = "E";
+      }
     }
 
-    // Foto do prato (demo)
+    /***********************
+     * 9) PRATO (IA) + HISTÓRICO / ANTI-REPETIÇÃO
+     ***********************/
     function wirePlateInput(){
       const btnCam = $("btnCamera");
       const btnGal = $("btnGaleria");
       const fc = $("fileCamera");
       const fg = $("fileGaleria");
 
-      if(btnCam && fc) btnCam.addEventListener("click", ()=> fc.click());
-      if(btnGal && fg) btnGal.addEventListener("click", ()=> fg.click());
+      if(btnCam && fc) btnCam.onclick = ()=> fc.click();
+      if(btnGal && fg) btnGal.onclick = ()=> fg.click();
 
       function onFile(file){
         if(!file) return;
         const reader = new FileReader();
-        reader.onload = ()=>{
+        reader.onload = async ()=>{
           const dataUrl = String(reader.result || "");
-          localStorage.setItem(KEY_PLATE, dataUrl);
+          localStorage.setItem(KEY_PLATE_LAST, dataUrl);
           showPlate(dataUrl);
+
+          // anti-repetição simples: hash da dataUrl
+          const hash = await sha1(dataUrl);
+          const hist = loadPlateHistory();
+          const already = hist.some(x => x.hash === hash);
+          if(already){
+            alert("⚠️ Parece que essa mesma foto já foi analisada antes (evitar repetição). Se quiser, analise mesmo assim.");
+          }
         };
         reader.readAsDataURL(file);
       }
 
-      if(fc) fc.addEventListener("change", ()=> onFile(fc.files?.[0]));
-      if(fg) fg.addEventListener("change", ()=> onFile(fg.files?.[0]));
+      if(fc) fc.onchange = ()=> onFile(fc.files?.[0]);
+      if(fg) fg.onchange = ()=> onFile(fg.files?.[0]);
     }
 
     function showPlate(dataUrl){
@@ -952,33 +1364,131 @@
     }
 
     function loadLastPlate(){
-      const dataUrl = localStorage.getItem(KEY_PLATE);
+      const dataUrl = localStorage.getItem(KEY_PLATE_LAST);
       if(dataUrl) showPlate(dataUrl);
     }
 
-    function analisarPratoDemo(){
-      const dataUrl = localStorage.getItem(KEY_PLATE);
+    function loadPlateHistory(){
+      try{ return JSON.parse(localStorage.getItem(KEY_PLATE_HISTORY) || "[]"); }catch{ return []; }
+    }
+    function savePlateHistory(arr){
+      localStorage.setItem(KEY_PLATE_HISTORY, JSON.stringify(arr));
+    }
+
+    // Endpoint (IA real):
+    // - Depois você cria um backend (Firebase Functions / Cloud Run) que recebe a imagem
+    // - Retorna JSON { description: "...", items: [...], calories: 650 }
+    const AI_ENDPOINT = ""; // <-- COLE A URL AQUI QUANDO TIVER (ex: https://.../analyze)
+
+    async function analisarPrato(){
+      const dataUrl = localStorage.getItem(KEY_PLATE_LAST);
       const out = $("plateResult");
-      if(!out) return;
+      const confirmBox = $("plateConfirmBox");
+      const edit = $("plateEdit");
+      if(!out || !confirmBox || !edit) return;
+
+      confirmBox.style.display = "none";
+      out.style.display = "block";
+      out.textContent = "⏳ Analisando...";
 
       if(!dataUrl){
-        out.style.display="block";
         out.textContent = "Envie uma foto primeiro.";
         return;
       }
 
-      const p = carregarCadastro() || {};
-      const objetivo = (p.objetivo || "Manter").toLowerCase();
-      let kcal = 650;
-      if(objetivo.includes("emag")) kcal = 520;
-      if(objetivo.includes("massa")) kcal = 820;
+      // tenta IA real
+      let result = null;
+      try{
+        if(AI_ENDPOINT){
+          const res = await fetch(AI_ENDPOINT, {
+            method:"POST",
+            headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify({ image: dataUrl })
+          });
+          if(res.ok){
+            result = await res.json();
+          }
+        }
+      }catch(e){
+        console.log("AI endpoint error:", e);
+      }
 
-      out.style.display="block";
-      out.textContent = `✅ (DEMO) Estimativa: ~${kcal} kcal. Depois ligamos IA real para identificar itens e porções.`;
+      // fallback demo
+      if(!result){
+        const p = carregarCadastro() || {};
+        const objetivo = (p.objetivo || "Manter").toLowerCase();
+        let kcal = 650;
+        if(objetivo.includes("emag")) kcal = 520;
+        if(objetivo.includes("massa")) kcal = 820;
+
+        result = {
+          description: `Arroz + proteína (frango/carne) + salada/legumes (estimativa).`,
+          calories: kcal,
+          items: ["Arroz", "Proteína", "Salada/Legumes"]
+        };
+      }
+
+      const text = `🧠 IA sugeriu: ${result.description}\n\n🔥 Estimativa: ~${result.calories} kcal\n🍽️ Itens: ${(result.items||[]).join(", ")}`;
+      out.textContent = text;
+
+      edit.value = text;
+      confirmBox.style.display = "block";
     }
-    window.analisarPratoDemo = analisarPratoDemo;
+    window.analisarPrato = analisarPrato;
 
-    // Dieta
+    function refazerAnalise(){
+      $("plateConfirmBox").style.display = "none";
+      $("plateResult").style.display = "none";
+      $("plateEdit").value = "";
+      analisarPrato();
+    }
+    window.refazerAnalise = refazerAnalise;
+
+    async function confirmarPrato(){
+      const edit = $("plateEdit");
+      const out = $("plateResult");
+      const dataUrl = localStorage.getItem(KEY_PLATE_LAST);
+      if(!edit || !out || !dataUrl) return;
+
+      const desc = (edit.value||"").trim();
+      if(!desc){
+        alert("Escreva/edite a descrição antes de confirmar.");
+        return;
+      }
+
+      const hash = await sha1(dataUrl);
+      const hist = loadPlateHistory();
+      hist.unshift({ hash, ts: Date.now(), desc });
+      // limita histórico
+      while(hist.length > 30) hist.pop();
+      savePlateHistory(hist);
+
+      // salva na nuvem (se logado)
+      if(firebaseEnabled && currentUser && db){
+        try{
+          await db.collection("users").doc(currentUser.uid).set({
+            plateHistory: hist,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge:true });
+        }catch(e){ console.log(e); }
+      }
+
+      out.style.display = "block";
+      out.textContent = "✅ Prato confirmado e salvo no histórico.";
+      $("plateConfirmBox").style.display = "none";
+    }
+    window.confirmarPrato = confirmarPrato;
+
+    async function sha1(text){
+      const enc = new TextEncoder().encode(text);
+      const buf = await crypto.subtle.digest("SHA-1", enc);
+      const arr = Array.from(new Uint8Array(buf));
+      return arr.map(b=>b.toString(16).padStart(2,"0")).join("");
+    }
+
+    /***********************
+     * 10) DIETA (GERAR + REFAZER)
+     ***********************/
     const DIETAS_BASE = [
       [
         {t:"Café da manhã", d:"Omelete de 2 ovos com espinafre + 1 fatia de pão integral.", k:350},
@@ -1006,12 +1516,39 @@
     function salvarDieta(d){
       localStorage.setItem(KEY_DIETA, JSON.stringify(d));
     }
+
     function gerarDieta(){
-      const d = DIETAS_BASE[Math.floor(Math.random()*DIETAS_BASE.length)];
+      const p = carregarCadastro() || {};
+      const objetivo = (p.objetivo || "Manter").toLowerCase();
+      let idx = Math.floor(Math.random()*DIETAS_BASE.length);
+
+      // heurística simples
+      if(objetivo.includes("massa")) idx = 1;
+      if(objetivo.includes("emag")) idx = 0;
+
+      const d = DIETAS_BASE[idx];
       salvarDieta(d);
       renderDieta(d);
+
+      // nuvem
+      cloudMerge({ dieta: d });
     }
     window.gerarDieta = gerarDieta;
+
+    function refazerDieta(){
+      // só gera outra diferente
+      const cur = carregarDieta();
+      let d = null;
+      for(let i=0;i<5;i++){
+        const pick = DIETAS_BASE[Math.floor(Math.random()*DIETAS_BASE.length)];
+        if(JSON.stringify(pick) !== JSON.stringify(cur)){ d = pick; break; }
+      }
+      if(!d) d = DIETAS_BASE[Math.floor(Math.random()*DIETAS_BASE.length)];
+      salvarDieta(d);
+      renderDieta(d);
+      cloudMerge({ dieta: d });
+    }
+    window.refazerDieta = refazerDieta;
 
     function renderDieta(d){
       const box = $("dietaBox");
@@ -1038,7 +1575,9 @@
       });
     }
 
-    // Treino
+    /***********************
+     * 11) TREINO
+     ***********************/
     const TREINOS = {
       "Academia": [
         ["Segunda", ["Desenvolvimento com halteres","Agachamento livre","Flexão de braços"]],
@@ -1088,6 +1627,8 @@
         out.style.display="block";
         out.textContent = `✅ Treino salvo: ${tema} (${intensidade}).`;
       }
+
+      cloudMerge({ treino: plano });
     }
     window.gerarTreino = gerarTreino;
 
@@ -1096,6 +1637,8 @@
       if($("treinoSemana")) $("treinoSemana").innerHTML = "";
       const out = $("outTreino");
       if(out){ out.style.display="block"; out.textContent="🧹 Treino removido."; }
+
+      cloudMerge({ treino: null });
     }
     window.limparTreino = limparTreino;
 
@@ -1132,7 +1675,9 @@
       });
     }
 
-    // Convites (demo)
+    /***********************
+     * 12) CONVITES + SAQUE
+     ***********************/
     function getOrCreateInviteCode(){
       let code = localStorage.getItem(KEY_INV_CODE);
       if(code) return code;
@@ -1151,6 +1696,8 @@
     function setBalance(v){
       localStorage.setItem(KEY_BAL, String(v));
       renderInviteUI();
+      maybeShowSaque();
+      cloudMerge({ balance: v });
     }
     window.getBalance = getBalance;
     window.setBalance = setBalance;
@@ -1191,75 +1738,125 @@
       }
       if($("progressTxt")){
         $("progressTxt").textContent = bal >= 50
-          ? "✅ Você atingiu R$ 50! (Saque via Pix/QR será ativado quando ligarmos o sistema.)"
+          ? "✅ Você atingiu R$ 50! Agora pode solicitar saque (demo)."
           : `Faltam ${new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(falta)} para atingir R$ 50.`;
       }
     }
-    function solicitarSaque(){
-  const bal = getBalance();
-  const out = document.getElementById("saqueStatus");
-      const btnSaque = document.getElementById("btnSaque");
-if(btnSaque) btnSaque.style.display = bal >= 50 ? "block" : "none";
 
-  if(bal < 50){
-    out.style.display = "block";
-    out.textContent = "❌ Você ainda não atingiu R$ 50.";
-    return;
-  }
-
-  out.style.display = "block";
-  out.textContent = "✅ Solicitação enviada (DEMO). Em breve Pix automático.";
-}
-window.solicitarSaque = solicitarSaque;
-
-    // escape
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"]/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m]));
+    function maybeShowSaque(){
+      const bal = getBalance();
+      const box = $("saqueBox");
+      if(!box) return;
+      box.style.display = bal >= 50 ? "block" : "none";
     }
 
-    // botão subir
+    function solicitarSaque(){
+      const bal = getBalance();
+      const status = $("saqueStatus");
+      if(!status) return;
+
+      if(bal < 50){
+        alert("Ainda não atingiu o mínimo de R$ 50.");
+        return;
+      }
+
+      // demo: não faz Pix real (precisa backend)
+      status.style.display = "block";
+      status.textContent = "✅ Solicitação registrada (DEMO). Para Pix real, precisa backend + validação.";
+    }
+    window.solicitarSaque = solicitarSaque;
+
+    /***********************
+     * 13) CLOUD SYNC (se logado)
+     ***********************/
+    async function cloudMerge(payload){
+      if(!(firebaseEnabled && currentUser && db)) return;
+      try{
+        await db.collection("users").doc(currentUser.uid).set({
+          data: payload,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge:true });
+      }catch(e){}
+    }
+
+    async function syncFromCloud(){
+      if(!(firebaseEnabled && currentUser && db)) return;
+      try{
+        const doc = await db.collection("users").doc(currentUser.uid).get();
+        if(!doc.exists) return;
+
+        const data = doc.data() || {};
+        // perfil
+        if(data.profile){
+          localStorage.setItem(KEY_PROFILE, JSON.stringify(data.profile));
+        }
+        if(data.avatar){
+          localStorage.setItem(KEY_AVATAR, data.avatar);
+        }
+        if(data.plateHistory){
+          localStorage.setItem(KEY_PLATE_HISTORY, JSON.stringify(data.plateHistory));
+        }
+        // dados extras (merge)
+        if(data.data){
+          if("dieta" in data.data) localStorage.setItem(KEY_DIETA, JSON.stringify(data.data.dieta));
+          if("treino" in data.data) localStorage.setItem(KEY_TREINO, JSON.stringify(data.data.treino));
+          if("balance" in data.data) localStorage.setItem(KEY_BAL, String(data.data.balance));
+        }
+      }catch(e){
+        console.log("sync error:", e);
+      }
+    }
+
+    /***********************
+     * 14) UI: botão topo
+     ***********************/
     function scrollToTop(){
       const active = document.querySelector(".screen.active");
       if(active){
-        active.scrollTo({ top:0, behavior:"smooth" });
-      } else {
-        window.scrollTo({ top:0, behavior:"smooth" });
+        active.scrollIntoView({ behavior:"smooth", block:"start" });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
     window.scrollToTop = scrollToTop;
 
     function updateTopBtn(){
-      const active = document.querySelector(".screen.active");
-      const btn = document.getElementById("btnTop");
-      if(!active || !btn) return;
-      btn.style.display = active.scrollTop > 200 ? "block" : "none";
+      const btn = $("btnTop");
+      if(!btn) return;
+      btn.style.display = window.scrollY > 300 ? "block" : "none";
     }
-    document.addEventListener("scroll", updateTopBtn, true);
+    document.addEventListener("scroll", updateTopBtn, { passive:true });
 
-    // init
-    function init(){
-      wireNav();
-      aplicarCadastroNaTela();
-      buildSportsChips();
-
-      wirePlateInput();
-      loadLastPlate();
-
-      renderDieta(carregarDieta());
-      renderTreino(carregarTreino());
-
+    /***********************
+     * 15) PREMIUM TEXTO
+     ***********************/
+    function updatePremiumText(){
+      $("premiumPriceTxt").textContent = `R$ ${PREMIUM_PRICE.toFixed(2).replace(".", ",")}/mês`;
       const btn = $("btnPremium");
       if(btn){
         btn.textContent = `CONFIRMAR R$ ${PREMIUM_PRICE.toFixed(2).replace(".", ",")}/MÊS`;
       }
-
-      renderInviteUI();
-      updateTopBtn();
-
-      document.querySelectorAll(".screen").forEach(s => {
-        s.addEventListener("scroll", updateTopBtn);
-      });
     }
+
+    /***********************
+     * 16) INIT
+     ***********************/
+    function init(){
+      wireNav();
+      updatePremiumText();
+      applyAvatarFromStorage();
+      renderInviteUI();
+      maybeShowSaque();
+
+      // se já estava em guest, entra direto
+      if(localStorage.getItem(KEY_GUEST) === "1"){
+        setAuthBadge("Modo: Convidado");
+        enterApp();
+      }else{
+        showOnly("viewWelcome");
+      }
+    }
+
+    initFirebaseIfPossible();
     init();
   </script>
 </body>
