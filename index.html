@@ -6,7 +6,7 @@
   <title>Confira o Prato Elite</title>
   <meta name="theme-color" content="#0a1320"/>
   <link rel="manifest" href="./manifest.json">
-  <link rel="icon" sizes="192x192" href="./icon-192.png"> 
+  <link rel="icon" sizes="192x192" href="./icon-192.png">
   <link rel="apple-touch-icon" href="./icon-192.png">
 
   <style>
@@ -23,24 +23,23 @@
       --orange:#f6b23a;
       --shadow:0 20px 60px rgba(0,0,0,.45);
       --r:22px;
-      
     }
 
     *{ box-sizing: border-box; }
 
-html, body{
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
-     body{
-  margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color:var(--txt);
-  background:#07121f; /* fundo sólido */
-  padding-bottom: 90px; /* espaço para navbar */
-} 
+    html, body{
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--txt);
+      background:#07121f; /* fundo sólido */
+      padding-bottom: 110px; /* espaço para navbar + botão ↑ */
+    }
 
     .app{
       max-width: 540px;
@@ -72,6 +71,7 @@ html, body{
     }
     .brand small{color:var(--muted); letter-spacing:.08em; font-weight:800}
     .brand b{font-size:18px}
+
     .pill{
       display:flex;align-items:center;gap:8px;
       padding:10px 12px;border-radius:999px;
@@ -93,6 +93,7 @@ html, body{
       color:var(--green);
       font-weight: 900;
     }
+
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
       border: 1px solid var(--stroke);
@@ -199,45 +200,29 @@ html, body{
       box-shadow: 0 0 0 6px rgba(33,230,182,.08);
     }
 
+    /* TELAS */
     .screen{
-  display:none;
-  margin-top: 8px;
-  max-width: 540px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 16px 120px;
-/* 1) garante que a tela sempre tenha fundo sólido */
-  background: #07121f;
-  width: 100%;
-}
-
-/* 2) aumenta o espaço no final pra não aparecer “vão” */
-.screen{
-  padding-bottom: calc(140px + env(safe-area-inset-bottom));
-}
-
-/* 3) garante que o body não “vaze” azul embaixo */
-body{
-  background: #07121f !important;
-}
+      display:none;
+      margin-top: 8px;
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 16px calc(140px + env(safe-area-inset-bottom));
+      background: #07121f;
+      width: 100%;
     }
-    
+    .screen.active{ display:block; }
 
-.screen.active{
-  display:block;
-}
-   
     /* NAV */
     .nav{
-    position: fixed;
-    left:0;
-    right:0;
-    bottom:0;
-    padding: 10px;
-    background: #07121f; /* cor sólida */
-    border-top: 1px solid rgba(255,255,255,.08);
-}
-      
+      position: fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      padding: 10px;
+      background: #07121f;
+      border-top: 1px solid rgba(255,255,255,.08);
+      z-index: 1000;
     }
     .navInner{
       max-width: 540px;
@@ -259,6 +244,7 @@ body{
       border-radius: 999px;
       cursor:pointer;
       letter-spacing:.05em;
+      white-space: nowrap;
     }
     .navBtn.active{
       background: rgba(33,230,182,.12);
@@ -333,7 +319,7 @@ body{
       font-weight: 1000;
       cursor: pointer;
       min-width: 110px;
-    }n
+    }
 
     /* Loja & Parceiros */
     .shopGrid{display:flex; flex-direction:column; gap:12px; margin-top: 12px}
@@ -511,7 +497,6 @@ body{
     <!-- DIETA -->
     <section id="viewDieta" class="screen">
       <div class="h1">DIETA</div>
-
       <div class="card">
         <div class="hint">Sugestões simples e fáceis. Você pode gerar outra dieta se não gostar.</div>
         <button class="btn" type="button" onclick="gerarDieta()">GERAR NOVA DIETA</button>
@@ -522,7 +507,6 @@ body{
     <!-- TREINO -->
     <section id="viewTreino" class="screen">
       <div class="h1">TREINO</div>
-
       <div class="card">
         <div class="hint">Treino semanal baseado no seu cadastro. Cada exercício tem botão “YouTube”.</div>
 
@@ -558,23 +542,19 @@ body{
     <!-- LOJA -->
     <section id="viewLoja" class="screen">
       <div class="h1">LOJA</div>
-
       <div class="card">
         <div class="hint">Depois trocamos por seus links de afiliado/parcerias.</div>
-
         <div class="shopGrid">
           <div class="shopItem">
             <h3>Suplementos</h3>
             <p class="muted">Whey, creatina, vitaminas e pré-treinos para performance e recuperação.</p>
             <button class="btnSecondary" type="button" onclick="switchView('parceiros')">Ver parceiros</button>
           </div>
-
           <div class="shopItem">
             <h3>Roupas fitness</h3>
             <p class="muted">Tênis, camisetas, shorts e roupas para treino/corrida com conforto e durabilidade.</p>
             <button class="btnSecondary" type="button" onclick="switchView('parceiros')">Ver parceiros</button>
           </div>
-
           <div class="shopItem">
             <h3>Equipamentos</h3>
             <p class="muted">Acessórios para treino em casa: elásticos, corda, luvas, garrafas, etc.</p>
@@ -587,7 +567,6 @@ body{
     <!-- PARCEIROS -->
     <section id="viewParceiros" class="screen">
       <div class="h1">PARCEIROS</div>
-
       <div class="card">
         <div class="hint">Sites oficiais. Depois trocamos por links de afiliado quando você tiver.</div>
 
@@ -646,7 +625,6 @@ body{
     <!-- PREMIUM -->
     <section id="viewPremium" class="screen">
       <div class="h1">PREMIUM</div>
-
       <div class="card">
         <div class="payTitle">ASSINATURA ELITE</div>
         <div class="hint">Preço mensal. O pagamento abre no Mercado Pago.</div>
@@ -663,10 +641,8 @@ body{
     </section>
 
     <!-- CONVITES -->
-
-        <section id="viewConvites" class="screen">
+    <section id="viewConvites" class="screen">
       <div class="h1">CONVITES</div>
-
       <div class="card">
         <div class="hint">
           Convide amigos e ganhe: <b>R$ 5</b> por cada pessoa que assinar usando seu link.
@@ -689,7 +665,6 @@ body{
             <button class="miniBtn" type="button" onclick="shareInvite()">Compartilhar</button>
           </div>
 
-          <!-- botões de teste (pode remover depois) -->
           <div class="miniRow" style="margin-top:10px">
             <button class="miniBtn" type="button" onclick="setBalance(getBalance()+5)">+R$5 (teste)</button>
             <button class="miniBtn" type="button" onclick="setBalance(0)">Zerar (teste)</button>
@@ -697,52 +672,71 @@ body{
         </div>
       </div>
     </section>
-<!-- SAÚDE / DICAS -->
-<section id="viewSaude" class="screen">
-  <div class="h1">SAÚDE</div>
 
-  <div class="card">
-    <div class="hint">
-      Conteúdo educativo. Não substitui médico. Em caso de sintomas ou dúvidas, procure um profissional.
-    </div>
+    <!-- SAÚDE -->
+    <section id="viewSaude" class="screen">
+      <div class="h1">SAÚDE</div>
+      <div class="card">
+        <div class="hint">
+          Conteúdo educativo. Não substitui médico. Em caso de sintomas ou dúvidas, procure um profissional.
+        </div>
 
-    <div class="meal" style="margin-top:14px">
-      <div>
-        <div class="title">Riscos gerais</div>
-        <p>Uso de anabolizantes pode causar efeitos no coração, pressão, colesterol, fígado, humor e hormônios.</p>
+        <div class="meal" style="margin-top:14px">
+          <div>
+            <div class="title">Riscos gerais</div>
+            <p>Uso de anabolizantes pode causar efeitos no coração, pressão, colesterol, fígado, humor e hormônios.</p>
+          </div>
+        </div>
+
+        <div class="meal">
+          <div>
+            <div class="title">Sinais de alerta</div>
+            <p>Dor no peito, falta de ar, palpitação, desmaio, inchaço, pele/olhos amarelados, urina escura: pare e procure atendimento.</p>
+          </div>
+        </div>
+
+        <div class="meal">
+          <div>
+            <div class="title">Exames</div>
+            <p>Antes e durante: pressão, hemograma, lipidograma, glicemia, TGO/TGP, creatinina, testosterona, estradiol. Com médico.</p>
+          </div>
+        </div>
+
+        <div class="meal">
+          <div>
+            <div class="title">Hábitos que ajudam</div>
+            <p>Sono 7–9h, hidratação, dieta com fibras, controle de álcool, treino com progressão e descanso.</p>
+          </div>
+        </div>
+
+        <button class="btnSecondary" type="button" onclick="abrirLink('https://bvsms.saude.gov.br/')">
+          Ler mais (fontes de saúde)
+        </button>
       </div>
-    </div>
+    </section>
 
-    <div class="meal">
-      <div>
-        <div class="title">Sinais de alerta</div>
-        <p>Dor no peito, falta de ar, palpitação, desmaio, inchaço, pele/olhos amarelados, urina escura: pare e procure atendimento.</p>
-      </div>
-    </div>
-
-    <div class="meal">
-      <div>
-        <div class="title">Exames</div>
-        <p>Antes e durante: pressão, hemograma, lipidograma, glicemia, TGO/TGP, creatinina, testosterona, estradiol. Com médico.</p>
-      </div>
-    </div>
-
-    <div class="meal">
-      <div>
-        <div class="title">Hábitos que ajudam</div>
-        <p>Sono 7–9h, hidratação, dieta com fibras, controle de álcool, treino com progressão e descanso.</p>
-      </div>
-    </div>
-
-    <button class="btnSecondary" type="button" onclick="abrirLink('https://bvsms.saude.gov.br/')">
-      Ler mais (fontes de saúde)
-    </button>
   </div>
-</section>
-    
-  </div>
 
-  <!-- NAV -->
+  <!-- BOTÃO SUBIR -->
+  <button id="btnTop" onclick="scrollToTop()" style="
+    position:fixed;
+    bottom:110px;
+    right:18px;
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    border:none;
+    background:linear-gradient(135deg,#21e6b6,#17caa0);
+    color:#042019;
+    font-size:22px;
+    font-weight:900;
+    box-shadow:0 10px 25px rgba(0,0,0,.4);
+    display:none;
+    z-index:999;
+    cursor:pointer;
+  ">↑</button>
+
+  <!-- NAV (ÚNICA) -->
   <div class="nav">
     <div class="navInner">
       <button class="navBtn active" data-view="cadastro" type="button">CADASTRO</button>
@@ -757,11 +751,11 @@ body{
   </div>
 
   <script>
-   // PWA
-    
-     if ("serviceWorker" in navigator")
-     navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
-  
+    // PWA
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
+    }
+
     // Premium / pagamento
     const PREMIUM_PRICE = 29.90;
     const PREMIUM_CHECKOUT_URL = "https://mpago.la/2BRjpaP";
@@ -792,6 +786,10 @@ body{
       "Luta","Basquete","Vôlei","Yoga","Pilates","Caminhada"
     ];
     let selectedSports = new Set();
+
+    function carregarCadastro(){
+      try{ return JSON.parse(localStorage.getItem(KEY_PROFILE) || "null"); }catch{ return null; }
+    }
 
     function buildSportsChips(){
       const box = $("chipsEsportes");
@@ -841,6 +839,8 @@ body{
       }
       const btn = document.querySelector(`.navBtn[data-view="${view}"]`);
       if(btn) btn.classList.add("active");
+
+      updateTopBtn();
     }
     window.switchView = switchView;
 
@@ -851,10 +851,6 @@ body{
     }
 
     // Cadastro
-    function carregarCadastro(){
-      try{ return JSON.parse(localStorage.getItem(KEY_PROFILE) || "null"); }catch{ return null; }
-    }
-
     function salvarCadastro(){
       const termo = $("termo")?.checked;
       if(!termo){
@@ -955,7 +951,6 @@ body{
         return;
       }
 
-      // demo simples
       const p = carregarCadastro() || {};
       const objetivo = (p.objetivo || "Manter").toLowerCase();
       let kcal = 650;
@@ -992,11 +987,9 @@ body{
     function carregarDieta(){
       try{ return JSON.parse(localStorage.getItem(KEY_DIETA) || "null"); }catch{ return null; }
     }
-
     function salvarDieta(d){
       localStorage.setItem(KEY_DIETA, JSON.stringify(d));
     }
-
     function gerarDieta(){
       const d = DIETAS_BASE[Math.floor(Math.random()*DIETAS_BASE.length)];
       salvarDieta(d);
@@ -1123,7 +1116,7 @@ body{
       });
     }
 
-    // Convites / reward (demo)
+    // Convites (demo)
     function getOrCreateInviteCode(){
       let code = localStorage.getItem(KEY_INV_CODE);
       if(code) return code;
@@ -1192,6 +1185,25 @@ body{
       return String(s).replace(/[&<>"]/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m]));
     }
 
+    // botão subir
+    function scrollToTop(){
+      const active = document.querySelector(".screen.active");
+      if(active){
+        active.scrollTo({ top:0, behavior:"smooth" });
+      } else {
+        window.scrollTo({ top:0, behavior:"smooth" });
+      }
+    }
+    window.scrollToTop = scrollToTop;
+
+    function updateTopBtn(){
+      const active = document.querySelector(".screen.active");
+      const btn = document.getElementById("btnTop");
+      if(!active || !btn) return;
+      btn.style.display = active.scrollTop > 200 ? "block" : "none";
+    }
+    document.addEventListener("scroll", updateTopBtn, true);
+
     // init
     function init(){
       wireNav();
@@ -1201,70 +1213,22 @@ body{
       wirePlateInput();
       loadLastPlate();
 
-      // dieta / treino salvos
       renderDieta(carregarDieta());
       renderTreino(carregarTreino());
 
-      // premium button text
       const btn = $("btnPremium");
       if(btn){
         btn.textContent = `CONFIRMAR R$ ${PREMIUM_PRICE.toFixed(2).replace(".", ",")}/MÊS`;
       }
 
       renderInviteUI();
+      updateTopBtn();
+
+      document.querySelectorAll(".screen").forEach(s => {
+        s.addEventListener("scroll", updateTopBtn);
+      });
     }
-
     init();
-    function scrollToTop(){
-  const active = document.querySelector(".screen.active");
-  if(active){
-    active.scrollTo({ top:0, behavior:"smooth" });
-  }
-}
-window.scrollToTop = scrollToTop;
-
-function updateTopBtn(){
-  const active = document.querySelector(".screen.active");
-  const btn = document.getElementById("btnTop");
-  if(!active || !btn) return;
-  btn.style.display = active.scrollTop > 200 ? "block" : "none";
-}
-document.addEventListener("scroll", updateTopBtn, true);
-document.querySelectorAll(".screen").forEach(s => {
-  s.addEventListener("scroll", updateTopBtn);
-});
   </script>
-  <button id="btnTop" onclick="scrollToTop()" style="
-position:fixed;
-bottom:110px;
-right:18px;
-width:48px;
-height:48px;
-border-radius:50%;
-border:none;
-background:linear-gradient(135deg,#21e6b6,#17caa0);
-color:#042019;
-font-size:22px;
-font-weight:900;
-box-shadow:0 10px 25px rgba(0,0,0,.4);
-display:none;
-z-index:999;
-cursor:pointer;">
-↑
-  </button>
-  
-<!-- NAV -->
-<div class="nav">
-  <div class="navInner">
-    <button class="navBtn active" data-view="cadastro" type="button">CADASTRO</button>
-    <button class="navBtn" data-view="dieta" type="button">DIETA</button>
-    <button class="navBtn" data-view="treino" type="button">TREINO</button>
-    <button class="navBtn" data-view="loja" type="button">LOJA</button>
-    <button class="navBtn" data-view="parceiros" type="button">PARCEIROS</button>
-    <button class="navBtn" data-view="premium" type="button">PREMIUM</button>
-    <button class="navBtn" data-view="saude" type="button">SAÚDE</button>
-    <button class="navBtn" data-view="convites" type="button">CONVITES</button>
-  </div>
-</div>
 </body>
 </html>
