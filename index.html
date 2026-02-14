@@ -950,62 +950,8 @@
     const KEY_BAL = "checkprato_inv_balance_v1";
     const KEY_GUEST = "checkprato_guest_v1"; // "1" se convidado
 
-    /***********************
-     * 3) FIREBASE (OPCIONAL)
-     * - Preencha o config abaixo quando criar projeto no Firebase.
-     * - Se não preencher, o app funciona local (guest/localStorage).
-     ***********************/
-    const FIREBASE_CONFIG = {
-      // 🔥 COLE AQUI SUAS CHAVES DO FIREBASE:
-      // apiKey: "....",
-      // authDomain: "....firebaseapp.com",
-      // projectId: "....",
-      // storageBucket: "....appspot.com",
-      // messagingSenderId: "....",
-      // appId: "...."
-    };
-
-    let firebaseEnabled = false;
-    let auth = null;
-    let db = null;
-    let currentUser = null;
-
-    function initFirebaseIfPossible(){
-      try{
-        const hasKeys = FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId;
-        if(!hasKeys) return;
-        firebase.initializeApp(FIREBASE_CONFIG);
-        auth = firebase.auth();
-        db = firebase.firestore();
-        firebaseEnabled = true;
-
-        auth.onAuthStateChanged(async (user)=>{
-          currentUser = user || null;
-          if(currentUser){
-            localStorage.removeItem(KEY_GUEST);
-            setAuthBadge(`Logado: ${currentUser.email || "Google"}`);
-            await syncFromCloud();
-            enterApp();
-          }else{
-            if(!localStorage.getItem(KEY_GUEST)){
-              setAuthBadge("Modo: Local");
-              // mantém na welcome se não for guest
-              showOnly("viewWelcome");
-              $("navBar").classList.add("hidden");
-            }
-          }
-        });
-      }catch(e){
-        console.log("Firebase init error:", e);
-      }
-    }
-
-    function setAuthBadge(txt){
-      const el = $("authTxt");
-      if(el) el.textContent = txt;
-    }
-
-    /***********************
+    
+   /***********************
      * 4) AUTH UI
      ***********************/
     function openAuthModal(){ $("authModalBack").style.display = "block"; }
