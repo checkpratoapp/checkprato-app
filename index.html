@@ -1853,16 +1853,26 @@ window.loginGoogle = async () => {
 window.logout = () => signOut(auth);
 
 // MONITORAR LOGIN
-onAuthStateChanged(auth, (user) => {
-  if(user){
-    console.log("Logado:", user.email);
+getRedirectResult(auth)
+  .then((result) => {
+    if (result?.user) {
+      console.log("Logado (redirect):", result.user.email);
 
-    // SALVAR USUÁRIO GLOBAL
+      // salvar usuário
+      window.currentUser = result.user;
+
+      // mostrar no app
+      mostrarUsuario(result.user);
+    }
+  })
+  .catch((e) => console.log("Redirect error:", e));
+  onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("Usuário logado:", user.email);
     window.currentUser = user;
-
-    // MOSTRAR NO APP
     mostrarUsuario(user);
-
+  }
+}); 
   }else{
     console.log("Não logado");
     window.currentUser = null;
