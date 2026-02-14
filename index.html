@@ -1856,10 +1856,35 @@ window.logout = () => signOut(auth);
 onAuthStateChanged(auth, (user) => {
   if(user){
     console.log("Logado:", user.email);
+
+    // SALVAR USUÁRIO GLOBAL
+    window.currentUser = user;
+
+    // MOSTRAR NO APP
+    mostrarUsuario(user);
+
   }else{
     console.log("Não logado");
+    window.currentUser = null;
   }
 });
+  function mostrarUsuario(user){
+  if(!user) return;
+
+  // Nome
+  if(user.displayName){
+    const nome = user.displayName.split(" ")[0];
+    document.getElementById("authTxt").textContent = "Olá, " + nome;
+  }
+
+  // Foto
+  if(user.photoURL){
+    const logo = document.getElementById("logoBox");
+    logo.innerHTML = `<img src="${user.photoURL}" />`;
+  }
+  }
 </script>
+  
+  
 </body>
 </html>
