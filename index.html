@@ -1819,24 +1819,6 @@ import {
   setDoc, 
   getDoc 
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAxzwCdYvhFIAeB4rKuFcaLFKygaTkAmSs",
-  authDomain: "checkpratoapp-78232.firebaseapp.com",
-  projectId: "checkpratoapp-78232",
-  storageBucket: "checkpratoapp-78232.firebasestorage.app",
-  messagingSenderId: "1654971003",
-  appId: "1:1654971003:web:5e1b12e7f4ac2a4540a0de"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-window.auth = auth;
-window.db = db;
-
-const provider = new GoogleAuthProvider();
-
 // LOGIN GOOGLE
 window.loginGoogle = async () => {
   try {
