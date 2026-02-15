@@ -807,21 +807,18 @@
     const PREMIUM_CHECKOUT_URL = "https://mpago.la/2BRjpaP";
     function openCheckout(){ window.open(PREMIUM_CHECKOUT_URL, "_blank"); }
 
-   // Import the functions you need from the SDKs you need
-   import { initializeApp } from "firebase/app";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAc2hFDkeW9mZVmJ_3Lort0rUQFWabu6tQ",
-  authDomain: "checkpratoapp-e60a8.firebaseapp.com",
-  projectId: "checkpratoapp-e60a8",
-  storageBucket: "checkpratoapp-e60a8.firebasestorage.app",
-  messagingSenderId: "329070523974",
-  appId: "1:329070523974:web:c4fbffff9e2c7660413c47"
-};
-
+    // ---------- FIREBASE (CDN) - INÍCIO SEGURO ----------
+    // ✅ COLE AQUI SEU firebaseConfig (APENAS AQUI!)
+    // Exemplo (troque pelos seus):
+    const FIREBASE_CONFIG = {
+      apiKey: "COLE_AQUI",
+      authDomain: "COLE_AQUI",
+      projectId: "COLE_AQUI",
+      storageBucket: "COLE_AQUI",
+      messagingSenderId: "COLE_AQUI",
+      appId: "COLE_AQUI"
+    };
+    
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
