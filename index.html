@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Confira o Prato Elite</title>
+  <title>CheckPrato • Elite</title>
 
   <meta name="theme-color" content="#0a1320"/>
   <link rel="manifest" href="./manifest.json">
@@ -15,6 +15,7 @@
       --bg:#07121f;
       --bg2:#0b2033;
       --card:rgba(255,255,255,.04);
+      --card2:rgba(255,255,255,.06);
       --stroke:rgba(255,255,255,.08);
       --txt:#eaf2ff;
       --muted:rgba(234,242,255,.72);
@@ -23,8 +24,14 @@
       --orange:#f6b23a;
       --shadow:0 20px 60px rgba(0,0,0,.45);
       --r:22px;
-      --max:540px;
+      --max:560px;
+
+      --glass: rgba(255,255,255,.06);
+      --glass2: rgba(255,255,255,.03);
+      --stroke3d: rgba(255,255,255,.10);
+      --shadow3d: 0 24px 70px rgba(0,0,0,.55);
     }
+
     *{ box-sizing:border-box; }
     html, body{
       height:100%;
@@ -35,11 +42,21 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       overflow-x:hidden;
     }
-    body{ padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
+    body{
+      padding-bottom: calc(92px + env(safe-area-inset-bottom));
+    }
+    a{ color: var(--green); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
 
-    .wrap{ max-width: var(--max); margin:0 auto; padding:16px 14px 24px; }
+    .wrap{ max-width: var(--max); margin: 0 auto; padding: 16px 14px 24px; }
 
-    .topbar{ display:flex; align-items:center; gap:12px; margin-top:6px; margin-bottom: 14px; }
+    .topbar{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-top:6px;
+      margin-bottom: 14px;
+    }
     .logo{
       width:44px;height:44px;border-radius:14px;
       background: linear-gradient(135deg, rgba(33,230,182,.35), rgba(33,230,182,.05));
@@ -51,8 +68,11 @@
       flex:0 0 auto;
       overflow:hidden;
     }
-    .logo img{width:100%;height:100%;object-fit:cover;display:block}
-    .brand{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 auto;}
+    .brand{
+      display:flex;flex-direction:column;gap:2px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
     .brand small{color:var(--muted); letter-spacing:.08em; font-weight:900}
     .brand b{font-size:18px}
 
@@ -63,8 +83,8 @@
       border:1px solid var(--stroke);
       color:var(--muted);
       font-weight:800;
-      flex:0 0 auto;
       white-space:nowrap;
+      flex:0 0 auto;
     }
     .pill .dot{
       width:10px;height:10px;border-radius:99px;background:var(--green);
@@ -87,6 +107,7 @@
       padding: 16px;
       box-shadow: var(--shadow);
     }
+
     .hint{ color: var(--muted); font-weight: 650; line-height: 1.35; }
     .muted{ opacity:.85; }
 
@@ -156,10 +177,14 @@
       box-shadow: 0 18px 45px rgba(246,178,58,.18);
     }
 
-    .status{ margin-top: 10px; font-weight: 800; color: rgba(234,242,255,.86); }
+    .status{
+      margin-top: 10px;
+      font-weight: 800;
+      color: rgba(234,242,255,.86);
+    }
 
-    /* chips esportes */
-    .chips{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 10px; }
+    /* chips */
+    .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;}
     .chip{
       padding: 10px 12px;
       border-radius: 999px;
@@ -177,19 +202,19 @@
       box-shadow: 0 0 0 6px rgba(33,230,182,.08);
     }
 
-    /* telas */
+    /* screens */
     .screen{
       display:none;
       margin-top: 8px;
-      width:100%;
+      width: 100%;
       background: var(--bg);
       padding-bottom: calc(140px + env(safe-area-inset-bottom));
     }
     .screen.active{ display:block; }
 
-    /* nav fixo */
+    /* nav */
     .nav{
-      position:fixed;
+      position: fixed;
       left:0; right:0; bottom:0;
       padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
       background: #07121f;
@@ -205,7 +230,7 @@
       padding: 6px 6px;
       scrollbar-width: none;
     }
-    .navInner::-webkit-scrollbar{display:none}
+    .navInner::-webkit-scrollbar{ display:none; }
     .navBtn{
       flex:0 0 auto;
       border:1px solid rgba(255,255,255,.08);
@@ -225,11 +250,31 @@
       box-shadow: 0 0 0 6px rgba(33,230,182,.08);
     }
 
-    /* cards dieta */
+    /* plate */
+    .plateBox{margin-top:12px;}
+    .platePreview{
+      width:100%;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.14);
+      overflow:hidden;
+    }
+    .platePreview img{ width:100%; display:block; }
+    .miniRow{ display:flex; gap:10px; flex-wrap:wrap }
+    .miniBtn{
+      flex:1 1 160px;
+      padding:14px 14px;
+      border-radius:18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      color: var(--txt);
+      font-weight: 900;
+      cursor:pointer;
+    }
+
+    /* Diet cards */
     .meal{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
+      display:flex; justify-content:space-between; gap:12px;
       padding: 16px;
       border-radius: 22px;
       border: 1px solid rgba(255,255,255,.08);
@@ -257,7 +302,7 @@
       text-align:center;
     }
 
-    /* treino */
+    /* Treino */
     .dayCard{
       margin-top: 12px;
       padding: 14px;
@@ -293,50 +338,48 @@
       min-width: 110px;
     }
 
-    /* loja/parceiros */
-    .shopGrid{display:flex; flex-direction:column; gap:12px; margin-top: 12px}
-    .shopItem{
-      padding: 16px;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-    }
-    .shopItem h3{margin:0 0 6px; font-weight: 1000}
-
+    /* Parceiros */
     .partnerList{display:flex; flex-direction:column; gap:12px; margin-top:12px}
     .partnerRow{
       display:flex; align-items:center; justify-content:space-between; gap:12px;
-      padding:14px;
-      border-radius:18px;
+      padding:14px; border-radius:18px;
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255,255,255,0.06);
     }
     .partnerName{display:flex; flex-direction:column; gap:4px}
     .partnerName b{font-weight: 1000}
 
-    /* prato */
-    .plateBox{margin-top: 12px}
-    .platePreview{
-      width: 100%;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.14);
-      overflow:hidden;
+    /* Modal */
+    .modalBack{
+      display:none;
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      z-index: 2000;
+      padding: 20px;
+      overflow:auto;
     }
-    .platePreview img{width:100%; display:block}
-
-    .miniRow{display:flex; gap:10px; flex-wrap:wrap}
-    .miniBtn{
-      flex: 1 1 160px;
-      padding: 14px 14px;
-      border-radius: 18px;
+    .modal{
+      max-width: 560px;
+      margin: 40px auto;
+      background: #0b1726;
       border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
+      border-radius: 18px;
+      box-shadow: 0 25px 80px rgba(0,0,0,.55);
+      padding: 16px;
+    }
+    .modal h3{ margin: 0 0 10px; }
+    .modal .closeRow{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .xBtn{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
       color: var(--txt);
+      border-radius: 12px;
+      padding: 8px 10px;
       font-weight: 900;
-      cursor: pointer;
+      cursor:pointer;
     }
 
+    /* botão topo */
     #btnTop{
       position:fixed;
       bottom:110px;
@@ -354,70 +397,253 @@
       z-index:999;
       cursor:pointer;
     }
-
     .hidden{ display:none !important; }
 
-    /* Modal Auth */
-    .modalBack{
-      display:none;
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.55);
-      z-index: 3000;
-      padding: 18px;
-      overflow:auto;
+    /* ===== DASHBOARD 3D REAL (UI) ===== */
+    .pro3dWrap{ perspective: 1200px; }
+    .pro3dCard{
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border: 1px solid var(--stroke3d);
+      border-radius: 26px;
+      box-shadow: var(--shadow3d);
+      transform: rotateX(7deg) rotateY(-6deg);
+      transform-style: preserve-3d;
+      overflow:hidden;
+      position: relative;
     }
-    .modal{
-      max-width: 560px;
-      margin: 32px auto;
-      background: #0b1726;
+    .pro3dCard:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(600px 260px at 20% 10%, rgba(33,230,182,.18), transparent 60%),
+        radial-gradient(520px 260px at 80% 30%, rgba(246,178,58,.14), transparent 60%),
+        radial-gradient(700px 340px at 40% 100%, rgba(33,230,182,.10), transparent 62%);
+      pointer-events:none;
+    }
+    .proTop{ display:flex; align-items:center; justify-content:space-between; padding:16px 16px 0; position: relative; z-index: 1; }
+    .proTitle{
+      font-size: 26px;
+      font-weight: 1000;
+      letter-spacing: .02em;
+      margin: 10px 16px 12px;
+      color: rgba(234,242,255,.95);
+      position: relative; z-index: 1;
+    }
+    .proGrid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 12px;
+      padding: 0 16px 16px;
+      position: relative; z-index: 1;
+    }
+    .proPanel{
+      border-radius: 22px;
       border: 1px solid rgba(255,255,255,.10);
-      border-radius: 18px;
-      box-shadow: 0 25px 80px rgba(0,0,0,.55);
-      padding: 16px;
+      background: rgba(0,0,0,.18);
+      backdrop-filter: blur(10px);
+      padding: 14px;
+      transform: translateZ(18px);
     }
-    .modalTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
-    .xBtn{
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: var(--txt);
-      border-radius: 12px;
-      padding: 8px 10px;
-      font-weight: 900;
-      cursor:pointer;
+    .proMuscle{
+      position: relative;
+      min-height: 240px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+    .proMuscle svg{
+      width: 100%;
+      max-width: 260px;
+      opacity: .9;
+      filter: drop-shadow(0 18px 40px rgba(0,0,0,.55));
+    }
+    .proLabels{ margin-top: 10px; display:grid; gap: 8px; }
+    .proTag{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+    }
+    .proTag b{ color: rgba(234,242,255,.92); font-weight: 950; }
+    .proTag small{ color: rgba(234,242,255,.62); font-weight: 800; }
+
+    .proRingBox{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap: 10px; min-height: 240px; }
+    .ring{ width: 180px; height: 180px; position: relative; transform: translateZ(26px); }
+    .ring svg{ width: 100%; height: 100%; transform: rotate(-90deg); filter: drop-shadow(0 20px 40px rgba(0,0,0,.55)); }
+    .ringCenter{
+      position:absolute; inset: 0;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      text-align:center; gap: 2px;
+    }
+    .ringPct{ font-size: 44px; font-weight: 1000; color: #ffd38a; text-shadow: 0 10px 30px rgba(0,0,0,.45); }
+    .ringSub{ color: rgba(234,242,255,.72); font-weight: 900; }
+
+    .proStats{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      padding: 0 16px 16px;
+      position: relative; z-index: 1;
+    }
+    .stat3d{
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.16);
+      padding: 12px;
+      transform: translateZ(14px);
+    }
+    .stat3d .num{ font-size: 24px; font-weight: 1000; color: rgba(234,242,255,.95); }
+    .stat3d .lab{
+      margin-top: 2px;
+      color: rgba(234,242,255,.65);
+      font-weight: 850;
+      font-size: 12px;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+    }
+    .proHint{ padding: 0 16px 16px; color: rgba(234,242,255,.65); font-weight: 800; position: relative; z-index: 1; }
+
+    @media (min-width: 900px){
+      .wrap{ max-width: 900px; }
+      .proGrid{ grid-template-columns: 1fr 1fr; }
+      .ring{ width: 210px; height: 210px; }
+      .pro3dCard{ transform: rotateX(6deg) rotateY(-4deg); }
     }
   </style>
-
-  <!-- Firebase CDN (compat) -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 
 <body>
   <div class="wrap">
     <div class="topbar">
-      <div class="logo" id="logoBox">E</div>
+      <div class="logo">E</div>
       <div class="brand">
         <small>ELITE TERMINAL</small>
-        <b>Confira o Prato Elite</b>
+        <b>CheckPrato • Elite</b>
       </div>
       <div class="pill"><span class="dot"></span><span id="authTxt">Modo: Local</span></div>
     </div>
 
-    <!-- WELCOME -->
+    <!-- BOAS VINDAS -->
     <section id="viewWelcome" class="screen active">
       <div class="h1">Bem-vindo 👋</div>
       <div class="card">
         <div class="hint">
-          Monte seu perfil, gere dieta e treino, e analise seu prato.
+          Crie seu perfil, acompanhe progresso, dieta, treino e analise seu prato.
           <br><br>
-          <b>Recomendado:</b> entrar com Google/Email pra salvar na nuvem (Firebase).
+          <b>Dica:</b> você pode usar como convidado (sem Firebase) e tudo funciona.
         </div>
+        <div class="row" style="margin-top:14px">
+          <div class="col">
+            <button class="btn" type="button" onclick="openAuthModal()">Entrar / Criar conta</button>
+          </div>
+          <div class="col">
+            <button class="btnSecondary" type="button" onclick="enterGuest()">Entrar como convidado</button>
+          </div>
+        </div>
+        <div id="welcomeStatus" class="status" style="margin-top:12px"></div>
+      </div>
+    </section>
 
-        <button class="btn" type="button" onclick="openAuthModal()">Entrar / Criar conta</button>
-        <button class="btnSecondary" type="button" onclick="enterGuest()">Entrar como convidado</button>
+    <!-- DASHBOARD 3D -->
+    <section id="viewProgresso" class="screen">
+      <div class="h1">PROGRESSO</div>
 
-        <div id="authWarn" class="status" style="display:none"></div>
+      <div class="pro3dWrap">
+        <div class="pro3dCard">
+
+          <div class="proTop">
+            <div class="pill"><span class="dot"></span><span id="proMode">Local</span></div>
+            <div class="pill"><span class="dot"></span><span id="proWeek">Semana</span></div>
+          </div>
+
+          <div class="proTitle">Meta da Semana</div>
+
+          <div class="proGrid">
+            <div class="proPanel">
+              <div class="label" style="margin-top:0">Músculos foco</div>
+              <div class="proMuscle">
+                <svg viewBox="0 0 220 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="g" x1="30" y1="30" x2="190" y2="290">
+                      <stop stop-color="rgba(33,230,182,.55)"/>
+                      <stop offset="1" stop-color="rgba(33,230,182,.08)"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M110 16c22 0 40 18 40 40 0 10-4 18-10 26 18 14 28 34 28 58 0 12-2 22-8 32 10 14 16 30 16 50 0 34-14 64-36 84-9 8-18 13-30 13s-21-5-30-13c-22-20-36-50-36-84 0-20 6-36 16-50-6-10-8-20-8-32 0-24 10-44 28-58-6-8-10-16-10-26 0-22 18-40 40-40Z"
+                    stroke="url(#g)" stroke-width="4" fill="rgba(0,0,0,.10)"/>
+                  <path d="M52 150h116" stroke="rgba(255,255,255,.10)" stroke-width="2"/>
+                  <path d="M60 210h100" stroke="rgba(255,255,255,.10)" stroke-width="2"/>
+                  <circle cx="110" cy="92" r="18" stroke="rgba(33,230,182,.55)" stroke-width="3"/>
+                </svg>
+              </div>
+
+              <div class="proLabels">
+                <div class="proTag"><b>Tríceps</b><small id="mTri">Foco</small></div>
+                <div class="proTag"><b>Peito</b><small id="mPei">Foco</small></div>
+                <div class="proTag"><b>Abdômen</b><small id="mAbd">Foco</small></div>
+                <div class="proTag"><b>Pernas</b><small id="mPer">Foco</small></div>
+              </div>
+            </div>
+
+            <div class="proPanel">
+              <div class="label" style="margin-top:0">Progresso</div>
+
+              <div class="proRingBox">
+                <div class="ring">
+                  <svg viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="48" stroke="rgba(255,255,255,.10)" stroke-width="10" fill="none"/>
+                    <circle id="ringProg" cx="60" cy="60" r="48"
+                      stroke="rgba(255,211,138,.95)" stroke-linecap="round"
+                      stroke-width="10" fill="none"
+                      stroke-dasharray="301.59" stroke-dashoffset="301.59"/>
+                  </svg>
+                  <div class="ringCenter">
+                    <div class="ringPct" id="proPct">0%</div>
+                    <div class="ringSub"><span id="proDone">0</span> / <span id="proGoal">7</span> dias</div>
+                  </div>
+                </div>
+
+                <div class="proHint">
+                  Evolua <b>1% por dia</b>. Consistência vence.
+                </div>
+
+                <div class="miniRow" style="margin-top:4px">
+                  <button class="miniBtn" type="button" onclick="addTreinoDone()">+1 dia treino</button>
+                  <button class="miniBtn" type="button" onclick="resetProgresso()">Reset semana</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="proStats">
+            <div class="stat3d">
+              <div class="num" id="proKcal">0</div>
+              <div class="lab">calorias</div>
+              <button class="btnSecondary" type="button" onclick="addKcal()">+500</button>
+            </div>
+            <div class="stat3d">
+              <div class="num" id="proKm">0</div>
+              <div class="lab">km</div>
+              <button class="btnSecondary" type="button" onclick="addKm()">+2 km</button>
+            </div>
+            <div class="stat3d">
+              <div class="num"><span id="proDays">0</span>/<span id="proDaysGoal">7</span></div>
+              <div class="lab">dias treino</div>
+              <button class="btnSecondary" type="button" onclick="setGoalDaysPrompt()">Meta</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="label">Resumo</div>
+        <div class="hint" id="proResumo">—</div>
       </div>
     </section>
 
@@ -435,7 +661,7 @@
           <div style="flex:1">
             <button class="btnSecondary" type="button" onclick="pickAvatar()">Escolher foto</button>
             <input id="avatarFile" type="file" accept="image/*" style="display:none">
-            <div class="hint" style="margin-top:6px">No modo logado, salva no Firebase. Convidado: salva no aparelho.</div>
+            <div class="hint" style="margin-top:6px">Salva no aparelho (modo local).</div>
           </div>
         </div>
 
@@ -515,18 +741,21 @@
             <input id="termo" type="checkbox" style="width:22px; height:22px"/>
             Aceito o termo (conteúdo informativo)
           </label>
+          <div class="hint" style="margin-top:6px">As sugestões são informativas e não substituem profissional.</div>
         </div>
 
         <button class="btn" type="button" onclick="salvarCadastro()">SALVAR / ATUALIZAR</button>
         <button class="btnSecondary" type="button" onclick="limparCadastro()">LIMPAR</button>
-        <button class="btnSecondary" type="button" onclick="sair()">SAIR</button>
 
         <div id="outCadastro" class="status" style="display:none"></div>
       </div>
 
+      <!-- PRATO + IA DEMO -->
       <div class="card plateBox" style="margin-top:14px">
-        <div class="label">Análise do prato (demo)</div>
-        <div class="hint">Enviar foto → analisar → revisar/editar → confirmar (salva histórico).</div>
+        <div class="label">Análise do prato (IA DEMO)</div>
+        <div class="hint">
+          Envia foto → analisa → você confirma. Anti-repetição ligado.
+        </div>
 
         <div class="miniRow" style="margin-top:12px">
           <button class="miniBtn" type="button" id="btnCamera">Tirar foto</button>
@@ -540,26 +769,34 @@
           <img id="plateImg" alt="Prato"/>
         </div>
 
-        <button class="btnSecondary" type="button" onclick="analisarPrato()">Analisar (demo)</button>
+        <button class="btnSecondary" type="button" onclick="analisarPrato()">Analisar com IA</button>
         <div id="plateResult" class="status" style="display:none"></div>
 
         <div id="plateConfirmBox" style="display:none; margin-top:10px">
           <div class="label">Confirmação</div>
-          <div class="hint">Edite antes de confirmar:</div>
+          <div class="hint">A IA sugeriu isso. Se quiser, edite antes de confirmar:</div>
           <textarea id="plateEdit"></textarea>
-          <button class="btn" type="button" onclick="confirmarPrato()">Confirmar</button>
-          <button class="btnSecondary" type="button" onclick="refazerAnalise()">Refazer</button>
+          <button class="btn" type="button" onclick="confirmarPrato()">Confirmar que é isso</button>
+          <button class="btnSecondary" type="button" onclick="refazerAnalise()">Refazer análise</button>
         </div>
+
+        <div class="label" style="margin-top:14px">Histórico (local)</div>
+        <div class="hint" id="plateHistoryTxt">—</div>
       </div>
     </section>
 
     <!-- DIETA -->
     <section id="viewDieta" class="screen">
       <div class="h1">DIETA</div>
+
       <div class="card">
-        <div class="hint">Sugestões simples. Se não gostar, clique em <b>Refazer</b>.</div>
+        <div class="hint">
+          Dieta simples (demo). Se não gostar ou não tiver alimento, clique em <b>Refazer</b>.
+        </div>
+
         <button class="btn" type="button" onclick="gerarDieta()">GERAR DIETA</button>
-        <button class="btnSecondary" type="button" onclick="gerarDieta()">REFAZER / TROCAR</button>
+        <button class="btnSecondary" type="button" onclick="refazerDieta()">REFAZER / TROCAR</button>
+
         <div id="dietaBox"></div>
       </div>
     </section>
@@ -567,6 +804,7 @@
     <!-- TREINO -->
     <section id="viewTreino" class="screen">
       <div class="h1">TREINO</div>
+
       <div class="card">
         <div class="hint">Treino semanal. Cada exercício tem botão “YouTube”.</div>
 
@@ -599,39 +837,16 @@
       </div>
     </section>
 
-    <!-- LOJA -->
-    <section id="viewLoja" class="screen">
-      <div class="h1">LOJA</div>
-      <div class="card">
-        <div class="hint">Categorias do app. Clique em parceiros para abrir sites oficiais.</div>
-        <div class="shopGrid">
-          <div class="shopItem">
-            <h3>Suplementos</h3>
-            <p class="muted">Whey, creatina, vitaminas e pré-treinos.</p>
-            <button class="btnSecondary" type="button" onclick="switchView('parceiros')">Ver parceiros</button>
-          </div>
-          <div class="shopItem">
-            <h3>Roupas fitness</h3>
-            <p class="muted">Tênis, camisetas, shorts e roupas de treino.</p>
-            <button class="btnSecondary" type="button" onclick="switchView('parceiros')">Ver parceiros</button>
-          </div>
-          <div class="shopItem">
-            <h3>Equipamentos</h3>
-            <p class="muted">Acessórios: elásticos, corda, luvas, etc.</p>
-            <button class="btnSecondary" type="button" onclick="switchView('parceiros')">Ver parceiros</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- PARCEIROS -->
     <section id="viewParceiros" class="screen">
       <div class="h1">PARCEIROS</div>
+
       <div class="card">
-        <div class="hint">Sites oficiais (por enquanto). Depois você troca por links afiliados.</div>
+        <div class="hint">Sites oficiais (você troca pelos seus links depois).</div>
+
         <div class="partnerList">
           <div class="partnerRow">
-            <div class="partnerName"><b>Growth</b><div class="muted">Suplementos</div></div>
+            <div class="partnerName"><b>Growth Supplements</b><div class="muted">Whey, creatina e suplementos</div></div>
             <button class="btnSecondary" type="button" onclick="abrirLink('https://www.gsuplementos.com.br')">Abrir</button>
           </div>
           <div class="partnerRow">
@@ -639,19 +854,19 @@
             <button class="btnSecondary" type="button" onclick="abrirLink('https://www.maxtitanium.com.br')">Abrir</button>
           </div>
           <div class="partnerRow">
-            <div class="partnerName"><b>Nike</b><div class="muted">Roupas e tênis</div></div>
+            <div class="partnerName"><b>Nike</b><div class="muted">Tênis e roupas</div></div>
             <button class="btnSecondary" type="button" onclick="abrirLink('https://www.nike.com.br')">Abrir</button>
           </div>
           <div class="partnerRow">
-            <div class="partnerName"><b>Adidas</b><div class="muted">Performance</div></div>
+            <div class="partnerName"><b>Adidas</b><div class="muted">Performance e lifestyle</div></div>
             <button class="btnSecondary" type="button" onclick="abrirLink('https://www.adidas.com.br')">Abrir</button>
           </div>
           <div class="partnerRow">
-            <div class="partnerName"><b>Mercado Livre</b><div class="muted">Acessórios</div></div>
+            <div class="partnerName"><b>Mercado Livre</b><div class="muted">Acessórios e suplementos</div></div>
             <button class="btnSecondary" type="button" onclick="abrirLink('https://www.mercadolivre.com.br')">Abrir</button>
           </div>
           <div class="partnerRow">
-            <div class="partnerName"><b>Shopee</b><div class="muted">Produtos fitness</div></div>
+            <div class="partnerName"><b>Shopee</b><div class="muted">Produtos fitness acessíveis</div></div>
             <button class="btnSecondary" type="button" onclick="abrirLink('https://shopee.com.br')">Abrir</button>
           </div>
         </div>
@@ -661,52 +876,39 @@
     <!-- PREMIUM -->
     <section id="viewPremium" class="screen">
       <div class="h1">PREMIUM</div>
+
       <div class="card">
-        <div style="font-size:28px;font-weight:1000;color:var(--orange);margin:0 0 6px">ASSINATURA ELITE</div>
         <div class="hint">Pagamento abre no Mercado Pago.</div>
 
-        <div class="card" style="margin-top:12px;background:rgba(255,255,255,.03)">
+        <div class="card" style="margin-top:12px; background:rgba(255,255,255,.03)">
           <div class="label">Plano</div>
           <div style="font-weight:1000; font-size:18px">Elite Premium — R$ 29,90/mês</div>
-          <div class="muted" style="margin-top:8px">Benefícios: recursos avançados e novidades.</div>
+          <div class="muted" style="margin-top:8px">Benefícios: dietas ilimitadas, treinos completos, convites e parceiros.</div>
         </div>
 
-        <button class="btnOrange" type="button" onclick="openCheckout()">CONFIRMAR R$ 29,90/MÊS</button>
-      </div>
-    </section>
-
-    <!-- SAÚDE -->
-    <section id="viewSaude" class="screen">
-      <div class="h1">SAÚDE</div>
-      <div class="card">
-        <div class="hint">Conteúdo educativo. Não substitui médico.</div>
-        <div class="meal" style="margin-top:14px">
-          <div>
-            <div class="title">Anabolizantes (aviso)</div>
-            <p>Podem afetar coração, pressão, colesterol, fígado, humor e hormônios. Procure acompanhamento médico.</p>
-          </div>
-        </div>
-        <button class="btnSecondary" type="button" onclick="abrirLink('https://bvsms.saude.gov.br/')">Ler mais</button>
+        <button id="btnPremium" class="btnOrange" type="button" onclick="openCheckout()">CONFIRMAR R$ 29,90/MÊS</button>
+        <div class="hint" style="margin-top:10px">Ambiente seguro • SSL</div>
       </div>
     </section>
 
     <!-- CONVITES -->
     <section id="viewConvites" class="screen">
       <div class="h1">CONVITES</div>
+
       <div class="card">
         <div class="hint">
-          Ganhe <b>R$ 5</b> por cada pessoa que assinar usando seu link (demo).
-          Ao atingir <b>R$ 50</b>, pode solicitar saque (demo).
+          Convide amigos e ganhe: <b>R$ 5</b> por cada pessoa que assinar usando seu link.
+          Ao atingir <b>R$ 50</b>, você pode solicitar saque (demo) e ganha <b>1 mês grátis</b>.
         </div>
 
-        <div class="card" style="margin-top:12px;background:rgba(255,255,255,.03)">
+        <div style="margin-top:12px" class="card">
           <div class="label">Seu código</div>
           <div id="myCode" style="font-weight:1000; font-size:18px">—</div>
 
           <div class="label" style="margin-top:12px">Seu link</div>
           <div id="myLink" class="muted" style="word-break:break-all">—</div>
 
-          <div class="label" style="margin-top:12px">Saldo</div>
+          <div class="label" style="margin-top:12px">Saldo (demo)</div>
           <div id="balTxt" style="font-weight:1000; font-size:18px">R$ 0,00</div>
           <div id="progressTxt" class="muted" style="margin-top:6px"></div>
 
@@ -715,112 +917,175 @@
             <button class="miniBtn" type="button" onclick="shareInvite()">Compartilhar</button>
           </div>
 
-          <button id="btnSaque" class="btnSecondary" type="button" style="margin-top:10px" onclick="solicitarSaque()" disabled>
-            Solicitar saque (mín. R$ 50)
-          </button>
-
           <div class="miniRow" style="margin-top:10px">
             <button class="miniBtn" type="button" onclick="setBalance(getBalance()+5)">+R$5 (teste)</button>
             <button class="miniBtn" type="button" onclick="setBalance(0)">Zerar (teste)</button>
           </div>
+
+          <button id="btnSaque" class="btnSecondary" type="button" onclick="solicitarSaque()">Solicitar saque</button>
+          <div id="saqueMsg" class="status" style="display:none"></div>
         </div>
       </div>
     </section>
 
+    <!-- SAÚDE -->
+    <section id="viewSaude" class="screen">
+      <div class="h1">SAÚDE</div>
+
+      <div class="card">
+        <div class="hint">
+          Conteúdo educativo. Não substitui médico. Em caso de sintomas ou dúvidas, procure um profissional.
+        </div>
+
+        <div class="meal" style="margin-top:14px">
+          <div>
+            <div class="title">Anabolizantes: atenção</div>
+            <p>Podem causar efeitos no coração, pressão, colesterol, fígado, humor e hormônios. Não use sem acompanhamento.</p>
+          </div>
+        </div>
+
+        <div class="meal">
+          <div>
+            <div class="title">Sinais de alerta</div>
+            <p>Dor no peito, falta de ar, palpitação, desmaio, inchaço, pele/olhos amarelados, urina escura: pare e procure atendimento.</p>
+          </div>
+        </div>
+
+        <div class="meal">
+          <div>
+            <div class="title">Exames</div>
+            <p>Pressão, hemograma, lipidograma, glicemia, TGO/TGP, creatinina, testosterona, estradiol. Com médico.</p>
+          </div>
+        </div>
+
+        <div class="meal">
+          <div>
+            <div class="title">Cuidados gerais</div>
+            <p>Sono 7–9h, hidratação, dieta com fibras, evitar álcool, treino com progressão e descanso.</p>
+          </div>
+        </div>
+
+        <button class="btnSecondary" type="button" onclick="abrirLink('https://bvsms.saude.gov.br/')">Ler mais (Fontes)</button>
+      </div>
+    </section>
+
+    <!-- PERFIL -->
+    <section id="viewPerfil" class="screen">
+      <div class="h1">PERFIL</div>
+
+      <div class="card">
+        <div class="hint">Status da conta e dados locais.</div>
+        <div id="perfilBox" class="status" style="margin-top:12px">—</div>
+
+        <button class="btnSecondary" type="button" onclick="logoutFirebase()">Sair (se logado)</button>
+        <button class="btnSecondary" type="button" onclick="sair()">Voltar ao início</button>
+      </div>
+    </section>
   </div>
 
-  <!-- NAV -->
+  <!-- NAV (UMA SÓ) -->
   <div class="nav" id="navBar">
     <div class="navInner">
-      <button class="navBtn active" data-view="welcome" type="button">INÍCIO</button>
-      <button class="navBtn" data-view="cadastro" type="button">CADASTRO</button>
-      <button class="navBtn" data-view="dieta" type="button">DIETA</button>
-      <button class="navBtn" data-view="treino" type="button">TREINO</button>
-      <button class="navBtn" data-view="loja" type="button">LOJA</button>
-      <button class="navBtn" data-view="parceiros" type="button">PARCEIROS</button>
-      <button class="navBtn" data-view="premium" type="button">PREMIUM</button>
-      <button class="navBtn" data-view="saude" type="button">SAÚDE</button>
-      <button class="navBtn" data-view="convites" type="button">CONVITES</button>
+      <button class="navBtn" data-view="viewProgresso" type="button">PROGRESSO</button>
+      <button class="navBtn active" data-view="viewCadastro" type="button">CADASTRO</button>
+      <button class="navBtn" data-view="viewDieta" type="button">DIETA</button>
+      <button class="navBtn" data-view="viewTreino" type="button">TREINO</button>
+      <button class="navBtn" data-view="viewParceiros" type="button">PARCEIROS</button>
+      <button class="navBtn" data-view="viewPremium" type="button">PREMIUM</button>
+      <button class="navBtn" data-view="viewConvites" type="button">CONVITES</button>
+      <button class="navBtn" data-view="viewSaude" type="button">SAÚDE</button>
+      <button class="navBtn" data-view="viewPerfil" type="button">PERFIL</button>
     </div>
   </div>
 
   <button id="btnTop" onclick="scrollToTop()">↑</button>
 
-  <!-- AUTH MODAL -->
-  <div class="modalBack" id="authModal">
+  <!-- MODAL LOGIN (Firebase opcional) -->
+  <div id="authModalBack" class="modalBack">
     <div class="modal">
-      <div class="modalTop">
-        <b style="font-size:18px">Entrar / Criar conta</b>
-        <button class="xBtn" onclick="closeAuthModal()">X</button>
+      <div class="closeRow">
+        <h3>Entrar / Criar conta</h3>
+        <button class="xBtn" type="button" onclick="closeAuthModal()">X</button>
       </div>
 
-      <div class="hint" style="margin-top:10px">
-        Se o Google/Email não funcionar, revise: <b>Authentication → Sign-in method</b> e <b>Authorized domains</b>.
+      <div class="hint" style="margin-top:8px">
+        <b>Firebase é opcional.</b> Se não configurar agora, use <b>Convidado</b> e tudo funciona local.
       </div>
 
       <button class="btn" type="button" onclick="loginGoogle()">Entrar com Google</button>
 
       <div class="label">Email</div>
-      <input id="authEmail" placeholder="seuemail@gmail.com" inputmode="email"/>
+      <input id="authEmail" inputmode="email" placeholder="email@exemplo.com">
+
       <div class="label">Senha</div>
-      <input id="authPass" placeholder="Senha" type="password"/>
+      <input id="authPass" type="password" placeholder="********">
 
-      <button class="btnSecondary" type="button" onclick="loginEmail()">Entrar com Email</button>
-      <button class="btnSecondary" type="button" onclick="criarContaEmail()">Criar conta Email</button>
+      <div class="miniRow" style="margin-top:12px">
+        <button class="miniBtn" type="button" onclick="loginEmail()">Entrar</button>
+        <button class="miniBtn" type="button" onclick="criarContaEmail()">Criar conta</button>
+      </div>
 
+      <button class="btnSecondary" type="button" onclick="enterGuest()">Entrar como convidado</button>
       <div id="authMsg" class="status" style="display:none"></div>
-
-      <button class="btnSecondary" type="button" onclick="logoutFirebase()" style="margin-top:14px">Sair do login</button>
     </div>
   </div>
 
+  <!-- Firebase CDN (compat) - NÃO quebra se você não configurar -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
   <script>
-    // PWA (não quebra se não existir)
-    if ("serviceWorker" in navigator) {
+    /***********************
+     * 0) PWA (não quebra)
+     ***********************/
+    if ("serviceWorker" in navigator){
       navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
     }
 
-    // Helpers
-    const $ = (id)=> document.getElementById(id);
+    /***********************
+     * 1) Helpers
+     ***********************/
+    const $ = (id)=>document.getElementById(id);
+    const fmtBRL = (n)=> new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(n||0));
     function abrirLink(url){ window.open(url, "_blank"); }
-    function openYT(query){
-      const q = encodeURIComponent(query);
-      window.open(`https://www.youtube.com/results?search_query=${q}`, "_blank");
-    }
+    window.abrirLink = abrirLink;
+
     function escapeHtml(s){
       return String(s).replace(/[&<>"]/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m]));
     }
 
-    // Keys
-    const KEY_PROFILE = "checkprato_profile_v3";
-    const KEY_AVATAR  = "checkprato_avatar_v3";
-    const KEY_PLATE   = "checkprato_plate_v3";
-    const KEY_PLATE_HASH = "checkprato_plate_hash_v3";
-    const KEY_PLATE_HISTORY = "checkprato_plate_history_v1";
-    const KEY_DIETA   = "checkprato_dieta_v3";
-    const KEY_TREINO  = "checkprato_treino_v3";
-    const KEY_GUEST   = "checkprato_guest_v1";
-    const KEY_INV_CODE = "checkprato_inv_code_v1";
-    const KEY_BAL = "checkprato_inv_balance_v1";
+    /***********************
+     * 2) Storage Keys
+     ***********************/
+    const KEY_PROFILE = "cp_profile_v1";
+    const KEY_AVATAR  = "cp_avatar_v1";
+    const KEY_GUEST   = "cp_guest_v1";
+    const KEY_PLATE_LAST = "cp_plate_last_v1";
+    const KEY_PLATE_HASH = "cp_plate_hash_v1";
+    const KEY_PLATE_HISTORY = "cp_plate_history_v1";
+    const KEY_DIETA   = "cp_dieta_v1";
+    const KEY_TREINO  = "cp_treino_v1";
 
-    // Premium
-    const PREMIUM_CHECKOUT_URL = "https://mpago.la/2BRjpaP";
-    function openCheckout(){ window.open(PREMIUM_CHECKOUT_URL, "_blank"); }
+    const KEY_INV_CODE = "cp_inv_code_v1";
+    const KEY_BAL = "cp_inv_balance_v1";
 
-    // ---------- FIREBASE (CDN) - INÍCIO SEGURO ----------
-    // ✅ COLE AQUI SEU firebaseConfig (APENAS AQUI!)
-    // Exemplo (troque pelos seus):
+    const KEY_DASH = "cp_dash_v1"; // kcal, km, done, goal, weekStart
+
+    /***********************
+     * 3) Firebase (OPCIONAL)
+     * Cole seu config aqui se quiser login e nuvem.
+     * Se deixar vazio, app funciona 100% local.
+     ***********************/
     const FIREBASE_CONFIG = {
-      apiKey: "COLE_AQUI",
-      authDomain: "COLE_AQUI",
-      projectId: "COLE_AQUI",
-      storageBucket: "COLE_AQUI",
-      messagingSenderId: "COLE_AQUI",
-      appId: "COLE_AQUI"
+      // Cole aqui seu firebaseConfig:
+      // apiKey: "....",
+      // authDomain: "....firebaseapp.com",
+      // projectId: "....",
+      // storageBucket: "....appspot.com",
+      // messagingSenderId: "....",
+      // appId: "...."
     };
-    
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
 
     let firebaseEnabled = false;
     let auth = null;
@@ -830,218 +1095,242 @@ const app = initializeApp(firebaseConfig);
     function setAuthBadge(txt){
       const el = $("authTxt");
       if(el) el.textContent = txt;
-    }
-
-    function showAuthMsg(msg){
-      const el = $("authMsg");
-      if(!el) return;
-      el.style.display = "block";
-      el.textContent = msg;
+      const mode = $("proMode");
+      if(mode) mode.textContent = txt.includes("Logado") ? "Logado" : "Local";
     }
 
     function initFirebaseIfPossible(){
       try{
-        const hasKeys = FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId && FIREBASE_CONFIG.authDomain;
-        if(!hasKeys){
-          firebaseEnabled = false;
-          setAuthBadge("Modo: Local");
-          return;
-        }
+        const hasKeys = FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId;
+        if(!hasKeys) return;
 
-        // Evita erro de "already exists"
-        if(!firebase.apps.length){
-          firebase.initializeApp(FIREBASE_CONFIG);
-        }
-
+        firebase.initializeApp(FIREBASE_CONFIG);
         auth = firebase.auth();
         db = firebase.firestore();
         firebaseEnabled = true;
-
-        // Redirect result (mobile geralmente usa redirect melhor que popup)
-        auth.getRedirectResult().catch(()=>{});
 
         auth.onAuthStateChanged(async (user)=>{
           currentUser = user || null;
           if(currentUser){
             localStorage.removeItem(KEY_GUEST);
-            setAuthBadge(`Logado: ${currentUser.email || "Google"}`);
-            await syncFromCloud(); // puxa nuvem
-            enterApp();
+            setAuthBadge(`Logado`);
+            closeAuthModal();
+            showNav(true);
+            showOnly("viewCadastro");
+            // opcional: sync cloud
+            await syncFromCloud();
+            refreshAllUI();
           }else{
-            // se não estiver convidado, volta pro welcome
             if(!localStorage.getItem(KEY_GUEST)){
               setAuthBadge("Modo: Local");
+              showNav(false);
               showOnly("viewWelcome");
             }
           }
         });
-
       }catch(e){
-        firebaseEnabled = false;
         console.log("Firebase init error:", e);
-        setAuthBadge("Modo: Local");
-        const warn = $("authWarn");
-        if(warn){
-          warn.style.display="block";
-          warn.textContent = "⚠️ Firebase não inicializou. O app continua no modo local.";
-        }
       }
-    }
-
-    async function syncToCloud(){
-      if(!firebaseEnabled || !db || !currentUser) return;
-      const uid = currentUser.uid;
-
-      const profile = safeJsonParse(localStorage.getItem(KEY_PROFILE));
-      const avatar = localStorage.getItem(KEY_AVATAR) || null;
-      const dieta  = safeJsonParse(localStorage.getItem(KEY_DIETA));
-      const treino = safeJsonParse(localStorage.getItem(KEY_TREINO));
-      const plates = safeJsonParse(localStorage.getItem(KEY_PLATE_HISTORY)) || [];
-
-      // evita estourar firestore com avatar gigante
-      const avatarOk = avatar && avatar.length < 250000 ? avatar : null;
-
-      await db.collection("users").doc(uid).set({
-        profile: profile || null,
-        avatar: avatarOk,
-        dieta: dieta || null,
-        treino: treino || null,
-        plates: plates || [],
-        updatedAt: Date.now()
-      }, { merge:true });
     }
 
     async function syncFromCloud(){
       if(!firebaseEnabled || !db || !currentUser) return;
-      const uid = currentUser.uid;
-
-      const snap = await db.collection("users").doc(uid).get();
-      if(!snap.exists) return;
-
-      const data = snap.data() || {};
-      if(data.profile) localStorage.setItem(KEY_PROFILE, JSON.stringify(data.profile));
-      if(data.avatar) localStorage.setItem(KEY_AVATAR, data.avatar);
-      if(data.dieta) localStorage.setItem(KEY_DIETA, JSON.stringify(data.dieta));
-      if(data.treino) localStorage.setItem(KEY_TREINO, JSON.stringify(data.treino));
-      if(Array.isArray(data.plates)) localStorage.setItem(KEY_PLATE_HISTORY, JSON.stringify(data.plates));
-
-      // reaplica UI
-      aplicarCadastroNaTela();
-      loadAvatar();
-      renderDieta(carregarDieta());
-      renderTreino(carregarTreino());
-    }
-
-    function safeJsonParse(s){
-      try{ return JSON.parse(s || "null"); }catch{ return null; }
-    }
-
-    // Auth UI
-    function openAuthModal(){
-      if(!firebaseEnabled){
-        const warn = $("authWarn");
-        if(warn){
-          warn.style.display="block";
-          warn.textContent = "⚠️ Firebase ainda não está configurado (cole o firebaseConfig e habilite Google/Email no console). Use Convidado por enquanto.";
+      try{
+        const ref = db.collection("users").doc(currentUser.uid);
+        const snap = await ref.get();
+        if(snap.exists){
+          const data = snap.data() || {};
+          // puxa para local (se existir)
+          if(data.profile) localStorage.setItem(KEY_PROFILE, JSON.stringify(data.profile));
+          if(data.avatar) localStorage.setItem(KEY_AVATAR, String(data.avatar));
+          if(data.dash) localStorage.setItem(KEY_DASH, JSON.stringify(data.dash));
+          if(data.dieta) localStorage.setItem(KEY_DIETA, JSON.stringify(data.dieta));
+          if(data.treino) localStorage.setItem(KEY_TREINO, JSON.stringify(data.treino));
+        }else{
+          // cria doc
+          await ref.set({ createdAt: Date.now() }, { merge:true });
         }
-        // Mesmo assim abre modal pra você ver campos
+      }catch(e){
+        console.log("syncFromCloud error:", e);
       }
-      $("authModal").style.display = "block";
-      showAuthMsg("");
-      $("authMsg").style.display = "none";
     }
-    function closeAuthModal(){ $("authModal").style.display = "none"; }
+
+    async function pushToCloud(){
+      if(!firebaseEnabled || !db || !currentUser) return;
+      try{
+        const ref = db.collection("users").doc(currentUser.uid);
+        const payload = {
+          updatedAt: Date.now(),
+          profile: safeJSON(KEY_PROFILE),
+          avatar: localStorage.getItem(KEY_AVATAR) || "",
+          dash: safeJSON(KEY_DASH),
+          dieta: safeJSON(KEY_DIETA),
+          treino: safeJSON(KEY_TREINO),
+        };
+        await ref.set(payload, { merge:true });
+      }catch(e){
+        console.log("pushToCloud error:", e);
+      }
+    }
+
+    /***********************
+     * 4) Auth UI
+     ***********************/
+    function openAuthModal(){
+      $("authModalBack").style.display = "block";
+      show($("authMsg"), false);
+    }
+    window.openAuthModal = openAuthModal;
+
+    function closeAuthModal(){
+      $("authModalBack").style.display = "none";
+    }
+    window.closeAuthModal = closeAuthModal;
+
+    function setAuthMsg(txt){
+      const el = $("authMsg");
+      if(!el) return;
+      el.textContent = txt;
+      el.style.display = "block";
+    }
+
+    function enterGuest(){
+      localStorage.setItem(KEY_GUEST, "1");
+      setAuthBadge("Modo: Local");
+      closeAuthModal();
+      showNav(true);
+      showOnly("viewCadastro");
+      refreshAllUI();
+    }
+    window.enterGuest = enterGuest;
 
     async function loginGoogle(){
       if(!firebaseEnabled || !auth){
-        showAuthMsg("Firebase não está pronto. Use Convidado ou finalize a configuração.");
+        openAuthModal();
+        setAuthMsg("Firebase não está configurado. Use Convidado por enquanto.");
         return;
       }
       try{
         const provider = new firebase.auth.GoogleAuthProvider();
-        // Mobile: redirect é mais confiável
         await auth.signInWithRedirect(provider);
       }catch(e){
-        console.log(e);
-        showAuthMsg("Erro no Google login: " + (e.message || e.code || "desconhecido"));
+        setAuthMsg("Erro no Google: " + (e?.message || e));
       }
     }
+    window.loginGoogle = loginGoogle;
 
     async function loginEmail(){
       if(!firebaseEnabled || !auth){
-        showAuthMsg("Firebase não está pronto. Use Convidado ou finalize a configuração.");
+        openAuthModal();
+        setAuthMsg("Firebase não está configurado. Use Convidado por enquanto.");
         return;
       }
       const email = ($("authEmail").value || "").trim();
       const pass  = ($("authPass").value || "").trim();
-      if(!email || !pass){ showAuthMsg("Preencha email e senha."); return; }
       try{
         await auth.signInWithEmailAndPassword(email, pass);
-        closeAuthModal();
       }catch(e){
-        console.log(e);
-        showAuthMsg("Erro: " + (e.message || e.code || "desconhecido"));
+        setAuthMsg("Erro: " + (e?.message || e));
       }
     }
+    window.loginEmail = loginEmail;
 
     async function criarContaEmail(){
       if(!firebaseEnabled || !auth){
-        showAuthMsg("Firebase não está pronto. Use Convidado ou finalize a configuração.");
+        openAuthModal();
+        setAuthMsg("Firebase não está configurado. Use Convidado por enquanto.");
         return;
       }
       const email = ($("authEmail").value || "").trim();
       const pass  = ($("authPass").value || "").trim();
-      if(!email || !pass){ showAuthMsg("Preencha email e senha."); return; }
       try{
         await auth.createUserWithEmailAndPassword(email, pass);
-        closeAuthModal();
       }catch(e){
-        console.log(e);
-        showAuthMsg("Erro: " + (e.message || e.code || "desconhecido"));
+        setAuthMsg("Erro: " + (e?.message || e));
       }
     }
+    window.criarContaEmail = criarContaEmail;
 
     async function logoutFirebase(){
-      if(!firebaseEnabled || !auth){
-        showAuthMsg("Você já está no modo local.");
-        return;
+      try{
+        if(firebaseEnabled && auth) await auth.signOut();
+        localStorage.removeItem(KEY_GUEST);
+        setAuthBadge("Modo: Local");
+        showNav(false);
+        showOnly("viewWelcome");
+        refreshAllUI();
+      }catch(e){
+        console.log(e);
       }
-      await auth.signOut();
-      showAuthMsg("Saiu do login.");
     }
+    window.logoutFirebase = logoutFirebase;
 
     function sair(){
-      // Se estiver logado, sai do Firebase. Se for guest, só volta pro welcome.
-      if(firebaseEnabled && auth && currentUser){
-        auth.signOut().catch(()=>{});
-      }
-      localStorage.removeItem(KEY_GUEST);
-      setAuthBadge("Modo: Local");
+      // volta pra welcome mantendo local
+      showNav(false);
       showOnly("viewWelcome");
     }
+    window.sair = sair;
 
-    // ---------- APP ----------
+    /***********************
+     * 5) Navegação
+     ***********************/
+    function showOnly(viewId){
+      document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+      const el = document.getElementById(viewId);
+      if(el) el.classList.add("active");
+      updateNavActive(viewId);
+      updateTopBtn();
+    }
+
+    function showNav(on){
+      const nav = $("navBar");
+      if(!nav) return;
+      nav.style.display = on ? "block" : "none";
+    }
+
+    function updateNavActive(viewId){
+      document.querySelectorAll(".navBtn").forEach(b=>b.classList.remove("active"));
+      const btn = document.querySelector(`.navBtn[data-view="${viewId}"]`);
+      if(btn) btn.classList.add("active");
+    }
+
+    function switchView(viewId){
+      showOnly(viewId);
+    }
+    window.switchView = switchView;
+
+    function wireNav(){
+      document.querySelectorAll(".navBtn").forEach(btn=>{
+        btn.addEventListener("click", ()=> switchView(btn.dataset.view));
+      });
+    }
+
+    function scrollToTop(){
+      window.scrollTo({ top:0, behavior:"smooth" });
+    }
+    window.scrollToTop = scrollToTop;
+
+    function updateTopBtn(){
+      const btn = $("btnTop");
+      if(!btn) return;
+      btn.style.display = (window.scrollY > 200) ? "block" : "none";
+    }
+    window.addEventListener("scroll", updateTopBtn, { passive:true });
+
+    /***********************
+     * 6) Cadastro + Avatar
+     ***********************/
     const ESPORTES = ["Musculação","Futebol","Corrida","Crossfit","Ciclismo","Natação","Luta","Basquete","Vôlei","Yoga","Pilates","Caminhada"];
     let selectedSports = new Set();
 
-    function carregarCadastro(){ return safeJsonParse(localStorage.getItem(KEY_PROFILE)); }
-
-    function aplicarCadastroNaTela(){
-      const p = carregarCadastro();
-      if(!p) return;
-      $("nome").value = p.nome || "";
-      $("emailPerfil").value = p.email || "";
-      $("peso").value = p.peso || "";
-      $("altura").value = p.altura || "";
-      $("objetivo").value = p.objetivo || "";
-      $("nivel").value = p.nivel || "";
-      $("condicao").value = p.condicao || "";
-      $("restricao").value = p.restricao || "";
-      $("termo").checked = true;
+    function safeJSON(key){
+      try{ return JSON.parse(localStorage.getItem(key) || "null"); }catch{ return null; }
     }
 
     function buildSportsChips(){
       const box = $("chipsEsportes");
+      if(!box) return;
       box.innerHTML = "";
       ESPORTES.forEach(name=>{
         const div = document.createElement("div");
@@ -1055,7 +1344,7 @@ const app = initializeApp(firebaseConfig);
         box.appendChild(div);
       });
 
-      const p = carregarCadastro();
+      const p = safeJSON(KEY_PROFILE);
       if(p && Array.isArray(p.esportes)){
         selectedSports = new Set(p.esportes);
         [...box.querySelectorAll(".chip")].forEach(ch=>{
@@ -1064,193 +1353,273 @@ const app = initializeApp(firebaseConfig);
       }
     }
 
-    async function salvarCadastro(){
-      if(!$("termo").checked){ alert("Marque o termo para salvar."); return; }
+    function applyProfileToUI(){
+      const p = safeJSON(KEY_PROFILE);
+      if(!p) return;
+      if($("nome")) $("nome").value = p.nome || "";
+      if($("emailPerfil")) $("emailPerfil").value = p.email || "";
+      if($("peso")) $("peso").value = p.peso || "";
+      if($("altura")) $("altura").value = p.altura || "";
+      if($("objetivo")) $("objetivo").value = p.objetivo || "";
+      if($("nivel")) $("nivel").value = p.nivel || "";
+      if($("condicao")) $("condicao").value = p.condicao || "";
+      if($("restricao")) $("restricao").value = p.restricao || "";
+      if($("termo")) $("termo").checked = true;
+    }
 
+    async function salvarCadastro(){
+      const termo = $("termo")?.checked;
+      if(!termo){
+        alert("Marque 'Aceito o termo' para salvar.");
+        return;
+      }
       const perfil = {
-        nome: ($("nome").value || "").trim(),
-        email: ($("emailPerfil").value || "").trim(),
-        peso: ($("peso").value || "").trim(),
-        altura: ($("altura").value || "").trim(),
-        objetivo: $("objetivo").value || "",
-        nivel: $("nivel").value || "",
-        condicao: $("condicao").value || "",
-        restricao: $("restricao").value || "",
+        nome: ($("nome")?.value || "").trim(),
+        email: ($("emailPerfil")?.value || "").trim(),
+        peso: ($("peso")?.value || "").trim(),
+        altura: ($("altura")?.value || "").trim(),
+        objetivo: $("objetivo")?.value || "",
+        nivel: $("nivel")?.value || "",
+        condicao: $("condicao")?.value || "",
+        restricao: $("restricao")?.value || "",
         esportes: Array.from(selectedSports),
         updatedAt: Date.now()
       };
-
       localStorage.setItem(KEY_PROFILE, JSON.stringify(perfil));
       const out = $("outCadastro");
-      out.style.display="block";
-      out.textContent="✅ Cadastro salvo.";
-
-      // se logado, salva na nuvem
-      try{ await syncToCloud(); }catch(e){ console.log(e); }
+      if(out){ out.style.display="block"; out.textContent="✅ Cadastro salvo."; }
+      updatePerfilBox();
+      await pushToCloud();
     }
+    window.salvarCadastro = salvarCadastro;
 
-    function limparCadastro(){
+    async function limparCadastro(){
       localStorage.removeItem(KEY_PROFILE);
-      ["nome","emailPerfil","peso","altura"].forEach(id=> $(id).value="");
-      ["objetivo","nivel","condicao","restricao"].forEach(id=> $(id).value="");
-      $("termo").checked = false;
+      ["nome","emailPerfil","peso","altura"].forEach(id=>{ if($(id)) $(id).value=""; });
+      ["objetivo","nivel","condicao","restricao"].forEach(id=>{ if($(id)) $(id).value=""; });
+      if($("termo")) $("termo").checked = false;
       selectedSports = new Set();
       buildSportsChips();
-      $("outCadastro").style.display="block";
-      $("outCadastro").textContent="🧹 Cadastro limpo.";
+      const out = $("outCadastro");
+      if(out){ out.style.display="block"; out.textContent="🧹 Cadastro limpo."; }
+      updatePerfilBox();
+      await pushToCloud();
+    }
+    window.limparCadastro = limparCadastro;
+
+    function pickAvatar(){
+      const f = $("avatarFile");
+      if(f) f.click();
+    }
+    window.pickAvatar = pickAvatar;
+
+    function applyAvatar(){
+      const dataUrl = localStorage.getItem(KEY_AVATAR);
+      const img = $("avatarImg");
+      const fb = $("avatarFallback");
+      if(img && fb){
+        if(dataUrl){
+          img.src = dataUrl;
+          img.style.display = "block";
+          fb.style.display = "none";
+        }else{
+          img.style.display = "none";
+          fb.style.display = "flex";
+        }
+      }
     }
 
-    // Avatar
-    function pickAvatar(){ $("avatarFile").click(); }
-    function setAvatar(dataUrl){
-      localStorage.setItem(KEY_AVATAR, dataUrl);
-      $("avatarImg").src = dataUrl;
-      $("avatarImg").style.display="block";
-      $("avatarFallback").style.display="none";
-      $("logoBox").innerHTML = `<img src="${dataUrl}" alt="logo">`;
-    }
-    function loadAvatar(){
-      const dataUrl = localStorage.getItem(KEY_AVATAR);
-      if(dataUrl) setAvatar(dataUrl);
-    }
-    function wireAvatar(){
-      $("avatarFile").addEventListener("change", async ()=>{
-        const file = $("avatarFile").files?.[0];
+    function wireAvatarInput(){
+      const f = $("avatarFile");
+      if(!f) return;
+      f.addEventListener("change", async ()=>{
+        const file = f.files?.[0];
         if(!file) return;
-        const r = new FileReader();
-        r.onload = async ()=>{
-          const dataUrl = String(r.result||"");
-          setAvatar(dataUrl);
-          try{ await syncToCloud(); }catch(e){ console.log(e); }
+        const reader = new FileReader();
+        reader.onload = async ()=>{
+          const dataUrl = String(reader.result || "");
+          localStorage.setItem(KEY_AVATAR, dataUrl);
+          applyAvatar();
+          await pushToCloud();
         };
-        r.readAsDataURL(file);
+        reader.readAsDataURL(file);
       });
     }
 
-    // Plate
+    /***********************
+     * 7) Prato + IA DEMO + anti repetição
+     ***********************/
     function wirePlateInput(){
-      $("btnCamera").addEventListener("click", ()=> $("fileCamera").click());
-      $("btnGaleria").addEventListener("click", ()=> $("fileGaleria").click());
+      const btnCam = $("btnCamera");
+      const btnGal = $("btnGaleria");
+      const fc = $("fileCamera");
+      const fg = $("fileGaleria");
+      if(btnCam && fc) btnCam.addEventListener("click", ()=> fc.click());
+      if(btnGal && fg) btnGal.addEventListener("click", ()=> fg.click());
 
-      function onFile(file){
+      async function onFile(file){
         if(!file) return;
         const reader = new FileReader();
-        reader.onload = ()=>{
+        reader.onload = async ()=>{
           const dataUrl = String(reader.result || "");
-          localStorage.setItem(KEY_PLATE, dataUrl);
+          localStorage.setItem(KEY_PLATE_LAST, dataUrl);
           showPlate(dataUrl);
+          await renderHistory();
         };
         reader.readAsDataURL(file);
       }
 
-      $("fileCamera").addEventListener("change", ()=> onFile($("fileCamera").files?.[0]));
-      $("fileGaleria").addEventListener("change", ()=> onFile($("fileGaleria").files?.[0]));
+      if(fc) fc.addEventListener("change", ()=> onFile(fc.files?.[0]));
+      if(fg) fg.addEventListener("change", ()=> onFile(fg.files?.[0]));
     }
 
     function showPlate(dataUrl){
-      $("plateImg").src = dataUrl;
-      $("platePreview").style.display = "block";
+      const box = $("platePreview");
+      const img = $("plateImg");
+      if(!box || !img) return;
+      img.src = dataUrl;
+      box.style.display = "block";
     }
+
     function loadLastPlate(){
-      const dataUrl = localStorage.getItem(KEY_PLATE);
+      const dataUrl = localStorage.getItem(KEY_PLATE_LAST);
       if(dataUrl) showPlate(dataUrl);
     }
 
-    function simpleHash(str){
-      let h = 0;
-      for(let i=0;i<str.length;i++){
-        h = (h<<5) - h + str.charCodeAt(i);
-        h |= 0;
+    async function hashString(str){
+      try{
+        const enc = new TextEncoder().encode(str);
+        const buf = await crypto.subtle.digest("SHA-256", enc);
+        const arr = Array.from(new Uint8Array(buf)).slice(0, 12);
+        return arr.map(b=>b.toString(16).padStart(2,"0")).join("");
+      }catch{
+        return "h" + (str.length) + "_" + str.slice(0,24);
       }
-      return String(h);
     }
 
-    function analisarPrato(){
-      const dataUrl = localStorage.getItem(KEY_PLATE);
+    function getHistory(){
+      try{ return JSON.parse(localStorage.getItem(KEY_PLATE_HISTORY) || "[]"); }catch{ return []; }
+    }
+    function setHistory(arr){
+      localStorage.setItem(KEY_PLATE_HISTORY, JSON.stringify(arr.slice(-30)));
+    }
+
+    async function renderHistory(){
+      const h = getHistory();
+      const el = $("plateHistoryTxt");
+      if(!el) return;
+      if(!h.length){
+        el.textContent = "Sem histórico ainda.";
+        return;
+      }
+      el.textContent = `Últimos pratos analisados: ${h.length} (anti-repetição ativo).`;
+    }
+
+    async function analisarPrato(){
+      const dataUrl = localStorage.getItem(KEY_PLATE_LAST);
+      const out = $("plateResult");
+      const confirmBox = $("plateConfirmBox");
+      const edit = $("plateEdit");
+      if(!out || !confirmBox || !edit) return;
+
       if(!dataUrl){
-        $("plateResult").style.display="block";
-        $("plateResult").textContent="Envie uma foto primeiro.";
-        $("plateConfirmBox").style.display="none";
+        out.style.display="block";
+        out.textContent = "Envie uma foto primeiro.";
         return;
       }
 
-      const hash = simpleHash(dataUrl.slice(0, 4000));
+      const h = await hashString(dataUrl);
       const lastHash = localStorage.getItem(KEY_PLATE_HASH);
-      if(lastHash && lastHash === hash){
-        $("plateResult").style.display="block";
-        $("plateResult").textContent="⚠️ Parece a mesma foto de antes. Troque a imagem para nova análise.";
-        $("plateConfirmBox").style.display="none";
+      const history = getHistory();
+
+      if(lastHash && h === lastHash){
+        out.style.display="block";
+        out.textContent = "⚠️ Parece a mesma foto de antes. Troque a foto para analisar novamente.";
+        confirmBox.style.display="none";
+        return;
+      }
+      if(history.includes(h)){
+        out.style.display="block";
+        out.textContent = "⚠️ Esse prato já foi analisado antes (anti-repetição). Se for outro dia, tire outra foto.";
+        confirmBox.style.display="none";
         return;
       }
 
-      const p = carregarCadastro() || {};
+      // DEMO: gera descrição baseada no objetivo
+      const p = safeJSON(KEY_PROFILE) || {};
       const objetivo = (p.objetivo || "Manter").toLowerCase();
 
-      let desc = "Arroz, feijão, proteína (ex: frango) e salada.";
+      let desc = "Prato com arroz, feijão, proteína e salada (estimativa).";
       let kcal = 650;
-      if(objetivo.includes("emag")) kcal = 520;
-      if(objetivo.includes("massa")) kcal = 820;
+      if(objetivo.includes("emag")){ desc = "Prato leve com proteína magra e salada (estimativa)."; kcal = 520; }
+      if(objetivo.includes("massa")){ desc = "Prato reforçado com carbo + proteína (estimativa)."; kcal = 820; }
 
-      $("plateResult").style.display="block";
-      $("plateResult").textContent = `✅ (DEMO) Identificado: ${desc}\nEstimativa: ~${kcal} kcal.`;
+      out.style.display="block";
+      out.textContent = `✅ IA (DEMO) sugeriu: ${desc} ~${kcal} kcal. Confirme abaixo.`;
 
-      $("plateEdit").value = `Prato: ${desc}\nKcal estimada: ${kcal} kcal`;
-      $("plateConfirmBox").style.display="block";
+      edit.value = `${desc}\n\nEstimativa: ~${kcal} kcal`;
+      confirmBox.style.display="block";
+
+      // guarda hash pendente
+      localStorage.setItem(KEY_PLATE_HASH, h);
     }
-
-    function refazerAnalise(){
-      $("plateResult").style.display="none";
-      $("plateConfirmBox").style.display="none";
-    }
+    window.analisarPrato = analisarPrato;
 
     async function confirmarPrato(){
-      const edit = $("plateEdit").value.trim();
-      const dataUrl = localStorage.getItem(KEY_PLATE);
-      if(!edit || !dataUrl) return;
+      const txt = ($("plateEdit")?.value || "").trim();
+      if(!txt){
+        alert("Escreva/edite a descrição antes de confirmar.");
+        return;
+      }
+      const h = localStorage.getItem(KEY_PLATE_HASH);
+      if(!h) return;
 
-      const hash = simpleHash(dataUrl.slice(0, 4000));
-      localStorage.setItem(KEY_PLATE_HASH, hash);
+      const history = getHistory();
+      history.push(h);
+      setHistory(history);
 
-      const item = { at: Date.now(), text: edit };
-      let hist = safeJsonParse(localStorage.getItem(KEY_PLATE_HISTORY)) || [];
-      hist.unshift(item);
-      hist = hist.slice(0, 20);
-      localStorage.setItem(KEY_PLATE_HISTORY, JSON.stringify(hist));
+      $("plateConfirmBox").style.display = "none";
+      $("plateResult").style.display = "block";
+      $("plateResult").textContent = "✅ Confirmado e salvo no histórico (local).";
 
-      alert("✅ Prato confirmado e salvo.");
-      $("plateConfirmBox").style.display="none";
-
-      try{ await syncToCloud(); }catch(e){ console.log(e); }
+      await renderHistory();
     }
+    window.confirmarPrato = confirmarPrato;
 
-    // Dieta
+    function refazerAnalise(){
+      $("plateConfirmBox").style.display = "none";
+      $("plateResult").style.display = "block";
+      $("plateResult").textContent = "Ok. Troque a foto ou clique em 'Analisar' novamente.";
+    }
+    window.refazerAnalise = refazerAnalise;
+
+    /***********************
+     * 8) Dieta
+     ***********************/
     const DIETAS_BASE = [
       [
-        {t:"Café da manhã", d:"Omelete de 2 ovos + 1 fruta.", k:320},
-        {t:"Almoço", d:"Frango + arroz + feijão + salada.", k:550},
+        {t:"Café da manhã", d:"Omelete de 2 ovos + 1 fatia pão integral.", k:350},
+        {t:"Lanche", d:"Mix de castanhas + 1 fruta.", k:180},
+        {t:"Almoço", d:"Frango + arroz integral + feijão + salada.", k:550},
+        {t:"Lanche", d:"Iogurte natural + chia.", k:160},
         {t:"Jantar", d:"Peixe + legumes + batata-doce.", k:480},
       ],
       [
-        {t:"Café da manhã", d:"3 ovos + aveia + banana.", k:550},
+        {t:"Café da manhã", d:"Aveia + banana + 2 ovos.", k:520},
         {t:"Almoço", d:"Arroz + feijão + carne magra + brócolis.", k:780},
-        {t:"Jantar", d:"Macarrão integral + patinho + salada.", k:720},
+        {t:"Jantar", d:"Macarrão integral + frango + molho de tomate.", k:720},
+        {t:"Ceia", d:"Iogurte + granola.", k:300},
       ],
       [
-        {t:"Café da manhã", d:"Tapioca com queijo + café.", k:420},
+        {t:"Café da manhã", d:"Tapioca com queijo + café sem açúcar.", k:420},
         {t:"Almoço", d:"Carne magra + mandioca + salada.", k:720},
         {t:"Jantar", d:"Omelete + legumes.", k:460},
       ]
     ];
-    function salvarDieta(d){ localStorage.setItem(KEY_DIETA, JSON.stringify(d)); }
-    function carregarDieta(){ return safeJsonParse(localStorage.getItem(KEY_DIETA)); }
-    function gerarDieta(){
-      const d = DIETAS_BASE[Math.floor(Math.random()*DIETAS_BASE.length)];
-      salvarDieta(d);
-      renderDieta(d);
-      syncToCloud().catch(()=>{});
-    }
+
     function renderDieta(d){
       const box = $("dietaBox");
+      if(!box) return;
       box.innerHTML = "";
       if(!d){
         const s = document.createElement("div");
@@ -1273,12 +1642,27 @@ const app = initializeApp(firebaseConfig);
       });
     }
 
-    // Treino
+    function gerarDieta(){
+      const d = DIETAS_BASE[Math.floor(Math.random()*DIETAS_BASE.length)];
+      localStorage.setItem(KEY_DIETA, JSON.stringify(d));
+      renderDieta(d);
+      pushToCloud();
+    }
+    window.gerarDieta = gerarDieta;
+
+    function refazerDieta(){
+      gerarDieta();
+    }
+    window.refazerDieta = refazerDieta;
+
+    /***********************
+     * 9) Treino
+     ***********************/
     const TREINOS = {
       "Academia": [
-        ["Segunda", ["Agachamento livre","Supino reto","Remada curvada"]],
-        ["Quarta", ["Desenvolvimento","Puxada na barra","Elevação lateral"]],
-        ["Sexta", ["Levantamento terra","Leg press","Prancha"]],
+        ["Segunda", ["Agachamento","Supino","Remada"]],
+        ["Quarta", ["Desenvolvimento","Puxada","Abdominal prancha"]],
+        ["Sexta", ["Levantamento terra","Rosca","Tríceps"]],
       ],
       "Corrida": [
         ["Segunda", ["Corrida leve 30 min","Mobilidade"]],
@@ -1287,7 +1671,7 @@ const app = initializeApp(firebaseConfig);
       ],
       "Muay Thai":[
         ["Terça", ["Sombra 10 min","Chutes básicos","Combinações"]],
-        ["Quinta", ["Manopla (drills)","Defesas","Condicionamento"]],
+        ["Quinta", ["Manopla","Defesas","Condicionamento"]],
         ["Sábado", ["Clinch","Sequências","Alongamento"]],
       ],
       "Futebol":[
@@ -1301,28 +1685,10 @@ const app = initializeApp(firebaseConfig);
         ["Sábado", ["Treino de jogo","Alongamento"]],
       ]
     };
-    function salvarTreino(t){ localStorage.setItem(KEY_TREINO, JSON.stringify(t)); }
-    function carregarTreino(){ return safeJsonParse(localStorage.getItem(KEY_TREINO)); }
-    function gerarTreino(){
-      const tema = $("temaTreino").value || "Academia";
-      const intensidade = $("intTreino").value || "Moderado";
-      const base = TREINOS[tema] || TREINOS["Academia"];
-      const plano = { tema, intensidade, dias: base, createdAt: Date.now() };
-      salvarTreino(plano);
-      renderTreino(plano);
-      $("outTreino").style.display="block";
-      $("outTreino").textContent = `✅ Treino salvo: ${tema} (${intensidade}).`;
-      syncToCloud().catch(()=>{});
-    }
-    function limparTreino(){
-      localStorage.removeItem(KEY_TREINO);
-      $("treinoSemana").innerHTML="";
-      $("outTreino").style.display="block";
-      $("outTreino").textContent="🧹 Treino removido.";
-      syncToCloud().catch(()=>{});
-    }
+
     function renderTreino(t){
       const box = $("treinoSemana");
+      if(!box) return;
       box.innerHTML = "";
       if(!t){
         const s = document.createElement("div");
@@ -1331,6 +1697,7 @@ const app = initializeApp(firebaseConfig);
         box.appendChild(s);
         return;
       }
+
       t.dias.forEach(d=>{
         const day = document.createElement("div");
         day.className="dayCard";
@@ -1343,7 +1710,7 @@ const app = initializeApp(firebaseConfig);
           const btn = document.createElement("button");
           btn.className="ytBtn";
           btn.textContent="Ver técnica";
-          btn.addEventListener("click", ()=> openYT(`${ex} como fazer`));
+          btn.addEventListener("click", ()=> abrirLink(`https://www.youtube.com/results?search_query=${encodeURIComponent(ex+" como fazer")}`));
           row.appendChild(left);
           row.appendChild(btn);
           day.appendChild(row);
@@ -1352,7 +1719,32 @@ const app = initializeApp(firebaseConfig);
       });
     }
 
-    // Convites (demo)
+    function gerarTreino(){
+      const tema = $("temaTreino")?.value || "Academia";
+      const intensidade = $("intTreino")?.value || "Moderado";
+      const base = TREINOS[tema] || TREINOS["Academia"];
+      const plano = { tema, intensidade, dias: base, createdAt: Date.now() };
+      localStorage.setItem(KEY_TREINO, JSON.stringify(plano));
+      renderTreino(plano);
+
+      const out = $("outTreino");
+      if(out){ out.style.display="block"; out.textContent = `✅ Treino salvo: ${tema} (${intensidade}).`; }
+      pushToCloud();
+    }
+    window.gerarTreino = gerarTreino;
+
+    function limparTreino(){
+      localStorage.removeItem(KEY_TREINO);
+      if($("treinoSemana")) $("treinoSemana").innerHTML = "";
+      const out = $("outTreino");
+      if(out){ out.style.display="block"; out.textContent="🧹 Treino removido."; }
+      pushToCloud();
+    }
+    window.limparTreino = limparTreino;
+
+    /***********************
+     * 10) Convites + saque (demo)
+     ***********************/
     function getOrCreateInviteCode(){
       let code = localStorage.getItem(KEY_INV_CODE);
       if(code) return code;
@@ -1367,163 +1759,254 @@ const app = initializeApp(firebaseConfig);
       return url.toString();
     }
     function getBalance(){ return Number(localStorage.getItem(KEY_BAL) || "0"); }
-    function setBalance(v){ localStorage.setItem(KEY_BAL, String(v)); renderInviteUI(); }
+    function setBalance(v){
+      localStorage.setItem(KEY_BAL, String(v));
+      renderInviteUI();
+    }
+    window.getBalance = getBalance;
+    window.setBalance = setBalance;
+
     async function copyInviteLink(){
       const link = getMyInviteLink();
-      try{ await navigator.clipboard.writeText(link); alert("✅ Link copiado!"); }
-      catch{ prompt("Copie o link:", link); }
+      try{
+        await navigator.clipboard.writeText(link);
+        alert("✅ Link copiado!");
+      }catch{
+        prompt("Copie o link:", link);
+      }
     }
+    window.copyInviteLink = copyInviteLink;
+
     function shareInvite(){
       const link = getMyInviteLink();
-      const text = `Baixa o Confira o Prato Elite e usa meu link: ${link}`;
+      const text = `Baixa o CheckPrato Elite e usa meu link: ${link}`;
       if(navigator.share){
-        navigator.share({ title:"Confira o Prato Elite", text, url: link }).catch(()=>{});
+        navigator.share({ title:"CheckPrato Elite", text, url: link }).catch(()=>{});
       }else{
         copyInviteLink();
       }
     }
-    function solicitarSaque(){
-      const bal = getBalance();
-      if(bal < 50){ alert("Ainda não atingiu o mínimo de R$ 50."); return; }
-      alert("✅ Solicitação de saque registrada (DEMO). Pix/QR entra quando ligar o sistema real.");
-    }
+    window.shareInvite = shareInvite;
+
     function renderInviteUI(){
       const code = getOrCreateInviteCode();
       const link = getMyInviteLink();
       const bal = getBalance();
       const falta = Math.max(0, 50 - bal);
 
-      $("myCode").textContent = code;
-      $("myLink").textContent = link;
-      $("balTxt").textContent = new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(bal);
-      $("progressTxt").textContent = bal >= 50
-        ? "✅ Você atingiu R$ 50! Pode solicitar saque."
-        : `Faltam ${new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(falta)} para atingir R$ 50.`;
+      if($("myCode")) $("myCode").textContent = code;
+      if($("myLink")) $("myLink").textContent = link;
+      if($("balTxt")) $("balTxt").textContent = fmtBRL(bal);
+
+      if($("progressTxt")){
+        $("progressTxt").textContent = bal >= 50
+          ? "✅ Você atingiu R$ 50! Agora pode solicitar saque (demo)."
+          : `Faltam ${fmtBRL(falta)} para atingir R$ 50.`;
+      }
 
       const btn = $("btnSaque");
-      btn.disabled = bal < 50;
-      btn.textContent = bal >= 50 ? "Solicitar saque" : "Solicitar saque (mín. R$ 50)";
+      if(btn){
+        btn.disabled = bal < 50;
+        btn.style.opacity = bal < 50 ? .55 : 1;
+      }
     }
 
-    // NAV
-    function showOnly(id){
-      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-      const el = $(id);
-      if(el) el.classList.add("active");
+    function solicitarSaque(){
+      const bal = getBalance();
+      const msg = $("saqueMsg");
+      if(!msg) return;
+
+      if(bal < 50){
+        msg.style.display="block";
+        msg.textContent = "Ainda não atingiu o mínimo (R$50).";
+        return;
+      }
+
+      msg.style.display="block";
+      msg.textContent = "✅ Solicitação de saque registrada (DEMO). Depois ligamos Pix/QR de verdade no backend.";
+    }
+    window.solicitarSaque = solicitarSaque;
+
+    /***********************
+     * 11) Premium
+     ***********************/
+    const PREMIUM_PRICE = 29.90;
+    const PREMIUM_CHECKOUT_URL = "https://mpago.la/2BRjpaP"; // seu link
+    function openCheckout(){ window.open(PREMIUM_CHECKOUT_URL, "_blank"); }
+    window.openCheckout = openCheckout;
+
+    /***********************
+     * 12) Dashboard (calorias, km, dias)
+     ***********************/
+    function getDash(){
+      const d = safeJSON(KEY_DASH);
+      if(d && typeof d === "object") return d;
+
+      // default (semana atual)
+      const now = new Date();
+      const start = new Date(now);
+      start.setHours(0,0,0,0);
+      start.setDate(now.getDate() - ((now.getDay()+6)%7)); // segunda
+      return { kcal:0, km:0, done:0, goal:7, weekStart: start.getTime() };
+    }
+    function setDash(d){
+      localStorage.setItem(KEY_DASH, JSON.stringify(d));
+      renderDash();
+      pushToCloud();
     }
 
-    function switchView(view){
-      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-      document.querySelectorAll(".navBtn").forEach(b => b.classList.remove("active"));
-
-      const map = {
-        welcome:"viewWelcome",
-        cadastro:"viewCadastro",
-        dieta:"viewDieta",
-        treino:"viewTreino",
-        loja:"viewLoja",
-        parceiros:"viewParceiros",
-        premium:"viewPremium",
-        saude:"viewSaude",
-        convites:"viewConvites",
-      };
-
-      const id = map[view];
-      if(id) showOnly(id);
-
-      const btn = document.querySelector(`.navBtn[data-view="${view}"]`);
-      if(btn) btn.classList.add("active");
-
-      scrollToTop(false);
+    function weekLabel(ts){
+      const dt = new Date(ts);
+      const dd = String(dt.getDate()).padStart(2,"0");
+      const mm = String(dt.getMonth()+1).padStart(2,"0");
+      return `Semana • ${dd}/${mm}`;
     }
 
-    function wireNav(){
-      document.querySelectorAll(".navBtn").forEach(btn=>{
-        btn.addEventListener("click", ()=> switchView(btn.dataset.view));
-      });
+    function setProgressoUI({ kcal, km, doneDays, goalDays, weekStart }){
+      $("proKcal").textContent = String(Math.round(kcal));
+      $("proKm").textContent = String(Math.round(km));
+      $("proDone").textContent = String(doneDays);
+      $("proGoal").textContent = String(goalDays);
+      $("proDays").textContent = String(doneDays);
+      $("proDaysGoal").textContent = String(goalDays);
+      $("proWeek").textContent = weekLabel(weekStart);
+
+      const pct = goalDays > 0 ? Math.max(0, Math.min(100, Math.round((doneDays / goalDays) * 100))) : 0;
+      $("proPct").textContent = pct + "%";
+
+      const C = 301.59;
+      const offset = C - (C * pct / 100);
+      const ring = $("ringProg");
+      ring.style.strokeDasharray = String(C);
+      ring.style.strokeDashoffset = String(offset);
+
+      const resumo = $("proResumo");
+      if(resumo){
+        resumo.innerHTML = `Você fez <b>${doneDays}</b> dias de treino, <b>${Math.round(km)} km</b> e <b>${Math.round(kcal)} kcal</b> na semana.`;
+      }
     }
 
-    // Guest / App
-    function enterGuest(){
-      localStorage.setItem(KEY_GUEST, "1");
-      setAuthBadge("Modo: Local");
-      enterApp();
-      switchView("cadastro");
+    function renderDash(){
+      const d = getDash();
+      setProgressoUI({ kcal:d.kcal, km:d.km, doneDays:d.done, goalDays:d.goal, weekStart:d.weekStart });
+      updatePerfilBox();
     }
 
-    function enterApp(){
-      // garante que nav existe sempre
-      $("navBar").classList.remove("hidden");
-      switchView("cadastro");
+    function addKcal(){
+      const d = getDash();
+      d.kcal += 500;
+      setDash(d);
+    }
+    window.addKcal = addKcal;
+
+    function addKm(){
+      const d = getDash();
+      d.km += 2;
+      setDash(d);
+    }
+    window.addKm = addKm;
+
+    function addTreinoDone(){
+      const d = getDash();
+      d.done = Math.min(d.goal, d.done + 1);
+      setDash(d);
+    }
+    window.addTreinoDone = addTreinoDone;
+
+    function resetProgresso(){
+      const d = getDash();
+      d.kcal = 0; d.km = 0; d.done = 0;
+      // atualiza semana
+      const now = new Date();
+      const start = new Date(now);
+      start.setHours(0,0,0,0);
+      start.setDate(now.getDate() - ((now.getDay()+6)%7));
+      d.weekStart = start.getTime();
+      setDash(d);
+    }
+    window.resetProgresso = resetProgresso;
+
+    function setGoalDaysPrompt(){
+      const d = getDash();
+      const v = prompt("Meta de dias de treino na semana (ex: 5, 6, 7):", String(d.goal));
+      if(v === null) return;
+      const n = Math.max(1, Math.min(14, parseInt(v,10) || d.goal));
+      d.goal = n;
+      if(d.done > d.goal) d.done = d.goal;
+      setDash(d);
+    }
+    window.setGoalDaysPrompt = setGoalDaysPrompt;
+
+    /***********************
+     * 13) Perfil
+     ***********************/
+    function updatePerfilBox(){
+      const p = safeJSON(KEY_PROFILE) || {};
+      const dash = getDash();
+      const mode = localStorage.getItem(KEY_GUEST) ? "Convidado (Local)" : (currentUser ? "Logado" : "Local");
+      const sports = Array.isArray(p.esportes) ? p.esportes.join(", ") : "—";
+      const html = `
+        <div><b>Modo:</b> ${escapeHtml(mode)}</div>
+        <div><b>Nome:</b> ${escapeHtml(p.nome || "—")}</div>
+        <div><b>Objetivo:</b> ${escapeHtml(p.objetivo || "—")}</div>
+        <div><b>Esportes:</b> ${escapeHtml(sports || "—")}</div>
+        <div style="margin-top:8px"><b>Semana:</b> ${escapeHtml(weekLabel(dash.weekStart))}</div>
+        <div><b>Calorias:</b> ${Math.round(dash.kcal)} | <b>KM:</b> ${Math.round(dash.km)} | <b>Dias:</b> ${dash.done}/${dash.goal}</div>
+      `;
+      if($("perfilBox")) $("perfilBox").innerHTML = html;
     }
 
-    // Modal
-    function openAuthModal(){ $("authModal").style.display="block"; }
-    function closeAuthModal(){ $("authModal").style.display="none"; }
-
-    // Scroll topo
-    function scrollToTop(smooth=true){
-      window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
-    }
-    function updateTopBtn(){
-      const btn = $("btnTop");
-      btn.style.display = (window.scrollY > 220) ? "block" : "none";
-    }
-
-    // Init
-    function init(){
-      wireNav();
-      wireAvatar();
-      loadAvatar();
-      aplicarCadastroNaTela();
+    /***********************
+     * 14) Init
+     ***********************/
+    function refreshAllUI(){
+      applyProfileToUI();
       buildSportsChips();
-      wirePlateInput();
+      applyAvatar();
       loadLastPlate();
-      renderDieta(carregarDieta());
-      renderTreino(carregarTreino());
+      renderHistory();
+
+      // dieta e treino salvos
+      renderDieta(safeJSON(KEY_DIETA));
+      renderTreino(safeJSON(KEY_TREINO));
+
+      // convites
       renderInviteUI();
 
-      // Firebase seguro (não quebra app)
-      initFirebaseIfPossible();
+      // premium button
+      const btn = $("btnPremium");
+      if(btn) btn.textContent = `CONFIRMAR R$ ${PREMIUM_PRICE.toFixed(2).replace(".", ",")}/MÊS`;
 
-      // Se já era guest
-      if(localStorage.getItem(KEY_GUEST)){
-        enterApp();
+      // dash
+      renderDash();
+
+      updatePerfilBox();
+    }
+
+    function init(){
+      wireNav();
+      wireAvatarInput();
+      wirePlateInput();
+
+      // welcome message
+      if($("welcomeStatus")){
+        $("welcomeStatus").textContent = "✅ Dica: se algo não abrir, limpe o cache do navegador e recarregue.";
+      }
+
+      // decide entrada
+      const isGuest = !!localStorage.getItem(KEY_GUEST);
+      if(isGuest){
+        setAuthBadge("Modo: Local");
+        showNav(true);
+        showOnly("viewCadastro");
       }else{
-        // mantém welcome por padrão
+        showNav(false);
         showOnly("viewWelcome");
       }
 
-      window.addEventListener("scroll", updateTopBtn);
-      updateTopBtn();
+      initFirebaseIfPossible();
+      refreshAllUI();
     }
-
-    // Expor funções
-    window.switchView = switchView;
-    window.salvarCadastro = salvarCadastro;
-    window.limparCadastro = limparCadastro;
-    window.pickAvatar = pickAvatar;
-    window.analisarPrato = analisarPrato;
-    window.refazerAnalise = refazerAnalise;
-    window.confirmarPrato = confirmarPrato;
-    window.gerarDieta = gerarDieta;
-    window.gerarTreino = gerarTreino;
-    window.limparTreino = limparTreino;
-    window.openCheckout = openCheckout;
-    window.copyInviteLink = copyInviteLink;
-    window.shareInvite = shareInvite;
-    window.setBalance = setBalance;
-    window.getBalance = getBalance;
-    window.solicitarSaque = solicitarSaque;
-    window.enterGuest = enterGuest;
-    window.openAuthModal = openAuthModal;
-    window.closeAuthModal = closeAuthModal;
-    window.loginGoogle = loginGoogle;
-    window.loginEmail = loginEmail;
-    window.criarContaEmail = criarContaEmail;
-    window.logoutFirebase = logoutFirebase;
-    window.sair = sair;
-    window.scrollToTop = scrollToTop;
 
     init();
   </script>
