@@ -163,19 +163,6 @@
       color: var(--txt);
       margin-top: 10px;
     }
-    .btnOrange{
-      width:100%;
-      padding: 16px 16px;
-      border-radius: 18px;
-      border: 0;
-      cursor: pointer;
-      font-weight: 950;
-      font-size: 16px;
-      background: linear-gradient(135deg, #ffcc5a, #f6b23a);
-      color:#201400;
-      margin-top: 12px;
-      box-shadow: 0 18px 45px rgba(246,178,58,.18);
-    }
 
     .status{
       margin-top: 10px;
@@ -292,7 +279,7 @@
     .meal p{margin:0; color: rgba(234,242,255,.88); font-weight:750; line-height:1.35}
     .kcal{
       display:flex; align-items:center; justify-content:center;
-      min-width: 88px;
+      min-width: 92px;
       border-radius: 999px;
       border:1px solid rgba(33,230,182,.25);
       background: rgba(33,230,182,.08);
@@ -397,9 +384,8 @@
       z-index:999;
       cursor:pointer;
     }
-    .hidden{ display:none !important; }
 
-    /* ===== DASHBOARD 3D REAL (UI) ===== */
+    /* ===== DASHBOARD 3D ===== */
     .pro3dWrap{ perspective: 1200px; }
     .pro3dCard{
       background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
@@ -583,8 +569,8 @@
               </div>
 
               <div class="proLabels">
-                <div class="proTag"><b>Tríceps</b><small id="mTri">Foco</small></div>
                 <div class="proTag"><b>Peito</b><small id="mPei">Foco</small></div>
+                <div class="proTag"><b>Costas</b><small id="mCos">Foco</small></div>
                 <div class="proTag"><b>Abdômen</b><small id="mAbd">Foco</small></div>
                 <div class="proTag"><b>Pernas</b><small id="mPer">Foco</small></div>
               </div>
@@ -609,7 +595,7 @@
                 </div>
 
                 <div class="proHint">
-                  Evolua <b>1% por dia</b>. Consistência vence.
+                  Sem perfeição. Só <b>consistência</b>.
                 </div>
 
                 <div class="miniRow" style="margin-top:4px">
@@ -725,8 +711,8 @@
             <select id="restricao">
               <option value="">Selecione</option>
               <option>Nenhuma</option>
-              <option>Lactose</option>
-              <option>Glúten</option>
+              <option>Sem lactose</option>
+              <option>Sem glúten</option>
               <option>Vegetariano</option>
               <option>Vegano</option>
             </select>
@@ -769,15 +755,15 @@
           <img id="plateImg" alt="Prato"/>
         </div>
 
-        <button class="btnSecondary" type="button" onclick="analisarPrato()">Analisar com IA</button>
+        <button class="btnSecondary" type="button" onclick="analisarPrato()">Analisar (demo)</button>
         <div id="plateResult" class="status" style="display:none"></div>
 
         <div id="plateConfirmBox" style="display:none; margin-top:10px">
           <div class="label">Confirmação</div>
-          <div class="hint">A IA sugeriu isso. Se quiser, edite antes de confirmar:</div>
+          <div class="hint">A sugestão é uma estimativa. Se quiser, edite antes de confirmar:</div>
           <textarea id="plateEdit"></textarea>
-          <button class="btn" type="button" onclick="confirmarPrato()">Confirmar que é isso</button>
-          <button class="btnSecondary" type="button" onclick="refazerAnalise()">Refazer análise</button>
+          <button class="btn" type="button" onclick="confirmarPrato()">Confirmar</button>
+          <button class="btnSecondary" type="button" onclick="refazerAnalise()">Refazer</button>
         </div>
 
         <div class="label" style="margin-top:14px">Histórico (local)</div>
@@ -790,8 +776,8 @@
       <div class="h1">DIETA</div>
 
       <div class="card">
-        <div class="hint">
-          Dieta simples (demo). Se não gostar ou não tiver alimento, clique em <b>Refazer</b>.
+        <div class="hint" id="dietaHint">
+          Dieta variada (demo inteligente). Se não gostar ou não tiver alimento, clique em <b>Refazer</b>.
         </div>
 
         <button class="btn" type="button" onclick="gerarDieta()">GERAR DIETA</button>
@@ -806,18 +792,12 @@
       <div class="h1">TREINO</div>
 
       <div class="card">
-        <div class="hint">Treino semanal. Cada exercício tem botão “YouTube”.</div>
+        <div class="hint" id="treinoHint">Treino semanal (auto + esportes). Cada exercício tem botão “YouTube”.</div>
 
         <div class="row" style="margin-top:10px">
           <div class="col">
             <div class="label">Tema</div>
-            <select id="temaTreino">
-              <option>Academia</option>
-              <option>Corrida</option>
-              <option>Muay Thai</option>
-              <option>Futebol</option>
-              <option>Basquete</option>
-            </select>
+            <select id="temaTreino"></select>
           </div>
           <div class="col">
             <div class="label">Intensidade</div>
@@ -873,32 +853,14 @@
       </div>
     </section>
 
-    <!-- PREMIUM -->
-    <section id="viewPremium" class="screen">
-      <div class="h1">PREMIUM</div>
-
-      <div class="card">
-        <div class="hint">Pagamento abre no Mercado Pago.</div>
-
-        <div class="card" style="margin-top:12px; background:rgba(255,255,255,.03)">
-          <div class="label">Plano</div>
-          <div style="font-weight:1000; font-size:18px">Elite Premium — R$ 29,90/mês</div>
-          <div class="muted" style="margin-top:8px">Benefícios: dietas ilimitadas, treinos completos, convites e parceiros.</div>
-        </div>
-
-        <button id="btnPremium" class="btnOrange" type="button" onclick="openCheckout()">CONFIRMAR R$ 29,90/MÊS</button>
-        <div class="hint" style="margin-top:10px">Ambiente seguro • SSL</div>
-      </div>
-    </section>
-
-    <!-- CONVITES -->
+    <!-- CONVITES (GAMIFICAÇÃO) -->
     <section id="viewConvites" class="screen">
       <div class="h1">CONVITES</div>
 
       <div class="card">
         <div class="hint">
-          Convide amigos e ganhe: <b>R$ 5</b> por cada pessoa que assinar usando seu link.
-          Ao atingir <b>R$ 50</b>, você pode solicitar saque (demo) e ganha <b>1 mês grátis</b>.
+          Convide amigos e some <b>pontos</b> (demo). A ideia aqui é gamificar:
+          <b>ranking</b>, <b>badges</b> e desafios.
         </div>
 
         <div style="margin-top:12px" class="card">
@@ -908,8 +870,8 @@
           <div class="label" style="margin-top:12px">Seu link</div>
           <div id="myLink" class="muted" style="word-break:break-all">—</div>
 
-          <div class="label" style="margin-top:12px">Saldo (demo)</div>
-          <div id="balTxt" style="font-weight:1000; font-size:18px">R$ 0,00</div>
+          <div class="label" style="margin-top:12px">Pontos (demo)</div>
+          <div id="balTxt" style="font-weight:1000; font-size:18px">0 pts</div>
           <div id="progressTxt" class="muted" style="margin-top:6px"></div>
 
           <div class="miniRow" style="margin-top:12px">
@@ -918,11 +880,11 @@
           </div>
 
           <div class="miniRow" style="margin-top:10px">
-            <button class="miniBtn" type="button" onclick="setBalance(getBalance()+5)">+R$5 (teste)</button>
-            <button class="miniBtn" type="button" onclick="setBalance(0)">Zerar (teste)</button>
+            <button class="miniBtn" type="button" onclick="setBalance(getBalance()+10)">+10 pts (teste)</button>
+            <button class="miniBtn" type="button" onclick="setBalance(0)">Zerar</button>
           </div>
 
-          <button id="btnSaque" class="btnSecondary" type="button" onclick="solicitarSaque()">Solicitar saque</button>
+          <button id="btnBonus" class="btnSecondary" type="button" onclick="resgatarBonus()">Resgatar badge (demo)</button>
           <div id="saqueMsg" class="status" style="display:none"></div>
         </div>
       </div>
@@ -953,15 +915,8 @@
 
         <div class="meal">
           <div>
-            <div class="title">Exames</div>
-            <p>Pressão, hemograma, lipidograma, glicemia, TGO/TGP, creatinina, testosterona, estradiol. Com médico.</p>
-          </div>
-        </div>
-
-        <div class="meal">
-          <div>
             <div class="title">Cuidados gerais</div>
-            <p>Sono 7–9h, hidratação, dieta com fibras, evitar álcool, treino com progressão e descanso.</p>
+            <p>Sono 7–9h, água, fibras, treino com progressão e descanso. O básico bem feito muda tudo.</p>
           </div>
         </div>
 
@@ -983,7 +938,7 @@
     </section>
   </div>
 
-  <!-- NAV (UMA SÓ) -->
+  <!-- NAV (SEM PREMIUM) -->
   <div class="nav" id="navBar">
     <div class="navInner">
       <button class="navBtn" data-view="viewProgresso" type="button">PROGRESSO</button>
@@ -991,7 +946,6 @@
       <button class="navBtn" data-view="viewDieta" type="button">DIETA</button>
       <button class="navBtn" data-view="viewTreino" type="button">TREINO</button>
       <button class="navBtn" data-view="viewParceiros" type="button">PARCEIROS</button>
-      <button class="navBtn" data-view="viewPremium" type="button">PREMIUM</button>
       <button class="navBtn" data-view="viewConvites" type="button">CONVITES</button>
       <button class="navBtn" data-view="viewSaude" type="button">SAÚDE</button>
       <button class="navBtn" data-view="viewPerfil" type="button">PERFIL</button>
@@ -1030,14 +984,14 @@
     </div>
   </div>
 
-  <!-- Firebase CDN (compat) - NÃO quebra se você não configurar -->
+  <!-- Firebase CDN (compat) - opcional -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
   <script>
     /***********************
-     * 0) PWA (não quebra)
+     * 0) PWA
      ***********************/
     if ("serviceWorker" in navigator){
       navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
@@ -1047,38 +1001,48 @@
      * 1) Helpers
      ***********************/
     const $ = (id)=>document.getElementById(id);
-    const fmtBRL = (n)=> new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(n||0));
-    function abrirLink(url){ window.open(url, "_blank"); }
+
+    function abrirLink(url){
+      const w = window.open(url, "_blank", "noopener,noreferrer");
+      if (w) w.opener = null;
+    }
     window.abrirLink = abrirLink;
 
     function escapeHtml(s){
       return String(s).replace(/[&<>"]/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m]));
     }
 
+    function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
     /***********************
      * 2) Storage Keys
      ***********************/
-    const KEY_PROFILE = "cp_profile_v1";
+    const KEY_PROFILE = "cp_profile_v2";
     const KEY_AVATAR  = "cp_avatar_v1";
     const KEY_GUEST   = "cp_guest_v1";
+
     const KEY_PLATE_LAST = "cp_plate_last_v1";
     const KEY_PLATE_HASH = "cp_plate_hash_v1";
     const KEY_PLATE_HISTORY = "cp_plate_history_v1";
-    const KEY_DIETA   = "cp_dieta_v1";
-    const KEY_TREINO  = "cp_treino_v1";
+
+    const KEY_DIETA   = "cp_dieta_v2";
+    const KEY_TREINO  = "cp_treino_v2";
 
     const KEY_INV_CODE = "cp_inv_code_v1";
-    const KEY_BAL = "cp_inv_balance_v1";
+    const KEY_BAL = "cp_inv_points_v1";
 
     const KEY_DASH = "cp_dash_v1"; // kcal, km, done, goal, weekStart
 
+    function safeJSON(key){
+      try{ return JSON.parse(localStorage.getItem(key) || "null"); }catch{ return null; }
+    }
+
     /***********************
      * 3) Firebase (OPCIONAL)
-     * Cole seu config aqui se quiser login e nuvem.
-     * Se deixar vazio, app funciona 100% local.
      ***********************/
     const FIREBASE_CONFIG = {
-      // Cole aqui seu firebaseConfig:
+      // Cole aqui seu firebaseConfig se quiser:
       // apiKey: "....",
       // authDomain: "....firebaseapp.com",
       // projectId: "....",
@@ -1117,7 +1081,6 @@
             closeAuthModal();
             showNav(true);
             showOnly("viewCadastro");
-            // opcional: sync cloud
             await syncFromCloud();
             refreshAllUI();
           }else{
@@ -1140,14 +1103,12 @@
         const snap = await ref.get();
         if(snap.exists){
           const data = snap.data() || {};
-          // puxa para local (se existir)
           if(data.profile) localStorage.setItem(KEY_PROFILE, JSON.stringify(data.profile));
           if(data.avatar) localStorage.setItem(KEY_AVATAR, String(data.avatar));
           if(data.dash) localStorage.setItem(KEY_DASH, JSON.stringify(data.dash));
           if(data.dieta) localStorage.setItem(KEY_DIETA, JSON.stringify(data.dieta));
           if(data.treino) localStorage.setItem(KEY_TREINO, JSON.stringify(data.treino));
         }else{
-          // cria doc
           await ref.set({ createdAt: Date.now() }, { merge:true });
         }
       }catch(e){
@@ -1178,7 +1139,8 @@
      ***********************/
     function openAuthModal(){
       $("authModalBack").style.display = "block";
-      show($("authMsg"), false);
+      const msg = $("authMsg");
+      if(msg) msg.style.display="none";
     }
     window.openAuthModal = openAuthModal;
 
@@ -1266,7 +1228,6 @@
     window.logoutFirebase = logoutFirebase;
 
     function sair(){
-      // volta pra welcome mantendo local
       showNav(false);
       showOnly("viewWelcome");
     }
@@ -1295,14 +1256,9 @@
       if(btn) btn.classList.add("active");
     }
 
-    function switchView(viewId){
-      showOnly(viewId);
-    }
-    window.switchView = switchView;
-
     function wireNav(){
       document.querySelectorAll(".navBtn").forEach(btn=>{
-        btn.addEventListener("click", ()=> switchView(btn.dataset.view));
+        btn.addEventListener("click", ()=> showOnly(btn.dataset.view));
       });
     }
 
@@ -1321,12 +1277,16 @@
     /***********************
      * 6) Cadastro + Avatar
      ***********************/
-    const ESPORTES = ["Musculação","Futebol","Corrida","Crossfit","Ciclismo","Natação","Luta","Basquete","Vôlei","Yoga","Pilates","Caminhada"];
+    const ESPORTES = [
+      "Musculação","Calistenia","Funcional","HIIT",
+      "Corrida","Caminhada","Ciclismo","Natação",
+      "Yoga","Pilates","Alongamento/Mobilidade",
+      "Futebol","Basquete","Vôlei","Handebol",
+      "Boxe","Muay Thai","Jiu-jitsu",
+      "Crossfit","Tênis","Beach Tennis",
+      "Skate","Trilha","Escalada"
+    ];
     let selectedSports = new Set();
-
-    function safeJSON(key){
-      try{ return JSON.parse(localStorage.getItem(key) || "null"); }catch{ return null; }
-    }
 
     function buildSportsChips(){
       const box = $("chipsEsportes");
@@ -1340,6 +1300,7 @@
           if(selectedSports.has(name)) selectedSports.delete(name);
           else selectedSports.add(name);
           div.classList.toggle("on");
+          syncTemaTreinoOptions(); // reflete no treino
         });
         box.appendChild(div);
       });
@@ -1364,12 +1325,12 @@
       if($("nivel")) $("nivel").value = p.nivel || "";
       if($("condicao")) $("condicao").value = p.condicao || "";
       if($("restricao")) $("restricao").value = p.restricao || "";
-      if($("termo")) $("termo").checked = true;
+      if($("termo")) $("termo").checked = !!p.termoAceito; // ✅ agora é real, não forçado
     }
 
     async function salvarCadastro(){
-      const termo = $("termo")?.checked;
-      if(!termo){
+      const termoAceito = !!$("termo")?.checked;
+      if(!termoAceito){
         alert("Marque 'Aceito o termo' para salvar.");
         return;
       }
@@ -1383,12 +1344,16 @@
         condicao: $("condicao")?.value || "",
         restricao: $("restricao")?.value || "",
         esportes: Array.from(selectedSports),
+        termoAceito,
         updatedAt: Date.now()
       };
       localStorage.setItem(KEY_PROFILE, JSON.stringify(perfil));
+
       const out = $("outCadastro");
       if(out){ out.style.display="block"; out.textContent="✅ Cadastro salvo."; }
+
       updatePerfilBox();
+      syncTemaTreinoOptions();
       await pushToCloud();
     }
     window.salvarCadastro = salvarCadastro;
@@ -1398,10 +1363,14 @@
       ["nome","emailPerfil","peso","altura"].forEach(id=>{ if($(id)) $(id).value=""; });
       ["objetivo","nivel","condicao","restricao"].forEach(id=>{ if($(id)) $(id).value=""; });
       if($("termo")) $("termo").checked = false;
+
       selectedSports = new Set();
       buildSportsChips();
+      syncTemaTreinoOptions();
+
       const out = $("outCadastro");
       if(out){ out.style.display="block"; out.textContent="🧹 Cadastro limpo."; }
+
       updatePerfilBox();
       await pushToCloud();
     }
@@ -1447,7 +1416,7 @@
     }
 
     /***********************
-     * 7) Prato + IA DEMO + anti repetição
+     * 7) Prato (demo) + anti repetição
      ***********************/
     function wirePlateInput(){
       const btnCam = $("btnCamera");
@@ -1515,6 +1484,12 @@
       el.textContent = `Últimos pratos analisados: ${h.length} (anti-repetição ativo).`;
     }
 
+    function profileOrDefault(){
+      return safeJSON(KEY_PROFILE) || {
+        objetivo:"Manter", nivel:"Iniciante", restricao:"Nenhuma", esportes:[]
+      };
+    }
+
     async function analisarPrato(){
       const dataUrl = localStorage.getItem(KEY_PLATE_LAST);
       const out = $("plateResult");
@@ -1545,22 +1520,29 @@
         return;
       }
 
-      // DEMO: gera descrição baseada no objetivo
-      const p = safeJSON(KEY_PROFILE) || {};
-      const objetivo = (p.objetivo || "Manter").toLowerCase();
+      const p = profileOrDefault();
+      const obj = (p.objetivo || "Manter").toLowerCase();
+
+      const intros = [
+        "Beleza — vou te dar uma estimativa rápida.",
+        "Vamos no modo prático: estimativa + sugestão.",
+        "Fechado. Vou analisar como se fosse um dia normal."
+      ];
+      const tones = pickRandom(intros);
 
       let desc = "Prato com arroz, feijão, proteína e salada (estimativa).";
       let kcal = 650;
-      if(objetivo.includes("emag")){ desc = "Prato leve com proteína magra e salada (estimativa)."; kcal = 520; }
-      if(objetivo.includes("massa")){ desc = "Prato reforçado com carbo + proteína (estimativa)."; kcal = 820; }
+
+      if(obj.includes("emag")){ desc = "Prato mais leve: proteína magra + salada + carbo controlado (estimativa)."; kcal = 520; }
+      if(obj.includes("massa")){ desc = "Prato reforçado: carbo + proteína + legumes (estimativa)."; kcal = 820; }
+      if(obj.includes("perform")){ desc = "Prato de performance: carbo bom + proteína + micronutrientes (estimativa)."; kcal = 720; }
 
       out.style.display="block";
-      out.textContent = `✅ IA (DEMO) sugeriu: ${desc} ~${kcal} kcal. Confirme abaixo.`;
+      out.textContent = `✅ ${tones} Sugestão (DEMO): ${desc} ~${kcal} kcal. Confirme abaixo.`;
 
-      edit.value = `${desc}\n\nEstimativa: ~${kcal} kcal`;
+      edit.value = `${desc}\n\nEstimativa: ~${kcal} kcal\nSugestão: se bater fome mais tarde, priorize proteína + fruta.`;
       confirmBox.style.display="block";
 
-      // guarda hash pendente
       localStorage.setItem(KEY_PLATE_HASH, h);
     }
     window.analisarPrato = analisarPrato;
@@ -1594,41 +1576,159 @@
     window.refazerAnalise = refazerAnalise;
 
     /***********************
-     * 8) Dieta
+     * 8) DIETA (menos robótica + muita variação)
      ***********************/
-    const DIETAS_BASE = [
-      [
-        {t:"Café da manhã", d:"Omelete de 2 ovos + 1 fatia pão integral.", k:350},
-        {t:"Lanche", d:"Mix de castanhas + 1 fruta.", k:180},
-        {t:"Almoço", d:"Frango + arroz integral + feijão + salada.", k:550},
-        {t:"Lanche", d:"Iogurte natural + chia.", k:160},
-        {t:"Jantar", d:"Peixe + legumes + batata-doce.", k:480},
-      ],
-      [
-        {t:"Café da manhã", d:"Aveia + banana + 2 ovos.", k:520},
-        {t:"Almoço", d:"Arroz + feijão + carne magra + brócolis.", k:780},
-        {t:"Jantar", d:"Macarrão integral + frango + molho de tomate.", k:720},
-        {t:"Ceia", d:"Iogurte + granola.", k:300},
-      ],
-      [
-        {t:"Café da manhã", d:"Tapioca com queijo + café sem açúcar.", k:420},
-        {t:"Almoço", d:"Carne magra + mandioca + salada.", k:720},
-        {t:"Jantar", d:"Omelete + legumes.", k:460},
-      ]
+    const DIETA_INTROS = [
+      "Vamos montar uma dieta realista pra sua rotina.",
+      "Nada de terrorismo alimentar — foco no que dá pra manter.",
+      "A ideia aqui é consistência, não perfeição.",
+      "Fechado: vou te passar um plano simples e eficiente."
+    ];
+    const DIETA_OUTROS = [
+      "Se algum alimento não tiver, troca por outro da mesma categoria (carbo/proteína/gordura).",
+      "Se sentir fome, ajusta porções e prioriza proteína e fibras.",
+      "Se tiver treino pesado, aumenta um pouco o carbo nas refeições perto do treino.",
+      "Bebe água e dorme bem — isso muda o jogo."
     ];
 
-    function renderDieta(d){
+    const FOODS = {
+      proteina: ["frango", "carne magra", "peixe", "ovos", "atum", "patinho moído", "tofu", "grão-de-bico", "lentilha"],
+      carbo: ["arroz", "arroz integral", "batata-doce", "mandioca", "aveia", "pão integral", "macarrão integral", "banana"],
+      fibra: ["salada", "brócolis", "legumes", "couve", "espinafre", "cenoura", "feijão", "grão-de-bico"],
+      gordura: ["azeite", "castanhas", "amendoim", "abacate", "pasta de amendoim", "sementes (chia/linhaça)"],
+      snack: ["iogurte", "fruta", "mix de castanhas", "barra de proteína", "tapioca", "queijo", "whey", "crepioca"]
+    };
+
+    function applyRestriction(text, restricao){
+      const r = (restricao || "Nenhuma").toLowerCase();
+      let t = text;
+
+      const swaps = [
+        { from: /iogurte/gi, to: r.includes("lactose") ? "iogurte sem lactose" : "iogurte" },
+        { from: /queijo/gi, to: r.includes("lactose") ? "queijo sem lactose" : "queijo" },
+        { from: /pão integral/gi, to: r.includes("glúten") ? "pão sem glúten" : "pão integral" },
+        { from: /macarrão integral/gi, to: r.includes("glúten") ? "macarrão sem glúten" : "macarrão integral" },
+        { from: /frango|carne magra|peixe|atum|ovos|patinho moído/gi,
+          to: (r.includes("vegano") ? "tofu" : (r.includes("vegetar") ? "ovos" : "$&")) }
+      ];
+
+      swaps.forEach(s=>{
+        t = t.replace(s.from, s.to);
+      });
+
+      if(r.includes("vegano")){
+        t = t.replace(/ovos/gi, "tofu");
+        t = t.replace(/whey/gi, "proteína vegetal");
+        t = t.replace(/iogurte/gi, "iogurte vegetal");
+        t = t.replace(/queijo/gi, "queijo vegetal");
+        t = t.replace(/atum/gi, "grão-de-bico");
+      }
+
+      return t;
+    }
+
+    function estimateKcal(objetivo, nivel){
+      const obj = (objetivo||"Manter").toLowerCase();
+      const nv = (nivel||"Iniciante").toLowerCase();
+
+      let base = 2000;
+      if(obj.includes("emag")) base = 1700;
+      if(obj.includes("massa")) base = 2500;
+      if(obj.includes("perform")) base = 2200;
+
+      if(nv.includes("inic")) base -= 100;
+      if(nv.includes("avanç")) base += 150;
+
+      return clamp(base, 1400, 3200);
+    }
+
+    function buildMealPlan(p){
+      const obj = p.objetivo || "Manter";
+      const niv = p.nivel || "Iniciante";
+      const restr = p.restricao || "Nenhuma";
+
+      const kcalDia = estimateKcal(obj, niv);
+
+      // Estratégias por objetivo (sem “robô”):
+      const style = obj.toLowerCase().includes("emag")
+        ? { meals: 4, proteinBoost: 1, carbBoost: 0 }
+        : obj.toLowerCase().includes("massa")
+          ? { meals: 5, proteinBoost: 2, carbBoost: 2 }
+          : obj.toLowerCase().includes("perform")
+            ? { meals: 5, proteinBoost: 2, carbBoost: 1 }
+            : { meals: 4, proteinBoost: 1, carbBoost: 1 };
+
+      const mealNamesByCount = style.meals === 5
+        ? ["Café da manhã","Lanche","Almoço","Lanche","Jantar"]
+        : ["Café da manhã","Almoço","Lanche","Jantar"];
+
+      const mk = (t, d, k)=>({ t, d, k });
+
+      // Monta refeições com pools e variação:
+      const pickP = ()=>pickRandom(FOODS.proteina);
+      const pickC = ()=>pickRandom(FOODS.carbo);
+      const pickF = ()=>pickRandom(FOODS.fibra);
+      const pickG = ()=>pickRandom(FOODS.gordura);
+      const pickS = ()=>pickRandom(FOODS.snack);
+
+      const meals = [];
+
+      for(let i=0;i<mealNamesByCount.length;i++){
+        const name = mealNamesByCount[i];
+        let desc = "";
+        if(name === "Café da manhã"){
+          desc = `${pickS()} + ${pickC()} + ${pickP()}`;
+          if(style.carbBoost>0 && Math.random()<0.5) desc += ` + ${pickC()}`;
+        } else if(name === "Almoço"){
+          desc = `${pickP()} + ${pickC()} + ${pickF()}`;
+          if(style.proteinBoost>1 && Math.random()<0.45) desc += ` + ${pickP()}`;
+        } else if(name === "Jantar"){
+          desc = `${pickP()} + ${pickF()}`;
+          if(style.carbBoost>0 && Math.random()<0.45) desc += ` + ${pickC()}`;
+        } else { // lanches
+          desc = `${pickS()} + ${pickG()}`;
+          if(style.proteinBoost>1 && Math.random()<0.4) desc += ` + ${pickP()}`;
+        }
+
+        desc = applyRestriction(desc, restr);
+
+        // kcal por refeição (simples, mas consistente)
+        const kcal = Math.round(kcalDia / mealNamesByCount.length * (0.9 + Math.random()*0.25));
+        meals.push(mk(name, desc, kcal));
+      }
+
+      // Ajuste final para bater mais perto do total
+      const sum = meals.reduce((a,m)=>a+m.k,0);
+      const diff = kcalDia - sum;
+      if(meals.length){
+        meals[meals.length-1].k = Math.max(120, meals[meals.length-1].k + diff);
+      }
+
+      return { meals, kcalDia, note: pickRandom(DIETA_OUTROS), intro: pickRandom(DIETA_INTROS) };
+    }
+
+    function renderDieta(plan){
       const box = $("dietaBox");
       if(!box) return;
       box.innerHTML = "";
-      if(!d){
+      if(!plan){
         const s = document.createElement("div");
         s.className="status";
         s.textContent="Gere uma dieta para aparecer aqui.";
         box.appendChild(s);
         return;
       }
-      d.forEach(m=>{
+
+      const p = profileOrDefault();
+      const head = document.createElement("div");
+      head.className = "status";
+      head.innerHTML = `<b>${escapeHtml(plan.intro)}</b><br>
+        Objetivo: <b>${escapeHtml(p.objetivo||"—")}</b> • Nível: <b>${escapeHtml(p.nivel||"—")}</b> • Restrição: <b>${escapeHtml(p.restricao||"Nenhuma")}</b><br>
+        Meta do dia (estimativa): <b>${plan.kcalDia} kcal</b><br>
+        <span class="muted">${escapeHtml(plan.note)}</span>`;
+      box.appendChild(head);
+
+      plan.meals.forEach(m=>{
         const div = document.createElement("div");
         div.className="meal";
         div.innerHTML = `
@@ -1643,54 +1743,187 @@
     }
 
     function gerarDieta(){
-      const d = DIETAS_BASE[Math.floor(Math.random()*DIETAS_BASE.length)];
-      localStorage.setItem(KEY_DIETA, JSON.stringify(d));
-      renderDieta(d);
+      const p = profileOrDefault();
+      const plan = buildMealPlan(p);
+      localStorage.setItem(KEY_DIETA, JSON.stringify(plan));
+      renderDieta(plan);
       pushToCloud();
     }
     window.gerarDieta = gerarDieta;
 
-    function refazerDieta(){
-      gerarDieta();
-    }
+    function refazerDieta(){ gerarDieta(); }
     window.refazerDieta = refazerDieta;
 
     /***********************
-     * 9) Treino
+     * 9) TREINO (muitos esportes + auto)
      ***********************/
-    const TREINOS = {
-      "Academia": [
-        ["Segunda", ["Agachamento","Supino","Remada"]],
-        ["Quarta", ["Desenvolvimento","Puxada","Abdominal prancha"]],
-        ["Sexta", ["Levantamento terra","Rosca","Tríceps"]],
-      ],
-      "Corrida": [
-        ["Segunda", ["Corrida leve 30 min","Mobilidade"]],
-        ["Quarta", ["Tiros 8x 200m","Alongamento"]],
-        ["Sexta", ["Corrida moderada 40 min","Core"]],
-      ],
-      "Muay Thai":[
-        ["Terça", ["Sombra 10 min","Chutes básicos","Combinações"]],
-        ["Quinta", ["Manopla","Defesas","Condicionamento"]],
-        ["Sábado", ["Clinch","Sequências","Alongamento"]],
-      ],
-      "Futebol":[
-        ["Segunda", ["Arranque","Controle de bola","Finalização"]],
-        ["Quarta", ["Agilidade","Passe e domínio","Resistência"]],
-        ["Sexta", ["Jogo reduzido","Alongamento"]],
-      ],
-      "Basquete":[
-        ["Terça", ["Drible","Arremessos","Pliometria"]],
-        ["Quinta", ["Defesa lateral","Bandejas","Condicionamento"]],
-        ["Sábado", ["Treino de jogo","Alongamento"]],
-      ]
-    };
+    const THEMES = [
+      "Auto (meus esportes)",
+      "Musculação (Full body)",
+      "Musculação (ABC)",
+      "Calistenia",
+      "Funcional",
+      "HIIT",
+      "Corrida",
+      "Ciclismo",
+      "Natação",
+      "Yoga",
+      "Pilates",
+      "Boxe",
+      "Muay Thai",
+      "Jiu-jitsu",
+      "Futebol",
+      "Basquete",
+      "Vôlei",
+      "Alongamento/Mobilidade"
+    ];
 
-    function renderTreino(t){
+    function syncTemaTreinoOptions(){
+      const sel = $("temaTreino");
+      if(!sel) return;
+      const current = sel.value || "Auto (meus esportes)";
+      sel.innerHTML = "";
+      THEMES.forEach(t=>{
+        const opt = document.createElement("option");
+        opt.textContent = t;
+        sel.appendChild(opt);
+      });
+
+      // Se usuário marcou esportes, adiciona um “preferidos” rápido:
+      const pref = Array.from(selectedSports);
+      if(pref.length){
+        const opt = document.createElement("option");
+        opt.textContent = "Preferidos (" + pref.slice(0,3).join(", ") + (pref.length>3 ? "…" : "") + ")";
+        sel.insertBefore(opt, sel.children[1]);
+      }
+
+      // tenta manter seleção
+      const exists = Array.from(sel.options).some(o=>o.value===current);
+      sel.value = exists ? current : "Auto (meus esportes)";
+    }
+
+    function getLevel(){
+      const p = profileOrDefault();
+      const n = (p.nivel||"Iniciante").toLowerCase();
+      if(n.includes("avanç")) return "Avançado";
+      if(n.includes("inter")) return "Intermediário";
+      return "Iniciante";
+    }
+
+    function scheme(intensidade, level){
+      const i = (intensidade||"Moderado").toLowerCase();
+      const l = (level||"Iniciante").toLowerCase();
+
+      if(i.includes("leve")){
+        return l.includes("avanç") ? "3 séries • 10–12 reps • descanso 60–90s" : "2–3 séries • 10–12 reps • descanso 60–90s";
+      }
+      if(i.includes("pesado")){
+        return l.includes("inic") ? "3 séries • 8–10 reps • descanso 90s" : "4 séries • 6–10 reps • descanso 90–120s";
+      }
+      return l.includes("avanç") ? "4 séries • 8–12 reps • descanso 60–90s" : "3 séries • 8–12 reps • descanso 60–90s";
+    }
+
+    function makeYouTube(ex){
+      return `https://www.youtube.com/results?search_query=${encodeURIComponent(ex+" como fazer")}`;
+    }
+
+    function buildStrengthPlan(type, intensidade, level){
+      const sch = scheme(intensidade, level);
+
+      const full = [
+        ["Segunda", ["Agachamento", "Supino reto", "Remada", "Desenvolvimento (ombro)", "Abdominal prancha"]],
+        ["Quarta", ["Levantamento terra (leve)", "Puxada na barra/lat", "Afundo", "Tríceps", "Rosca bíceps"]],
+        ["Sexta", ["Leg press", "Supino inclinado", "Remada unilateral", "Elevação lateral", "Panturrilha"]]
+      ];
+
+      const abc = [
+        ["Segunda (A)", ["Peito", "Supino reto", "Supino inclinado", "Crucifixo", "Tríceps", "Tríceps corda"]],
+        ["Quarta (B)", ["Costas", "Puxada", "Remada", "Pulldown", "Bíceps", "Rosca direta"]],
+        ["Sexta (C)", ["Pernas", "Agachamento", "Leg press", "Stiff", "Panturrilha", "Abdômen"]]
+      ];
+
+      const dias = (type.includes("ABC") ? abc : full).map(d=>[d[0], d[1].map(ex=>`${ex} • ${sch}`)]);
+      return { tema: type, intensidade, level, dias };
+    }
+
+    function buildCardioPlan(tema, intensidade, level){
+      const i = (intensidade||"Moderado").toLowerCase();
+      const l = (level||"Iniciante").toLowerCase();
+
+      const baseTime =
+        i.includes("leve") ? 25 :
+        i.includes("pesado") ? 45 : 35;
+
+      const extra = l.includes("avanç") ? 10 : l.includes("inter") ? 5 : 0;
+
+      const t = baseTime + extra;
+
+      const dias = [
+        ["Segunda", [`${tema} leve ${t-10} min • respiração controlada`]],
+        ["Quarta", [i.includes("pesado") ? `${tema} intervalado ${t} min • 1 min forte / 1 min leve` : `${tema} moderado ${t} min • ritmo constante`]],
+        ["Sexta", [`${tema} progressivo ${t} min • começa leve e termina moderado`]],
+        ["Sábado", [`Mobilidade + alongamento 15 min • recuperação`]]
+      ];
+
+      return { tema, intensidade, level, dias };
+    }
+
+    function buildLutaPlan(tema, intensidade, level){
+      const i = (intensidade||"Moderado").toLowerCase();
+      const l = (level||"Iniciante").toLowerCase();
+
+      const rounds =
+        i.includes("leve") ? 6 :
+        i.includes("pesado") ? 10 : 8;
+
+      const r = l.includes("avanç") ? rounds+2 : rounds;
+
+      const dias = [
+        ["Terça", [`Sombra 10 min • base`, `Técnica 25 min • combinações`, `Rounds ${r}x2min • leve/moderado`]],
+        ["Quinta", [`Aquecimento 10 min`, `Técnica 30 min`, `Condicionamento 12 min (core + explosão)`]],
+        ["Sábado", [`Técnica 20 min`, `Sparring leve (opcional)`, `Alongamento 10 min`]]
+      ];
+      return { tema, intensidade, level, dias };
+    }
+
+    function buildEsportePlan(tema, intensidade, level){
+      const i = (intensidade||"Moderado").toLowerCase();
+      const drill =
+        tema === "Futebol" ? ["Passe e domínio", "Finalização", "Arranque/Agilidade"] :
+        tema === "Basquete" ? ["Drible", "Arremessos", "Defesa lateral"] :
+        tema === "Vôlei" ? ["Saque", "Recepção", "Bloqueio"] :
+        ["Técnica", "Agilidade", "Condicionamento"];
+
+      const days = [
+        ["Segunda", [`${drill[0]} 25 min`, `${drill[1]} 20 min`, `Condicionamento 12 min`]],
+        ["Quarta", [`${drill[2]} 20 min`, `Jogo reduzido 20–30 min`]],
+        ["Sexta", [i.includes("pesado") ? "Jogo/treino forte 45–60 min" : "Jogo/treino moderado 35–50 min"]],
+        ["Sábado", ["Alongamento/Mobilidade 15 min • recuperação"]]
+      ];
+      return { tema, intensidade, level, dias: days };
+    }
+
+    function buildMindBodyPlan(tema, intensidade, level){
+      const i = (intensidade||"Moderado").toLowerCase();
+      const minutes =
+        i.includes("leve") ? 20 :
+        i.includes("pesado") ? 45 : 30;
+
+      const days = [
+        ["Segunda", [`${tema} ${minutes} min • foco em respiração e postura`]],
+        ["Quarta", [`${tema} ${minutes+5} min • mobilidade + core`]],
+        ["Sexta", [`${tema} ${minutes} min • alongamento profundo`]],
+        ["Domingo", ["Caminhada leve 20–30 min (opcional)"]]
+      ];
+      return { tema, intensidade, level, dias: days };
+    }
+
+    function renderTreino(plan){
       const box = $("treinoSemana");
       if(!box) return;
       box.innerHTML = "";
-      if(!t){
+
+      if(!plan){
         const s = document.createElement("div");
         s.className="status";
         s.textContent="Gere um treino para aparecer aqui.";
@@ -1698,19 +1931,28 @@
         return;
       }
 
-      t.dias.forEach(d=>{
+      const head = document.createElement("div");
+      head.className="status";
+      head.innerHTML = `<b>Treino pronto.</b> Tema: <b>${escapeHtml(plan.tema)}</b> • Intensidade: <b>${escapeHtml(plan.intensidade)}</b> • Nível: <b>${escapeHtml(plan.level)}</b>
+      <br><span class="muted">Dica: se doer “errado”, ajuste e procure um profissional.</span>`;
+      box.appendChild(head);
+
+      plan.dias.forEach(d=>{
         const day = document.createElement("div");
         day.className="dayCard";
-        day.innerHTML = `<div class="dayTitle"><span>${escapeHtml(d[0])}</span><span class="muted">${escapeHtml(t.tema)}</span></div>`;
+        day.innerHTML = `<div class="dayTitle"><span>${escapeHtml(d[0])}</span><span class="muted">${escapeHtml(plan.tema)}</span></div>`;
         (d[1]||[]).forEach(ex=>{
           const row = document.createElement("div");
           row.className="exercise";
+
           const left = document.createElement("div");
-          left.innerHTML = `<b>${escapeHtml(ex)}</b><div class="muted" style="font-size:12px; margin-top:4px">${escapeHtml(t.intensidade)}</div>`;
+          left.innerHTML = `<b>${escapeHtml(ex)}</b>`;
+
           const btn = document.createElement("button");
           btn.className="ytBtn";
           btn.textContent="Ver técnica";
-          btn.addEventListener("click", ()=> abrirLink(`https://www.youtube.com/results?search_query=${encodeURIComponent(ex+" como fazer")}`));
+          btn.addEventListener("click", ()=> abrirLink(makeYouTube(ex)));
+
           row.appendChild(left);
           row.appendChild(btn);
           day.appendChild(row);
@@ -1719,16 +1961,55 @@
       });
     }
 
+    function decideTheme(rawTheme){
+      const p = profileOrDefault();
+      const marked = (Array.isArray(p.esportes) ? p.esportes : []);
+      const theme = rawTheme || "Auto (meus esportes)";
+
+      if(theme.startsWith("Preferidos") && marked.length) return pickRandom(marked);
+      if(theme === "Auto (meus esportes)"){
+        return marked.length ? pickRandom(marked) : "Musculação (Full body)";
+      }
+      return theme;
+    }
+
     function gerarTreino(){
-      const tema = $("temaTreino")?.value || "Academia";
+      const p = profileOrDefault();
+      const raw = $("temaTreino")?.value || "Auto (meus esportes)";
+      const tema = decideTheme(raw);
       const intensidade = $("intTreino")?.value || "Moderado";
-      const base = TREINOS[tema] || TREINOS["Academia"];
-      const plano = { tema, intensidade, dias: base, createdAt: Date.now() };
-      localStorage.setItem(KEY_TREINO, JSON.stringify(plano));
-      renderTreino(plano);
+      const level = getLevel();
+
+      let plan;
+      if(tema.startsWith("Musculação")){
+        plan = buildStrengthPlan(tema, intensidade, level);
+      } else if(["Corrida","Ciclismo","Natação","Caminhada"].includes(tema)){
+        plan = buildCardioPlan(tema, intensidade, level);
+      } else if(["Boxe","Muay Thai","Jiu-jitsu"].includes(tema)){
+        plan = buildLutaPlan(tema, intensidade, level);
+      } else if(["Futebol","Basquete","Vôlei","Handebol","Tênis","Beach Tennis"].includes(tema)){
+        plan = buildEsportePlan(tema, intensidade, level);
+      } else if(["Yoga","Pilates","Alongamento/Mobilidade"].includes(tema)){
+        plan = buildMindBodyPlan(tema, intensidade, level);
+      } else if(["Calistenia","Funcional","HIIT","Crossfit"].includes(tema)){
+        // híbrido
+        const days = [
+          ["Segunda", ["Agachamento (peso do corpo) • 3x10", "Flexão • 3x8–12", "Remada/invertida • 3x8–12", "Prancha • 3x30–45s"]],
+          ["Quarta", ["Circuito 20 min • 40s on / 20s off", "Burpee (adaptado) • 3x8–12", "Afundo • 3x10", "Abdominal • 3x12"]],
+          ["Sexta", ["Pliometria leve • 10 min", "Flexão inclinada • 3x10", "Agachamento • 3x12", "Alongamento • 10 min"]],
+          ["Sábado", ["Caminhada leve 20–30 min (opcional)"]]
+        ];
+        plan = { tema, intensidade, level, dias };
+      } else {
+        // fallback
+        plan = buildMindBodyPlan("Alongamento/Mobilidade", intensidade, level);
+      }
+
+      localStorage.setItem(KEY_TREINO, JSON.stringify(plan));
+      renderTreino(plan);
 
       const out = $("outTreino");
-      if(out){ out.style.display="block"; out.textContent = `✅ Treino salvo: ${tema} (${intensidade}).`; }
+      if(out){ out.style.display="block"; out.textContent = `✅ Treino salvo: ${plan.tema} (${plan.intensidade}).`; }
       pushToCloud();
     }
     window.gerarTreino = gerarTreino;
@@ -1743,7 +2024,7 @@
     window.limparTreino = limparTreino;
 
     /***********************
-     * 10) Convites + saque (demo)
+     * 10) Convites (pontos)
      ***********************/
     function getOrCreateInviteCode(){
       let code = localStorage.getItem(KEY_INV_CODE);
@@ -1779,7 +2060,7 @@
 
     function shareInvite(){
       const link = getMyInviteLink();
-      const text = `Baixa o CheckPrato Elite e usa meu link: ${link}`;
+      const text = `Testa o CheckPrato Elite (grátis): ${link}`;
       if(navigator.share){
         navigator.share({ title:"CheckPrato Elite", text, url: link }).catch(()=>{});
       }else{
@@ -1791,63 +2072,65 @@
     function renderInviteUI(){
       const code = getOrCreateInviteCode();
       const link = getMyInviteLink();
-      const bal = getBalance();
-      const falta = Math.max(0, 50 - bal);
+      const pts = getBalance();
+      const falta = Math.max(0, 100 - pts);
 
       if($("myCode")) $("myCode").textContent = code;
       if($("myLink")) $("myLink").textContent = link;
-      if($("balTxt")) $("balTxt").textContent = fmtBRL(bal);
+      if($("balTxt")) $("balTxt").textContent = `${pts} pts`;
 
       if($("progressTxt")){
-        $("progressTxt").textContent = bal >= 50
-          ? "✅ Você atingiu R$ 50! Agora pode solicitar saque (demo)."
-          : `Faltam ${fmtBRL(falta)} para atingir R$ 50.`;
+        $("progressTxt").textContent = pts >= 100
+          ? "✅ Você atingiu 100 pts! Pode resgatar uma badge (demo)."
+          : `Faltam ${falta} pts para resgatar uma badge.`;
       }
 
-      const btn = $("btnSaque");
+      const btn = $("btnBonus");
       if(btn){
-        btn.disabled = bal < 50;
-        btn.style.opacity = bal < 50 ? .55 : 1;
+        btn.disabled = pts < 100;
+        btn.style.opacity = pts < 100 ? .55 : 1;
       }
     }
 
-    function solicitarSaque(){
-      const bal = getBalance();
+    function resgatarBonus(){
+      const pts = getBalance();
       const msg = $("saqueMsg");
       if(!msg) return;
 
-      if(bal < 50){
+      if(pts < 100){
         msg.style.display="block";
-        msg.textContent = "Ainda não atingiu o mínimo (R$50).";
+        msg.textContent = "Ainda não atingiu 100 pts.";
         return;
       }
 
+      setBalance(pts - 100);
       msg.style.display="block";
-      msg.textContent = "✅ Solicitação de saque registrada (DEMO). Depois ligamos Pix/QR de verdade no backend.";
+      msg.textContent = "🏅 Badge resgatada (DEMO)! Depois a gente liga isso em um sistema real.";
     }
-    window.solicitarSaque = solicitarSaque;
+    window.resgatarBonus = resgatarBonus;
 
     /***********************
-     * 11) Premium
+     * 11) Dashboard
      ***********************/
-    const PREMIUM_PRICE = 29.90;
-    const PREMIUM_CHECKOUT_URL = "https://mpago.la/2BRjpaP"; // seu link
-    function openCheckout(){ window.open(PREMIUM_CHECKOUT_URL, "_blank"); }
-    window.openCheckout = openCheckout;
-
-    /***********************
-     * 12) Dashboard (calorias, km, dias)
-     ***********************/
-    function getDash(){
-      const d = safeJSON(KEY_DASH);
-      if(d && typeof d === "object") return d;
-
-      // default (semana atual)
+    function getWeekStart(){
       const now = new Date();
       const start = new Date(now);
       start.setHours(0,0,0,0);
       start.setDate(now.getDate() - ((now.getDay()+6)%7)); // segunda
-      return { kcal:0, km:0, done:0, goal:7, weekStart: start.getTime() };
+      return start.getTime();
+    }
+
+    function getDash(){
+      const d = safeJSON(KEY_DASH);
+      const ws = getWeekStart();
+      if(d && typeof d === "object"){
+        // ✅ reset automático quando muda a semana
+        if(d.weekStart !== ws){
+          return { kcal:0, km:0, done:0, goal: d.goal || 7, weekStart: ws };
+        }
+        return d;
+      }
+      return { kcal:0, km:0, done:0, goal:7, weekStart: ws };
     }
     function setDash(d){
       localStorage.setItem(KEY_DASH, JSON.stringify(d));
@@ -1916,12 +2199,7 @@
     function resetProgresso(){
       const d = getDash();
       d.kcal = 0; d.km = 0; d.done = 0;
-      // atualiza semana
-      const now = new Date();
-      const start = new Date(now);
-      start.setHours(0,0,0,0);
-      start.setDate(now.getDate() - ((now.getDay()+6)%7));
-      d.weekStart = start.getTime();
+      d.weekStart = getWeekStart();
       setDash(d);
     }
     window.resetProgresso = resetProgresso;
@@ -1930,7 +2208,7 @@
       const d = getDash();
       const v = prompt("Meta de dias de treino na semana (ex: 5, 6, 7):", String(d.goal));
       if(v === null) return;
-      const n = Math.max(1, Math.min(14, parseInt(v,10) || d.goal));
+      const n = clamp(parseInt(v,10) || d.goal, 1, 14);
       d.goal = n;
       if(d.done > d.goal) d.done = d.goal;
       setDash(d);
@@ -1938,18 +2216,22 @@
     window.setGoalDaysPrompt = setGoalDaysPrompt;
 
     /***********************
-     * 13) Perfil
+     * 12) Perfil
      ***********************/
     function updatePerfilBox(){
       const p = safeJSON(KEY_PROFILE) || {};
       const dash = getDash();
       const mode = localStorage.getItem(KEY_GUEST) ? "Convidado (Local)" : (currentUser ? "Logado" : "Local");
-      const sports = Array.isArray(p.esportes) ? p.esportes.join(", ") : "—";
+      const sports = Array.isArray(p.esportes) && p.esportes.length ? p.esportes.join(", ") : "—";
+      const termo = p.termoAceito ? "Aceito" : "Não aceito";
       const html = `
         <div><b>Modo:</b> ${escapeHtml(mode)}</div>
         <div><b>Nome:</b> ${escapeHtml(p.nome || "—")}</div>
         <div><b>Objetivo:</b> ${escapeHtml(p.objetivo || "—")}</div>
-        <div><b>Esportes:</b> ${escapeHtml(sports || "—")}</div>
+        <div><b>Nível:</b> ${escapeHtml(p.nivel || "—")}</div>
+        <div><b>Restrição:</b> ${escapeHtml(p.restricao || "Nenhuma")}</div>
+        <div><b>Esportes:</b> ${escapeHtml(sports)}</div>
+        <div><b>Termo:</b> ${escapeHtml(termo)}</div>
         <div style="margin-top:8px"><b>Semana:</b> ${escapeHtml(weekLabel(dash.weekStart))}</div>
         <div><b>Calorias:</b> ${Math.round(dash.kcal)} | <b>KM:</b> ${Math.round(dash.km)} | <b>Dias:</b> ${dash.done}/${dash.goal}</div>
       `;
@@ -1957,25 +2239,25 @@
     }
 
     /***********************
-     * 14) Init
+     * 13) Init
      ***********************/
     function refreshAllUI(){
       applyProfileToUI();
       buildSportsChips();
+      syncTemaTreinoOptions();
       applyAvatar();
       loadLastPlate();
       renderHistory();
 
       // dieta e treino salvos
-      renderDieta(safeJSON(KEY_DIETA));
-      renderTreino(safeJSON(KEY_TREINO));
+      const savedDieta = safeJSON(KEY_DIETA);
+      if(savedDieta) renderDieta(savedDieta);
+
+      const savedTreino = safeJSON(KEY_TREINO);
+      if(savedTreino) renderTreino(savedTreino);
 
       // convites
       renderInviteUI();
-
-      // premium button
-      const btn = $("btnPremium");
-      if(btn) btn.textContent = `CONFIRMAR R$ ${PREMIUM_PRICE.toFixed(2).replace(".", ",")}/MÊS`;
 
       // dash
       renderDash();
@@ -1988,12 +2270,10 @@
       wireAvatarInput();
       wirePlateInput();
 
-      // welcome message
       if($("welcomeStatus")){
-        $("welcomeStatus").textContent = "✅ Dica: se algo não abrir, limpe o cache do navegador e recarregue.";
+        $("welcomeStatus").textContent = "✅ Dica: se algo não atualizar, limpe o cache do site e recarregue.";
       }
 
-      // decide entrada
       const isGuest = !!localStorage.getItem(KEY_GUEST);
       if(isGuest){
         setAuthBadge("Modo: Local");
