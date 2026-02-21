@@ -10,6 +10,9 @@
   <link rel="icon" sizes="192x192" href="./icon-192.png">
   <link rel="apple-touch-icon" href="./icon-192.png">
 
+  <!-- Chart (Gráfico) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
   <style>
     :root{
       --bg:#07121f;
@@ -27,7 +30,6 @@
       --max:560px;
 
       --glass: rgba(255,255,255,.06);
-      --glass2: rgba(255,255,255,.03);
       --stroke3d: rgba(255,255,255,.10);
       --shadow3d: 0 24px 70px rgba(0,0,0,.55);
     }
@@ -163,6 +165,19 @@
       color: var(--txt);
       margin-top: 10px;
     }
+    .btnOrange{
+      width:100%;
+      padding: 16px 16px;
+      border-radius: 18px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 950;
+      font-size: 16px;
+      background: linear-gradient(135deg, #ffcc5a, #f6b23a);
+      color:#201400;
+      margin-top: 12px;
+      box-shadow: 0 18px 45px rgba(246,178,58,.18);
+    }
 
     .status{
       margin-top: 10px;
@@ -170,7 +185,6 @@
       color: rgba(234,242,255,.86);
     }
 
-    /* chips */
     .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;}
     .chip{
       padding: 10px 12px;
@@ -189,7 +203,6 @@
       box-shadow: 0 0 0 6px rgba(33,230,182,.08);
     }
 
-    /* screens */
     .screen{
       display:none;
       margin-top: 8px;
@@ -238,15 +251,16 @@
     }
 
     /* plate */
-    .plateBox{margin-top:12px;}
     .platePreview{
       width:100%;
       border-radius: 22px;
       border: 1px solid rgba(255,255,255,.08);
       background: rgba(0,0,0,.14);
       overflow:hidden;
+      margin-top: 12px;
     }
     .platePreview img{ width:100%; display:block; }
+
     .miniRow{ display:flex; gap:10px; flex-wrap:wrap }
     .miniBtn{
       flex:1 1 160px;
@@ -279,7 +293,7 @@
     .meal p{margin:0; color: rgba(234,242,255,.88); font-weight:750; line-height:1.35}
     .kcal{
       display:flex; align-items:center; justify-content:center;
-      min-width: 92px;
+      min-width: 88px;
       border-radius: 999px;
       border:1px solid rgba(33,230,182,.25);
       background: rgba(33,230,182,.08);
@@ -430,34 +444,6 @@
       padding: 14px;
       transform: translateZ(18px);
     }
-    .proMuscle{
-      position: relative;
-      min-height: 240px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-    }
-    .proMuscle svg{
-      width: 100%;
-      max-width: 260px;
-      opacity: .9;
-      filter: drop-shadow(0 18px 40px rgba(0,0,0,.55));
-    }
-    .proLabels{ margin-top: 10px; display:grid; gap: 8px; }
-    .proTag{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-    }
-    .proTag b{ color: rgba(234,242,255,.92); font-weight: 950; }
-    .proTag small{ color: rgba(234,242,255,.62); font-weight: 800; }
-
     .proRingBox{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap: 10px; min-height: 240px; }
     .ring{ width: 180px; height: 180px; position: relative; transform: translateZ(26px); }
     .ring svg{ width: 100%; height: 100%; transform: rotate(-90deg); filter: drop-shadow(0 20px 40px rgba(0,0,0,.55)); }
@@ -493,6 +479,54 @@
       text-transform: uppercase;
     }
     .proHint{ padding: 0 16px 16px; color: rgba(234,242,255,.65); font-weight: 800; position: relative; z-index: 1; }
+
+    /* Evolução / Gamificação */
+    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pill2{
+      padding: 10px 12px; border-radius: 18px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      font-weight: 900;
+      color: rgba(234,242,255,.9);
+    }
+    .bar{
+      width:100%; height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      margin-top: 8px;
+    }
+    .bar > div{
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(135deg, rgba(33,230,182,.95), rgba(23,202,160,.85));
+    }
+    .badgeRow{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .badge{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      font-weight: 900;
+      color: rgba(234,242,255,.9);
+      white-space:nowrap;
+    }
+    .badge.ok{
+      border-color: rgba(33,230,182,.35);
+      background: rgba(33,230,182,.10);
+      color: var(--txt);
+      box-shadow: 0 0 0 6px rgba(33,230,182,.06);
+    }
+
+    .chartBox{
+      margin-top: 12px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.14);
+      padding: 12px;
+      overflow:hidden;
+    }
 
     @media (min-width: 900px){
       .wrap{ max-width: 900px; }
@@ -541,7 +575,6 @@
 
       <div class="pro3dWrap">
         <div class="pro3dCard">
-
           <div class="proTop">
             <div class="pill"><span class="dot"></span><span id="proMode">Local</span></div>
             <div class="pill"><span class="dot"></span><span id="proWeek">Semana</span></div>
@@ -551,33 +584,23 @@
 
           <div class="proGrid">
             <div class="proPanel">
-              <div class="label" style="margin-top:0">Músculos foco</div>
-              <div class="proMuscle">
-                <svg viewBox="0 0 220 320" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <linearGradient id="g" x1="30" y1="30" x2="190" y2="290">
-                      <stop stop-color="rgba(33,230,182,.55)"/>
-                      <stop offset="1" stop-color="rgba(33,230,182,.08)"/>
-                    </linearGradient>
-                  </defs>
-                  <path d="M110 16c22 0 40 18 40 40 0 10-4 18-10 26 18 14 28 34 28 58 0 12-2 22-8 32 10 14 16 30 16 50 0 34-14 64-36 84-9 8-18 13-30 13s-21-5-30-13c-22-20-36-50-36-84 0-20 6-36 16-50-6-10-8-20-8-32 0-24 10-44 28-58-6-8-10-16-10-26 0-22 18-40 40-40Z"
-                    stroke="url(#g)" stroke-width="4" fill="rgba(0,0,0,.10)"/>
-                  <path d="M52 150h116" stroke="rgba(255,255,255,.10)" stroke-width="2"/>
-                  <path d="M60 210h100" stroke="rgba(255,255,255,.10)" stroke-width="2"/>
-                  <circle cx="110" cy="92" r="18" stroke="rgba(33,230,182,.55)" stroke-width="3"/>
-                </svg>
-              </div>
+              <div class="label" style="margin-top:0">Streak & Nível</div>
+              <div class="pill2">🔥 Streak: <b id="streakTxt">0</b> dias</div>
+              <div class="pill2" style="margin-top:10px">🏆 Nível: <b id="lvlTxt">1</b> • XP <b id="xpTxt">0</b></div>
+              <div class="bar"><div id="xpBar"></div></div>
+              <div class="hint" style="margin-top:10px" id="coachTxt">—</div>
 
-              <div class="proLabels">
-                <div class="proTag"><b>Peito</b><small id="mPei">Foco</small></div>
-                <div class="proTag"><b>Costas</b><small id="mCos">Foco</small></div>
-                <div class="proTag"><b>Abdômen</b><small id="mAbd">Foco</small></div>
-                <div class="proTag"><b>Pernas</b><small id="mPer">Foco</small></div>
+              <div class="label">Medalhas</div>
+              <div class="badgeRow" id="medalRow"></div>
+
+              <div class="miniRow" style="margin-top:10px">
+                <button class="miniBtn" type="button" onclick="openView('viewPrato')">Analisar prato</button>
+                <button class="miniBtn" type="button" onclick="openView('viewEvolucao')">Ver evolução</button>
               </div>
             </div>
 
             <div class="proPanel">
-              <div class="label" style="margin-top:0">Progresso</div>
+              <div class="label" style="margin-top:0">Progresso semanal</div>
 
               <div class="proRingBox">
                 <div class="ring">
@@ -595,7 +618,7 @@
                 </div>
 
                 <div class="proHint">
-                  Sem perfeição. Só <b>consistência</b>.
+                  Evolua <b>1% por dia</b>. Consistência vence.
                 </div>
 
                 <div class="miniRow" style="margin-top:4px">
@@ -633,7 +656,7 @@
       </div>
     </section>
 
-    <!-- CADASTRO -->
+    <!-- CADASTRO (SEM PRATO AQUI!) -->
     <section id="viewCadastro" class="screen">
       <div class="h1">CADASTRO</div>
 
@@ -711,8 +734,8 @@
             <select id="restricao">
               <option value="">Selecione</option>
               <option>Nenhuma</option>
-              <option>Sem lactose</option>
-              <option>Sem glúten</option>
+              <option>Lactose</option>
+              <option>Glúten</option>
               <option>Vegetariano</option>
               <option>Vegano</option>
             </select>
@@ -736,38 +759,123 @@
         <div id="outCadastro" class="status" style="display:none"></div>
       </div>
 
-      <!-- PRATO + IA DEMO -->
-      <div class="card plateBox" style="margin-top:14px">
-        <div class="label">Análise do prato (IA DEMO)</div>
+      <div class="card" style="margin-top:14px">
+        <div class="label">Atalhos</div>
+        <div class="hint">Você pediu pra tirar o prato daqui — então ficou em uma aba separada.</div>
+        <div class="miniRow" style="margin-top:10px">
+          <button class="miniBtn" type="button" onclick="openView('viewPrato')">🍽️ Ir para PRATO</button>
+          <button class="miniBtn" type="button" onclick="openView('viewEvolucao')">📈 Ir para EVOLUÇÃO</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRATO (ABA SEPARADA, PROFISSIONAL) -->
+    <section id="viewPrato" class="screen">
+      <div class="h1">PRATO</div>
+
+      <div class="card">
         <div class="hint">
-          Envia foto → analisa → você confirma. Anti-repetição ligado.
+          Tire uma foto ou envie da galeria. Depois descreva rapidamente o que tem no prato.
+          <br><br>
+          <b>O app aprende com você</b> e vai ficando mais assertivo ao longo do tempo.
         </div>
 
         <div class="miniRow" style="margin-top:12px">
-          <button class="miniBtn" type="button" id="btnCamera">Tirar foto</button>
-          <button class="miniBtn" type="button" id="btnGaleria">Escolher da galeria</button>
+          <button class="miniBtn" type="button" id="btnPratoCamera">Tirar foto</button>
+          <button class="miniBtn" type="button" id="btnPratoGaleria">Galeria</button>
         </div>
 
-        <input id="fileCamera" type="file" accept="image/*" capture="environment" style="display:none">
-        <input id="fileGaleria" type="file" accept="image/*" style="display:none">
+        <input id="filePratoCamera" type="file" accept="image/*" capture="environment" style="display:none">
+        <input id="filePratoGaleria" type="file" accept="image/*" style="display:none">
 
-        <div class="platePreview" id="platePreview" style="margin-top:12px; display:none">
-          <img id="plateImg" alt="Prato"/>
+        <div class="platePreview" id="pratoPreview" style="display:none">
+          <img id="pratoImg" alt="Prato"/>
         </div>
 
-        <button class="btnSecondary" type="button" onclick="analisarPrato()">Analisar (demo)</button>
-        <div id="plateResult" class="status" style="display:none"></div>
+        <div class="label">O que tem no prato?</div>
+        <textarea id="pratoDesc" placeholder="Ex: arroz, feijão, frango grelhado, salada, suco..."></textarea>
 
-        <div id="plateConfirmBox" style="display:none; margin-top:10px">
-          <div class="label">Confirmação</div>
-          <div class="hint">A sugestão é uma estimativa. Se quiser, edite antes de confirmar:</div>
-          <textarea id="plateEdit"></textarea>
-          <button class="btn" type="button" onclick="confirmarPrato()">Confirmar</button>
-          <button class="btnSecondary" type="button" onclick="refazerAnalise()">Refazer</button>
+        <div class="row">
+          <div class="col">
+            <div class="label">Quantidade</div>
+            <select id="pratoQtd">
+              <option>Pequena</option>
+              <option selected>Média</option>
+              <option>Grande</option>
+            </select>
+          </div>
+          <div class="col">
+            <div class="label">Foco</div>
+            <select id="pratoFoco">
+              <option selected>Equilíbrio</option>
+              <option>Emagrecimento</option>
+              <option>Hipertrofia</option>
+              <option>Performance</option>
+            </select>
+          </div>
         </div>
 
-        <div class="label" style="margin-top:14px">Histórico (local)</div>
-        <div class="hint" id="plateHistoryTxt">—</div>
+        <button class="btn" type="button" onclick="analisarPratoElite()">ANALISAR</button>
+        <button class="btnSecondary" type="button" onclick="confirmarPratoElite()">CONFIRMAR E SALVAR</button>
+
+        <div id="pratoResultado" class="status" style="display:none"></div>
+
+        <div class="card" style="margin-top:12px; background:rgba(255,255,255,.03)">
+          <div class="label">Resumo rápido</div>
+          <div class="hint" id="pratoResumo">—</div>
+          <div class="badgeRow" id="pratoBadges"></div>
+        </div>
+
+        <div class="label">Histórico (local)</div>
+        <div class="hint" id="pratoHistTxt">—</div>
+
+        <div class="miniRow" style="margin-top:10px">
+          <button class="miniBtn" type="button" onclick="openView('viewEvolucao')">📈 Evolução</button>
+          <button class="miniBtn" type="button" onclick="openNotifPrompt()">🔔 Notificações</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="label">Desafio da semana</div>
+        <div class="hint" id="challengeTxt">—</div>
+        <div class="bar"><div id="challengeBar"></div></div>
+        <div class="miniRow" style="margin-top:10px">
+          <button class="miniBtn" type="button" onclick="rerollChallenge()">Trocar desafio</button>
+          <button class="miniBtn" type="button" onclick="markChallengeStep()">+1 progresso</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- EVOLUÇÃO -->
+    <section id="viewEvolucao" class="screen">
+      <div class="h1">EVOLUÇÃO</div>
+
+      <div class="card">
+        <div class="label">Score do prato (últimos 14)</div>
+        <div class="hint">A curva mostra consistência. Não é perfeição — é direção.</div>
+        <div class="chartBox">
+          <canvas id="scoreChart" height="160"></canvas>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="label">Ranking semanal</div>
+        <div class="hint" id="rankTxt">—</div>
+        <div class="grid2" style="margin-top:10px">
+          <div class="pill2">Média 7 dias: <b id="avg7Txt">—</b></div>
+          <div class="pill2">Proteína hoje: <b id="protTodayTxt">—</b></div>
+          <div class="pill2">Meta proteína: <b id="protGoalTxt">—</b></div>
+          <div class="pill2">Score hoje: <b id="scoreTodayTxt">—</b></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="label">Gamificação</div>
+        <div class="hint">Recompensas por consistência. Isso gera hábito real.</div>
+        <div class="pill2" style="margin-top:10px">🔥 Streak: <b id="streakTxt2">0</b> dias</div>
+        <div class="pill2" style="margin-top:10px">🏆 Nível: <b id="lvlTxt2">1</b> • XP <b id="xpTxt2">0</b></div>
+        <div class="bar"><div id="xpBar2"></div></div>
+        <div class="badgeRow" id="medalRow2"></div>
       </div>
     </section>
 
@@ -776,8 +884,8 @@
       <div class="h1">DIETA</div>
 
       <div class="card">
-        <div class="hint" id="dietaHint">
-          Dieta variada (demo inteligente). Se não gostar ou não tiver alimento, clique em <b>Refazer</b>.
+        <div class="hint">
+          Dieta inteligente (modo local). Se não gostar, clique em <b>Refazer</b>.
         </div>
 
         <button class="btn" type="button" onclick="gerarDieta()">GERAR DIETA</button>
@@ -792,18 +900,30 @@
       <div class="h1">TREINO</div>
 
       <div class="card">
-        <div class="hint" id="treinoHint">Treino semanal (auto + esportes). Cada exercício tem botão “YouTube”.</div>
+        <div class="hint">Treino semanal. Cada exercício tem botão “YouTube”.</div>
 
         <div class="row" style="margin-top:10px">
           <div class="col">
             <div class="label">Tema</div>
-            <select id="temaTreino"></select>
+            <select id="temaTreino">
+              <option>Academia</option>
+              <option>Corrida</option>
+              <option>Muay Thai</option>
+              <option>Futebol</option>
+              <option>Basquete</option>
+              <option>Vôlei</option>
+              <option>Natação</option>
+              <option>Ciclismo</option>
+              <option>Crossfit</option>
+              <option>Pilates</option>
+              <option>Yoga</option>
+            </select>
           </div>
           <div class="col">
             <div class="label">Intensidade</div>
             <select id="intTreino">
               <option>Leve</option>
-              <option>Moderado</option>
+              <option selected>Moderado</option>
               <option>Pesado</option>
             </select>
           </div>
@@ -853,14 +973,23 @@
       </div>
     </section>
 
-    <!-- CONVITES (GAMIFICAÇÃO) -->
+    <!-- PREMIUM (ESCONDIDO - SEM BOTÃO NO NAV) -->
+    <section id="viewPremium" class="screen">
+      <div class="h1">PREMIUM</div>
+      <div class="card">
+        <div class="hint">Área preparada para o futuro (sem exibir ao usuário).</div>
+        <button class="btnOrange" type="button" onclick="openCheckout()">Checkout</button>
+      </div>
+    </section>
+
+    <!-- CONVITES -->
     <section id="viewConvites" class="screen">
       <div class="h1">CONVITES</div>
 
       <div class="card">
         <div class="hint">
-          Convide amigos e some <b>pontos</b> (demo). A ideia aqui é gamificar:
-          <b>ranking</b>, <b>badges</b> e desafios.
+          Convide amigos e ganhe: <b>R$ 5</b> por cada pessoa que assinar usando seu link.
+          Ao atingir <b>R$ 50</b>, você pode solicitar saque (modo local) e ganha <b>1 mês grátis</b>.
         </div>
 
         <div style="margin-top:12px" class="card">
@@ -870,8 +999,8 @@
           <div class="label" style="margin-top:12px">Seu link</div>
           <div id="myLink" class="muted" style="word-break:break-all">—</div>
 
-          <div class="label" style="margin-top:12px">Pontos (demo)</div>
-          <div id="balTxt" style="font-weight:1000; font-size:18px">0 pts</div>
+          <div class="label" style="margin-top:12px">Saldo (local)</div>
+          <div id="balTxt" style="font-weight:1000; font-size:18px">R$ 0,00</div>
           <div id="progressTxt" class="muted" style="margin-top:6px"></div>
 
           <div class="miniRow" style="margin-top:12px">
@@ -880,11 +1009,11 @@
           </div>
 
           <div class="miniRow" style="margin-top:10px">
-            <button class="miniBtn" type="button" onclick="setBalance(getBalance()+10)">+10 pts (teste)</button>
-            <button class="miniBtn" type="button" onclick="setBalance(0)">Zerar</button>
+            <button class="miniBtn" type="button" onclick="setBalance(getBalance()+5)">+R$5 (teste)</button>
+            <button class="miniBtn" type="button" onclick="setBalance(0)">Zerar (teste)</button>
           </div>
 
-          <button id="btnBonus" class="btnSecondary" type="button" onclick="resgatarBonus()">Resgatar badge (demo)</button>
+          <button id="btnSaque" class="btnSecondary" type="button" onclick="solicitarSaque()">Solicitar saque</button>
           <div id="saqueMsg" class="status" style="display:none"></div>
         </div>
       </div>
@@ -915,8 +1044,15 @@
 
         <div class="meal">
           <div>
+            <div class="title">Exames</div>
+            <p>Pressão, hemograma, lipidograma, glicemia, TGO/TGP, creatinina, testosterona, estradiol. Com médico.</p>
+          </div>
+        </div>
+
+        <div class="meal">
+          <div>
             <div class="title">Cuidados gerais</div>
-            <p>Sono 7–9h, água, fibras, treino com progressão e descanso. O básico bem feito muda tudo.</p>
+            <p>Sono 7–9h, hidratação, dieta com fibras, evitar álcool, treino com progressão e descanso.</p>
           </div>
         </div>
 
@@ -935,6 +1071,11 @@
         <button class="btnSecondary" type="button" onclick="logoutFirebase()">Sair (se logado)</button>
         <button class="btnSecondary" type="button" onclick="sair()">Voltar ao início</button>
       </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="label">Atalho oculto</div>
+        <div class="hint">Premium fica escondido. Se quiser abrir: digite no teclado <b>ELITE</b> nesta tela.</div>
+      </div>
     </section>
   </div>
 
@@ -943,6 +1084,8 @@
     <div class="navInner">
       <button class="navBtn" data-view="viewProgresso" type="button">PROGRESSO</button>
       <button class="navBtn active" data-view="viewCadastro" type="button">CADASTRO</button>
+      <button class="navBtn" data-view="viewPrato" type="button">PRATO</button>
+      <button class="navBtn" data-view="viewEvolucao" type="button">EVOLUÇÃO</button>
       <button class="navBtn" data-view="viewDieta" type="button">DIETA</button>
       <button class="navBtn" data-view="viewTreino" type="button">TREINO</button>
       <button class="navBtn" data-view="viewParceiros" type="button">PARCEIROS</button>
@@ -984,7 +1127,7 @@
     </div>
   </div>
 
-  <!-- Firebase CDN (compat) - opcional -->
+  <!-- Firebase CDN (compat) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -1001,38 +1144,40 @@
      * 1) Helpers
      ***********************/
     const $ = (id)=>document.getElementById(id);
-
-    function abrirLink(url){
-      const w = window.open(url, "_blank", "noopener,noreferrer");
-      if (w) w.opener = null;
-    }
+    const fmtBRL = (n)=> new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(n||0));
+    function abrirLink(url){ window.open(url, "_blank"); }
     window.abrirLink = abrirLink;
 
     function escapeHtml(s){
       return String(s).replace(/[&<>"]/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m]));
     }
 
-    function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+    function show(el, on){
+      if(!el) return;
+      el.style.display = on ? "block" : "none";
+    }
 
     /***********************
      * 2) Storage Keys
      ***********************/
     const KEY_PROFILE = "cp_profile_v2";
-    const KEY_AVATAR  = "cp_avatar_v1";
-    const KEY_GUEST   = "cp_guest_v1";
-
-    const KEY_PLATE_LAST = "cp_plate_last_v1";
-    const KEY_PLATE_HASH = "cp_plate_hash_v1";
-    const KEY_PLATE_HISTORY = "cp_plate_history_v1";
-
+    const KEY_AVATAR  = "cp_avatar_v2";
+    const KEY_GUEST   = "cp_guest_v2";
     const KEY_DIETA   = "cp_dieta_v2";
     const KEY_TREINO  = "cp_treino_v2";
+    const KEY_INV_CODE = "cp_inv_code_v2";
+    const KEY_BAL = "cp_inv_balance_v2";
 
-    const KEY_INV_CODE = "cp_inv_code_v1";
-    const KEY_BAL = "cp_inv_points_v1";
+    // Prato + evolução + IA aprende
+    const KEY_PLATE_LAST = "cp_plate_last_v2";
+    const KEY_PLATE_HISTORY = "cp_plate_history_v2"; // [{ts, desc, kcal, prot, score, tags, focus}]
+    const KEY_AI_PROFILE = "cp_ai_profile_v2"; // aprende preferências
+    const KEY_GAMIFY = "cp_gamify_v2"; // streak, xp, lvl, medals, lastLogDay
+    const KEY_CHALLENGE = "cp_challenge_v2"; // desafio semanal
+    const KEY_NOTIF = "cp_notif_v2"; // enabled, hour1, hour2
 
-    const KEY_DASH = "cp_dash_v1"; // kcal, km, done, goal, weekStart
+    // Dashboard stats
+    const KEY_DASH = "cp_dash_v2"; // kcal, km, done, goal, weekStart
 
     function safeJSON(key){
       try{ return JSON.parse(localStorage.getItem(key) || "null"); }catch{ return null; }
@@ -1042,13 +1187,7 @@
      * 3) Firebase (OPCIONAL)
      ***********************/
     const FIREBASE_CONFIG = {
-      // Cole aqui seu firebaseConfig se quiser:
-      // apiKey: "....",
-      // authDomain: "....firebaseapp.com",
-      // projectId: "....",
-      // storageBucket: "....appspot.com",
-      // messagingSenderId: "....",
-      // appId: "...."
+      // Cole aqui seu firebaseConfig se quiser.
     };
 
     let firebaseEnabled = false;
@@ -1080,14 +1219,14 @@
             setAuthBadge(`Logado`);
             closeAuthModal();
             showNav(true);
-            showOnly("viewCadastro");
+            openView("viewCadastro");
             await syncFromCloud();
             refreshAllUI();
           }else{
             if(!localStorage.getItem(KEY_GUEST)){
               setAuthBadge("Modo: Local");
               showNav(false);
-              showOnly("viewWelcome");
+              openView("viewWelcome");
             }
           }
         });
@@ -1108,6 +1247,10 @@
           if(data.dash) localStorage.setItem(KEY_DASH, JSON.stringify(data.dash));
           if(data.dieta) localStorage.setItem(KEY_DIETA, JSON.stringify(data.dieta));
           if(data.treino) localStorage.setItem(KEY_TREINO, JSON.stringify(data.treino));
+          if(data.plateHistory) localStorage.setItem(KEY_PLATE_HISTORY, JSON.stringify(data.plateHistory));
+          if(data.gamify) localStorage.setItem(KEY_GAMIFY, JSON.stringify(data.gamify));
+          if(data.aiProfile) localStorage.setItem(KEY_AI_PROFILE, JSON.stringify(data.aiProfile));
+          if(data.challenge) localStorage.setItem(KEY_CHALLENGE, JSON.stringify(data.challenge));
         }else{
           await ref.set({ createdAt: Date.now() }, { merge:true });
         }
@@ -1127,6 +1270,10 @@
           dash: safeJSON(KEY_DASH),
           dieta: safeJSON(KEY_DIETA),
           treino: safeJSON(KEY_TREINO),
+          plateHistory: safeJSON(KEY_PLATE_HISTORY),
+          gamify: safeJSON(KEY_GAMIFY),
+          aiProfile: safeJSON(KEY_AI_PROFILE),
+          challenge: safeJSON(KEY_CHALLENGE),
         };
         await ref.set(payload, { merge:true });
       }catch(e){
@@ -1139,8 +1286,7 @@
      ***********************/
     function openAuthModal(){
       $("authModalBack").style.display = "block";
-      const msg = $("authMsg");
-      if(msg) msg.style.display="none";
+      show($("authMsg"), false);
     }
     window.openAuthModal = openAuthModal;
 
@@ -1161,7 +1307,7 @@
       setAuthBadge("Modo: Local");
       closeAuthModal();
       showNav(true);
-      showOnly("viewCadastro");
+      openView("viewCadastro");
       refreshAllUI();
     }
     window.enterGuest = enterGuest;
@@ -1219,7 +1365,7 @@
         localStorage.removeItem(KEY_GUEST);
         setAuthBadge("Modo: Local");
         showNav(false);
-        showOnly("viewWelcome");
+        openView("viewWelcome");
         refreshAllUI();
       }catch(e){
         console.log(e);
@@ -1229,20 +1375,21 @@
 
     function sair(){
       showNav(false);
-      showOnly("viewWelcome");
+      openView("viewWelcome");
     }
     window.sair = sair;
 
     /***********************
      * 5) Navegação
      ***********************/
-    function showOnly(viewId){
+    function openView(viewId){
       document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
       const el = document.getElementById(viewId);
       if(el) el.classList.add("active");
       updateNavActive(viewId);
       updateTopBtn();
     }
+    window.openView = openView;
 
     function showNav(on){
       const nav = $("navBar");
@@ -1258,7 +1405,7 @@
 
     function wireNav(){
       document.querySelectorAll(".navBtn").forEach(btn=>{
-        btn.addEventListener("click", ()=> showOnly(btn.dataset.view));
+        btn.addEventListener("click", ()=> openView(btn.dataset.view));
       });
     }
 
@@ -1278,13 +1425,8 @@
      * 6) Cadastro + Avatar
      ***********************/
     const ESPORTES = [
-      "Musculação","Calistenia","Funcional","HIIT",
-      "Corrida","Caminhada","Ciclismo","Natação",
-      "Yoga","Pilates","Alongamento/Mobilidade",
-      "Futebol","Basquete","Vôlei","Handebol",
-      "Boxe","Muay Thai","Jiu-jitsu",
-      "Crossfit","Tênis","Beach Tennis",
-      "Skate","Trilha","Escalada"
+      "Musculação","Futebol","Corrida","Crossfit","Ciclismo","Natação","Luta","Basquete",
+      "Vôlei","Yoga","Pilates","Caminhada","Muay Thai","Jiu-Jitsu","Boxe","Funcional"
     ];
     let selectedSports = new Set();
 
@@ -1300,7 +1442,6 @@
           if(selectedSports.has(name)) selectedSports.delete(name);
           else selectedSports.add(name);
           div.classList.toggle("on");
-          syncTemaTreinoOptions(); // reflete no treino
         });
         box.appendChild(div);
       });
@@ -1325,12 +1466,12 @@
       if($("nivel")) $("nivel").value = p.nivel || "";
       if($("condicao")) $("condicao").value = p.condicao || "";
       if($("restricao")) $("restricao").value = p.restricao || "";
-      if($("termo")) $("termo").checked = !!p.termoAceito; // ✅ agora é real, não forçado
+      if($("termo")) $("termo").checked = true;
     }
 
     async function salvarCadastro(){
-      const termoAceito = !!$("termo")?.checked;
-      if(!termoAceito){
+      const termo = $("termo")?.checked;
+      if(!termo){
         alert("Marque 'Aceito o termo' para salvar.");
         return;
       }
@@ -1344,16 +1485,13 @@
         condicao: $("condicao")?.value || "",
         restricao: $("restricao")?.value || "",
         esportes: Array.from(selectedSports),
-        termoAceito,
         updatedAt: Date.now()
       };
       localStorage.setItem(KEY_PROFILE, JSON.stringify(perfil));
-
       const out = $("outCadastro");
       if(out){ out.style.display="block"; out.textContent="✅ Cadastro salvo."; }
-
       updatePerfilBox();
-      syncTemaTreinoOptions();
+      refreshCoach();
       await pushToCloud();
     }
     window.salvarCadastro = salvarCadastro;
@@ -1363,15 +1501,12 @@
       ["nome","emailPerfil","peso","altura"].forEach(id=>{ if($(id)) $(id).value=""; });
       ["objetivo","nivel","condicao","restricao"].forEach(id=>{ if($(id)) $(id).value=""; });
       if($("termo")) $("termo").checked = false;
-
       selectedSports = new Set();
       buildSportsChips();
-      syncTemaTreinoOptions();
-
       const out = $("outCadastro");
       if(out){ out.style.display="block"; out.textContent="🧹 Cadastro limpo."; }
-
       updatePerfilBox();
+      refreshCoach();
       await pushToCloud();
     }
     window.limparCadastro = limparCadastro;
@@ -1414,17 +1549,129 @@
         reader.readAsDataURL(file);
       });
     }
-
     /***********************
-     * 7) Prato (demo) + anti repetição
+     * 7) PRATO (foto real + análise + IA aprende)
      ***********************/
-    function wirePlateInput(){
-      const btnCam = $("btnCamera");
-      const btnGal = $("btnGaleria");
-      const fc = $("fileCamera");
-      const fg = $("fileGaleria");
-      if(btnCam && fc) btnCam.addEventListener("click", ()=> fc.click());
-      if(btnGal && fg) btnGal.addEventListener("click", ()=> fg.click());
+    function getPlateHistory(){
+      try{ return JSON.parse(localStorage.getItem(KEY_PLATE_HISTORY) || "[]"); }catch{ return []; }
+    }
+    function setPlateHistory(arr){
+      localStorage.setItem(KEY_PLATE_HISTORY, JSON.stringify(arr.slice(0, 60)));
+    }
+
+    function getAIProfile(){
+      const p = safeJSON(KEY_AI_PROFILE);
+      return (p && typeof p === "object") ? p : { likes: {}, dislikes: {}, avgScore: 70, tone: "modern" };
+    }
+    function setAIProfile(p){
+      localStorage.setItem(KEY_AI_PROFILE, JSON.stringify(p));
+    }
+
+    function normalizeWords(text){
+      return (text || "")
+        .toLowerCase()
+        .replace(/[^\p{L}\p{N}\s]/gu, " ")
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 80);
+    }
+
+    function scorePlate({ desc, focus }){
+      const t = (desc || "").toLowerCase();
+      let s = 62;
+
+      // positivos
+      const good = [
+        "salada","legume","legumes","verdura","frango","peixe","ovo","ovos",
+        "arroz integral","integral","feijão","feijao","batata doce","batata-doce","iogurte",
+        "aveia","banana","maçã","maca","castanha","água","agua"
+      ];
+
+      // negativos
+      const bad = [
+        "fritura","frito","refrigerante","doce","sobremesa","ultraprocessado","salgadinho",
+        "hamburguer","hambúrguer","pizza","alcohol","álcool","cerveja","açúcar","acucar"
+      ];
+
+      good.forEach(k=>{ if(t.includes(k)) s += 6; });
+      bad.forEach(k=>{ if(t.includes(k)) s -= 9; });
+
+      // foco ajusta
+      if((focus||"").toLowerCase().includes("emagre")) s -= t.includes("refrigerante") ? 6 : 0;
+      if((focus||"").toLowerCase().includes("hiper")) s += t.includes("frango") || t.includes("ovo") || t.includes("peixe") ? 6 : 0;
+
+      // AI aprende: penaliza coisas que você sempre marca como "ruim" no feedback implícito
+      const ai = getAIProfile();
+      const words = normalizeWords(desc);
+      let bias = 0;
+      for(const w of words){
+        if(ai.dislikes[w]) bias -= Math.min(4, ai.dislikes[w]);
+        if(ai.likes[w]) bias += Math.min(3, ai.likes[w] * 0.6);
+      }
+      s += bias;
+
+      return Math.max(10, Math.min(100, Math.round(s)));
+    }
+
+    function estimateMacros({ desc, qtd, focus }){
+      // heurística forte (sem backend), variando por foco e por palavras
+      const t = (desc||"").toLowerCase();
+      let kcal = 520;
+      let prot = 26;
+      let carb = 60;
+      let fat  = 16;
+
+      const add = (dk, dp, dc, df)=>{ kcal+=dk; prot+=dp; carb+=dc; fat+=df; };
+
+      if(t.includes("frango")) add(120, 22, 0, 3);
+      if(t.includes("carne")) add(160, 26, 0, 6);
+      if(t.includes("peixe")) add(130, 24, 0, 4);
+      if(t.includes("ovo")) add(90, 10, 1, 7);
+      if(t.includes("arroz")) add(140, 2, 30, 1);
+      if(t.includes("feijão") || t.includes("feijao")) add(110, 7, 18, 1);
+      if(t.includes("batata")) add(120, 2, 25, 1);
+      if(t.includes("salada") || t.includes("legume") || t.includes("verdura")) add(40, 2, 6, 0);
+      if(t.includes("refrigerante")) add(160, 0, 40, 0);
+      if(t.includes("doce") || t.includes("sobremesa")) add(220, 2, 40, 8);
+      if(t.includes("pizza") || t.includes("hamb")) add(280, 16, 28, 16);
+
+      // quantidade
+      if((qtd||"").toLowerCase().includes("pequena")) { kcal-=160; prot-=6; carb-=18; fat-=5; }
+      if((qtd||"").toLowerCase().includes("grande"))  { kcal+=260; prot+=10; carb+=26; fat+=8; }
+
+      // foco
+      const f = (focus||"").toLowerCase();
+      if(f.includes("emagre")) { kcal = Math.round(kcal * 0.88); fat = Math.round(fat * 0.92); }
+      if(f.includes("hiper"))  { prot = Math.round(prot * 1.15); kcal = Math.round(kcal * 1.07); }
+      if(f.includes("perform")){ carb = Math.round(carb * 1.08); }
+
+      kcal = Math.max(180, Math.round(kcal));
+      prot = Math.max(5, Math.round(prot));
+      carb = Math.max(5, Math.round(carb));
+      fat  = Math.max(3, Math.round(fat));
+
+      return { kcal, prot, carb, fat };
+    }
+
+    function plateBadges({ score, prot, kcal }){
+      const badges = [];
+      if(score >= 82) badges.push("🔥 Elite");
+      if(score >= 70 && score < 82) badges.push("💪 Bom");
+      if(score < 55) badges.push("⚡ Ajustável");
+      if(prot >= 35) badges.push("🥩 Proteína+");
+      if(kcal <= 520) badges.push("🟢 Leve");
+      if(kcal >= 850) badges.push("🟠 Reforçado");
+      return badges;
+    }
+
+    function wirePratoInputs(){
+      const camBtn = $("btnPratoCamera");
+      const galBtn = $("btnPratoGaleria");
+      const fc = $("filePratoCamera");
+      const fg = $("filePratoGaleria");
+
+      if(camBtn && fc) camBtn.addEventListener("click", ()=> fc.click());
+      if(galBtn && fg) galBtn.addEventListener("click", ()=> fg.click());
 
       async function onFile(file){
         if(!file) return;
@@ -1432,8 +1679,9 @@
         reader.onload = async ()=>{
           const dataUrl = String(reader.result || "");
           localStorage.setItem(KEY_PLATE_LAST, dataUrl);
-          showPlate(dataUrl);
-          await renderHistory();
+          showPratoPreview(dataUrl);
+          renderPratoHistory();
+          await pushToCloud();
         };
         reader.readAsDataURL(file);
       }
@@ -1442,293 +1690,590 @@
       if(fg) fg.addEventListener("change", ()=> onFile(fg.files?.[0]));
     }
 
-    function showPlate(dataUrl){
-      const box = $("platePreview");
-      const img = $("plateImg");
+    function showPratoPreview(dataUrl){
+      const box = $("pratoPreview");
+      const img = $("pratoImg");
       if(!box || !img) return;
       img.src = dataUrl;
       box.style.display = "block";
     }
 
-    function loadLastPlate(){
+    function loadLastPrato(){
       const dataUrl = localStorage.getItem(KEY_PLATE_LAST);
-      if(dataUrl) showPlate(dataUrl);
+      if(dataUrl) showPratoPreview(dataUrl);
     }
 
-    async function hashString(str){
-      try{
-        const enc = new TextEncoder().encode(str);
-        const buf = await crypto.subtle.digest("SHA-256", enc);
-        const arr = Array.from(new Uint8Array(buf)).slice(0, 12);
-        return arr.map(b=>b.toString(16).padStart(2,"0")).join("");
-      }catch{
-        return "h" + (str.length) + "_" + str.slice(0,24);
+    function setPratoResult(html){
+      const out = $("pratoResultado");
+      if(!out) return;
+      out.innerHTML = html;
+      out.style.display = "block";
+    }
+
+    function pratoCoachCopy(score, focus){
+      const f = (focus||"Equilíbrio").toLowerCase();
+      const pool = [
+        "Consistência é o que muda o jogo. Um prato melhor por dia te deixa inevitável.",
+        "Você não precisa de perfeição. Precisa de repetição inteligente.",
+        "A meta é simples: escolhas pequenas, resultado grande.",
+        "Foco no hábito. O corpo responde com o tempo.",
+        "Um dia bom não te define. Uma semana consistente, sim."
+      ];
+
+      if(score >= 85) return "🔥 Isso é elite. Mantém esse padrão e o físico acompanha.";
+      if(score >= 70) return f.includes("hiper")
+        ? "💪 Bom. Se quiser subir mais, aumenta proteína magra + carbo limpo."
+        : "💪 Bom. Pra ficar elite, coloca mais vegetais e controla ultraprocessados.";
+      if(score >= 55) return "⚡ Dá pra melhorar rápido: corta bebida açucarada e coloca proteína + salada.";
+      return pool[Math.floor(Math.random()*pool.length)];
+    }
+
+    // Gamificação
+    function getGamify(){
+      const g = safeJSON(KEY_GAMIFY);
+      return (g && typeof g === "object") ? g : { streak:0, xp:0, lastDay:"", medals:{} };
+    }
+    function setGamify(g){
+      localStorage.setItem(KEY_GAMIFY, JSON.stringify(g));
+    }
+
+    function todayKey(){
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+    }
+
+    function addXP(amount){
+      const g = getGamify();
+      g.xp = Math.max(0, Math.round((g.xp || 0) + amount));
+      setGamify(g);
+    }
+
+    function updateStreak(){
+      const g = getGamify();
+      const t = todayKey();
+      if(g.lastDay === t) return g;
+
+      // diferença de dias
+      const prev = g.lastDay ? new Date(g.lastDay) : null;
+      const now  = new Date(t);
+      if(!prev){
+        g.streak = 1;
+      }else{
+        const diff = Math.round((now - prev) / (1000*60*60*24));
+        if(diff === 1) g.streak = (g.streak || 0) + 1;
+        else g.streak = 1;
+      }
+
+      g.lastDay = t;
+      setGamify(g);
+      return g;
+    }
+
+    function levelFromXP(xp){
+      // curva suave: 0-99 lvl1, 100-219 lvl2, etc
+      let lvl = 1;
+      let need = 100;
+      let acc = 0;
+      while(xp >= acc + need){
+        acc += need;
+        lvl++;
+        need = Math.round(need * 1.12);
+        if(lvl > 50) break;
+      }
+      const nextNeed = need;
+      const into = xp - acc;
+      const pct = Math.max(0, Math.min(100, Math.round((into / nextNeed) * 100)));
+      return { lvl, pct, into, nextNeed };
+    }
+
+    function unlockMedals(){
+      const g = getGamify();
+      g.medals = g.medals || {};
+      const hist = getPlateHistory();
+
+      const count = hist.length;
+      const avg7 = averageScore(7);
+      const streak = g.streak || 0;
+      const xp = g.xp || 0;
+
+      const set = (k)=>{ if(!g.medals[k]) g.medals[k] = Date.now(); };
+      if(count >= 5) set("primeiros_5_pratos");
+      if(count >= 20) set("viciado_em_progresso");
+      if(streak >= 3) set("streak_3");
+      if(streak >= 7) set("streak_7");
+      if(streak >= 14) set("streak_14");
+      if(avg7 >= 75) set("media_75");
+      if(avg7 >= 85) set("media_85");
+      if(xp >= 500) set("xp_500");
+      if(xp >= 1500) set("xp_1500");
+
+      setGamify(g);
+      return g;
+    }
+
+    function renderMedals(){
+      const g = unlockMedals();
+      const row1 = $("medalRow");
+      const row2 = $("medalRow2");
+      const make = (key, label)=>{
+        const div = document.createElement("div");
+        div.className = "badge " + (g.medals[key] ? "ok" : "");
+        div.textContent = label;
+        return div;
+      };
+
+      const items = [
+        ["primeiros_5_pratos","🥇 5 pratos"],
+        ["viciado_em_progresso","🏅 20 pratos"],
+        ["streak_3","🔥 3 dias"],
+        ["streak_7","🔥 7 dias"],
+        ["streak_14","🔥 14 dias"],
+        ["media_75","📈 média 75"],
+        ["media_85","💎 média 85"],
+        ["xp_500","⚡ XP 500"],
+        ["xp_1500","⚡ XP 1500"],
+      ];
+
+      [row1,row2].forEach(r=>{
+        if(!r) return;
+        r.innerHTML = "";
+        items.forEach(([k,l])=> r.appendChild(make(k,l)));
+      });
+    }
+
+    function proteinGoal(){
+      const p = safeJSON(KEY_PROFILE) || {};
+      const w = Math.max(40, Math.min(180, parseFloat(p.peso || "70") || 70));
+      const obj = (p.objetivo || "Manter").toLowerCase();
+      let factor = 1.6; // equilíbrio
+      if(obj.includes("massa")) factor = 2.0;
+      if(obj.includes("emag")) factor = 1.7;
+      if(obj.includes("perform")) factor = 1.8;
+      return Math.round(w * factor);
+    }
+
+    function proteinToday(){
+      const hist = getPlateHistory();
+      const t = todayKey();
+      const today = hist.filter(x=> (x.dayKey || "") === t);
+      return today.reduce((a,b)=> a + (b.prot || 0), 0);
+    }
+
+    function averageScore(n){
+      const hist = getPlateHistory();
+      const slice = hist.slice(0, n);
+      if(!slice.length) return 0;
+      const avg = slice.reduce((a,b)=> a + (b.score || 0), 0) / slice.length;
+      return Math.round(avg);
+    }
+
+    // “social fake” (comparação)
+    function socialPercent(avg7){
+      // escala: 50..95
+      const p = Math.round(50 + (Math.max(0, Math.min(100, avg7)) * 0.45));
+      return Math.max(50, Math.min(95, p));
+    }
+
+    let lastPratoAnalysis = null;
+
+    function analisarPratoElite(){
+      const dataUrl = localStorage.getItem(KEY_PLATE_LAST);
+      const desc = ($("pratoDesc")?.value || "").trim();
+      const qtd  = $("pratoQtd")?.value || "Média";
+      const focus= $("pratoFoco")?.value || "Equilíbrio";
+
+      if(!dataUrl){
+        setPratoResult("📸 Envie uma foto primeiro.");
+        return;
+      }
+      if(!desc){
+        setPratoResult("✍️ Descreva o prato (rápido). Ex: arroz, feijão, frango, salada.");
+        return;
+      }
+
+      const m = estimateMacros({ desc, qtd, focus });
+      const score = scorePlate({ desc, focus });
+      const badges = plateBadges({ score, prot: m.prot, kcal: m.kcal });
+
+      // IA aprende (incrementa preferências por palavras)
+      const ai = getAIProfile();
+      const words = normalizeWords(desc);
+      words.forEach(w=>{
+        ai.likes[w] = (ai.likes[w] || 0) + (score >= 70 ? 1 : 0);
+        ai.dislikes[w] = (ai.dislikes[w] || 0) + (score < 55 ? 1 : 0);
+      });
+      ai.avgScore = Math.round((ai.avgScore * 0.85) + (score * 0.15));
+      setAIProfile(ai);
+
+      lastPratoAnalysis = { ts: Date.now(), dayKey: todayKey(), desc, qtd, focus, ...m, score, badges };
+
+      const coach = pratoCoachCopy(score, focus);
+      const html = `
+        ✅ <b>Análise pronta</b><br><br>
+        <b>Score:</b> ${score}/100<br>
+        <b>Estimativa:</b> ${m.kcal} kcal • ${m.prot}g proteína • ${m.carb}g carbo • ${m.fat}g gorduras<br>
+        <b>Foco:</b> ${escapeHtml(focus)} • <b>Qtd:</b> ${escapeHtml(qtd)}<br><br>
+        <span class="muted">${escapeHtml(coach)}</span><br><br>
+        <span class="muted">Agora clique em <b>CONFIRMAR E SALVAR</b> para guardar no histórico.</span>
+      `;
+      setPratoResult(html);
+
+      // resumo + badges
+      const resumo = $("pratoResumo");
+      if(resumo) resumo.textContent = coach;
+      const br = $("pratoBadges");
+      if(br){
+        br.innerHTML = "";
+        badges.forEach(b=>{
+          const d = document.createElement("div");
+          d.className = "badge ok";
+          d.textContent = b;
+          br.appendChild(d);
+        });
       }
     }
+    window.analisarPratoElite = analisarPratoElite;
 
-    function getHistory(){
-      try{ return JSON.parse(localStorage.getItem(KEY_PLATE_HISTORY) || "[]"); }catch{ return []; }
-    }
-    function setHistory(arr){
-      localStorage.setItem(KEY_PLATE_HISTORY, JSON.stringify(arr.slice(-30)));
-    }
+    async function confirmarPratoElite(){
+      if(!lastPratoAnalysis){
+        setPratoResult("Faça a análise primeiro.");
+        return;
+      }
 
-    async function renderHistory(){
-      const h = getHistory();
-      const el = $("plateHistoryTxt");
+      // salva histórico
+      const hist = getPlateHistory();
+      hist.unshift(lastPratoAnalysis);
+      setPlateHistory(hist);
+
+      // streak / xp / medalhas
+      const g = updateStreak();
+      // xp: score/2 + bônus de proteína/meta + bônus streak
+      const bonusProt = proteinToday() >= proteinGoal() ? 14 : 0;
+      const bonusStreak = Math.min(18, Math.floor((g.streak || 1) / 3) * 6);
+      addXP(Math.round(lastPratoAnalysis.score / 2) + bonusProt + bonusStreak);
+      unlockMedals();
+
+      setPratoResult("✅ Salvo no histórico. Continue — consistência vence.");
+      lastPratoAnalysis = null;
+
+      renderPratoHistory();
+      refreshCoach();
+      renderMedals();
+      renderEvolucao();
+      renderDash();
+      updatePerfilBox();
+      await pushToCloud();
+    }
+    window.confirmarPratoElite = confirmarPratoElite;
+
+    function renderPratoHistory(){
+      const el = $("pratoHistTxt");
       if(!el) return;
+      const h = getPlateHistory();
       if(!h.length){
         el.textContent = "Sem histórico ainda.";
         return;
       }
-      el.textContent = `Últimos pratos analisados: ${h.length} (anti-repetição ativo).`;
+      const last = h[0];
+      el.innerHTML = `
+        Último: <b>${escapeHtml(last.desc.slice(0, 52))}${last.desc.length>52?"…":""}</b>
+        • Score <b>${last.score}</b> • ${last.kcal} kcal • ${last.prot}g prot
+        <br><span class="muted">Total salvo: ${h.length}</span>
+      `;
     }
-
-    function profileOrDefault(){
-      return safeJSON(KEY_PROFILE) || {
-        objetivo:"Manter", nivel:"Iniciante", restricao:"Nenhuma", esportes:[]
-      };
-    }
-
-    async function analisarPrato(){
-      const dataUrl = localStorage.getItem(KEY_PLATE_LAST);
-      const out = $("plateResult");
-      const confirmBox = $("plateConfirmBox");
-      const edit = $("plateEdit");
-      if(!out || !confirmBox || !edit) return;
-
-      if(!dataUrl){
-        out.style.display="block";
-        out.textContent = "Envie uma foto primeiro.";
-        return;
-      }
-
-      const h = await hashString(dataUrl);
-      const lastHash = localStorage.getItem(KEY_PLATE_HASH);
-      const history = getHistory();
-
-      if(lastHash && h === lastHash){
-        out.style.display="block";
-        out.textContent = "⚠️ Parece a mesma foto de antes. Troque a foto para analisar novamente.";
-        confirmBox.style.display="none";
-        return;
-      }
-      if(history.includes(h)){
-        out.style.display="block";
-        out.textContent = "⚠️ Esse prato já foi analisado antes (anti-repetição). Se for outro dia, tire outra foto.";
-        confirmBox.style.display="none";
-        return;
-      }
-
-      const p = profileOrDefault();
-      const obj = (p.objetivo || "Manter").toLowerCase();
-
-      const intros = [
-        "Beleza — vou te dar uma estimativa rápida.",
-        "Vamos no modo prático: estimativa + sugestão.",
-        "Fechado. Vou analisar como se fosse um dia normal."
-      ];
-      const tones = pickRandom(intros);
-
-      let desc = "Prato com arroz, feijão, proteína e salada (estimativa).";
-      let kcal = 650;
-
-      if(obj.includes("emag")){ desc = "Prato mais leve: proteína magra + salada + carbo controlado (estimativa)."; kcal = 520; }
-      if(obj.includes("massa")){ desc = "Prato reforçado: carbo + proteína + legumes (estimativa)."; kcal = 820; }
-      if(obj.includes("perform")){ desc = "Prato de performance: carbo bom + proteína + micronutrientes (estimativa)."; kcal = 720; }
-
-      out.style.display="block";
-      out.textContent = `✅ ${tones} Sugestão (DEMO): ${desc} ~${kcal} kcal. Confirme abaixo.`;
-
-      edit.value = `${desc}\n\nEstimativa: ~${kcal} kcal\nSugestão: se bater fome mais tarde, priorize proteína + fruta.`;
-      confirmBox.style.display="block";
-
-      localStorage.setItem(KEY_PLATE_HASH, h);
-    }
-    window.analisarPrato = analisarPrato;
-
-    async function confirmarPrato(){
-      const txt = ($("plateEdit")?.value || "").trim();
-      if(!txt){
-        alert("Escreva/edite a descrição antes de confirmar.");
-        return;
-      }
-      const h = localStorage.getItem(KEY_PLATE_HASH);
-      if(!h) return;
-
-      const history = getHistory();
-      history.push(h);
-      setHistory(history);
-
-      $("plateConfirmBox").style.display = "none";
-      $("plateResult").style.display = "block";
-      $("plateResult").textContent = "✅ Confirmado e salvo no histórico (local).";
-
-      await renderHistory();
-    }
-    window.confirmarPrato = confirmarPrato;
-
-    function refazerAnalise(){
-      $("plateConfirmBox").style.display = "none";
-      $("plateResult").style.display = "block";
-      $("plateResult").textContent = "Ok. Troque a foto ou clique em 'Analisar' novamente.";
-    }
-    window.refazerAnalise = refazerAnalise;
 
     /***********************
-     * 8) DIETA (menos robótica + muita variação)
+     * 8) Desafios semanais
      ***********************/
-    const DIETA_INTROS = [
-      "Vamos montar uma dieta realista pra sua rotina.",
-      "Nada de terrorismo alimentar — foco no que dá pra manter.",
-      "A ideia aqui é consistência, não perfeição.",
-      "Fechado: vou te passar um plano simples e eficiente."
-    ];
-    const DIETA_OUTROS = [
-      "Se algum alimento não tiver, troca por outro da mesma categoria (carbo/proteína/gordura).",
-      "Se sentir fome, ajusta porções e prioriza proteína e fibras.",
-      "Se tiver treino pesado, aumenta um pouco o carbo nas refeições perto do treino.",
-      "Bebe água e dorme bem — isso muda o jogo."
+    const CHALLENGES = [
+      { id:"score_avg_75", title:"Média 75+ por 7 dias", goal:7, tip:"Foco: proteína + vegetais. Evite bebida açucarada." },
+      { id:"prot_goal_5", title:"Bater meta de proteína 5 dias", goal:5, tip:"Inclua frango/ovos/iogurte/peixe." },
+      { id:"streak_7", title:"Streak de 7 dias", goal:7, tip:"Um prato bom por dia já resolve." },
+      { id:"water_7", title:"Água 2L por 7 dias", goal:7, tip:"Água melhora performance e controle de fome." },
+      { id:"steps_5", title:"Caminhada 30min por 5 dias", goal:5, tip:"Lifestyle: constância e leveza." }
     ];
 
-    const FOODS = {
-      proteina: ["frango", "carne magra", "peixe", "ovos", "atum", "patinho moído", "tofu", "grão-de-bico", "lentilha"],
-      carbo: ["arroz", "arroz integral", "batata-doce", "mandioca", "aveia", "pão integral", "macarrão integral", "banana"],
-      fibra: ["salada", "brócolis", "legumes", "couve", "espinafre", "cenoura", "feijão", "grão-de-bico"],
-      gordura: ["azeite", "castanhas", "amendoim", "abacate", "pasta de amendoim", "sementes (chia/linhaça)"],
-      snack: ["iogurte", "fruta", "mix de castanhas", "barra de proteína", "tapioca", "queijo", "whey", "crepioca"]
-    };
+    function getChallenge(){
+      const c = safeJSON(KEY_CHALLENGE);
+      if(c && typeof c === "object" && c.id) return c;
+      const pick = CHALLENGES[Math.floor(Math.random()*CHALLENGES.length)];
+      const obj = { ...pick, progress:0, weekStart: getWeekStart() };
+      localStorage.setItem(KEY_CHALLENGE, JSON.stringify(obj));
+      return obj;
+    }
 
-    function applyRestriction(text, restricao){
-      const r = (restricao || "Nenhuma").toLowerCase();
-      let t = text;
+    function setChallenge(c){
+      localStorage.setItem(KEY_CHALLENGE, JSON.stringify(c));
+    }
 
-      const swaps = [
-        { from: /iogurte/gi, to: r.includes("lactose") ? "iogurte sem lactose" : "iogurte" },
-        { from: /queijo/gi, to: r.includes("lactose") ? "queijo sem lactose" : "queijo" },
-        { from: /pão integral/gi, to: r.includes("glúten") ? "pão sem glúten" : "pão integral" },
-        { from: /macarrão integral/gi, to: r.includes("glúten") ? "macarrão sem glúten" : "macarrão integral" },
-        { from: /frango|carne magra|peixe|atum|ovos|patinho moído/gi,
-          to: (r.includes("vegano") ? "tofu" : (r.includes("vegetar") ? "ovos" : "$&")) }
-      ];
+    function getWeekStart(){
+      const now = new Date();
+      const start = new Date(now);
+      start.setHours(0,0,0,0);
+      start.setDate(now.getDate() - ((now.getDay()+6)%7)); // segunda
+      return start.getTime();
+    }
 
-      swaps.forEach(s=>{
-        t = t.replace(s.from, s.to);
-      });
-
-      if(r.includes("vegano")){
-        t = t.replace(/ovos/gi, "tofu");
-        t = t.replace(/whey/gi, "proteína vegetal");
-        t = t.replace(/iogurte/gi, "iogurte vegetal");
-        t = t.replace(/queijo/gi, "queijo vegetal");
-        t = t.replace(/atum/gi, "grão-de-bico");
+    function ensureChallengeWeek(){
+      const c = getChallenge();
+      const ws = getWeekStart();
+      if(c.weekStart !== ws){
+        const pick = CHALLENGES[Math.floor(Math.random()*CHALLENGES.length)];
+        const obj = { ...pick, progress:0, weekStart: ws };
+        setChallenge(obj);
+        return obj;
       }
-
-      return t;
+      return c;
     }
 
-    function estimateKcal(objetivo, nivel){
-      const obj = (objetivo||"Manter").toLowerCase();
-      const nv = (nivel||"Iniciante").toLowerCase();
-
-      let base = 2000;
-      if(obj.includes("emag")) base = 1700;
-      if(obj.includes("massa")) base = 2500;
-      if(obj.includes("perform")) base = 2200;
-
-      if(nv.includes("inic")) base -= 100;
-      if(nv.includes("avanç")) base += 150;
-
-      return clamp(base, 1400, 3200);
+    function renderChallenge(){
+      const c = ensureChallengeWeek();
+      const txt = $("challengeTxt");
+      const bar = $("challengeBar");
+      if(txt){
+        txt.innerHTML = `<b>${escapeHtml(c.title)}</b><br><span class="muted">${escapeHtml(c.tip)}</span>`;
+      }
+      if(bar){
+        const pct = Math.max(0, Math.min(100, Math.round((c.progress / c.goal) * 100)));
+        bar.style.width = pct + "%";
+      }
     }
 
-    function buildMealPlan(p){
-      const obj = p.objetivo || "Manter";
-      const niv = p.nivel || "Iniciante";
-      const restr = p.restricao || "Nenhuma";
+    function rerollChallenge(){
+      const pick = CHALLENGES[Math.floor(Math.random()*CHALLENGES.length)];
+      const obj = { ...pick, progress:0, weekStart: getWeekStart() };
+      setChallenge(obj);
+      renderChallenge();
+      pushToCloud();
+    }
+    window.rerollChallenge = rerollChallenge;
 
-      const kcalDia = estimateKcal(obj, niv);
+    function markChallengeStep(){
+      const c = ensureChallengeWeek();
+      c.progress = Math.min(c.goal, (c.progress || 0) + 1);
+      setChallenge(c);
+      renderChallenge();
+      // bônus XP quando completa
+      if(c.progress >= c.goal){
+        addXP(60);
+        setPratoResult("🏁 Desafio concluído! +60 XP");
+        renderMedals();
+        refreshCoach();
+      }
+      pushToCloud();
+    }
+    window.markChallengeStep = markChallengeStep;
 
-      // Estratégias por objetivo (sem “robô”):
-      const style = obj.toLowerCase().includes("emag")
-        ? { meals: 4, proteinBoost: 1, carbBoost: 0 }
-        : obj.toLowerCase().includes("massa")
-          ? { meals: 5, proteinBoost: 2, carbBoost: 2 }
-          : obj.toLowerCase().includes("perform")
-            ? { meals: 5, proteinBoost: 2, carbBoost: 1 }
-            : { meals: 4, proteinBoost: 1, carbBoost: 1 };
+    /***********************
+     * 9) Notificações inteligentes
+     ***********************/
+    function getNotifCfg(){
+      const n = safeJSON(KEY_NOTIF);
+      return (n && typeof n === "object") ? n : { enabled:false, h1:12, h2:19 };
+    }
+    function setNotifCfg(n){
+      localStorage.setItem(KEY_NOTIF, JSON.stringify(n));
+    }
 
-      const mealNamesByCount = style.meals === 5
-        ? ["Café da manhã","Lanche","Almoço","Lanche","Jantar"]
-        : ["Café da manhã","Almoço","Lanche","Jantar"];
+    async function openNotifPrompt(){
+      const cfg = getNotifCfg();
+      const on = confirm(`Notificações: ${cfg.enabled ? "ATIVADAS" : "DESATIVADAS"}\n\nQuer ${cfg.enabled ? "DESATIVAR" : "ATIVAR"} agora?`);
+      cfg.enabled = !cfg.enabled;
+      setNotifCfg(cfg);
 
-      const mk = (t, d, k)=>({ t, d, k });
-
-      // Monta refeições com pools e variação:
-      const pickP = ()=>pickRandom(FOODS.proteina);
-      const pickC = ()=>pickRandom(FOODS.carbo);
-      const pickF = ()=>pickRandom(FOODS.fibra);
-      const pickG = ()=>pickRandom(FOODS.gordura);
-      const pickS = ()=>pickRandom(FOODS.snack);
-
-      const meals = [];
-
-      for(let i=0;i<mealNamesByCount.length;i++){
-        const name = mealNamesByCount[i];
-        let desc = "";
-        if(name === "Café da manhã"){
-          desc = `${pickS()} + ${pickC()} + ${pickP()}`;
-          if(style.carbBoost>0 && Math.random()<0.5) desc += ` + ${pickC()}`;
-        } else if(name === "Almoço"){
-          desc = `${pickP()} + ${pickC()} + ${pickF()}`;
-          if(style.proteinBoost>1 && Math.random()<0.45) desc += ` + ${pickP()}`;
-        } else if(name === "Jantar"){
-          desc = `${pickP()} + ${pickF()}`;
-          if(style.carbBoost>0 && Math.random()<0.45) desc += ` + ${pickC()}`;
-        } else { // lanches
-          desc = `${pickS()} + ${pickG()}`;
-          if(style.proteinBoost>1 && Math.random()<0.4) desc += ` + ${pickP()}`;
+      if(cfg.enabled){
+        if(!("Notification" in window)){
+          alert("Seu navegador não suporta notificações.");
+          cfg.enabled = false;
+          setNotifCfg(cfg);
+          return;
         }
-
-        desc = applyRestriction(desc, restr);
-
-        // kcal por refeição (simples, mas consistente)
-        const kcal = Math.round(kcalDia / mealNamesByCount.length * (0.9 + Math.random()*0.25));
-        meals.push(mk(name, desc, kcal));
+        const perm = await Notification.requestPermission();
+        if(perm !== "granted"){
+          alert("Permissão negada. Não foi possível ativar.");
+          cfg.enabled = false;
+          setNotifCfg(cfg);
+          return;
+        }
+        scheduleDailyNotifs();
+        alert("✅ Notificações ativadas.");
+      }else{
+        alert("✅ Notificações desativadas.");
       }
+    }
+    window.openNotifPrompt = openNotifPrompt;
 
-      // Ajuste final para bater mais perto do total
-      const sum = meals.reduce((a,m)=>a+m.k,0);
-      const diff = kcalDia - sum;
-      if(meals.length){
-        meals[meals.length-1].k = Math.max(120, meals[meals.length-1].k + diff);
-      }
-
-      return { meals, kcalDia, note: pickRandom(DIETA_OUTROS), intro: pickRandom(DIETA_INTROS) };
+    let notifTimers = [];
+    function clearNotifs(){
+      notifTimers.forEach(t=> clearTimeout(t));
+      notifTimers = [];
     }
 
-    function renderDieta(plan){
+    function scheduleDailyNotifs(){
+      clearNotifs();
+      const cfg = getNotifCfg();
+      if(!cfg.enabled) return;
+
+      const scheduleAt = (hour)=>{
+        const now = new Date();
+        const t = new Date(now);
+        t.setHours(hour, 0, 0, 0);
+        if(t <= now) t.setDate(t.getDate()+1);
+        const ms = t - now;
+
+        const timer = setTimeout(()=>{
+          try{
+            const avg7 = averageScore(7);
+            const msg = avg7 >= 80
+              ? "🔥 Você tá voando. Mantém a consistência hoje."
+              : avg7 >= 65
+                ? "💪 Hoje é dia de subir o score. Um prato melhor já resolve."
+                : "⚡ Faz o básico bem feito: proteína + salada + água.";
+            new Notification("CheckPrato Elite", { body: msg });
+          }catch{}
+          scheduleDailyNotifs(); // re-agenda
+        }, ms);
+
+        notifTimers.push(timer);
+      };
+
+      scheduleAt(cfg.h1 || 12);
+      scheduleAt(cfg.h2 || 19);
+    }
+
+    /***********************
+     * 10) Evolução (gráfico + ranking + meta proteína)
+     ***********************/
+    let scoreChart = null;
+
+    function renderScoreChart(){
+      const canvas = $("scoreChart");
+      if(!canvas) return;
+
+      const h = getPlateHistory().slice(0, 14).reverse();
+      const labels = h.map(x=>{
+        const d = new Date(x.ts);
+        return `${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}`;
+      });
+      const data = h.map(x=> x.score || 0);
+
+      if(scoreChart){
+        scoreChart.destroy();
+        scoreChart = null;
+      }
+
+      scoreChart = new Chart(canvas.getContext("2d"), {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            data,
+            tension: 0.35,
+            borderWidth: 2,
+            pointRadius: 2,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display:false } },
+          scales: {
+            y: { min: 0, max: 100, ticks: { color: "rgba(234,242,255,.65)" }, grid: { color:"rgba(255,255,255,.08)" } },
+            x: { ticks: { color: "rgba(234,242,255,.65)" }, grid: { color:"rgba(255,255,255,.06)" } }
+          }
+        }
+      });
+    }
+
+    function renderEvolucao(){
+      const avg7 = averageScore(7);
+      const pct = socialPercent(avg7);
+      const protG = proteinGoal();
+      const protT = proteinToday();
+      const scoreToday = (getPlateHistory().find(x=> x.dayKey === todayKey())?.score) ?? "—";
+
+      if($("rankTxt")) $("rankTxt").innerHTML = `Você está melhor que <b>${pct}%</b> dos usuários (comparação motivacional).`;
+      if($("avg7Txt")) $("avg7Txt").textContent = avg7 ? `${avg7}/100` : "—";
+      if($("protGoalTxt")) $("protGoalTxt").textContent = `${protG}g`;
+      if($("protTodayTxt")) $("protTodayTxt").textContent = `${protT}g`;
+      if($("scoreTodayTxt")) $("scoreTodayTxt").textContent = scoreToday;
+
+      const g = unlockMedals();
+      const lvl = levelFromXP(g.xp || 0);
+
+      if($("streakTxt2")) $("streakTxt2").textContent = String(g.streak || 0);
+      if($("lvlTxt2")) $("lvlTxt2").textContent = String(lvl.lvl);
+      if($("xpTxt2")) $("xpTxt2").textContent = String(g.xp || 0);
+      if($("xpBar2")) $("xpBar2").style.width = `${lvl.pct}%`;
+
+      renderScoreChart();
+      renderMedals();
+    }
+
+    function refreshCoach(){
+      const g = unlockMedals();
+      const lvl = levelFromXP(g.xp || 0);
+
+      if($("streakTxt")) $("streakTxt").textContent = String(g.streak || 0);
+      if($("lvlTxt")) $("lvlTxt").textContent = String(lvl.lvl);
+      if($("xpTxt")) $("xpTxt").textContent = String(g.xp || 0);
+      if($("xpBar")) $("xpBar").style.width = `${lvl.pct}%`;
+
+      const avg7 = averageScore(7);
+      const p = safeJSON(KEY_PROFILE) || {};
+      const obj = (p.objetivo || "Equilíbrio");
+      const coach = avg7 >= 85
+        ? "💎 Elite real. Mantém o ritmo e escala o resto."
+        : avg7 >= 70
+          ? "💪 Tá sólido. Agora é consistência + pequenos ajustes."
+          : avg7 >= 55
+            ? "⚡ Você já começou. Agora corta distrações e faz o básico bem feito."
+            : "🧠 Começa simples: proteína + salada + água. Repetir > motivação.";
+
+      if($("coachTxt")) $("coachTxt").textContent = `${coach} • Objetivo: ${obj}`;
+    }
+    /***********************
+     * 11) Dieta (mais variações)
+     ***********************/
+    const DIETAS_BASE = [
+      [
+        {t:"Café da manhã", d:"Omelete 2 ovos + aveia com banana.", k:520},
+        {t:"Lanche", d:"Iogurte natural + chia + fruta.", k:260},
+        {t:"Almoço", d:"Frango + arroz + feijão + salada.", k:720},
+        {t:"Lanche", d:"Castanhas + 1 fruta.", k:220},
+        {t:"Jantar", d:"Peixe + legumes + batata-doce.", k:680},
+      ],
+      [
+        {t:"Café da manhã", d:"Tapioca com queijo + café sem açúcar.", k:420},
+        {t:"Almoço", d:"Carne magra + mandioca + salada.", k:760},
+        {t:"Jantar", d:"Omelete + legumes + azeite.", k:540},
+        {t:"Ceia", d:"Iogurte + granola.", k:300},
+      ],
+      [
+        {t:"Café da manhã", d:"Pão integral + ovos + fruta.", k:520},
+        {t:"Almoço", d:"Arroz integral + feijão + frango + salada.", k:740},
+        {t:"Jantar", d:"Macarrão integral + frango + molho caseiro.", k:720},
+        {t:"Ceia", d:"Cottage/ricota + fruta.", k:260},
+      ],
+      [
+        {t:"Café da manhã", d:"Vitamina: leite/iogurte + banana + aveia.", k:520},
+        {t:"Lanche", d:"Sanduíche integral com atum.", k:420},
+        {t:"Almoço", d:"Peixe + arroz + feijão + salada.", k:720},
+        {t:"Jantar", d:"Carne + legumes + batata.", k:760},
+      ]
+    ];
+
+    function renderDieta(d){
       const box = $("dietaBox");
       if(!box) return;
       box.innerHTML = "";
-      if(!plan){
+      if(!d){
         const s = document.createElement("div");
         s.className="status";
         s.textContent="Gere uma dieta para aparecer aqui.";
         box.appendChild(s);
         return;
       }
-
-      const p = profileOrDefault();
-      const head = document.createElement("div");
-      head.className = "status";
-      head.innerHTML = `<b>${escapeHtml(plan.intro)}</b><br>
-        Objetivo: <b>${escapeHtml(p.objetivo||"—")}</b> • Nível: <b>${escapeHtml(p.nivel||"—")}</b> • Restrição: <b>${escapeHtml(p.restricao||"Nenhuma")}</b><br>
-        Meta do dia (estimativa): <b>${plan.kcalDia} kcal</b><br>
-        <span class="muted">${escapeHtml(plan.note)}</span>`;
-      box.appendChild(head);
-
-      plan.meals.forEach(m=>{
+      d.forEach(m=>{
         const div = document.createElement("div");
         div.className="meal";
         div.innerHTML = `
@@ -1743,10 +2288,20 @@
     }
 
     function gerarDieta(){
-      const p = profileOrDefault();
-      const plan = buildMealPlan(p);
-      localStorage.setItem(KEY_DIETA, JSON.stringify(plan));
-      renderDieta(plan);
+      const p = safeJSON(KEY_PROFILE) || {};
+      const objetivo = (p.objetivo || "Manter").toLowerCase();
+      let pick = DIETAS_BASE[Math.floor(Math.random()*DIETAS_BASE.length)];
+
+      // Ajuste simples por objetivo (sem prometer precisão)
+      if(objetivo.includes("emag")){
+        pick = pick.map(x=> ({...x, k: Math.max(180, Math.round(x.k * 0.88))}));
+      }
+      if(objetivo.includes("massa")){
+        pick = pick.map(x=> ({...x, k: Math.round(x.k * 1.08)}));
+      }
+
+      localStorage.setItem(KEY_DIETA, JSON.stringify(pick));
+      renderDieta(pick);
       pushToCloud();
     }
     window.gerarDieta = gerarDieta;
@@ -1755,175 +2310,71 @@
     window.refazerDieta = refazerDieta;
 
     /***********************
-     * 9) TREINO (muitos esportes + auto)
+     * 12) Treino (mais esportes)
      ***********************/
-    const THEMES = [
-      "Auto (meus esportes)",
-      "Musculação (Full body)",
-      "Musculação (ABC)",
-      "Calistenia",
-      "Funcional",
-      "HIIT",
-      "Corrida",
-      "Ciclismo",
-      "Natação",
-      "Yoga",
-      "Pilates",
-      "Boxe",
-      "Muay Thai",
-      "Jiu-jitsu",
-      "Futebol",
-      "Basquete",
-      "Vôlei",
-      "Alongamento/Mobilidade"
-    ];
+    const TREINOS = {
+      "Academia": [
+        ["Segunda", ["Agachamento","Supino","Remada","Panturrilha"]],
+        ["Quarta", ["Desenvolvimento","Puxada","Abdominal prancha","Elevação lateral"]],
+        ["Sexta", ["Levantamento terra","Rosca","Tríceps","Abdominal"]],
+      ],
+      "Corrida": [
+        ["Segunda", ["Corrida leve 30 min","Mobilidade"]],
+        ["Quarta", ["Tiros 10x 200m","Alongamento"]],
+        ["Sexta", ["Corrida moderada 45 min","Core"]],
+      ],
+      "Muay Thai":[
+        ["Terça", ["Sombra 10 min","Chutes básicos","Combinações"]],
+        ["Quinta", ["Manopla","Defesas","Condicionamento"]],
+        ["Sábado", ["Clinch","Sequências","Alongamento"]],
+      ],
+      "Futebol":[
+        ["Segunda", ["Arranque","Controle de bola","Finalização"]],
+        ["Quarta", ["Agilidade","Passe e domínio","Resistência"]],
+        ["Sexta", ["Jogo reduzido","Alongamento"]],
+      ],
+      "Basquete":[
+        ["Terça", ["Drible","Arremessos","Pliometria"]],
+        ["Quinta", ["Defesa lateral","Bandejas","Condicionamento"]],
+        ["Sábado", ["Treino de jogo","Alongamento"]],
+      ],
+      "Vôlei":[
+        ["Terça", ["Saque","Recepção","Pliometria"]],
+        ["Quinta", ["Ataque","Bloqueio","Mobilidade"]],
+        ["Sábado", ["Jogo reduzido","Alongamento"]],
+      ],
+      "Natação":[
+        ["Segunda", ["Técnica 30 min","Séries leves"]],
+        ["Quarta", ["Séries 10x 50m","Respiração"]],
+        ["Sexta", ["Longão 40 min","Alongamento"]],
+      ],
+      "Ciclismo":[
+        ["Segunda", ["Giro leve 40 min","Mobilidade"]],
+        ["Quarta", ["Subidas 6x 2min","Giro"]],
+        ["Sexta", ["Giro moderado 60 min","Core"]],
+      ],
+      "Crossfit":[
+        ["Segunda", ["WOD leve","Mobilidade","Técnica"]],
+        ["Quarta", ["Força","WOD moderado","Alongamento"]],
+        ["Sexta", ["WOD pesado","Core","Alongamento"]],
+      ],
+      "Pilates":[
+        ["Segunda", ["Core","Postura","Respiração"]],
+        ["Quarta", ["Estabilidade","Flexibilidade"]],
+        ["Sexta", ["Controle motor","Alongamento"]],
+      ],
+      "Yoga":[
+        ["Segunda", ["Flow leve","Respiração"]],
+        ["Quarta", ["Mobilidade","Alongamento"]],
+        ["Sexta", ["Força isométrica","Relaxamento"]],
+      ]
+    };
 
-    function syncTemaTreinoOptions(){
-      const sel = $("temaTreino");
-      if(!sel) return;
-      const current = sel.value || "Auto (meus esportes)";
-      sel.innerHTML = "";
-      THEMES.forEach(t=>{
-        const opt = document.createElement("option");
-        opt.textContent = t;
-        sel.appendChild(opt);
-      });
-
-      // Se usuário marcou esportes, adiciona um “preferidos” rápido:
-      const pref = Array.from(selectedSports);
-      if(pref.length){
-        const opt = document.createElement("option");
-        opt.textContent = "Preferidos (" + pref.slice(0,3).join(", ") + (pref.length>3 ? "…" : "") + ")";
-        sel.insertBefore(opt, sel.children[1]);
-      }
-
-      // tenta manter seleção
-      const exists = Array.from(sel.options).some(o=>o.value===current);
-      sel.value = exists ? current : "Auto (meus esportes)";
-    }
-
-    function getLevel(){
-      const p = profileOrDefault();
-      const n = (p.nivel||"Iniciante").toLowerCase();
-      if(n.includes("avanç")) return "Avançado";
-      if(n.includes("inter")) return "Intermediário";
-      return "Iniciante";
-    }
-
-    function scheme(intensidade, level){
-      const i = (intensidade||"Moderado").toLowerCase();
-      const l = (level||"Iniciante").toLowerCase();
-
-      if(i.includes("leve")){
-        return l.includes("avanç") ? "3 séries • 10–12 reps • descanso 60–90s" : "2–3 séries • 10–12 reps • descanso 60–90s";
-      }
-      if(i.includes("pesado")){
-        return l.includes("inic") ? "3 séries • 8–10 reps • descanso 90s" : "4 séries • 6–10 reps • descanso 90–120s";
-      }
-      return l.includes("avanç") ? "4 séries • 8–12 reps • descanso 60–90s" : "3 séries • 8–12 reps • descanso 60–90s";
-    }
-
-    function makeYouTube(ex){
-      return `https://www.youtube.com/results?search_query=${encodeURIComponent(ex+" como fazer")}`;
-    }
-
-    function buildStrengthPlan(type, intensidade, level){
-      const sch = scheme(intensidade, level);
-
-      const full = [
-        ["Segunda", ["Agachamento", "Supino reto", "Remada", "Desenvolvimento (ombro)", "Abdominal prancha"]],
-        ["Quarta", ["Levantamento terra (leve)", "Puxada na barra/lat", "Afundo", "Tríceps", "Rosca bíceps"]],
-        ["Sexta", ["Leg press", "Supino inclinado", "Remada unilateral", "Elevação lateral", "Panturrilha"]]
-      ];
-
-      const abc = [
-        ["Segunda (A)", ["Peito", "Supino reto", "Supino inclinado", "Crucifixo", "Tríceps", "Tríceps corda"]],
-        ["Quarta (B)", ["Costas", "Puxada", "Remada", "Pulldown", "Bíceps", "Rosca direta"]],
-        ["Sexta (C)", ["Pernas", "Agachamento", "Leg press", "Stiff", "Panturrilha", "Abdômen"]]
-      ];
-
-      const dias = (type.includes("ABC") ? abc : full).map(d=>[d[0], d[1].map(ex=>`${ex} • ${sch}`)]);
-      return { tema: type, intensidade, level, dias };
-    }
-
-    function buildCardioPlan(tema, intensidade, level){
-      const i = (intensidade||"Moderado").toLowerCase();
-      const l = (level||"Iniciante").toLowerCase();
-
-      const baseTime =
-        i.includes("leve") ? 25 :
-        i.includes("pesado") ? 45 : 35;
-
-      const extra = l.includes("avanç") ? 10 : l.includes("inter") ? 5 : 0;
-
-      const t = baseTime + extra;
-
-      const dias = [
-        ["Segunda", [`${tema} leve ${t-10} min • respiração controlada`]],
-        ["Quarta", [i.includes("pesado") ? `${tema} intervalado ${t} min • 1 min forte / 1 min leve` : `${tema} moderado ${t} min • ritmo constante`]],
-        ["Sexta", [`${tema} progressivo ${t} min • começa leve e termina moderado`]],
-        ["Sábado", [`Mobilidade + alongamento 15 min • recuperação`]]
-      ];
-
-      return { tema, intensidade, level, dias };
-    }
-
-    function buildLutaPlan(tema, intensidade, level){
-      const i = (intensidade||"Moderado").toLowerCase();
-      const l = (level||"Iniciante").toLowerCase();
-
-      const rounds =
-        i.includes("leve") ? 6 :
-        i.includes("pesado") ? 10 : 8;
-
-      const r = l.includes("avanç") ? rounds+2 : rounds;
-
-      const dias = [
-        ["Terça", [`Sombra 10 min • base`, `Técnica 25 min • combinações`, `Rounds ${r}x2min • leve/moderado`]],
-        ["Quinta", [`Aquecimento 10 min`, `Técnica 30 min`, `Condicionamento 12 min (core + explosão)`]],
-        ["Sábado", [`Técnica 20 min`, `Sparring leve (opcional)`, `Alongamento 10 min`]]
-      ];
-      return { tema, intensidade, level, dias };
-    }
-
-    function buildEsportePlan(tema, intensidade, level){
-      const i = (intensidade||"Moderado").toLowerCase();
-      const drill =
-        tema === "Futebol" ? ["Passe e domínio", "Finalização", "Arranque/Agilidade"] :
-        tema === "Basquete" ? ["Drible", "Arremessos", "Defesa lateral"] :
-        tema === "Vôlei" ? ["Saque", "Recepção", "Bloqueio"] :
-        ["Técnica", "Agilidade", "Condicionamento"];
-
-      const days = [
-        ["Segunda", [`${drill[0]} 25 min`, `${drill[1]} 20 min`, `Condicionamento 12 min`]],
-        ["Quarta", [`${drill[2]} 20 min`, `Jogo reduzido 20–30 min`]],
-        ["Sexta", [i.includes("pesado") ? "Jogo/treino forte 45–60 min" : "Jogo/treino moderado 35–50 min"]],
-        ["Sábado", ["Alongamento/Mobilidade 15 min • recuperação"]]
-      ];
-      return { tema, intensidade, level, dias: days };
-    }
-
-    function buildMindBodyPlan(tema, intensidade, level){
-      const i = (intensidade||"Moderado").toLowerCase();
-      const minutes =
-        i.includes("leve") ? 20 :
-        i.includes("pesado") ? 45 : 30;
-
-      const days = [
-        ["Segunda", [`${tema} ${minutes} min • foco em respiração e postura`]],
-        ["Quarta", [`${tema} ${minutes+5} min • mobilidade + core`]],
-        ["Sexta", [`${tema} ${minutes} min • alongamento profundo`]],
-        ["Domingo", ["Caminhada leve 20–30 min (opcional)"]]
-      ];
-      return { tema, intensidade, level, dias: days };
-    }
-
-    function renderTreino(plan){
+    function renderTreino(t){
       const box = $("treinoSemana");
       if(!box) return;
       box.innerHTML = "";
-
-      if(!plan){
+      if(!t){
         const s = document.createElement("div");
         s.className="status";
         s.textContent="Gere um treino para aparecer aqui.";
@@ -1931,28 +2382,19 @@
         return;
       }
 
-      const head = document.createElement("div");
-      head.className="status";
-      head.innerHTML = `<b>Treino pronto.</b> Tema: <b>${escapeHtml(plan.tema)}</b> • Intensidade: <b>${escapeHtml(plan.intensidade)}</b> • Nível: <b>${escapeHtml(plan.level)}</b>
-      <br><span class="muted">Dica: se doer “errado”, ajuste e procure um profissional.</span>`;
-      box.appendChild(head);
-
-      plan.dias.forEach(d=>{
+      t.dias.forEach(d=>{
         const day = document.createElement("div");
         day.className="dayCard";
-        day.innerHTML = `<div class="dayTitle"><span>${escapeHtml(d[0])}</span><span class="muted">${escapeHtml(plan.tema)}</span></div>`;
+        day.innerHTML = `<div class="dayTitle"><span>${escapeHtml(d[0])}</span><span class="muted">${escapeHtml(t.tema)}</span></div>`;
         (d[1]||[]).forEach(ex=>{
           const row = document.createElement("div");
           row.className="exercise";
-
           const left = document.createElement("div");
-          left.innerHTML = `<b>${escapeHtml(ex)}</b>`;
-
+          left.innerHTML = `<b>${escapeHtml(ex)}</b><div class="muted" style="font-size:12px; margin-top:4px">${escapeHtml(t.intensidade)}</div>`;
           const btn = document.createElement("button");
           btn.className="ytBtn";
           btn.textContent="Ver técnica";
-          btn.addEventListener("click", ()=> abrirLink(makeYouTube(ex)));
-
+          btn.addEventListener("click", ()=> abrirLink(`https://www.youtube.com/results?search_query=${encodeURIComponent(ex+" como fazer")}`));
           row.appendChild(left);
           row.appendChild(btn);
           day.appendChild(row);
@@ -1961,55 +2403,25 @@
       });
     }
 
-    function decideTheme(rawTheme){
-      const p = profileOrDefault();
-      const marked = (Array.isArray(p.esportes) ? p.esportes : []);
-      const theme = rawTheme || "Auto (meus esportes)";
-
-      if(theme.startsWith("Preferidos") && marked.length) return pickRandom(marked);
-      if(theme === "Auto (meus esportes)"){
-        return marked.length ? pickRandom(marked) : "Musculação (Full body)";
-      }
-      return theme;
-    }
-
     function gerarTreino(){
-      const p = profileOrDefault();
-      const raw = $("temaTreino")?.value || "Auto (meus esportes)";
-      const tema = decideTheme(raw);
+      const tema = $("temaTreino")?.value || "Academia";
       const intensidade = $("intTreino")?.value || "Moderado";
-      const level = getLevel();
-
-      let plan;
-      if(tema.startsWith("Musculação")){
-        plan = buildStrengthPlan(tema, intensidade, level);
-      } else if(["Corrida","Ciclismo","Natação","Caminhada"].includes(tema)){
-        plan = buildCardioPlan(tema, intensidade, level);
-      } else if(["Boxe","Muay Thai","Jiu-jitsu"].includes(tema)){
-        plan = buildLutaPlan(tema, intensidade, level);
-      } else if(["Futebol","Basquete","Vôlei","Handebol","Tênis","Beach Tennis"].includes(tema)){
-        plan = buildEsportePlan(tema, intensidade, level);
-      } else if(["Yoga","Pilates","Alongamento/Mobilidade"].includes(tema)){
-        plan = buildMindBodyPlan(tema, intensidade, level);
-      } else if(["Calistenia","Funcional","HIIT","Crossfit"].includes(tema)){
-        // híbrido
-        const days = [
-          ["Segunda", ["Agachamento (peso do corpo) • 3x10", "Flexão • 3x8–12", "Remada/invertida • 3x8–12", "Prancha • 3x30–45s"]],
-          ["Quarta", ["Circuito 20 min • 40s on / 20s off", "Burpee (adaptado) • 3x8–12", "Afundo • 3x10", "Abdominal • 3x12"]],
-          ["Sexta", ["Pliometria leve • 10 min", "Flexão inclinada • 3x10", "Agachamento • 3x12", "Alongamento • 10 min"]],
-          ["Sábado", ["Caminhada leve 20–30 min (opcional)"]]
-        ];
-        plan = { tema, intensidade, level, dias };
-      } else {
-        // fallback
-        plan = buildMindBodyPlan("Alongamento/Mobilidade", intensidade, level);
-      }
-
-      localStorage.setItem(KEY_TREINO, JSON.stringify(plan));
-      renderTreino(plan);
+      const base = TREINOS[tema] || TREINOS["Academia"];
+      const plano = { tema, intensidade, dias: base, createdAt: Date.now() };
+      localStorage.setItem(KEY_TREINO, JSON.stringify(plano));
+      renderTreino(plano);
 
       const out = $("outTreino");
-      if(out){ out.style.display="block"; out.textContent = `✅ Treino salvo: ${plan.tema} (${plan.intensidade}).`; }
+      if(out){ out.style.display="block"; out.textContent = `✅ Treino salvo: ${tema} (${intensidade}).`; }
+
+      // treino conta para streak (hábitos)
+      updateStreak();
+      addXP(18);
+      unlockMedals();
+      refreshCoach();
+      renderMedals();
+      renderEvolucao();
+
       pushToCloud();
     }
     window.gerarTreino = gerarTreino;
@@ -2024,7 +2436,7 @@
     window.limparTreino = limparTreino;
 
     /***********************
-     * 10) Convites (pontos)
+     * 13) Convites + saque
      ***********************/
     function getOrCreateInviteCode(){
       let code = localStorage.getItem(KEY_INV_CODE);
@@ -2060,7 +2472,7 @@
 
     function shareInvite(){
       const link = getMyInviteLink();
-      const text = `Testa o CheckPrato Elite (grátis): ${link}`;
+      const text = `Baixa o CheckPrato Elite e usa meu link: ${link}`;
       if(navigator.share){
         navigator.share({ title:"CheckPrato Elite", text, url: link }).catch(()=>{});
       }else{
@@ -2072,65 +2484,76 @@
     function renderInviteUI(){
       const code = getOrCreateInviteCode();
       const link = getMyInviteLink();
-      const pts = getBalance();
-      const falta = Math.max(0, 100 - pts);
+      const bal = getBalance();
+      const falta = Math.max(0, 50 - bal);
 
       if($("myCode")) $("myCode").textContent = code;
       if($("myLink")) $("myLink").textContent = link;
-      if($("balTxt")) $("balTxt").textContent = `${pts} pts`;
+      if($("balTxt")) $("balTxt").textContent = fmtBRL(bal);
 
       if($("progressTxt")){
-        $("progressTxt").textContent = pts >= 100
-          ? "✅ Você atingiu 100 pts! Pode resgatar uma badge (demo)."
-          : `Faltam ${falta} pts para resgatar uma badge.`;
+        $("progressTxt").textContent = bal >= 50
+          ? "✅ Você atingiu R$ 50! Agora pode solicitar saque."
+          : `Faltam ${fmtBRL(falta)} para atingir R$ 50.`;
       }
 
-      const btn = $("btnBonus");
+      const btn = $("btnSaque");
       if(btn){
-        btn.disabled = pts < 100;
-        btn.style.opacity = pts < 100 ? .55 : 1;
+        btn.disabled = bal < 50;
+        btn.style.opacity = bal < 50 ? .55 : 1;
       }
     }
 
-    function resgatarBonus(){
-      const pts = getBalance();
+    function solicitarSaque(){
+      const bal = getBalance();
       const msg = $("saqueMsg");
       if(!msg) return;
 
-      if(pts < 100){
+      if(bal < 50){
         msg.style.display="block";
-        msg.textContent = "Ainda não atingiu 100 pts.";
+        msg.textContent = "Ainda não atingiu o mínimo (R$50).";
         return;
       }
 
-      setBalance(pts - 100);
       msg.style.display="block";
-      msg.textContent = "🏅 Badge resgatada (DEMO)! Depois a gente liga isso em um sistema real.";
+      msg.textContent = "✅ Solicitação registrada. Depois ligamos Pix/QR de verdade no backend.";
     }
-    window.resgatarBonus = resgatarBonus;
+    window.solicitarSaque = solicitarSaque;
 
     /***********************
-     * 11) Dashboard
+     * 14) Premium (escondido)
      ***********************/
-    function getWeekStart(){
+    const PREMIUM_PRICE = 29.90;
+    const PREMIUM_CHECKOUT_URL = "https://mpago.la/2BRjpaP"; // você troca depois
+    function openCheckout(){ window.open(PREMIUM_CHECKOUT_URL, "_blank"); }
+    window.openCheckout = openCheckout;
+
+    // Acesso oculto: digitar ELITE na tela Perfil
+    let secret = "";
+    window.addEventListener("keydown",(e)=>{
+      const active = document.querySelector(".screen.active");
+      if(!active || active.id !== "viewPerfil") return;
+      const k = (e.key || "").toUpperCase();
+      if(!/^[A-Z]$/.test(k)) return;
+      secret = (secret + k).slice(-5);
+      if(secret === "ELITE"){
+        openView("viewPremium");
+        secret = "";
+      }
+    });
+
+    /***********************
+     * 15) Dashboard (kcal, km, dias)
+     ***********************/
+    function getDash(){
+      const d = safeJSON(KEY_DASH);
+      if(d && typeof d === "object") return d;
+
       const now = new Date();
       const start = new Date(now);
       start.setHours(0,0,0,0);
       start.setDate(now.getDate() - ((now.getDay()+6)%7)); // segunda
-      return start.getTime();
-    }
-
-    function getDash(){
-      const d = safeJSON(KEY_DASH);
-      const ws = getWeekStart();
-      if(d && typeof d === "object"){
-        // ✅ reset automático quando muda a semana
-        if(d.weekStart !== ws){
-          return { kcal:0, km:0, done:0, goal: d.goal || 7, weekStart: ws };
-        }
-        return d;
-      }
-      return { kcal:0, km:0, done:0, goal:7, weekStart: ws };
+      return { kcal:0, km:0, done:0, goal:7, weekStart: start.getTime() };
     }
     function setDash(d){
       localStorage.setItem(KEY_DASH, JSON.stringify(d));
@@ -2172,34 +2595,40 @@
     function renderDash(){
       const d = getDash();
       setProgressoUI({ kcal:d.kcal, km:d.km, doneDays:d.done, goalDays:d.goal, weekStart:d.weekStart });
+      refreshCoach();
+      renderChallenge();
+      renderPratoHistory();
+      renderEvolucao();
       updatePerfilBox();
     }
 
-    function addKcal(){
-      const d = getDash();
-      d.kcal += 500;
-      setDash(d);
-    }
+    function addKcal(){ const d = getDash(); d.kcal += 500; setDash(d); }
     window.addKcal = addKcal;
 
-    function addKm(){
-      const d = getDash();
-      d.km += 2;
-      setDash(d);
-    }
+    function addKm(){ const d = getDash(); d.km += 2; setDash(d); }
     window.addKm = addKm;
 
     function addTreinoDone(){
       const d = getDash();
       d.done = Math.min(d.goal, d.done + 1);
       setDash(d);
+      updateStreak();
+      addXP(10);
+      unlockMedals();
+      renderMedals();
+      refreshCoach();
+      renderEvolucao();
     }
     window.addTreinoDone = addTreinoDone;
 
     function resetProgresso(){
       const d = getDash();
       d.kcal = 0; d.km = 0; d.done = 0;
-      d.weekStart = getWeekStart();
+      const now = new Date();
+      const start = new Date(now);
+      start.setHours(0,0,0,0);
+      start.setDate(now.getDate() - ((now.getDay()+6)%7));
+      d.weekStart = start.getTime();
       setDash(d);
     }
     window.resetProgresso = resetProgresso;
@@ -2208,7 +2637,7 @@
       const d = getDash();
       const v = prompt("Meta de dias de treino na semana (ex: 5, 6, 7):", String(d.goal));
       if(v === null) return;
-      const n = clamp(parseInt(v,10) || d.goal, 1, 14);
+      const n = Math.max(1, Math.min(14, parseInt(v,10) || d.goal));
       d.goal = n;
       if(d.done > d.goal) d.done = d.goal;
       setDash(d);
@@ -2216,72 +2645,71 @@
     window.setGoalDaysPrompt = setGoalDaysPrompt;
 
     /***********************
-     * 12) Perfil
+     * 16) Perfil
      ***********************/
     function updatePerfilBox(){
       const p = safeJSON(KEY_PROFILE) || {};
       const dash = getDash();
       const mode = localStorage.getItem(KEY_GUEST) ? "Convidado (Local)" : (currentUser ? "Logado" : "Local");
-      const sports = Array.isArray(p.esportes) && p.esportes.length ? p.esportes.join(", ") : "—";
-      const termo = p.termoAceito ? "Aceito" : "Não aceito";
+      const sports = Array.isArray(p.esportes) ? p.esportes.join(", ") : "—";
+      const protG = proteinGoal();
+      const protT = proteinToday();
+      const avg7 = averageScore(7);
       const html = `
         <div><b>Modo:</b> ${escapeHtml(mode)}</div>
         <div><b>Nome:</b> ${escapeHtml(p.nome || "—")}</div>
         <div><b>Objetivo:</b> ${escapeHtml(p.objetivo || "—")}</div>
-        <div><b>Nível:</b> ${escapeHtml(p.nivel || "—")}</div>
-        <div><b>Restrição:</b> ${escapeHtml(p.restricao || "Nenhuma")}</div>
-        <div><b>Esportes:</b> ${escapeHtml(sports)}</div>
-        <div><b>Termo:</b> ${escapeHtml(termo)}</div>
+        <div><b>Esportes:</b> ${escapeHtml(sports || "—")}</div>
         <div style="margin-top:8px"><b>Semana:</b> ${escapeHtml(weekLabel(dash.weekStart))}</div>
         <div><b>Calorias:</b> ${Math.round(dash.kcal)} | <b>KM:</b> ${Math.round(dash.km)} | <b>Dias:</b> ${dash.done}/${dash.goal}</div>
+        <div style="margin-top:8px"><b>Proteína hoje:</b> ${protT}g / ${protG}g</div>
+        <div><b>Média 7 dias:</b> ${avg7 ? (avg7+"/100") : "—"}</div>
       `;
       if($("perfilBox")) $("perfilBox").innerHTML = html;
     }
 
     /***********************
-     * 13) Init
+     * 17) Init
      ***********************/
     function refreshAllUI(){
       applyProfileToUI();
       buildSportsChips();
-      syncTemaTreinoOptions();
       applyAvatar();
-      loadLastPlate();
-      renderHistory();
+      loadLastPrato();
+      renderPratoHistory();
 
-      // dieta e treino salvos
-      const savedDieta = safeJSON(KEY_DIETA);
-      if(savedDieta) renderDieta(savedDieta);
+      renderDieta(safeJSON(KEY_DIETA));
+      renderTreino(safeJSON(KEY_TREINO));
 
-      const savedTreino = safeJSON(KEY_TREINO);
-      if(savedTreino) renderTreino(savedTreino);
-
-      // convites
       renderInviteUI();
-
-      // dash
       renderDash();
+      renderChallenge();
+      renderMedals();
+      renderEvolucao();
 
-      updatePerfilBox();
+      // Welcome message
+      if($("welcomeStatus")){
+        $("welcomeStatus").textContent = "✅ Dica: se algo não abrir, limpe o cache do navegador e recarregue.";
+      }
+
+      // notif schedule
+      scheduleDailyNotifs();
     }
 
     function init(){
       wireNav();
       wireAvatarInput();
-      wirePlateInput();
+      wirePratoInputs();
 
-      if($("welcomeStatus")){
-        $("welcomeStatus").textContent = "✅ Dica: se algo não atualizar, limpe o cache do site e recarregue.";
-      }
-
+      // decide entrada
       const isGuest = !!localStorage.getItem(KEY_GUEST);
       if(isGuest){
         setAuthBadge("Modo: Local");
         showNav(true);
-        showOnly("viewCadastro");
+        openView("viewCadastro");
       }else{
         showNav(false);
-        showOnly("viewWelcome");
+        openView("viewWelcome");
       }
 
       initFirebaseIfPossible();
