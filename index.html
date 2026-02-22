@@ -2972,6 +2972,91 @@ window.addEventListener("load", () => {
   const last = localStorage.getItem("lastView");
   if (last) showOnly(last);
 });
+    <script>
+/* ====== NAVEGAÇÃO ENTRE ABAS (SHOWONLY) ====== */
+function showOnly(viewId){
+  // esconde todas
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+
+  // mostra a escolhida
+  const el = document.getElementById(viewId);
+  if(el) el.classList.add("active");
+
+  // marca botão ativo da nav
+  document.querySelectorAll(".navBtn").forEach(b => b.classList.remove("active"));
+  const btn = document.querySelector(`.navBtn[data-view="${viewId}"]`);
+  if(btn) btn.classList.add("active");
+
+  // salva última aba
+  try{ localStorage.setItem("lastView", viewId); }catch(e){}
+}
+
+/* ====== WELCOME CAROUSEL ====== */
+let wIndex = 0;
+
+function wSlides(){
+  return Array.from(document.querySelectorAll("#viewWelcome .wSlide"));
+}
+
+function wBuildDots(){
+  const slides = wSlides();
+  const dotsWrap = document.getElementById("wDots");
+  if(!dotsWrap || slides.length === 0) return;
+
+  dotsWrap.innerHTML = "";
+  slides.forEach((_, i) => {
+    const dot = document.createElement("div");
+    dot.className = "wDot" + (i === wIndex ? " on" : "");
+    dot.addEventListener("click", () => wGo(i));
+    dotsWrap.appendChild(dot);
+  });
+}
+
+function wGo(i){
+  const slides = wSlides();
+  if(slides.length === 0) return;
+
+  wIndex = (i + slides.length) % slides.length;
+
+  slides.forEach(s => s.classList.remove("active"));
+  slides[wIndex].classList.add("active");
+
+  // atualiza bolinhas
+  document.querySelectorAll("#wDots .wDot").forEach((d, idx) => {
+    d.classList.toggle("on", idx === wIndex);
+  });
+}
+
+function wNext(){ wGo(wIndex + 1); }
+function wPrev(){ wGo(wIndex - 1); }
+
+/* ====== BOTÕES DO WELCOME (IR PARA CADASTRO / MANUAL) ====== */
+function goCadastro(){
+  showOnly("viewCadastro");
+}
+function goManual(){
+  // se você tiver uma seção manual separada, use o id dela:
+  // showOnly("viewManual");
+  // se o manual está dentro do próprio welcome, rola até ele:
+  const manual = document.getElementById("welcomeManual");
+  if(manual) manual.scrollIntoView({behavior:"smooth"});
+}
+
+/* ====== INIT ====== */
+window.addEventListener("load", () => {
+  // constrói bolinhas e garante slide 0
+  wIndex = 0;
+  wBuildDots();
+  wGo(0);
+
+  // se você quer que sempre abra no welcome:
+  // showOnly("viewWelcome");
+
+  // se quer reabrir última aba:
+  const last = localStorage.getItem("lastView");
+  if(last) showOnly(last);
+});
+</script>
     init();
   </script>
 </body>
