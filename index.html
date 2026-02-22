@@ -1,562 +1,691 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CheckPrato Elite</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>CheckPrato • Elite</title>
 
-<style>
-:root{
---bg:#050d18;
---bg2:#091e32;
---card:#0d1b2e;
---green:#21e6b6;
---gold:#f6b23a;
---txt:#eaf2ff;
---muted:#8fa4c7;
-}
+  <meta name="theme-color" content="#0a1320"/>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" sizes="192x192" href="./icon-192.png">
+  <link rel="apple-touch-icon" href="./icon-192.png">
 
-*{box-sizing:border-box}
+  <!-- Chart.js (para Evolução) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-body{
-margin:0;
-font-family:system-ui;
-background:
-radial-gradient(circle at 20% 10%,#09253f,#050d18);
-color:var(--txt);
-}
+  <style>
+    :root{
+      --bg:#07121f;
+      --bg2:#0b2033;
+      --card:rgba(255,255,255,.04);
+      --card2:rgba(255,255,255,.06);
+      --stroke:rgba(255,255,255,.08);
+      --txt:#eaf2ff;
+      --muted:rgba(234,242,255,.72);
+      --green:#21e6b6;
+      --green2:#17caa0;
+      --orange:#f6b23a;
+      --shadow:0 20px 60px rgba(0,0,0,.45);
+      --r:22px;
+      --max:560px;
 
-.wrap{
-max-width:650px;
-margin:auto;
-padding:16px;
-}
+      --glass: rgba(255,255,255,.06);
+      --glass2: rgba(255,255,255,.03);
+      --stroke3d: rgba(255,255,255,.10);
+      --shadow3d: 0 24px 70px rgba(0,0,0,.55);
+    }
 
-/* TOPO */
-.top{
-display:flex;
-align-items:center;
-gap:12px;
-margin-bottom:14px;
-}
+    *{ box-sizing:border-box; }
+    html, body{
+      height:100%;
+      margin:0;
+      padding:0;
+      background: var(--bg);
+      color: var(--txt);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      overflow-x:hidden;
+    }
+    body{
+      padding-bottom: calc(92px + env(safe-area-inset-bottom));
+    }
+    a{ color: var(--green); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
 
-.logo{
-width:44px;
-height:44px;
-border-radius:14px;
-background:linear-gradient(135deg,var(--green),#1bb999);
-display:flex;
-align-items:center;
-justify-content:center;
-font-weight:900;
-color:#042019;
-}
+    .wrap{ max-width: var(--max); margin: 0 auto; padding: 16px 14px 24px; }
 
-.title b{color:var(--green)}
+    .topbar{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-top:6px;
+      margin-bottom: 14px;
+    }
+    .logo{
+      width:44px;height:44px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(33,230,182,.35), rgba(33,230,182,.05));
+      border:1px solid rgba(33,230,182,.35);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:1000;
+      color:var(--green);
+      box-shadow: var(--shadow);
+      flex:0 0 auto;
+      overflow:hidden;
+    }
+    .brand{
+      display:flex;flex-direction:column;gap:2px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    .brand small{color:var(--muted); letter-spacing:.08em; font-weight:900}
+    .brand b{font-size:18px}
 
-/* CARDS */
-.card{
-background:linear-gradient(180deg,#0d1b2e,#091423);
-border-radius:24px;
-padding:16px;
-margin-top:14px;
-box-shadow:0 20px 60px rgba(0,0,0,.5);
-border:1px solid rgba(255,255,255,.06);
-}
+    .pill{
+      display:flex;align-items:center;gap:8px;
+      padding:10px 12px;border-radius:999px;
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--stroke);
+      color:var(--muted);
+      font-weight:800;
+      white-space:nowrap;
+      flex:0 0 auto;
+    }
+    .pill .dot{
+      width:10px;height:10px;border-radius:99px;background:var(--green);
+      box-shadow: 0 0 0 6px rgba(33,230,182,.12);
+    }
 
-/* HEAD */
-.h1{
-font-size:32px;
-font-weight:900;
-color:var(--green);
-line-height:1.1;
-margin:10px 0;
-}
+    .h1{
+      font-size:34px;
+      margin:12px 2px 14px;
+      letter-spacing:.02em;
+      color:var(--green);
+      font-weight: 1000;
+      line-height: 1.05;
+    }
 
-.sub{color:var(--muted)}
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border: 1px solid var(--stroke);
+      border-radius: var(--r);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
 
-/* BOTÕES */
-.btn{
-width:100%;
-padding:16px;
-border-radius:18px;
-border:none;
-margin-top:14px;
-font-weight:900;
-background:linear-gradient(135deg,var(--green),#18c79f);
-cursor:pointer;
-}
+    .hint{ color: var(--muted); font-weight: 650; line-height: 1.35; }
+    .muted{ opacity:.85; }
 
-.btn2{
-background:rgba(255,255,255,.05);
-border:1px solid rgba(255,255,255,.08);
-color:var(--txt);
-}
+    .row{display:flex; gap:12px; flex-wrap:wrap}
+    .col{flex:1 1 140px; min-width: 140px}
 
-/* INPUT */
-input,select{
-width:100%;
-padding:14px;
-border-radius:16px;
-border:none;
-background:#071728;
-color:var(--txt);
-margin-top:10px;
-}
+    .label{
+      margin: 12px 2px 6px;
+      color: rgba(234,242,255,.65);
+      font-weight: 950;
+      letter-spacing:.12em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
 
-/* SCREENS */
-.screen{display:none}
-.screen.active{display:block}
+    input, select, textarea{
+      width:100%;
+      padding:14px 14px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      color: var(--txt);
+      outline: none;
+      font-size: 15px;
+    }
+    textarea{ min-height: 90px; resize: vertical; }
+    input::placeholder{color: rgba(234,242,255,.35)}
+    select{appearance:none}
 
-/* NAV */
-.nav{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:#071728;
-padding:10px;
-}
+    .btn{
+      width:100%;
+      padding: 16px 16px;
+      border-radius: 18px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 950;
+      font-size: 16px;
+      letter-spacing: .02em;
+      background: linear-gradient(135deg, var(--green), var(--green2));
+      color:#042019;
+      box-shadow: 0 18px 45px rgba(33,230,182,.18);
+      margin-top: 14px;
+    }
+    .btnSecondary{
+      width:100%;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      cursor: pointer;
+      font-weight: 900;
+      font-size: 15px;
+      background: rgba(255,255,255,.05);
+      color: var(--txt);
+      margin-top: 10px;
+    }
+    .btnOrange{
+      width:100%;
+      padding: 16px 16px;
+      border-radius: 18px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 950;
+      font-size: 16px;
+      background: linear-gradient(135deg, #ffcc5a, #f6b23a);
+      color:#201400;
+      margin-top: 12px;
+      box-shadow: 0 18px 45px rgba(246,178,58,.18);
+    }
 
-.navInner{
-display:flex;
-gap:8px;
-overflow:auto;
-}
+    .status{
+      margin-top: 10px;
+      font-weight: 800;
+      color: rgba(234,242,255,.86);
+    }
 
-.navBtn{
-flex:1;
-padding:10px;
-border-radius:14px;
-border:none;
-background:#0b1f33;
-color:#9fb4d6;
-font-weight:700;
-}
+    /* chips */
+    .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;}
+    .chip{
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-weight: 900;
+      cursor: pointer;
+      user-select: none;
+    }
+    .chip.on{
+      border-color: rgba(33,230,182,.45);
+      background: rgba(33,230,182,.12);
+      color: var(--txt);
+      box-shadow: 0 0 0 6px rgba(33,230,182,.08);
+    }
 
-.navBtn.active{
-color:var(--green);
-background:#09283e;
-}
+    /* screens */
+    .screen{
+      display:none;
+      margin-top: 8px;
+      width: 100%;
+      background: var(--bg);
+      padding-bottom: calc(140px + env(safe-area-inset-bottom));
+    }
+    .screen.active{ display:block; }
 
-/* DASH */
-.progress{
-height:10px;
-background:#0b1f33;
-border-radius:10px;
-margin-top:8px;
-overflow:hidden;
-}
-.progress div{
-height:100%;
-background:linear-gradient(90deg,var(--green),#18c79f);
-width:0%;
-}
-</style>
+    /* nav */
+    .nav{
+      position: fixed;
+      left:0; right:0; bottom:0;
+      padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
+      background: #07121f;
+      border-top: 1px solid rgba(255,255,255,.08);
+      z-index: 1000;
+    }
+    .navInner{
+      max-width: var(--max);
+      margin: 0 auto;
+      display:flex;
+      gap:10px;
+      overflow-x: auto;
+      padding: 6px 6px;
+      scrollbar-width: none;
+    }
+    .navInner::-webkit-scrollbar{ display:none; }
+    .navBtn{
+      flex:0 0 auto;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      color: rgba(234,242,255,.6);
+      font-weight: 950;
+      padding: 12px 14px;
+      border-radius: 999px;
+      cursor:pointer;
+      letter-spacing:.05em;
+      white-space: nowrap;
+    }
+    .navBtn.active{
+      background: rgba(33,230,182,.12);
+      border-color: rgba(33,230,182,.35);
+      color: var(--green);
+      box-shadow: 0 0 0 6px rgba(33,230,182,.08);
+    }
+
+    /* botão topo */
+    #btnTop{
+      position:fixed;
+      bottom:110px;
+      right:18px;
+      width:48px;
+      height:48px;
+      border-radius:50%;
+      border:none;
+      background:linear-gradient(135deg,#21e6b6,#17caa0);
+      color:#042019;
+      font-size:22px;
+      font-weight:900;
+      box-shadow:0 10px 25px rgba(0,0,0,.4);
+      display:none;
+      z-index:999;
+      cursor:pointer;
+    }
+
+    /* ===== WELCOME (impacto) ===== */
+    .welcomeHero{
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(700px 280px at 20% 10%, rgba(33,230,182,.18), transparent 60%),
+        radial-gradient(600px 260px at 80% 30%, rgba(246,178,58,.14), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: 0 22px 70px rgba(0,0,0,.55);
+      padding: 16px;
+      overflow:hidden;
+    }
+    .wCarousel{
+      position: relative;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      overflow: hidden;
+      min-height: 260px;
+      margin-top:12px;
+    }
+    .wSlide{
+      display:none;
+      padding: 18px 16px 16px;
+      min-height: 260px;
+      position: relative;
+    }
+    .wSlide.active{ display:block; }
+    .wBg{
+      position:absolute; inset:0;
+      opacity:.9;
+      background:
+        radial-gradient(900px 340px at 20% 20%, rgba(33,230,182,.22), transparent 60%),
+        radial-gradient(800px 360px at 80% 30%, rgba(246,178,58,.16), transparent 62%),
+        radial-gradient(700px 380px at 45% 110%, rgba(33,230,182,.10), transparent 62%);
+      pointer-events:none;
+    }
+    .wTop{
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      z-index:1;
+    }
+    .wBadge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color: rgba(234,242,255,.78);
+      font-weight: 950;
+      letter-spacing:.06em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+    .wDots{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .wDot{
+      width:10px;height:10px;border-radius:99px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      cursor:pointer;
+    }
+    .wDot.on{
+      background: rgba(33,230,182,.40);
+      border-color: rgba(33,230,182,.55);
+      box-shadow: 0 0 0 6px rgba(33,230,182,.10);
+    }
+    .wTitle{
+      position:relative;
+      z-index:1;
+      margin-top: 14px;
+      font-size: 26px;
+      font-weight: 1000;
+      line-height: 1.1;
+    }
+    .wText{
+      position:relative;
+      z-index:1;
+      margin-top: 10px;
+      color: rgba(234,242,255,.85);
+      font-weight: 750;
+      line-height: 1.45;
+    }
+    .wQuote{
+      position:relative;
+      z-index:1;
+      margin-top: 12px;
+      padding: 12px 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color: rgba(234,242,255,.88);
+      font-weight: 850;
+    }
+    .wNavRow{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top: 14px;
+    }
+    .wMini{
+      flex:1 1 160px;
+      padding: 14px 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      color: var(--txt);
+      font-weight: 950;
+      cursor:pointer;
+    }
+
+    /* ===== PRATO ===== */
+    .platePreview{
+      width:100%;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.14);
+      overflow:hidden;
+      margin-top: 12px;
+      display:none;
+    }
+    .platePreview img{ width:100%; display:block; }
+
+    .miniRow{ display:flex; gap:10px; flex-wrap:wrap }
+    .miniBtn{
+      flex:1 1 160px;
+      padding:14px 14px;
+      border-radius:18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      color: var(--txt);
+      font-weight: 900;
+      cursor:pointer;
+    }
+
+    .scoreCard{
+      margin-top:12px;
+      border-radius: 22px;
+      border: 1px solid rgba(33,230,182,.22);
+      background: rgba(33,230,182,.06);
+      padding: 14px;
+    }
+    .scoreTop{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .scoreTop b{ font-size: 18px; }
+    .scorePill{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      font-weight: 950;
+      color: rgba(234,242,255,.92);
+    }
+    .bar{
+      width:100%; height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      margin-top: 10px;
+    }
+    .bar > div{
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(135deg, rgba(33,230,182,.95), rgba(23,202,160,.85));
+    }
+
+    /* ===== Diet cards ===== */
+    .meal{
+      display:flex; justify-content:space-between; gap:12px;
+      padding: 16px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      margin-top: 12px;
+    }
+    .meal .title{
+      font-weight: 950;
+      color: var(--green);
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    .meal p{margin:0; color: rgba(234,242,255,.88); font-weight:750; line-height:1.35}
+    .kcal{
+      display:flex; align-items:center; justify-content:center;
+      min-width: 98px;
+      border-radius: 999px;
+      border:1px solid rgba(33,230,182,.25);
+      background: rgba(33,230,182,.08);
+      color: var(--green);
+      font-weight: 1000;
+      padding: 10px 12px;
+      text-align:center;
+    }
+
+    /* ===== Treino ===== */
+    .dayCard{
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+    }
+    .dayTitle{
+      display:flex; align-items:center; justify-content:space-between;
+      font-weight: 1000;
+      color: rgba(234,242,255,.92);
+      margin-bottom: 10px;
+      letter-spacing:.03em;
+    }
+    .exercise{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+      padding: 12px 12px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.16);
+      margin-top: 10px;
+    }
+    .ytBtn{
+      border:0;
+      border-radius: 999px;
+      padding: 10px 12px;
+      background: rgba(33,230,182,.10);
+      border: 1px solid rgba(33,230,182,.25);
+      color: var(--green);
+      font-weight: 1000;
+      cursor: pointer;
+      min-width: 110px;
+    }
+
+    /* ===== Parceiros ===== */
+    .partnerList{display:flex; flex-direction:column; gap:12px; margin-top:12px}
+    .partnerRow{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:14px; border-radius:18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .partnerName{display:flex; flex-direction:column; gap:4px}
+    .partnerName b{font-weight: 1000}
+
+    /* ===== DASHBOARD 3D (Progresso) ===== */
+    .pro3dWrap{ perspective: 1200px; }
+    .pro3dCard{
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border: 1px solid var(--stroke3d);
+      border-radius: 26px;
+      box-shadow: var(--shadow3d);
+      transform: rotateX(7deg) rotateY(-6deg);
+      transform-style: preserve-3d;
+      overflow:hidden;
+      position: relative;
+    }
+    .pro3dCard:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(600px 260px at 20% 10%, rgba(33,230,182,.18), transparent 60%),
+        radial-gradient(520px 260px at 80% 30%, rgba(246,178,58,.14), transparent 60%),
+        radial-gradient(700px 340px at 40% 100%, rgba(33,230,182,.10), transparent 62%);
+      pointer-events:none;
+    }
+    .proTop{ display:flex; align-items:center; justify-content:space-between; padding:16px 16px 0; position: relative; z-index: 1; }
+    .proTitle{
+      font-size: 26px;
+      font-weight: 1000;
+      letter-spacing: .02em;
+      margin: 10px 16px 12px;
+      color: rgba(234,242,255,.95);
+      position: relative; z-index: 1;
+    }
+    .proGrid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 12px;
+      padding: 0 16px 16px;
+      position: relative; z-index: 1;
+    }
+    .proPanel{
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      backdrop-filter: blur(10px);
+      padding: 14px;
+      transform: translateZ(18px);
+    }
+    .proRingBox{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap: 10px; min-height: 240px; }
+    .ring{ width: 180px; height: 180px; position: relative; transform: translateZ(26px); }
+    .ring svg{ width: 100%; height: 100%; transform: rotate(-90deg); filter: drop-shadow(0 20px 40px rgba(0,0,0,.55)); }
+    .ringCenter{
+      position:absolute; inset: 0;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      text-align:center; gap: 2px;
+    }
+    .ringPct{ font-size: 44px; font-weight: 1000; color: #ffd38a; text-shadow: 0 10px 30px rgba(0,0,0,.45); }
+    .ringSub{ color: rgba(234,242,255,.72); font-weight: 900; }
+
+    .proStats{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      padding: 0 16px 16px;
+      position: relative; z-index: 1;
+    }
+    .stat3d{
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.16);
+      padding: 12px;
+      transform: translateZ(14px);
+    }
+    .stat3d .num{ font-size: 24px; font-weight: 1000; color: rgba(234,242,255,.95); }
+    .stat3d .lab{
+      margin-top: 2px;
+      color: rgba(234,242,255,.65);
+      font-weight: 850;
+      font-size: 12px;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+    }
+    .proHint{ padding: 0 16px 16px; color: rgba(234,242,255,.65); font-weight: 800; position: relative; z-index: 1; }
+
+    /* ===== Evolução ===== */
+    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pill2{
+      padding: 10px 12px; border-radius: 18px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      font-weight: 900;
+      color: rgba(234,242,255,.9);
+    }
+    .badgeRow{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .badge{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      font-weight: 900;
+      color: rgba(234,242,255,.9);
+      white-space:nowrap;
+    }
+    .badge.ok{
+      border-color: rgba(33,230,182,.35);
+      background: rgba(33,230,182,.10);
+      color: var(--txt);
+      box-shadow: 0 0 0 6px rgba(33,230,182,.06);
+    }
+    .chartBox{
+      margin-top: 12px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.14);
+      padding: 12px;
+      overflow:hidden;
+    }
+
+    @media (min-width: 900px){
+      .wrap{ max-width: 900px; }
+      .proGrid{ grid-template-columns: 1fr 1fr; }
+      .ring{ width: 210px; height: 210px; }
+      .pro3dCard{ transform: rotateX(6deg) rotateY(-4deg); }
+    }
+  </style>
 </head>
 
 <body>
-<div class="wrap">
-
-<div class="top">
-<div class="logo">E</div>
-<div class="title">
-<b>CheckPrato</b><br>
-<small>Elite</small>
-</div>
-</div>
-<!-- WELCOME + DASHBOARD -->
-<section id="viewWelcome" class="screen active">
-<div class="h1">Seu corpo reflete suas escolhas.</div>
-
-<div class="card">
-<div class="sub">
-Controle sua alimentação, treino e saúde com inteligência.
-</div>
-
-<button class="btn" onclick="show('viewPerfil')">Começar agora</button>
-<button class="btn btn2" onclick="show('viewSaude')">Explorar saúde</button>
-</div>
-
-<div class="card">
-<b>Seu nível</b>
-<div id="nivelTxt">Iniciante</div>
-
-<b style="margin-top:10px;display:block">Progresso semanal</b>
-<div class="progress"><div id="barraProgresso"></div></div>
-
-<div style="margin-top:12px">
-🔥 Streak: <span id="streak">0</span> dias  
-🏅 Medalhas: <span id="medalhas">0</span>
-</div>
-</div>
-</section>
-
-
-<!-- PERFIL -->
-<section id="viewPerfil" class="screen">
-<div class="h1">Seu perfil</div>
-
-<div class="card">
-
-Nome
-<input id="nome">
-
-Objetivo
-<select id="objetivo">
-<option>Emagrecimento</option>
-<option>Hipertrofia</option>
-<option>Saúde</option>
-</select>
-
-Restrição alimentar
-<select id="restricao">
-<option>Nenhuma</option>
-<option>Diabetes</option>
-<option>Hipertensão</option>
-<option>Colesterol</option>
-<option>Intolerância lactose</option>
-</select>
-
-Dificuldade ou PCD
-<select id="pcd">
-<option>Não</option>
-<option>Mobilidade</option>
-<option>Visual</option>
-<option>Auditiva</option>
-<option>Idoso</option>
-<option>Lesões</option>
-<option>Obesidade</option>
-</select>
-
-<button class="btn" onclick="salvarPerfil()">Salvar</button>
-
-</div>
-</section>
-
-
-<!-- PRATO INTELIGENTE -->
-<section id="viewPrato" class="screen">
-<div class="h1">Prato inteligente</div>
-
-<div class="card">
-
-Descreva seu prato
-<input id="food" placeholder="Ex: arroz, frango, salada">
-
-Porção
-<select id="porcao">
-<option>Pequena</option>
-<option>Média</option>
-<option>Grande</option>
-</select>
-
-Qualidade
-<select id="qualidade">
-<option>Ruim</option>
-<option>Média</option>
-<option>Boa</option>
-<option>Excelente</option>
-</select>
-
-<button class="btn" onclick="avaliar()">Avaliar prato</button>
-
-<div id="score" style="margin-top:12px;font-weight:900"></div>
-
-</div>
-</section>
-<!-- DIETA -->
-<section id="viewDieta" class="screen">
-<div class="h1">Sua dieta inteligente</div>
-
-<div class="card">
-
-Tipo de dieta
-<select id="tipoDieta">
-<option>Emagrecimento</option>
-<option>Low carb</option>
-<option>Hipertrofia</option>
-<option>Econômica</option>
-<option>Vegetariana</option>
-<option>Diabetes</option>
-<option>Hipertensão</option>
-<option>Sem lactose</option>
-<option>Obesidade</option>
-<option>PCD</option>
-</select>
-
-<button class="btn" onclick="gerarDieta()">Gerar dieta</button>
-
-<div id="dieta" style="margin-top:12px"></div>
-
-</div>
-</section>
-
-
-<!-- TREINO -->
-<section id="viewTreino" class="screen">
-<div class="h1">Treino adaptativo</div>
-
-<div class="card">
-
-Nível
-<select id="nivel">
-<option>Iniciante</option>
-<option>Intermediário</option>
-<option>Avançado</option>
-<option>Baixo impacto</option>
-<option>Obesidade</option>
-<option>Idoso</option>
-<option>Mobilidade</option>
-<option>PCD</option>
-</select>
-
-<button class="btn" onclick="gerarTreino()">Gerar treino</button>
-
-<div id="treino" style="margin-top:12px"></div>
-
-</div>
-</section>
-
-
-<!-- SAÚDE -->
-<section id="viewSaude" class="screen">
-<div class="h1">Saúde e prevenção</div>
-
-<div class="card">
-
-<button class="btn btn2" onclick="abrirSaude()">Diabetes</button>
-<button class="btn btn2" onclick="abrirSaude()">Hipertensão</button>
-<button class="btn btn2" onclick="abrirSaude()">Colesterol</button>
-<button class="btn btn2" onclick="abrirSaude()">Saúde mental</button>
-<button class="btn btn2" onclick="abrirSaude()">Sono</button>
-<button class="btn btn2" onclick="abrirSaude()">Anabolizantes</button>
-<button class="btn btn2" onclick="abrirSaude()">Obesidade</button>
-
-</div>
-</section>
-
-
-<!-- PROGRESSO -->
-<section id="viewProgresso" class="screen">
-<div class="h1">Seu progresso</div>
-
-<div class="card">
-
-Intensidade
-<select id="intensidade">
-<option>Leve</option>
-<option>Médio</option>
-<option>Pesado</option>
-</select>
-
-Duração
-<select id="duracao">
-<option>20 min</option>
-<option>40 min</option>
-<option>60 min</option>
-<option>90 min</option>
-</select>
-
-<button class="btn" onclick="registrar()">Registrar treino</button>
-
-<div id="historico" style="margin-top:12px"></div>
-
-</div>
-</section>
-
-
-<!-- RANKING -->
-<section id="viewRanking" class="screen">
-<div class="h1">Ranking semanal</div>
-
-<div class="card">
-<div id="ranking"></div>
-</div>
-</section>
-
-
-<!-- CONVITES / VIRAL -->
-<section id="viewConvite" class="screen">
-<div class="h1">Convide amigos</div>
-
-<div class="card">
-Compartilhe e ganhe recompensas.
-
-<button class="btn" onclick="compartilhar()">Compartilhar</button>
-
-<div style="margin-top:10px">
-Amigos ativos: <span id="amigos">0</span>
-</div>
-</div>
-</section>
-<!-- MENU -->
-<div class="nav">
-<div class="navInner">
-
-<button class="navBtn active" onclick="show('viewWelcome')">Início</button>
-<button class="navBtn" onclick="show('viewPerfil')">Perfil</button>
-<button class="navBtn" onclick="show('viewPrato')">Prato</button>
-<button class="navBtn" onclick="show('viewDieta')">Dieta</button>
-<button class="navBtn" onclick="show('viewTreino')">Treino</button>
-<button class="navBtn" onclick="show('viewProgresso')">Progresso</button>
-<button class="navBtn" onclick="show('viewSaude')">Saúde</button>
-<button class="navBtn" onclick="show('viewRanking')">Ranking</button>
-<button class="navBtn" onclick="show('viewConvite')">Convites</button>
-
-</div>
-</div>
-
-</div>
-
-<script>
-
-/* NAVEGAÇÃO */
-function show(id){
-document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-
-document.querySelectorAll('.navBtn').forEach(b=>b.classList.remove('active'));
-event.target.classList.add('active');
-}
-
-
-/* PERFIL */
-function salvarPerfil(){
-localStorage.setItem("nome",document.getElementById("nome").value);
-alert("Perfil salvo!");
-}
-
-
-/* PRATO INTELIGENTE */
-function avaliar(){
-
-let comida=document.getElementById("food").value.toLowerCase();
-let score=60;
-
-if(comida.includes("frango")||comida.includes("ovo")||comida.includes("carne"))score+=20;
-if(comida.includes("salada")||comida.includes("legumes"))score+=10;
-if(comida.includes("pizza")||comida.includes("fritura"))score-=20;
-
-if(score>100)score=100;
-if(score<0)score=0;
-
-document.getElementById("score").innerHTML="Score: "+score;
-
-atualizarGamificacao(score);
-
-}
-
-
-/* DIETAS */
-function gerarDieta(){
-
-let tipo=document.getElementById("tipoDieta").value;
-
-let dietas={
-"Emagrecimento":["Frango + salada","Peixe + legumes"],
-"Hipertrofia":["Arroz + feijão + carne","Macarrão + frango"],
-"Low carb":["Ovos + abacate"],
-"Vegetariana":["Lentilha + quinoa"],
-"Econômica":["Ovos + arroz"],
-"Diabetes":["Proteína + fibras"],
-"Hipertensão":["Peixe + legumes"],
-"Sem lactose":["Leite vegetal"],
-"Obesidade":["Baixa caloria"],
-"PCD":["Adaptada"]
-};
-
-let html="";
-dietas[tipo].forEach(m=>html+=m+"<br>");
-document.getElementById("dieta").innerHTML=html;
-
-}
-
-
-/* TREINO */
-function gerarTreino(){
-
-let tipo=document.getElementById("nivel").value;
-
-let treinos={
-"Iniciante":"Caminhada + corpo livre",
-"Intermediário":"Musculação 3x",
-"Avançado":"Musculação 5x",
-"Baixo impacto":"Bike",
-"Obesidade":"Caminhada leve",
-"Idoso":"Alongamento",
-"Mobilidade":"Reabilitação",
-"PCD":"Treino adaptado"
-};
-
-document.getElementById("treino").innerHTML=treinos[tipo];
-
-}
-
-
-/* SAÚDE */
-function abrirSaude(){
-window.open("https://www.gov.br/saude");
-}
-
-
-/* PROGRESSO + ANTITRAPAÇA */
-let historico=[];
-
-function registrar(){
-
-let treino=document.getElementById("intensidade").value+
-" - "+
-document.getElementById("duracao").value;
-
-historico.push(treino);
-
-document.getElementById("historico").innerHTML=historico.join("<br>");
-
-streak++;
-document.getElementById("streak").innerText=streak;
-
-}
-
-
-/* GAMIFICAÇÃO */
-let streak=0;
-let medalhas=0;
-let progresso=0;
-
-function atualizarGamificacao(score){
-
-progresso+=score/10;
-
-if(progresso>100){
-medalhas++;
-progresso=0;
-}
-
-document.getElementById("medalhas").innerText=medalhas;
-document.getElementById("barraProgresso").style.width=progresso+"%";
-
-}
-
-
-/* RANKING FAKE (realista) */
-let fakeRanking=[
-"Lucas - 95",
-"Maria - 92",
-"João - 88",
-"Ana - 84"
-];
-
-document.getElementById("ranking").innerHTML=fakeRanking.join("<br>");
-
-
-/* VIRAL */
-function compartilhar(){
-alert("Link copiado! Convide seus amigos.");
-document.getElementById("amigos").innerText++;
-}
-
-</script>
-
-</body>
-</html>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="logo">E</div>
+      <div class="brand">
+        <small>ELITE TERMINAL</small>
+        <b>CheckPrato • Elite</b>
+      </div>
+      <div class="pill"><span class="dot"></span><span id="authTxt">Modo: Local</span></div>
+    </div>
+
+    <!-- BOAS-VINDAS (antes de tudo) -->
+    <section id="viewWelcome" class="screen active">
+      <div class="h1">BEM-VINDO</div>
+
+      <div class="welcomeHero">
+        <div class="hint">
+          Seu corpo não muda por sorte. Ele muda por <b>decisão</b>.
+          <br><br>
+          Aqui você vai ter <b>prato</b>, <b>dieta</b>, <b>treino</b> e <b>evolução</b> com um visual forte e simples.
+        </div>
+
+        <div class="wCarousel">
+          <div class="wSlide active" data-slide="0">
+            <div class="wBg"></div>
+            <div class="wTop">
+              <div class="wBadge">🔥 Consistência</div>
+              <div class="wDots" id="wDots"></div>
+            </div>
+            <div class="wTitle">Pequenas escolhas<br>mudam tudo.</div>
+            <div class="wText">Você não precisa de perfeição. Precisa de direção.</div>
+            <div class="wQuote">“Hoje eu só preciso fazer o mínimo bem feito.”</div>
+          </div>
+
+          <div class="wSlide" data-slide="1">
+            <div class="wBg"></div>
+            <div class="wTop">
+              <div class="wBadge">🥗 Prato</div>
+              <div class="wDots"></div>
+            </div>
+            <div class="wTitle">Controle sem neura.</div>
+            <div class="wText">Registre seu prato, receba um score e enxergue padrõe
