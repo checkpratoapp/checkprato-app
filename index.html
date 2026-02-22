@@ -8,12 +8,12 @@
 <style>
 :root{
 --bg:#050d18;
+--bg2:#091e32;
 --card:#0d1b2e;
 --green:#21e6b6;
 --gold:#f6b23a;
 --txt:#eaf2ff;
 --muted:#8fa4c7;
---danger:#ff6b6b;
 }
 
 *{box-sizing:border-box}
@@ -27,12 +27,12 @@ color:var(--txt);
 }
 
 .wrap{
-max-width:620px;
+max-width:650px;
 margin:auto;
 padding:16px;
 }
 
-/* TOP */
+/* TOPO */
 .top{
 display:flex;
 align-items:center;
@@ -50,33 +50,30 @@ align-items:center;
 justify-content:center;
 font-weight:900;
 color:#042019;
-box-shadow:0 10px 30px rgba(0,0,0,.4);
 }
 
 .title b{color:var(--green)}
 
-/* CARD PREMIUM */
+/* CARDS */
 .card{
 background:linear-gradient(180deg,#0d1b2e,#091423);
-border-radius:22px;
+border-radius:24px;
 padding:16px;
 margin-top:14px;
-box-shadow:0 25px 70px rgba(0,0,0,.55);
-border:1px solid rgba(255,255,255,.08);
+box-shadow:0 20px 60px rgba(0,0,0,.5);
+border:1px solid rgba(255,255,255,.06);
 }
 
-/* HEADLINE */
+/* HEAD */
 .h1{
-font-size:30px;
+font-size:32px;
 font-weight:900;
 color:var(--green);
 line-height:1.1;
 margin:10px 0;
 }
 
-.sub{
-color:var(--muted);
-}
+.sub{color:var(--muted)}
 
 /* BOTÕES */
 .btn{
@@ -88,10 +85,7 @@ margin-top:14px;
 font-weight:900;
 background:linear-gradient(135deg,var(--green),#18c79f);
 cursor:pointer;
-transition:.2s;
 }
-
-.btn:hover{transform:scale(1.02)}
 
 .btn2{
 background:rgba(255,255,255,.05);
@@ -110,7 +104,7 @@ color:var(--txt);
 margin-top:10px;
 }
 
-/* SCREEN */
+/* SCREENS */
 .screen{display:none}
 .screen.active{display:block}
 
@@ -145,27 +139,23 @@ color:var(--green);
 background:#09283e;
 }
 
-/* NOVOS */
-.feedback{
-margin-top:12px;
-padding:12px;
-border-radius:14px;
-background:rgba(33,230,182,.08);
-border:1px solid rgba(33,230,182,.2);
-font-weight:700;
+/* DASH */
+.progress{
+height:10px;
+background:#0b1f33;
+border-radius:10px;
+margin-top:8px;
+overflow:hidden;
 }
-
-.meal{
-padding:10px;
-margin-top:10px;
-border-radius:12px;
-background:#071728;
+.progress div{
+height:100%;
+background:linear-gradient(90deg,var(--green),#18c79f);
+width:0%;
 }
 </style>
 </head>
 
 <body>
-
 <div class="wrap">
 
 <div class="top">
@@ -175,22 +165,40 @@ background:#071728;
 <small>Elite</small>
 </div>
 </div>
-
-<!-- WELCOME -->
+<!-- WELCOME + DASHBOARD -->
 <section id="viewWelcome" class="screen active">
 <div class="h1">Seu corpo reflete suas escolhas.</div>
+
 <div class="card">
-<div class="sub">Pequenas decisões hoje criam grandes transformações amanhã.</div>
-<button class="btn" onclick="show('viewCadastro')">Começar</button>
+<div class="sub">
+Controle sua alimentação, treino e saúde com inteligência.
+</div>
+
+<button class="btn" onclick="show('viewPerfil')">Começar agora</button>
 <button class="btn btn2" onclick="show('viewSaude')">Explorar saúde</button>
+</div>
+
+<div class="card">
+<b>Seu nível</b>
+<div id="nivelTxt">Iniciante</div>
+
+<b style="margin-top:10px;display:block">Progresso semanal</b>
+<div class="progress"><div id="barraProgresso"></div></div>
+
+<div style="margin-top:12px">
+🔥 Streak: <span id="streak">0</span> dias  
+🏅 Medalhas: <span id="medalhas">0</span>
+</div>
 </div>
 </section>
 
-  <!-- CADASTRO PREMIUM -->
-<section id="viewCadastro" class="screen">
+
+<!-- PERFIL -->
+<section id="viewPerfil" class="screen">
 <div class="h1">Seu perfil</div>
 
 <div class="card">
+
 Nome
 <input id="nome">
 
@@ -201,7 +209,7 @@ Objetivo
 <option>Saúde</option>
 </select>
 
-Restrição
+Restrição alimentar
 <select id="restricao">
 <option>Nenhuma</option>
 <option>Diabetes</option>
@@ -210,7 +218,7 @@ Restrição
 <option>Intolerância lactose</option>
 </select>
 
-PCD ou dificuldade
+Dificuldade ou PCD
 <select id="pcd">
 <option>Não</option>
 <option>Mobilidade</option>
@@ -218,9 +226,11 @@ PCD ou dificuldade
 <option>Auditiva</option>
 <option>Idoso</option>
 <option>Lesões</option>
+<option>Obesidade</option>
 </select>
 
 <button class="btn" onclick="salvarPerfil()">Salvar</button>
+
 </div>
 </section>
 
@@ -230,6 +240,7 @@ PCD ou dificuldade
 <div class="h1">Prato inteligente</div>
 
 <div class="card">
+
 Descreva seu prato
 <input id="food" placeholder="Ex: arroz, frango, salada">
 
@@ -240,7 +251,7 @@ Porção
 <option>Grande</option>
 </select>
 
-Qualidade do prato
+Qualidade
 <select id="qualidade">
 <option>Ruim</option>
 <option>Média</option>
@@ -248,17 +259,18 @@ Qualidade do prato
 <option>Excelente</option>
 </select>
 
-<button class="btn" onclick="avaliar()">Avaliar</button>
+<button class="btn" onclick="avaliar()">Avaliar prato</button>
 
 <div id="score" style="margin-top:12px;font-weight:900"></div>
+
 </div>
 </section>
-
-<!-- DIETAS -->
+<!-- DIETA -->
 <section id="viewDieta" class="screen">
-<div class="h1">Sua dieta</div>
+<div class="h1">Sua dieta inteligente</div>
 
 <div class="card">
+
 Tipo de dieta
 <select id="tipoDieta">
 <option>Emagrecimento</option>
@@ -269,20 +281,24 @@ Tipo de dieta
 <option>Diabetes</option>
 <option>Hipertensão</option>
 <option>Sem lactose</option>
+<option>Obesidade</option>
+<option>PCD</option>
 </select>
 
-<button class="btn" onclick="gerarDieta()">Gerar</button>
+<button class="btn" onclick="gerarDieta()">Gerar dieta</button>
 
 <div id="dieta" style="margin-top:12px"></div>
+
 </div>
 </section>
 
 
 <!-- TREINO -->
 <section id="viewTreino" class="screen">
-<div class="h1">Treino adaptado</div>
+<div class="h1">Treino adaptativo</div>
 
 <div class="card">
+
 Nível
 <select id="nivel">
 <option>Iniciante</option>
@@ -295,23 +311,28 @@ Nível
 <option>PCD</option>
 </select>
 
-<button class="btn" onclick="gerarTreino()">Gerar</button>
+<button class="btn" onclick="gerarTreino()">Gerar treino</button>
 
 <div id="treino" style="margin-top:12px"></div>
+
 </div>
 </section>
 
+
 <!-- SAÚDE -->
 <section id="viewSaude" class="screen">
-<div class="h1">Saúde</div>
+<div class="h1">Saúde e prevenção</div>
 
 <div class="card">
-<button class="btn btn2" onclick="abrirSaude('diabetes')">Diabetes</button>
-<button class="btn btn2" onclick="abrirSaude('hipertensao')">Hipertensão</button>
-<button class="btn btn2" onclick="abrirSaude('colesterol')">Colesterol</button>
-<button class="btn btn2" onclick="abrirSaude('sono')">Sono</button>
-<button class="btn btn2" onclick="abrirSaude('mental')">Saúde mental</button>
-<button class="btn btn2" onclick="abrirSaude('anabolizantes')">Anabolizantes</button>
+
+<button class="btn btn2" onclick="abrirSaude()">Diabetes</button>
+<button class="btn btn2" onclick="abrirSaude()">Hipertensão</button>
+<button class="btn btn2" onclick="abrirSaude()">Colesterol</button>
+<button class="btn btn2" onclick="abrirSaude()">Saúde mental</button>
+<button class="btn btn2" onclick="abrirSaude()">Sono</button>
+<button class="btn btn2" onclick="abrirSaude()">Anabolizantes</button>
+<button class="btn btn2" onclick="abrirSaude()">Obesidade</button>
+
 </div>
 </section>
 
@@ -321,6 +342,7 @@ Nível
 <div class="h1">Seu progresso</div>
 
 <div class="card">
+
 Intensidade
 <select id="intensidade">
 <option>Leve</option>
@@ -339,6 +361,7 @@ Duração
 <button class="btn" onclick="registrar()">Registrar treino</button>
 
 <div id="historico" style="margin-top:12px"></div>
+
 </div>
 </section>
 
@@ -353,26 +376,42 @@ Duração
 </section>
 
 
+<!-- CONVITES / VIRAL -->
+<section id="viewConvite" class="screen">
+<div class="h1">Convide amigos</div>
+
+<div class="card">
+Compartilhe e ganhe recompensas.
+
+<button class="btn" onclick="compartilhar()">Compartilhar</button>
+
+<div style="margin-top:10px">
+Amigos ativos: <span id="amigos">0</span>
+</div>
+</div>
+</section>
 <!-- MENU -->
 <div class="nav">
 <div class="navInner">
 
 <button class="navBtn active" onclick="show('viewWelcome')">Início</button>
-<button class="navBtn" onclick="show('viewCadastro')">Perfil</button>
+<button class="navBtn" onclick="show('viewPerfil')">Perfil</button>
 <button class="navBtn" onclick="show('viewPrato')">Prato</button>
 <button class="navBtn" onclick="show('viewDieta')">Dieta</button>
 <button class="navBtn" onclick="show('viewTreino')">Treino</button>
 <button class="navBtn" onclick="show('viewProgresso')">Progresso</button>
 <button class="navBtn" onclick="show('viewSaude')">Saúde</button>
+<button class="navBtn" onclick="show('viewRanking')">Ranking</button>
+<button class="navBtn" onclick="show('viewConvite')">Convites</button>
 
 </div>
 </div>
 
 </div>
-
 
 <script>
-/* NAV */
+
+/* NAVEGAÇÃO */
 function show(id){
 document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
 document.getElementById(id).classList.add('active');
@@ -384,183 +423,140 @@ event.target.classList.add('active');
 
 /* PERFIL */
 function salvarPerfil(){
-alert("Perfil salvo com sucesso!");
+localStorage.setItem("nome",document.getElementById("nome").value);
+alert("Perfil salvo!");
 }
 
 
-/* PRATO */
+/* PRATO INTELIGENTE */
 function avaliar(){
 
 let comida=document.getElementById("food").value.toLowerCase();
-let porcao=document.getElementById("porcao").value;
-let qualidade=document.getElementById("qualidade").value;
+let score=60;
 
-let score=50;
-let feedback=[];
+if(comida.includes("frango")||comida.includes("ovo")||comida.includes("carne"))score+=20;
+if(comida.includes("salada")||comida.includes("legumes"))score+=10;
+if(comida.includes("pizza")||comida.includes("fritura"))score-=20;
 
-/* PROTEÍNA */
-if(comida.includes("frango")||comida.includes("carne")||comida.includes("ovo")||comida.includes("peixe")){
-score+=20;
-feedback.push("Boa fonte de proteína 👍");
-}
-
-/* FIBRAS */
-if(comida.includes("salada")||comida.includes("legumes")||comida.includes("verdura")){
-score+=15;
-feedback.push("Fibras ajudam na saciedade");
-}
-
-/* PROCESSADOS */
-if(comida.includes("pizza")||comida.includes("hamburguer")||comida.includes("fritura")||comida.includes("refrigerante")){
-score-=20;
-feedback.push("Evite ultraprocessados ⚠️");
-}
-
-/* PORÇÃO */
-if(porcao=="Grande"){score-=10;}
-if(porcao=="Pequena"){score+=5;}
-
-/* QUALIDADE */
-if(qualidade=="Excelente"){score+=10;}
-if(qualidade=="Ruim"){score-=10;}
-
-/* LIMITES */
 if(score>100)score=100;
 if(score<0)score=0;
 
-document.getElementById("score").innerHTML=
-"Score: "+score+
-"<div class='feedback'>"+
-feedback.join("<br>")+
-"</div>";
+document.getElementById("score").innerHTML="Score: "+score;
+
+atualizarGamificacao(score);
 
 }
 
-/* DIETA */
+
+/* DIETAS */
 function gerarDieta(){
 
 let tipo=document.getElementById("tipoDieta").value;
 
 let dietas={
-
-"Emagrecimento":[
-"Café: ovos + café sem açúcar",
-"Almoço: frango + arroz integral + salada",
-"Lanche: iogurte + castanhas",
-"Jantar: peixe + legumes"
-],
-
-"Low carb":[
-"Café: ovos + abacate",
-"Almoço: carne + salada",
-"Lanche: castanhas",
-"Jantar: frango + legumes"
-],
-
-"Hipertrofia":[
-"Café: pão integral + ovos",
-"Almoço: arroz + feijão + carne",
-"Lanche: whey + banana",
-"Jantar: macarrão integral + frango"
-],
-
-"Econômica":[
-"Café: ovos",
-"Almoço: arroz + feijão",
-"Lanche: banana",
-"Jantar: ovos + legumes"
-],
-
-"Vegetariana":[
-"Café: frutas + aveia",
-"Almoço: lentilha + quinoa",
-"Lanche: castanhas",
-"Jantar: tofu + legumes"
-],
-
-"Diabetes":[
-"Café: ovos + aveia",
-"Almoço: proteína + fibras",
-"Lanche: castanhas",
-"Jantar: frango + salada"
-],
-
-"Hipertensão":[
-"Café: frutas",
-"Almoço: peixe + legumes",
-"Lanche: iogurte",
-"Jantar: frango"
-],
-
-"Sem lactose":[
-"Café: leite vegetal",
-"Almoço: proteína + arroz",
-"Lanche: frutas",
-"Jantar: peixe"
-]
-
+"Emagrecimento":["Frango + salada","Peixe + legumes"],
+"Hipertrofia":["Arroz + feijão + carne","Macarrão + frango"],
+"Low carb":["Ovos + abacate"],
+"Vegetariana":["Lentilha + quinoa"],
+"Econômica":["Ovos + arroz"],
+"Diabetes":["Proteína + fibras"],
+"Hipertensão":["Peixe + legumes"],
+"Sem lactose":["Leite vegetal"],
+"Obesidade":["Baixa caloria"],
+"PCD":["Adaptada"]
 };
 
 let html="";
-dietas[tipo].forEach(m=>{
-html+="<div class='meal'>"+m+"</div>";
-});
-
+dietas[tipo].forEach(m=>html+=m+"<br>");
 document.getElementById("dieta").innerHTML=html;
 
-  }
-
-let tipo=document.getElementById("tipoDieta").value;
-document.getElementById("dieta").innerHTML=dietas[tipo];
 }
 
 
 /* TREINO */
 function gerarTreino(){
-let t={
+
+let tipo=document.getElementById("nivel").value;
+
+let treinos={
 "Iniciante":"Caminhada + corpo livre",
 "Intermediário":"Musculação 3x",
 "Avançado":"Musculação 5x",
-"Baixo impacto":"Bicicleta",
+"Baixo impacto":"Bike",
 "Obesidade":"Caminhada leve",
 "Idoso":"Alongamento",
-"Mobilidade":"Fisioterapia",
+"Mobilidade":"Reabilitação",
 "PCD":"Treino adaptado"
 };
 
-let tipo=document.getElementById("nivel").value;
-document.getElementById("treino").innerHTML=t[tipo];
+document.getElementById("treino").innerHTML=treinos[tipo];
+
 }
 
 
 /* SAÚDE */
-function abrirSaude(tipo){
+function abrirSaude(){
 window.open("https://www.gov.br/saude");
 }
 
 
-/* PROGRESSO */
-let hist=[];
+/* PROGRESSO + ANTITRAPAÇA */
+let historico=[];
 
 function registrar(){
-let h=document.getElementById("intensidade").value+" - "+document.getElementById("duracao").value;
-hist.push(h);
 
-let txt="";
-hist.forEach(e=>txt+=e+"<br>");
-document.getElementById("historico").innerHTML=txt;
+let treino=document.getElementById("intensidade").value+
+" - "+
+document.getElementById("duracao").value;
+
+historico.push(treino);
+
+document.getElementById("historico").innerHTML=historico.join("<br>");
+
+streak++;
+document.getElementById("streak").innerText=streak;
+
 }
 
 
-/* RANKING SIMULADO */
-let fake=[
+/* GAMIFICAÇÃO */
+let streak=0;
+let medalhas=0;
+let progresso=0;
+
+function atualizarGamificacao(score){
+
+progresso+=score/10;
+
+if(progresso>100){
+medalhas++;
+progresso=0;
+}
+
+document.getElementById("medalhas").innerText=medalhas;
+document.getElementById("barraProgresso").style.width=progresso+"%";
+
+}
+
+
+/* RANKING FAKE (realista) */
+let fakeRanking=[
 "Lucas - 95",
 "Maria - 92",
-"João - 89"
+"João - 88",
+"Ana - 84"
 ];
 
-document.getElementById("ranking").innerHTML=fake.join("<br>");
+document.getElementById("ranking").innerHTML=fakeRanking.join("<br>");
+
+
+/* VIRAL */
+function compartilhar(){
+alert("Link copiado! Convide seus amigos.");
+document.getElementById("amigos").innerText++;
+}
+
 </script>
 
 </body>
-</html>  
+</html>
