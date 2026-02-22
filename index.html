@@ -684,7 +684,117 @@
       </div>
       <div class="pill"><span class="dot"></span><span id="authTxt">Modo: Local</span></div>
     </div>
+<!-- BOAS-VINDAS (ANTES DE TUDO) -->
+<section id="viewWelcome" class="screen">
+  <div class="h1">BEM-VINDO</div>
 
+  <div class="welcomeHero">
+    <div class="hint">
+      O CheckPrato te ajuda com <b>dieta</b>, <b>treino</b>, <b>prato</b> e <b>evolução</b>.
+      Tudo simples, bonito e objetivo.
+    </div>
+
+    <div class="wCarousel" style="margin-top:12px">
+      <div class="wSlide active" data-slide="0">
+        <div class="wBg"></div>
+        <div class="wTop">
+          <div class="wBadge">🔥 Consistência</div>
+          <div class="wDots" id="wDots"></div>
+        </div>
+        <div class="wTitle">Pequenas escolhas<br>mudam tudo.</div>
+        <div class="wText">Você não precisa de perfeição. Precisa de direção.</div>
+        <div class="wQuote">“Hoje eu só preciso fazer o mínimo bem feito.”</div>
+      </div>
+
+      <div class="wSlide" data-slide="1">
+        <div class="wBg"></div>
+        <div class="wTop">
+          <div class="wBadge">🥗 Prato</div>
+          <div class="wDots"></div>
+        </div>
+        <div class="wTitle">Controle sem neura.</div>
+        <div class="wText">Tire foto, registre, pontue e enxergue padrões.</div>
+        <div class="wQuote">“O que é medido, melhora.”</div>
+      </div>
+
+      <div class="wSlide" data-slide="2">
+        <div class="wBg"></div>
+        <div class="wTop">
+          <div class="wBadge">🏋️ Treino</div>
+          <div class="wDots"></div>
+        </div>
+        <div class="wTitle">Treino que encaixa<br>na sua vida.</div>
+        <div class="wText">Iniciante, intermediário ou avançado — com vários esportes.</div>
+        <div class="wQuote">“Disciplina é fazer mesmo sem vontade.”</div>
+      </div>
+
+      <div class="wSlide" data-slide="3">
+        <div class="wBg"></div>
+        <div class="wTop">
+          <div class="wBadge">📈 Evolução</div>
+          <div class="wDots"></div>
+        </div>
+        <div class="wTitle">Evolução visual.</div>
+        <div class="wText">Gráficos, streak, metas, ranking semanal e badges.</div>
+        <div class="wQuote">“1% melhor por dia.”</div>
+      </div>
+    </div>
+
+    <div class="wNavRow">
+      <button class="btn" type="button" onclick="welcomeFinish()">COMEÇAR AGORA</button>
+      <button class="wMini" type="button" onclick="switchView('viewManual')">VER MANUAL</button>
+      <button class="wMini" type="button" onclick="switchView('viewPrato')">IR PARA PRATO</button>
+    </div>
+  </div>
+</section>
+
+<!-- MANUAL (AJUDA) -->
+<section id="viewManual" class="screen">
+  <div class="h1">MANUAL</div>
+
+  <div class="card">
+    <div class="hint">
+      Aqui está o passo a passo do CheckPrato. Rápido e sem enrolação.
+    </div>
+
+    <div class="manualList">
+      <div class="faq">
+        <h4>1) Cadastro</h4>
+        <p>Preencha peso, altura, objetivo, nível e esportes. Isso personaliza dieta/treino e metas.</p>
+      </div>
+
+      <div class="faq">
+        <h4>2) Prato</h4>
+        <p>Tire foto ou escolha da galeria. Depois descreva e confirme. O app registra e gera score/relatórios.</p>
+      </div>
+
+      <div class="faq">
+        <h4>3) Dieta</h4>
+        <p>Gere uma dieta e refaça quando quiser. Ajuste conforme restrições e objetivo.</p>
+      </div>
+
+      <div class="faq">
+        <h4>4) Treino</h4>
+        <p>Escolha tema e intensidade. Cada exercício tem atalho para técnica no YouTube.</p>
+      </div>
+
+      <div class="faq">
+        <h4>5) Evolução</h4>
+        <p>Acompanhe gráfico, streak, metas de proteína e ranking semanal. Foque em consistência.</p>
+      </div>
+
+      <div class="faq">
+        <h4>Privacidade</h4>
+        <p>Se você estiver em modo local, seus dados ficam no seu aparelho. Se conectar Firebase, dá pra sincronizar.</p>
+      </div>
+    </div>
+
+    <div class="wNavRow" style="margin-top:14px">
+      <button class="btnSecondary" type="button" onclick="switchView('viewCadastro')">IR PARA CADASTRO</button>
+      <button class="btnSecondary" type="button" onclick="switchView('viewPerfil')">IR PARA PERFIL</button>
+    </div>
+  </div>
+</section>
     <!-- BOAS VINDAS -->
     <section id="viewWelcome" class="screen active">
       <div class="h1">Bem-vindo 👋</div>
