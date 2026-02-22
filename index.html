@@ -13,6 +13,7 @@
 --gold:#f6b23a;
 --txt:#eaf2ff;
 --muted:#8fa4c7;
+--danger:#ff6b6b;
 }
 
 *{box-sizing:border-box}
@@ -20,7 +21,8 @@
 body{
 margin:0;
 font-family:system-ui;
-background:radial-gradient(circle at 20% 10%,#09253f,#050d18);
+background:
+radial-gradient(circle at 20% 10%,#09253f,#050d18);
 color:var(--txt);
 }
 
@@ -39,27 +41,28 @@ margin-bottom:14px;
 }
 
 .logo{
-width:42px;
-height:42px;
-border-radius:12px;
+width:44px;
+height:44px;
+border-radius:14px;
 background:linear-gradient(135deg,var(--green),#1bb999);
 display:flex;
 align-items:center;
 justify-content:center;
 font-weight:900;
 color:#042019;
+box-shadow:0 10px 30px rgba(0,0,0,.4);
 }
 
 .title b{color:var(--green)}
 
-/* CARDS */
+/* CARD PREMIUM */
 .card{
 background:linear-gradient(180deg,#0d1b2e,#091423);
 border-radius:22px;
 padding:16px;
 margin-top:14px;
-box-shadow:0 20px 60px rgba(0,0,0,.4);
-border:1px solid rgba(255,255,255,.06);
+box-shadow:0 25px 70px rgba(0,0,0,.55);
+border:1px solid rgba(255,255,255,.08);
 }
 
 /* HEADLINE */
@@ -85,7 +88,10 @@ margin-top:14px;
 font-weight:900;
 background:linear-gradient(135deg,var(--green),#18c79f);
 cursor:pointer;
+transition:.2s;
 }
+
+.btn:hover{transform:scale(1.02)}
 
 .btn2{
 background:rgba(255,255,255,.05);
@@ -104,7 +110,7 @@ color:var(--txt);
 margin-top:10px;
 }
 
-/* SCREENS */
+/* SCREEN */
 .screen{display:none}
 .screen.active{display:block}
 
@@ -137,6 +143,23 @@ font-weight:700;
 .navBtn.active{
 color:var(--green);
 background:#09283e;
+}
+
+/* NOVOS */
+.feedback{
+margin-top:12px;
+padding:12px;
+border-radius:14px;
+background:rgba(33,230,182,.08);
+border:1px solid rgba(33,230,182,.2);
+font-weight:700;
+}
+
+.meal{
+padding:10px;
+margin-top:10px;
+border-radius:12px;
+background:#071728;
 }
 </style>
 </head>
