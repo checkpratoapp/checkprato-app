@@ -2,96 +2,141 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CheckPrato Elite</title>
 
 <style>
 :root{
-  --bg:#06111f;
-  --card:#0e1c2e;
-  --green:#21e6b6;
-  --orange:#f6b23a;
-  --txt:#eaf2ff;
-  --muted:#9fb4d6;
+--bg:#050d18;
+--card:#0d1b2e;
+--green:#21e6b6;
+--gold:#f6b23a;
+--txt:#eaf2ff;
+--muted:#8fa4c7;
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box}
 
 body{
-  font-family:system-ui;
-  background:var(--bg);
-  color:var(--txt);
+margin:0;
+font-family:system-ui;
+background:radial-gradient(circle at 20% 10%,#09253f,#050d18);
+color:var(--txt);
 }
 
-.wrap{max-width:600px;margin:auto;padding:14px}
-
-h1{
-  font-size:32px;
-  color:var(--green);
-  margin:12px 0;
+.wrap{
+max-width:620px;
+margin:auto;
+padding:16px;
 }
 
+/* TOP */
+.top{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:14px;
+}
+
+.logo{
+width:42px;
+height:42px;
+border-radius:12px;
+background:linear-gradient(135deg,var(--green),#1bb999);
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:900;
+color:#042019;
+}
+
+.title b{color:var(--green)}
+
+/* CARDS */
 .card{
-  background:var(--card);
-  border-radius:20px;
-  padding:16px;
-  margin-top:14px;
+background:linear-gradient(180deg,#0d1b2e,#091423);
+border-radius:22px;
+padding:16px;
+margin-top:14px;
+box-shadow:0 20px 60px rgba(0,0,0,.4);
+border:1px solid rgba(255,255,255,.06);
 }
 
+/* HEADLINE */
+.h1{
+font-size:30px;
+font-weight:900;
+color:var(--green);
+line-height:1.1;
+margin:10px 0;
+}
+
+.sub{
+color:var(--muted);
+}
+
+/* BOTÕES */
+.btn{
+width:100%;
+padding:16px;
+border-radius:18px;
+border:none;
+margin-top:14px;
+font-weight:900;
+background:linear-gradient(135deg,var(--green),#18c79f);
+cursor:pointer;
+}
+
+.btn2{
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.08);
+color:var(--txt);
+}
+
+/* INPUT */
 input,select{
-  width:100%;
-  padding:12px;
-  margin-top:8px;
-  border-radius:14px;
-  border:none;
-  background:#071728;
-  color:white;
+width:100%;
+padding:14px;
+border-radius:16px;
+border:none;
+background:#071728;
+color:var(--txt);
+margin-top:10px;
 }
 
-button{
-  width:100%;
-  margin-top:14px;
-  padding:14px;
-  border:none;
-  border-radius:18px;
-  background:linear-gradient(135deg,var(--green),#18c79f);
-  font-weight:900;
-  cursor:pointer;
-}
-
-/* telas */
+/* SCREENS */
 .screen{display:none}
 .screen.active{display:block}
 
-/* nav */
+/* NAV */
 .nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:#071728;
-  padding:8px;
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:#071728;
+padding:10px;
 }
 
 .navInner{
-  display:flex;
-  gap:6px;
-  overflow:auto;
+display:flex;
+gap:8px;
+overflow:auto;
 }
 
 .navBtn{
-  flex:1;
-  padding:10px;
-  border-radius:14px;
-  background:#0b1f33;
-  color:#9fb4d6;
-  font-weight:700;
-  border:none;
+flex:1;
+padding:10px;
+border-radius:14px;
+border:none;
+background:#0b1f33;
+color:#9fb4d6;
+font-weight:700;
 }
 
 .navBtn.active{
-  color:var(--green);
-  background:#09283e;
+color:var(--green);
+background:#09283e;
 }
 </style>
 </head>
@@ -100,57 +145,70 @@ button{
 
 <div class="wrap">
 
+<div class="top">
+<div class="logo">E</div>
+<div class="title">
+<b>CheckPrato</b><br>
+<small>Elite</small>
+</div>
+</div>
+
 <!-- WELCOME -->
 <section id="viewWelcome" class="screen active">
-<h1>Bem-vindo</h1>
+<div class="h1">Seu corpo reflete suas escolhas.</div>
 <div class="card">
-Transforme sua saúde, corpo e mente com estratégia.
-<button onclick="show('viewCadastro')">Começar</button>
+<div class="sub">Pequenas decisões hoje criam grandes transformações amanhã.</div>
+<button class="btn" onclick="show('viewCadastro')">Começar</button>
+<button class="btn btn2" onclick="show('viewSaude')">Explorar saúde</button>
 </div>
 </section>
 
-<!-- CADASTRO -->
+  <!-- CADASTRO PREMIUM -->
 <section id="viewCadastro" class="screen">
-<h1>Cadastro</h1>
+<div class="h1">Seu perfil</div>
 
 <div class="card">
 Nome
-<input>
+<input id="nome">
 
 Objetivo
-<select>
+<select id="objetivo">
 <option>Emagrecimento</option>
 <option>Hipertrofia</option>
 <option>Saúde</option>
 </select>
 
 Restrição
-<select>
+<select id="restricao">
 <option>Nenhuma</option>
 <option>Diabetes</option>
 <option>Hipertensão</option>
 <option>Colesterol</option>
+<option>Intolerância lactose</option>
 </select>
 
-PCD
-<select>
+PCD ou dificuldade
+<select id="pcd">
 <option>Não</option>
 <option>Mobilidade</option>
 <option>Visual</option>
 <option>Auditiva</option>
+<option>Idoso</option>
+<option>Lesões</option>
 </select>
 
-<button onclick="gerarPlano()">Salvar</button>
+<button class="btn" onclick="salvarPerfil()">Salvar</button>
 </div>
 </section>
-  
+
+
 <!-- PRATO INTELIGENTE -->
 <section id="viewPrato" class="screen">
-<h1>Prato Inteligente</h1>
+<div class="h1">Prato inteligente</div>
 
 <div class="card">
-Descreva o prato
-<input id="foodInput" placeholder="Ex: arroz, frango, salada">
+Descreva seu prato
+<input id="food" placeholder="Ex: arroz, frango, salada">
 
 Porção
 <select id="porcao">
@@ -159,40 +217,26 @@ Porção
 <option>Grande</option>
 </select>
 
-Proteína
-<select id="prot">
-<option>Baixa</option>
+Qualidade do prato
+<select id="qualidade">
+<option>Ruim</option>
 <option>Média</option>
-<option>Alta</option>
+<option>Boa</option>
+<option>Excelente</option>
 </select>
 
-Carboidrato
-<select id="carb">
-<option>Baixo</option>
-<option>Médio</option>
-<option>Alto</option>
-</select>
+<button class="btn" onclick="avaliar()">Avaliar</button>
 
-Gordura
-<select id="fat">
-<option>Baixa</option>
-<option>Média</option>
-<option>Alta</option>
-</select>
-
-<button onclick="avaliarPrato()">Avaliar</button>
-
-<div id="scorePrato" style="margin-top:12px;font-weight:900"></div>
+<div id="score" style="margin-top:12px;font-weight:900"></div>
 </div>
 </section>
 
-
 <!-- DIETAS -->
 <section id="viewDieta" class="screen">
-<h1>Dietas</h1>
+<div class="h1">Sua dieta</div>
 
 <div class="card">
-Objetivo da dieta
+Tipo de dieta
 <select id="tipoDieta">
 <option>Emagrecimento</option>
 <option>Low carb</option>
@@ -204,19 +248,20 @@ Objetivo da dieta
 <option>Sem lactose</option>
 </select>
 
-<button onclick="gerarDieta()">Gerar dieta</button>
+<button class="btn" onclick="gerarDieta()">Gerar</button>
 
-<div id="resultadoDieta" style="margin-top:12px"></div>
+<div id="dieta" style="margin-top:12px"></div>
 </div>
 </section>
 
-  <!-- TREINOS -->
+
+<!-- TREINO -->
 <section id="viewTreino" class="screen">
-<h1>Treinos</h1>
+<div class="h1">Treino adaptado</div>
 
 <div class="card">
-Tipo de treino
-<select id="tipoTreino">
+Nível
+<select id="nivel">
 <option>Iniciante</option>
 <option>Intermediário</option>
 <option>Avançado</option>
@@ -227,34 +272,33 @@ Tipo de treino
 <option>PCD</option>
 </select>
 
-<button onclick="gerarTreino()">Gerar treino</button>
+<button class="btn" onclick="gerarTreino()">Gerar</button>
 
-<div id="resultadoTreino" style="margin-top:12px"></div>
+<div id="treino" style="margin-top:12px"></div>
 </div>
 </section>
 
-
 <!-- SAÚDE -->
 <section id="viewSaude" class="screen">
-<h1>Saúde</h1>
+<div class="h1">Saúde</div>
 
 <div class="card">
-<button onclick="abrirSaude('diabetes')">Diabetes</button>
-<button onclick="abrirSaude('hipertensao')">Hipertensão</button>
-<button onclick="abrirSaude('colesterol')">Colesterol</button>
-<button onclick="abrirSaude('sono')">Sono</button>
-<button onclick="abrirSaude('mental')">Saúde mental</button>
-<button onclick="abrirSaude('anabolizantes')">Anabolizantes</button>
+<button class="btn btn2" onclick="abrirSaude('diabetes')">Diabetes</button>
+<button class="btn btn2" onclick="abrirSaude('hipertensao')">Hipertensão</button>
+<button class="btn btn2" onclick="abrirSaude('colesterol')">Colesterol</button>
+<button class="btn btn2" onclick="abrirSaude('sono')">Sono</button>
+<button class="btn btn2" onclick="abrirSaude('mental')">Saúde mental</button>
+<button class="btn btn2" onclick="abrirSaude('anabolizantes')">Anabolizantes</button>
 </div>
 </section>
 
 
 <!-- PROGRESSO -->
 <section id="viewProgresso" class="screen">
-<h1>Progresso</h1>
+<div class="h1">Seu progresso</div>
 
 <div class="card">
-Registro diário
+Intensidade
 <select id="intensidade">
 <option>Leve</option>
 <option>Médio</option>
@@ -269,18 +313,29 @@ Duração
 <option>90 min</option>
 </select>
 
-<button onclick="registrarTreino()">Registrar</button>
+<button class="btn" onclick="registrar()">Registrar treino</button>
 
 <div id="historico" style="margin-top:12px"></div>
 </div>
 </section>
 
-  <!-- NAV -->
+
+<!-- RANKING -->
+<section id="viewRanking" class="screen">
+<div class="h1">Ranking semanal</div>
+
+<div class="card">
+<div id="ranking"></div>
+</div>
+</section>
+
+
+<!-- MENU -->
 <div class="nav">
 <div class="navInner">
 
 <button class="navBtn active" onclick="show('viewWelcome')">Início</button>
-<button class="navBtn" onclick="show('viewCadastro')">Cadastro</button>
+<button class="navBtn" onclick="show('viewCadastro')">Perfil</button>
 <button class="navBtn" onclick="show('viewPrato')">Prato</button>
 <button class="navBtn" onclick="show('viewDieta')">Dieta</button>
 <button class="navBtn" onclick="show('viewTreino')">Treino</button>
@@ -290,101 +345,97 @@ Duração
 </div>
 </div>
 
-  <script>
+</div>
+
+
+<script>
 /* NAV */
 function show(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+document.getElementById(id).classList.add('active');
 
-  document.querySelectorAll('.navBtn').forEach(b=>b.classList.remove('active'));
-  event.target.classList.add('active');
+document.querySelectorAll('.navBtn').forEach(b=>b.classList.remove('active'));
+event.target.classList.add('active');
+}
+
+
+/* PERFIL */
+function salvarPerfil(){
+alert("Perfil salvo com sucesso!");
 }
 
 
 /* PRATO */
-function avaliarPrato(){
-  let score=70;
-
-  if(prot.value==="Alta") score+=10;
-  if(carb.value==="Baixo") score+=10;
-  if(fat.value==="Baixa") score+=10;
-
-  if(score>100) score=100;
-
-  scorePrato.innerHTML="Score: "+score;
+function avaliar(){
+let score=Math.floor(Math.random()*30)+70;
+score=document.getElementById("score").innerHTML="Score: "+score;
 }
 
 
 /* DIETA */
 function gerarDieta(){
-  let tipo=tipoDieta.value;
+let dietas={
+"Emagrecimento":"Frango + salada + arroz integral",
+"Low carb":"Ovos + abacate",
+"Hipertrofia":"Arroz + feijão + carne",
+"Econômica":"Ovos + banana",
+"Vegetariana":"Lentilha + quinoa",
+"Diabetes":"Proteína + fibras",
+"Hipertensão":"Pouco sódio",
+"Sem lactose":"Leite vegetal"
+};
 
-  let dietas={
-    "Emagrecimento":"Frango + salada + arroz integral",
-    "Low carb":"Ovos + abacate + carne",
-    "Hipertrofia":"Arroz + feijão + frango",
-    "Econômica":"Ovo + arroz + banana",
-    "Vegetariana":"Lentilha + quinoa",
-    "Diabetes":"Proteína + fibras",
-    "Hipertensão":"Pouco sal",
-    "Sem lactose":"Leite vegetal"
-  };
-
-  resultadoDieta.innerHTML=dietas[tipo];
+let tipo=document.getElementById("tipoDieta").value;
+document.getElementById("dieta").innerHTML=dietas[tipo];
 }
 
 
 /* TREINO */
 function gerarTreino(){
-  let tipo=tipoTreino.value;
+let t={
+"Iniciante":"Caminhada + corpo livre",
+"Intermediário":"Musculação 3x",
+"Avançado":"Musculação 5x",
+"Baixo impacto":"Bicicleta",
+"Obesidade":"Caminhada leve",
+"Idoso":"Alongamento",
+"Mobilidade":"Fisioterapia",
+"PCD":"Treino adaptado"
+};
 
-  let treinos={
-    "Iniciante":"Caminhada + corpo livre",
-    "Intermediário":"Musculação 3x",
-    "Avançado":"Musculação 5x",
-    "Baixo impacto":"Bicicleta",
-    "Obesidade":"Caminhada leve",
-    "Idoso":"Alongamento",
-    "Mobilidade":"Fisioterapia",
-    "PCD":"Treino adaptado"
-  };
-
-  resultadoTreino.innerHTML=treinos[tipo];
+let tipo=document.getElementById("nivel").value;
+document.getElementById("treino").innerHTML=t[tipo];
 }
 
 
 /* SAÚDE */
 function abrirSaude(tipo){
-  let links={
-    diabetes:"https://www.gov.br/saude",
-    hipertensao:"https://www.gov.br/saude",
-    colesterol:"https://www.gov.br/saude",
-    sono:"https://www.gov.br/saude",
-    mental:"https://www.gov.br/saude",
-    anabolizantes:"https://www.gov.br/saude"
-  };
-
-  window.open(links[tipo]);
+window.open("https://www.gov.br/saude");
 }
 
 
 /* PROGRESSO */
-let historico=[];
+let hist=[];
 
-function registrarTreino(){
-  let reg=intensidade.value+" - "+duracao.value;
-  historico.push(reg);
+function registrar(){
+let h=document.getElementById("intensidade").value+" - "+document.getElementById("duracao").value;
+hist.push(h);
 
-  historicoDiv();
+let txt="";
+hist.forEach(e=>txt+=e+"<br>");
+document.getElementById("historico").innerHTML=txt;
 }
 
-function historicoDiv(){
-  historicoDiv="";
-  historico.forEach(h=>{
-    historicoDiv+=h+"<br>";
-  });
-  historico.innerHTML=historicoDiv;
-}
+
+/* RANKING SIMULADO */
+let fake=[
+"Lucas - 95",
+"Maria - 92",
+"João - 89"
+];
+
+document.getElementById("ranking").innerHTML=fake.join("<br>");
 </script>
+
 </body>
-</html>
+</html>  
