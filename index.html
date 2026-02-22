@@ -390,23 +390,125 @@ alert("Perfil salvo com sucesso!");
 
 /* PRATO */
 function avaliar(){
-let score=Math.floor(Math.random()*30)+70;
-score=document.getElementById("score").innerHTML="Score: "+score;
+
+let comida=document.getElementById("food").value.toLowerCase();
+let porcao=document.getElementById("porcao").value;
+let qualidade=document.getElementById("qualidade").value;
+
+let score=50;
+let feedback=[];
+
+/* PROTEÍNA */
+if(comida.includes("frango")||comida.includes("carne")||comida.includes("ovo")||comida.includes("peixe")){
+score+=20;
+feedback.push("Boa fonte de proteína 👍");
 }
 
+/* FIBRAS */
+if(comida.includes("salada")||comida.includes("legumes")||comida.includes("verdura")){
+score+=15;
+feedback.push("Fibras ajudam na saciedade");
+}
+
+/* PROCESSADOS */
+if(comida.includes("pizza")||comida.includes("hamburguer")||comida.includes("fritura")||comida.includes("refrigerante")){
+score-=20;
+feedback.push("Evite ultraprocessados ⚠️");
+}
+
+/* PORÇÃO */
+if(porcao=="Grande"){score-=10;}
+if(porcao=="Pequena"){score+=5;}
+
+/* QUALIDADE */
+if(qualidade=="Excelente"){score+=10;}
+if(qualidade=="Ruim"){score-=10;}
+
+/* LIMITES */
+if(score>100)score=100;
+if(score<0)score=0;
+
+document.getElementById("score").innerHTML=
+"Score: "+score+
+"<div class='feedback'>"+
+feedback.join("<br>")+
+"</div>";
+
+}
 
 /* DIETA */
 function gerarDieta(){
+
+let tipo=document.getElementById("tipoDieta").value;
+
 let dietas={
-"Emagrecimento":"Frango + salada + arroz integral",
-"Low carb":"Ovos + abacate",
-"Hipertrofia":"Arroz + feijão + carne",
-"Econômica":"Ovos + banana",
-"Vegetariana":"Lentilha + quinoa",
-"Diabetes":"Proteína + fibras",
-"Hipertensão":"Pouco sódio",
-"Sem lactose":"Leite vegetal"
+
+"Emagrecimento":[
+"Café: ovos + café sem açúcar",
+"Almoço: frango + arroz integral + salada",
+"Lanche: iogurte + castanhas",
+"Jantar: peixe + legumes"
+],
+
+"Low carb":[
+"Café: ovos + abacate",
+"Almoço: carne + salada",
+"Lanche: castanhas",
+"Jantar: frango + legumes"
+],
+
+"Hipertrofia":[
+"Café: pão integral + ovos",
+"Almoço: arroz + feijão + carne",
+"Lanche: whey + banana",
+"Jantar: macarrão integral + frango"
+],
+
+"Econômica":[
+"Café: ovos",
+"Almoço: arroz + feijão",
+"Lanche: banana",
+"Jantar: ovos + legumes"
+],
+
+"Vegetariana":[
+"Café: frutas + aveia",
+"Almoço: lentilha + quinoa",
+"Lanche: castanhas",
+"Jantar: tofu + legumes"
+],
+
+"Diabetes":[
+"Café: ovos + aveia",
+"Almoço: proteína + fibras",
+"Lanche: castanhas",
+"Jantar: frango + salada"
+],
+
+"Hipertensão":[
+"Café: frutas",
+"Almoço: peixe + legumes",
+"Lanche: iogurte",
+"Jantar: frango"
+],
+
+"Sem lactose":[
+"Café: leite vegetal",
+"Almoço: proteína + arroz",
+"Lanche: frutas",
+"Jantar: peixe"
+]
+
 };
+
+let html="";
+dietas[tipo].forEach(m=>{
+html+="<div class='meal'>"+m+"</div>";
+});
+
+document.getElementById("dieta").innerHTML=html;
+
+  }
 
 let tipo=document.getElementById("tipoDieta").value;
 document.getElementById("dieta").innerHTML=dietas[tipo];
