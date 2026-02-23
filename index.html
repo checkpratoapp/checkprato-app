@@ -5,23 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>CheckPrato • Elite</title>
 
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-K0EDRW9FRS"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-K0EDRW9FRS');
-</script>
-
   <meta name="theme-color" content="#0a1320"/>
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" sizes="192x192" href="./icon-192.png">
   <link rel="apple-touch-icon" href="./icon-192.png">
-
-  <!-- Chart.js (Evolução) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
   <style>
     :root{
@@ -39,6 +26,8 @@
       --r:22px;
       --max:560px;
 
+      --glass: rgba(255,255,255,.06);
+      --glass2: rgba(255,255,255,.03);
       --stroke3d: rgba(255,255,255,.10);
       --shadow3d: 0 24px 70px rgba(0,0,0,.55);
     }
@@ -53,15 +42,20 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       overflow-x:hidden;
     }
-    body{ padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
+    body{
+      padding-bottom: calc(92px + env(safe-area-inset-bottom));
+    }
     a{ color: var(--green); text-decoration:none; }
     a:hover{ text-decoration:underline; }
 
     .wrap{ max-width: var(--max); margin: 0 auto; padding: 16px 14px 24px; }
 
     .topbar{
-      display:flex; align-items:center; gap:12px;
-      margin-top:6px; margin-bottom: 14px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-top:6px;
+      margin-bottom: 14px;
     }
     .logo{
       width:44px;height:44px;border-radius:14px;
@@ -72,10 +66,15 @@
       color:var(--green);
       box-shadow: var(--shadow);
       flex:0 0 auto;
+      overflow:hidden;
     }
-    .brand{ display:flex; flex-direction:column; gap:2px; min-width:0; flex:1 1 auto; }
-    .brand small{ color:var(--muted); letter-spacing:.08em; font-weight:900}
-    .brand b{ font-size:18px }
+    .brand{
+      display:flex;flex-direction:column;gap:2px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    .brand small{color:var(--muted); letter-spacing:.08em; font-weight:900}
+    .brand b{font-size:18px}
 
     .pill{
       display:flex;align-items:center;gap:8px;
@@ -150,1807 +149,424 @@
       background: linear-gradient(135deg, var(--green), var(--green2));
       color:#042019;
       box-shadow: 0 18px 45px rgba(33,230,182,.18);
-      margin-top: 14px;
-    }
-    .btnSecondary{
-      width:100%;
-      padding: 14px 16px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.10);
-      cursor: pointer;
-      font-weight: 900;
-      font-size: 15px;
-      background: rgba(255,255,255,.05);
-      color: var(--txt);
       margin-top: 10px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: transform .1s, opacity .1s;
     }
-
-    .status{
-      margin-top: 10px;
-      font-weight: 800;
-      color: rgba(234,242,255,.86);
-    }
-
-    .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;}
-    .chip{
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      color: var(--muted);
-      font-weight: 900;
-      cursor: pointer;
-      user-select: none;
-    }
-    .chip.on{
-      border-color: rgba(33,230,182,.45);
-      background: rgba(33,230,182,.12);
+    .btn:active{ transform: scale(.97); opacity: .92; }
+    .btn-sec{
+      background: var(--card);
+      border: 1px solid var(--stroke);
       color: var(--txt);
-      box-shadow: 0 0 0 6px rgba(33,230,182,.08);
+      box-shadow: none;
+    }
+    .btn-orange{
+      background: linear-gradient(135deg, var(--orange), #e39d20);
+      color:#201404;
+      box-shadow: 0 18px 45px rgba(246,178,58,.18);
+    }
+    .btn-red{
+      background: linear-gradient(135deg, #ff4d4d, #e60000);
+      color: #fff;
+      box-shadow: 0 18px 45px rgba(255, 77, 77, .18);
     }
 
-    .screen{ display:none; margin-top: 8px; width: 100%; background: var(--bg); padding-bottom: calc(140px + env(safe-area-inset-bottom)); }
-    .screen.active{ display:block; }
-
-    /* NAV */
-    .nav{
+    /* Tab bar fixo */
+    .tabbar{
       position: fixed;
-      left:0; right:0; bottom:0;
-      padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
-      background: #07121f;
-      border-top: 1px solid rgba(255,255,255,.08);
+      bottom: 0; left: 0; right: 0;
+      height: 92px;
+      padding-bottom: env(safe-area-inset-bottom);
+      background: rgba(7, 18, 31, .85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-top: 1px solid var(--stroke);
+      display: flex; align-items: center; justify-content: space-around;
       z-index: 1000;
     }
-    .navInner{
-      max-width: var(--max);
-      margin: 0 auto;
-      display:flex;
-      gap:10px;
-      overflow-x: auto;
-      padding: 6px 6px;
-      scrollbar-width: none;
+    .tabitem{
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: var(--muted); font-size: 11px; font-weight: 800;
+      opacity: .6; flex: 1; transition: .15s;
     }
-    .navInner::-webkit-scrollbar{ display:none; }
-    .navBtn{
-      flex:0 0 auto;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-      color: rgba(234,242,255,.6);
-      font-weight: 950;
-      padding: 12px 14px;
-      border-radius: 999px;
-      cursor:pointer;
-      letter-spacing:.05em;
-      white-space: nowrap;
+    .tabitem.active{ color: var(--green); opacity: 1; }
+    .tabicon{ font-size: 24px; }
+
+    /* Views */
+    .view{ display:none; animation: fadeIn .25s ease-out; }
+    @keyframes fadeIn { from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:0} }
+
+    /* Grid cards */
+    .grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat{
+      background: var(--card); border: 1px solid var(--stroke);
+      border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 4px;
     }
-    .navBtn.active{
-      background: rgba(33,230,182,.12);
-      border-color: rgba(33,230,182,.35);
-      color: var(--green);
-      box-shadow: 0 0 0 6px rgba(33,230,182,.08);
+    .stat b{ font-size: 20px; color: var(--green); }
+    .stat span{ font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; }
+
+    /* Avatar circle */
+    .avatar-wrap{
+      width: 100px; height: 100px; margin: 10px auto 20px;
+      position: relative; cursor: pointer;
+    }
+    .avatar{
+      width: 100%; height: 100%; border-radius: 50%;
+      background: var(--bg2); border: 3px solid var(--green);
+      object-fit: cover; display: block;
+    }
+    .avatar-edit{
+      position: absolute; bottom: 0; right: 0;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--green); color: #000;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; border: 3px solid var(--bg);
     }
 
-    /* TOP BTN */
-    #btnTop{
-      position:fixed;
-      bottom:110px;
-      right:18px;
-      width:48px;
-      height:48px;
-      border-radius:50%;
-      border:none;
-      background:linear-gradient(135deg,#21e6b6,#17caa0);
-      color:#042019;
-      font-size:22px;
-      font-weight:900;
-      box-shadow:0 10px 25px rgba(0,0,0,.4);
-      display:none;
-      z-index:999;
-      cursor:pointer;
+    /* Sports chips */
+    .chips{ display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+    .chip{
+      padding: 8px 14px; border-radius: 99px;
+      background: var(--card); border: 1px solid var(--stroke);
+      font-size: 13px; font-weight: 800; color: var(--muted);
+      cursor: pointer; transition: .2s;
+    }
+    .chip.selected{ background: var(--green); color: #042019; border-color: var(--green); }
+
+    /* History list */
+    .h-list{ display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+    .h-item{
+      background: var(--card); border: 1px solid var(--stroke);
+      border-radius: 18px; padding: 12px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .h-img{ width: 50px; height: 50px; border-radius: 12px; object-fit: cover; background: #000; }
+    .h-info{ flex: 1; display: flex; flex-direction: column; gap: 2px; }
+    .h-info b{ font-size: 15px; }
+    .h-info span{ font-size: 12px; color: var(--muted); font-weight: 700; }
+    .h-cal{ font-weight: 1000; color: var(--green); }
+
+    /* Modal / Popup */
+    .modal-overlay{
+      position: fixed; inset: 0; background: rgba(0,0,0,.85);
+      z-index: 2000; display: none; align-items: center; justify-content: center;
+      padding: 20px; backdrop-filter: blur(10px);
+    }
+    .modal{
+      background: var(--bg2); border: 1px solid var(--stroke);
+      border-radius: 24px; width: 100%; max-width: 400px;
+      padding: 24px; position: relative;
     }
 
-    /* WELCOME */
-    .welcomeHero{
-      border-radius: 26px;
-      border: 1px solid rgba(255,255,255,.10);
-      background:
-        radial-gradient(700px 280px at 20% 10%, rgba(33,230,182,.18), transparent 60%),
-        radial-gradient(600px 260px at 80% 30%, rgba(246,178,58,.14), transparent 62%),
-        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      box-shadow: 0 22px 70px rgba(0,0,0,.55);
-      padding: 16px;
-      overflow:hidden;
-    }
-    .wCarousel{
-      position: relative;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      overflow: hidden;
-      min-height: 270px;
-      margin-top:12px;
-    }
-    .wSlide{ display:none; padding: 18px 16px 16px; min-height: 270px; position: relative; }
-    .wSlide.active{ display:block; }
-    .wBg{
-      position:absolute; inset:0;
-      opacity:.9;
-      background:
-        radial-gradient(900px 340px at 20% 20%, rgba(33,230,182,.22), transparent 60%),
-        radial-gradient(800px 360px at 80% 30%, rgba(246,178,58,.16), transparent 62%),
-        radial-gradient(700px 380px at 45% 110%, rgba(33,230,182,.10), transparent 62%);
-      pointer-events:none;
-    }
-    .wTop{ position:relative; display:flex; align-items:center; justify-content:space-between; gap:10px; z-index:1; }
-    .wBadge{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px; border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      color: rgba(234,242,255,.78);
-      font-weight: 950;
-      letter-spacing:.06em;
-      text-transform: uppercase;
-      font-size: 12px;
-    }
-    .wDots{ display:flex; gap:8px; align-items:center; }
-    .wDot{
-      width:10px;height:10px;border-radius:99px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
-      cursor:pointer;
-    }
-    .wDot.on{
-      background: rgba(33,230,182,.40);
-      border-color: rgba(33,230,182,.55);
-      box-shadow: 0 0 0 6px rgba(33,230,182,.10);
-    }
-    .wTitle{ position:relative; z-index:1; margin-top: 14px; font-size: 26px; font-weight: 1000; line-height: 1.1; }
-    .wText{ position:relative; z-index:1; margin-top: 10px; color: rgba(234,242,255,.85); font-weight: 750; line-height: 1.45; }
-    .wQuote{
-      position:relative; z-index:1;
-      margin-top: 12px; padding: 12px 12px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      color: rgba(234,242,255,.88);
-      font-weight: 850;
-    }
-    .wNavRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px; }
-
-    /* PRATO */
-    .platePreview{
-      width:100%;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.14);
-      overflow:hidden;
-      margin-top: 12px;
-      display:none;
-    }
-    .platePreview img{ width:100%; display:block; }
-    .miniRow{ display:flex; gap:10px; flex-wrap:wrap }
-    .miniBtn{
-      flex:1 1 160px;
-      padding:14px 14px;
-      border-radius:18px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      color: var(--txt);
-      font-weight: 900;
-      cursor:pointer;
-    }
-    .scorePill{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid rgba(33,230,182,.25);
-      background: rgba(33,230,182,.08);
-      color: var(--green);
-      font-weight: 1000;
-      margin-top:10px;
+    /* Premium style */
+    .premium-badge{
+      background: linear-gradient(135deg, var(--orange), #ffcd70);
+      color: #3e2600; font-weight: 1000; font-size: 10px;
+      padding: 2px 6px; border-radius: 4px; text-transform: uppercase;
+      margin-left: 6px; vertical-align: middle;
     }
 
-    /* CARDS LIST */
-    .meal{
-      display:flex; justify-content:space-between; gap:12px;
-      padding: 16px;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-      margin-top: 12px;
-    }
-    .meal .title{
-      font-weight: 950;
-      color: var(--green);
-      letter-spacing:.08em;
-      text-transform: uppercase;
-      font-size: 12px;
-      margin-bottom: 6px;
-    }
-    .meal p{margin:0; color: rgba(234,242,255,.88); font-weight:750; line-height:1.35}
-    .kcal{
-      display:flex; align-items:center; justify-content:center;
-      min-width: 92px;
-      border-radius: 999px;
-      border:1px solid rgba(246,178,58,.25);
-      background: rgba(246,178,58,.10);
-      color: #ffd38a;
-      font-weight: 1000;
-      padding: 10px 12px;
-      text-align:center;
-    }
-
-    /* TREINO */
-    .dayCard{
-      margin-top: 12px;
-      padding: 14px;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-    }
-    .dayTitle{
-      display:flex; align-items:center; justify-content:space-between;
-      font-weight: 1000;
-      color: rgba(234,242,255,.92);
-      margin-bottom: 10px;
-      letter-spacing:.03em;
-    }
-    .exercise{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px;
-      padding: 12px 12px;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.16);
-      margin-top: 10px;
-    }
-    .ytBtn{
-      border:0;
-      border-radius: 999px;
-      padding: 10px 12px;
-      background: rgba(33,230,182,.10);
-      border: 1px solid rgba(33,230,182,.25);
-      color: var(--green);
-      font-weight: 1000;
-      cursor: pointer;
-      min-width: 110px;
-    }
-
-    /* PARCEIROS */
-    .partnerList{display:flex; flex-direction:column; gap:12px; margin-top:12px}
-    .partnerRow{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      padding:14px; border-radius:18px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .partnerName{display:flex; flex-direction:column; gap:4px}
-    .partnerName b{font-weight: 1000}
-
-    /* 3D DASH */
-    .pro3dWrap{ perspective: 1200px; }
-    .pro3dCard{
-      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+    /* Glass Effect UI (Elite) */
+    .glass-card{
+      background: var(--glass);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--stroke3d);
-      border-radius: 26px;
+      border-radius: var(--r);
+      padding: 18px;
       box-shadow: var(--shadow3d);
-      transform: rotateX(7deg) rotateY(-6deg);
-      transform-style: preserve-3d;
-      overflow:hidden;
-      position: relative;
-    }
-    .pro3dCard:before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(600px 260px at 20% 10%, rgba(33,230,182,.18), transparent 60%),
-        radial-gradient(520px 260px at 80% 30%, rgba(246,178,58,.14), transparent 60%),
-        radial-gradient(700px 340px at 40% 100%, rgba(33,230,182,.10), transparent 62%);
-      pointer-events:none;
-    }
-    .proTop{ display:flex; align-items:center; justify-content:space-between; padding:16px 16px 0; position: relative; z-index: 1; }
-    .proTitle{
-      font-size: 26px;
-      font-weight: 1000;
-      letter-spacing: .02em;
-      margin: 10px 16px 12px;
-      color: rgba(234,242,255,.95);
-      position: relative; z-index: 1;
-    }
-    .proGrid{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 12px;
-      padding: 0 16px 16px;
-      position: relative; z-index: 1;
-    }
-    .proPanel{
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      backdrop-filter: blur(10px);
-      padding: 14px;
-      transform: translateZ(18px);
-    }
-    .proRingBox{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap: 10px; min-height: 240px; }
-    .ring{ width: 180px; height: 180px; position: relative; transform: translateZ(26px); }
-    .ring svg{ width: 100%; height: 100%; transform: rotate(-90deg); filter: drop-shadow(0 20px 40px rgba(0,0,0,.55)); }
-    .ringCenter{
-      position:absolute; inset: 0;
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      text-align:center; gap: 2px;
-    }
-    .ringPct{ font-size: 44px; font-weight: 1000; color: #ffd38a; text-shadow: 0 10px 30px rgba(0,0,0,.45); }
-    .ringSub{ color: rgba(234,242,255,.72); font-weight: 900; }
-    .proStats{
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      padding: 0 16px 16px;
-      position: relative; z-index: 1;
-    }
-    .stat3d{
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.16);
-      padding: 12px;
-      transform: translateZ(14px);
-    }
-    .stat3d .num{ font-size: 24px; font-weight: 1000; color: rgba(234,242,255,.95); }
-    .stat3d .lab{
-      margin-top: 2px;
-      color: rgba(234,242,255,.65);
-      font-weight: 850;
-      font-size: 12px;
-      letter-spacing:.08em;
-      text-transform: uppercase;
-    }
-    .chartBox{
-      margin-top: 12px;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.14);
-      padding: 12px;
-      overflow:hidden;
+      margin-bottom: 16px;
     }
 
-    @media (min-width: 900px){
-      .wrap{ max-width: 900px; }
-      .proGrid{ grid-template-columns: 1fr 1fr; }
-      .ring{ width: 210px; height: 210px; }
-      .pro3dCard{ transform: rotateX(6deg) rotateY(-4deg); }
+    .invite-box{
+      background: linear-gradient(135deg, rgba(33,230,182,.1), rgba(0,0,0,0));
+      border: 1px solid rgba(33,230,182,.15);
+      border-radius: 18px; padding: 14px; margin-top: 10px;
+    }
+
+    /* Floating labels */
+    .field{ position: relative; margin-bottom: 12px; }
+
+    /* Hide scrollbar */
+    ::-webkit-scrollbar{ width:0; height:0 }
+
+    /* Utility */
+    .hidden{ display: none !important; }
+    .mt20{ margin-top: 20px; }
+    .center{ text-align: center; }
+
+    #videoPreview{
+      width: 100%; height: 260px; border-radius: 18px;
+      background: #000; object-fit: cover; margin-bottom: 12px;
+      display: none;
     }
   </style>
 </head>
-
 <body>
+
   <div class="wrap">
-    <div class="topbar">
-      <div class="logo">E</div>
+    
+    <div class="topbar" id="mainTopbar" style="display:none">
+      <div class="logo">C</div>
       <div class="brand">
-        <small>ELITE TERMINAL</small>
-        <b>CheckPrato • Elite</b>
+        <small>CHECKPRATO</small>
+        <b>Elite <span id="authBadge" class="premium-badge" style="display:none">PREMIUM</span></b>
       </div>
-      <div class="pill"><span class="dot"></span><span id="authTxt">Modo: Local</span></div>
+      <div class="pill">
+        <div class="dot"></div>
+        <span id="streakDays">1 Dia</span>
+      </div>
     </div>
 
-    <!-- BOAS-VINDAS -->
-    <section id="viewWelcome" class="screen active">
-      <div class="h1">Bem-vindo</div>
-      <div class="welcomeHero">
-        <div class="hint">
-          Você não precisa “força”. Precisa de <b>controle</b>, <b>clareza</b> e <b>constância</b>.
+    <div id="viewWelcome" class="view" style="display:block">
+      <div class="center mt20">
+        <div style="font-size: 50px; margin-bottom: 10px">🛡️</div>
+        <h1 class="h1">Acesso<br>Blindado</h1>
+        <p class="hint">Área exclusiva para membros da Elite CheckPrato.</p>
+        
+        <div class="card mt20">
+          <p id="welcomeStatus" style="font-size: 13px; font-weight: 800; color: var(--green); margin-bottom: 14px"></p>
+          <button class="btn" onclick="loginGoogle()">
+            <svg style="width:20px" viewBox="0 0 24 24"><path fill="currentColor" d="M21.35,11.1H12.18V13.83H18.69C18.36,17.64 15.19,19.27 12.19,19.27C8.36,19.27 5.04,17.05 5.04,12.02C5.04,7 8.36,4.78 12.19,4.78C15.31,4.78 17.03,6.58 17.03,6.58L19,4.64C19,4.64 16.59,2.1 12.19,2.1C6.66,2.1 2.1,6.34 2.1,12.02C2.1,17.7 6.66,21.94 12.19,21.94C17.72,21.94 21.6,18.06 21.6,12.02C21.6,11.71 21.35,11.1 21.35,11.1V11.1Z"/></svg>
+            Entrar com Google
+          </button>
+          <div style="margin: 14px 0; font-size: 11px; opacity: .4; font-weight: 900; letter-spacing: 2px">OU</div>
+          <button class="btn btn-sec" onclick="guestMode()">Modo Local (Offline)</button>
         </div>
+        
+        <p class="hint mt20" style="font-size:12px" id="welcomeManual">Precisa de ajuda? <a href="#" onclick="goManual()">Guia Manual</a></p>
+      </div>
+    </div>
 
-        <div class="wCarousel">
-          <div class="wSlide active" data-slide="0">
-            <div class="wBg"></div>
-            <div class="wTop">
-              <div class="wBadge">🔥 Consistência</div>
-              <div class="wDots" id="wDots"></div>
-            </div>
-            <div class="wTitle">Pequenas escolhas<br>mudam tudo.</div>
-            <div class="wText">Hoje você faz o básico. Amanhã você colhe o resultado.</div>
-            <div class="wQuote">“Disciplina é quando ninguém tá olhando.”</div>
-          </div>
+    <div id="viewCadastro" class="view">
+      <h1 class="h1">Configurar<br>Perfil</h1>
+      <p class="hint">Vamos ajustar sua meta para que a IA calcule tudo certo.</p>
 
-          <div class="wSlide" data-slide="1">
-            <div class="wBg"></div>
-            <div class="wTop">
-              <div class="wBadge">🥗 Prato</div>
-              <div class="wDots"></div>
-            </div>
-            <div class="wTitle">Controle sem neura.</div>
-            <div class="wText">Pontue seu prato e enxergue padrões ao longo da semana.</div>
-            <div class="wQuote">“O que é medido, melhora.”</div>
-          </div>
+      <div class="avatar-wrap">
+        <img src="https://via.placeholder.com/150" id="avatarImg" class="avatar" />
+        <label class="avatar-edit" for="avatarInput">📸</label>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none" />
+      </div>
 
-          <div class="wSlide" data-slide="2">
-            <div class="wBg"></div>
-            <div class="wTop">
-              <div class="wBadge">🏋️ Treino</div>
-              <div class="wDots"></div>
-            </div>
-            <div class="wTitle">Treino inteligente.</div>
-            <div class="wText">Adaptado ao seu nível, esporte e condição.</div>
-            <div class="wQuote">“Forte é quem não para.”</div>
-          </div>
+      <div class="label">Seu Nome</div>
+      <input type="text" id="userName" placeholder="Ex: João Silva" />
 
-          <div class="wSlide" data-slide="3">
-            <div class="wBg"></div>
-            <div class="wTop">
-              <div class="wBadge">📈 Evolução</div>
-              <div class="wDots"></div>
-            </div>
-            <div class="wTitle">Evolução visível.</div>
-            <div class="wText">Gráfico, streak, medalhas e ranking semanal.</div>
-            <div class="wQuote">“Você contra você.”</div>
-          </div>
+      <div class="row">
+        <div class="col">
+          <div class="label">Peso (kg)</div>
+          <input type="number" id="userWeight" placeholder="80" />
         </div>
-
-        <div class="wNavRow">
-         <button class="btn" type="button" onclick="track('cta_comecar_agora'); goCadastro();">Começar agora</button>
-         <button class="btnSecondary" type="button" onclick="track('cta_ver_manual'); goManual();">Ver manual</button>
+        <div class="col">
+          <div class="label">Meta de Calorias</div>
+          <input type="number" id="userGoal" placeholder="2200" />
         </div>
       </div>
-    </section>
 
-    <!-- MANUAL -->
-    <section id="viewManual" class="screen">
-      <div class="h1">Manual</div>
-      <div class="card">
-        <div class="label">Como usar</div>
-        <div class="hint">
-          1) Faça seu <b>Cadastro</b>.<br>
-          2) Registre o <b>Prato</b> e acompanhe sua pontuação.<br>
-          3) Gere sua <b>Dieta</b> e <b>Treino</b> conforme perfil.<br>
-          4) Veja <b>Evolução</b> e mantenha sua constância.<br>
+      <div class="label">Esportes Favoritos</div>
+      <div class="chips" id="sportsContainer"></div>
+
+      <button class="btn mt20" onclick="saveProfile()">Salvar Perfil</button>
+    </div>
+
+    <div id="viewDash" class="view">
+      <h1 class="h1">Sua Meta</h1>
+      <div class="grid">
+        <div class="stat">
+          <span id="labelKcal">Faltam</span>
+          <b id="dashFaltam">0 kcal</b>
         </div>
-
-        <div class="label" style="margin-top:14px">Dúvidas rápidas</div>
-
-        <div class="card" style="margin-top:10px; background:rgba(255,255,255,.03)">
-          <div class="label" style="margin-top:0">Metas</div>
-          <div class="hint">Defina metas realistas e melhore 1% por dia.</div>
+        <div class="stat">
+          <span>Consumido</span>
+          <b id="dashConsumido">0 kcal</b>
         </div>
-
-        <div class="card" style="margin-top:10px; background:rgba(255,255,255,.03)">
-          <div class="label" style="margin-top:0">Pontuação do prato</div>
-          <div class="hint">A pontuação serve pra você criar padrão. O foco é consistência, não perfeição.</div>
+        <div class="stat">
+          <span>Proteínas</span>
+          <b id="dashProt">0g</b>
         </div>
-
-        <button class="btn" type="button" onclick="goCadastro()">Ir para Cadastro</button>
+        <div class="stat">
+          <span>Água</span>
+          <b id="dashAgua">0L</b>
+        </div>
       </div>
-    </section>
 
-    <!-- CADASTRO -->
-    <section id="viewCadastro" class="screen">
-      <div class="h1">Cadastro</div>
-      <div class="card">
-        <div class="row">
-          <div class="col">
-            <div class="label">Nome</div>
-            <input id="nome" placeholder="Seu nome" />
-          </div>
-          <div class="col">
-            <div class="label">Objetivo</div>
-            <select id="objetivo">
-              <option value="">Selecione</option>
-              <option>Emagrecer</option>
-              <option>Hipertrofia</option>
-              <option>Saúde</option>
-              <option>Performance</option>
-            </select>
-          </div>
+      <div class="glass-card mt20">
+        <div style="display:flex; justify-content:space-between; align-items:center">
+          <b>Próxima Refeição</b>
+          <span style="font-size:11px; font-weight:900; color:var(--green)">DIETA IA</span>
         </div>
-
-        <div class="row">
-          <div class="col">
-            <div class="label">Restrição (saúde)</div>
-            <select id="restricao">
-              <option>Nenhuma</option>
-              <option>Diabetes</option>
-              <option>Hipertensão</option>
-              <option>Colesterol alto</option>
-              <option>Intolerância à lactose</option>
-              <option>Glúten</option>
-              <option>Vegetariano</option>
-              <option>Vegano</option>
-            </select>
-          </div>
-          <div class="col">
-            <div class="label">PCD / Dificuldade</div>
-            <select id="pcd">
-              <option>Não</option>
-              <option>Mobilidade reduzida</option>
-              <option>Idoso</option>
-              <option>Lesão / dor</option>
-              <option>Obesidade (baixo impacto)</option>
-              <option>Visual</option>
-              <option>Auditiva</option>
-            </select>
-          </div>
+        <div id="dietaSugerida" class="hint mt20" style="font-size:14px">
+          Sua dieta aparecerá aqui após o cadastro.
         </div>
+      </div>
 
-        <div class="label">Esportes (marque vários)</div>
-        <div id="chipsEsportes" class="chips"></div>
+      <div class="glass-card">
+        <div style="display:flex; justify-content:space-between; align-items:center">
+          <b>Treino de Hoje</b>
+          <span style="font-size:11px; font-weight:900; color:var(--orange)">TREINO IA</span>
+        </div>
+        <div id="treinoSugerido" class="hint mt20" style="font-size:14px">
+          Seu plano de treino personalizado.
+        </div>
+      </div>
 
-        <button class="btn" type="button" onclick="salvarCadastro()">Salvar cadastro</button>
-       
-        <button class="btnSecondary" type="button" onclick="limparCadastro()">Limpar</button>       
+      <div id="inviteArea" class="invite-box center hidden">
+        <b style="color:var(--green)">Convide 3 amigos</b>
+        <p style="font-size:12px; margin:4px 0 10px">Desbloqueie o selo Premium Grátis!</p>
+        <div id="inviteProgress" style="background:rgba(255,255,255,.05); height:8px; border-radius:4px; margin-bottom:10px">
+          <div id="inviteBar" style="width:0%; height:100%; background:var(--green); border-radius:4px; transition:.5s"></div>
+        </div>
+        <button class="btn btn-sec" style="font-size:12px; padding:10px" onclick="shareInvite()">Copiar Link de Convite</button>
+      </div>
+
+      <div class="mt20 center">
+        <button class="btn btn-orange" onclick="goPremium()">
+          🚀 Ativar CheckPrato Premium
+        </button>
+      </div>
+    </div>
+
+    <div id="viewScanner" class="view">
+      <h1 class="h1">Analisar<br>Refeição</h1>
+      <p class="hint">Tire uma foto ou grave um pequeno vídeo do seu prato.</p>
+
+      <div class="card mt20 center" style="border-style:dashed; border-width:2px; padding:40px 20px" id="dropArea">
+        <video id="videoPreview" autoplay playsinline muted></video>
+        <div id="uploadPrompt">
+          <div style="font-size:40px; margin-bottom:10px">📸</div>
+          <b>Toque para capturar</b>
+          <p style="font-size:12px; opacity:.5">Foto ou Vídeo do Prato</p>
+        </div>
+        <input type="file" id="plateInput" accept="image/*,video/*" capture="environment" style="display:none" />
+      </div>
+
+      <div id="scannerResult" class="hidden mt20">
+        <div class="glass-card">
+          <h2 style="margin:0 0 10px; font-size:18px">Análise da IA</h2>
+          <div id="plateDetails" class="hint" style="font-size:14px">Processando...</div>
+          <button class="btn mt20" onclick="savePlate()">Confirmar e Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="viewHistory" class="view">
+      <h1 class="h1">Histórico</h1>
+      <p class="hint">Tudo o que você consumiu hoje.</p>
       
-        <div id="outCadastro" class="status" style="display:none"></div>
+      <div class="h-list" id="historyList">
+        </div>
+
+      <div class="center mt20">
+        <button class="btn btn-red btn-sec" onclick="clearHistory()">Limpar Histórico</button>
       </div>
-    </section>
+    </div>
 
-    <!-- PERFIL -->
-    <section id="viewPerfil" class="screen">
-      <div class="h1">Perfil</div>
-      <div class="card">
-        <div class="hint">Seus dados e status.</div>
-        <div id="perfilBox" class="status" style="margin-top:12px">—</div>
-        <button class="btnSecondary" type="button" onclick="resetAll()">Resetar dados do app</button>
+    <div id="viewPerfil" class="view">
+      <h1 class="h1">Meu Perfil</h1>
+      
+      <div id="perfilBox" class="glass-card">
+        </div>
+
+      <button class="btn btn-sec mt20" onclick="goCadastro()">Editar Dados</button>
+      <button class="btn btn-red mt20" onclick="logout()">Sair da Conta</button>
+    </div>
+
+    <div id="viewPremium" class="view">
+      <h1 class="h1">Seja Elite</h1>
+      <p class="hint">Acesso ilimitado, IA avançada e suporte prioritário.</p>
+
+      <div class="card mt20">
+        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px">
+          <li>✅ Análise de vídeo ilimitada</li>
+          <li>✅ Dietas geradas por IA real</li>
+          <li>✅ Treinos dinâmicos semanais</li>
+          <li>✅ Badge de Elite no Perfil</li>
+        </ul>
       </div>
-    </section>
 
-    <!-- PRATO -->
-    <section id="viewPrato" class="screen">
-      <div class="h1">Prato</div>
+      <button class="btn btn-orange mt20" id="btnPremium" onclick="confirmPremium()">
+        CONFIRMAR R$ 29,90/MÊS
+      </button>
+      <button class="btn btn-sec mt20" onclick="showOnly('viewDash')">Talvez depois</button>
+    </div>
 
-      <div class="card">
-        <div class="hint">Registre seu prato (foto ou descrição). A pontuação ajuda a criar padrão na semana.</div>
-
-        <div class="miniRow" style="margin-top:12px">
-          <button class="miniBtn" type="button" id="btnCamera">Tirar foto</button>
-          <button class="miniBtn" type="button" id="btnGaleria">Escolher da galeria</button>
-        </div>
-
-        <input id="fileCamera" type="file" accept="image/*" capture="environment" style="display:none">
-        <input id="fileGaleria" type="file" accept="image/*" style="display:none">
-
-        <div class="platePreview" id="platePreview">
-          <img id="plateImg" alt="Prato"/>
-        </div>
-
-        <div class="label">Descrição do prato</div>
-        <input id="plateDesc" placeholder="Ex: arroz, feijão, frango e salada" />
-
-        <div class="row">
-          <div class="col">
-            <div class="label">Porção</div>
-            <select id="platePortion">
-              <option>Pequena</option>
-              <option selected>Média</option>
-              <option>Grande</option>
-            </select>
-          </div>
-          <div class="col">
-            <div class="label">Qualidade</div>
-            <select id="plateQuality">
-              <option>Ruim</option>
-              <option>Média</option>
-              <option selected>Boa</option>
-              <option>Excelente</option>
-            </select>
-          </div>
-        </div>
-
-        <button class="btn" type="button" onclick="avaliarPrato()">Registrar e pontuar</button>
-        <div id="plateScore" class="scorePill" style="display:none"></div>
-
-        <div class="label" style="margin-top:14px">Histórico da semana</div>
-        <div id="plateHistory" class="hint">—</div>
-      </div>
-    </section>
-
-    <!-- DIETA -->
-    <section id="viewDieta" class="screen">
-      <div class="h1">Dieta</div>
-
-      <div class="card">
-        <div class="hint">Escolha um estilo e gere uma rotina completa. O app varia automaticamente.</div>
-
-        <div class="row" style="margin-top:10px">
-          <div class="col">
-            <div class="label">Tipo</div>
-            <select id="tipoDieta">
-              <option>Emagrecimento</option>
-              <option>Hipertrofia</option>
-              <option>Performance</option>
-              <option>Low carb</option>
-              <option>Econômica</option>
-              <option>Vegetariana</option>
-              <option>Vegana</option>
-              <option>Diabetes</option>
-              <option>Hipertensão</option>
-              <option>Sem lactose</option>
-              <option>Sem glúten</option>
-            </select>
-          </div>
-          <div class="col">
-            <div class="label">Preferência</div>
-            <select id="prefDieta">
-              <option>Brasil (comida normal)</option>
-              <option>Fit</option>
-              <option>Rápida (pouco tempo)</option>
-            </select>
-          </div>
-        </div>
-
-        <button class="btn" type="button" onclick="gerarDieta()">Gerar dieta</button>
-        <button class="btnSecondary" type="button" onclick="gerarDieta(true)">Trocar</button>
-
-        <div id="dietaBox"></div>
-      </div>
-    </section>
-
-    <!-- TREINO -->
-    <section id="viewTreino" class="screen">
-      <div class="h1">Treino</div>
-
-      <div class="card">
-        <div class="hint">Treino semanal adaptado por esporte, nível e condição.</div>
-
-        <div class="row" style="margin-top:10px">
-          <div class="col">
-            <div class="label">Esporte</div>
-            <select id="temaTreino"></select>
-          </div>
-          <div class="col">
-            <div class="label">Intensidade</div>
-            <select id="intTreino">
-              <option>Leve</option>
-              <option selected>Moderado</option>
-              <option>Pesado</option>
-            </select>
-          </div>
-        </div>
-
-        <button class="btn" type="button" onclick="gerarTreino()">Gerar treino da semana</button>
-        <button class="btnSecondary" type="button" onclick="limparTreino()">Limpar</button>
-
-        <div id="outTreino" class="status" style="display:none"></div>
-        <div id="treinoSemana"></div>
-      </div>
-    </section>
-
-    <!-- EVOLUÇÃO -->
-    <section id="viewEvolucao" class="screen">
-      <div class="h1">Evolução</div>
-
-      <div class="card">
-        <div class="hint">Acompanhe sua constância: streak, medalhas, pontuação semanal e gráfico.</div>
-
-        <div class="row" style="margin-top:10px">
-          <div class="col">
-            <div class="label">Streak</div>
-            <div class="pill"><span class="dot"></span><span id="streakTxt">0 dias</span></div>
-          </div>
-          <div class="col">
-            <div class="label">Nível</div>
-            <div class="pill"><span class="dot"></span><span id="levelTxt">Nível 1</span></div>
-          </div>
-        </div>
-
-        <div class="label" style="margin-top:12px">Medalhas</div>
-        <div id="badges" class="chips"></div>
-
-        <div class="chartBox">
-          <canvas id="evoChart" height="140"></canvas>
-        </div>
-
-        <div class="label">Registro rápido</div>
-        <div class="miniRow">
-          <button class="miniBtn" type="button" onclick="logEvo('treino')">Marcar treino feito</button>
-          <button class="miniBtn" type="button" onclick="logEvo('prato')">Marcar prato saudável</button>
-        </div>
-
-        <div class="hint" style="margin-top:10px" id="evoHint">—</div>
-      </div>
-    </section>
-
-    <!-- PROGRESSO -->
-    <section id="viewProgresso" class="screen">
-      <div class="h1">Progresso</div>
-
-      <div class="pro3dWrap">
-        <div class="pro3dCard">
-          <div class="proTop">
-            <div class="pill"><span class="dot"></span><span id="proWeek">Semana</span></div>
-            <div class="pill"><span class="dot"></span><span id="proMode">Local</span></div>
-          </div>
-
-          <div class="proTitle">Meta da Semana</div>
-
-          <div class="proGrid">
-            <div class="proPanel">
-              <div class="label" style="margin-top:0">Progresso</div>
-
-              <div class="proRingBox">
-                <div class="ring">
-                  <svg viewBox="0 0 120 120">
-                    <circle cx="60" cy="60" r="48" stroke="rgba(255,255,255,.10)" stroke-width="10" fill="none"/>
-                    <circle id="ringProg" cx="60" cy="60" r="48"
-                      stroke="rgba(255,211,138,.95)" stroke-linecap="round"
-                      stroke-width="10" fill="none"
-                      stroke-dasharray="301.59" stroke-dashoffset="301.59"/>
-                  </svg>
-                  <div class="ringCenter">
-                    <div class="ringPct" id="proPct">0%</div>
-                    <div class="ringSub"><span id="proDone">0</span> / <span id="proGoal">5</span> dias</div>
-                  </div>
-                </div>
-
-                <div class="miniRow" style="margin-top:6px">
-                  <button class="miniBtn" type="button" onclick="addTreinoDone()">+1 treino</button>
-                  <button class="miniBtn" type="button" onclick="setGoalDaysPrompt()">Meta</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="proPanel">
-              <div class="label" style="margin-top:0">Resumo</div>
-              <div class="hint" id="proResumo">—</div>
-
-              <div class="label" style="margin-top:12px">Ações</div>
-              <button class="btnSecondary" type="button" onclick="resetProgresso()">Reset semana</button>
-            </div>
-          </div>
-
-          <div class="proStats">
-            <div class="stat3d">
-              <div class="num" id="proKcal">0</div>
-              <div class="lab">energia</div>
-              <button class="btnSecondary" type="button" onclick="addKcal()">+1</button>
-            </div>
-            <div class="stat3d">
-              <div class="num" id="proKm">0</div>
-              <div class="lab">movimento</div>
-              <button class="btnSecondary" type="button" onclick="addKm()">+1</button>
-            </div>
-            <div class="stat3d">
-              <div class="num"><span id="proDays">0</span>/<span id="proDaysGoal">5</span></div>
-              <div class="lab">treinos</div>
-              <button class="btnSecondary" type="button" onclick="addTreinoDone()">+1</button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- SAÚDE -->
-    <section id="viewSaude" class="screen">
-      <div class="h1">Saúde</div>
-
-      <div class="card">
-        <div class="hint">Tópicos e orientações gerais. Clique para ler em fonte oficial.</div>
-
-        <div class="miniRow" style="margin-top:12px">
-          <button class="miniBtn" type="button" onclick="openSaude('diabetes')">Diabetes</button>
-          <button class="miniBtn" type="button" onclick="openSaude('hipertensao')">Hipertensão</button>
-          <button class="miniBtn" type="button" onclick="openSaude('colesterol')">Colesterol</button>
-          <button class="miniBtn" type="button" onclick="openSaude('obesidade')">Obesidade</button>
-          <button class="miniBtn" type="button" onclick="openSaude('sono')">Sono</button>
-          <button class="miniBtn" type="button" onclick="openSaude('saude-mental')">Saúde mental</button>
-          <button class="miniBtn" type="button" onclick="openSaude('atividade-fisica')">Atividade física</button>
-          <button class="miniBtn" type="button" onclick="openSaude('anabolizantes')">Anabolizantes</button>
-        </div>
-
-        <div class="hint" style="margin-top:12px">Fontes: Ministério da Saúde / Biblioteca Virtual em Saúde.</div>
-      </div>
-    </section>
-
-    <!-- PARCEIROS -->
-    <section id="viewParceiros" class="screen">
-      <div class="h1">Parceiros</div>
-
-      <div class="card">
-        <div class="hint">Links oficiais.</div>
-
-        <div class="partnerList">
-          <div class="partnerRow">
-            <div class="partnerName"><b>Growth Supplements</b><div class="muted">Whey, creatina e suplementos</div></div>
-            <button class="btnSecondary" type="button" onclick="abrirLink('https://www.gsuplementos.com.br')">Abrir</button>
-          </div>
-          <div class="partnerRow">
-            <div class="partnerName"><b>Max Titanium</b><div class="muted">Nutrição esportiva</div></div>
-            <button class="btnSecondary" type="button" onclick="abrirLink('https://www.maxtitanium.com.br')">Abrir</button>
-          </div>
-          <div class="partnerRow">
-            <div class="partnerName"><b>Nike</b><div class="muted">Tênis e roupas</div></div>
-            <button class="btnSecondary" type="button" onclick="abrirLink('https://www.nike.com.br')">Abrir</button>
-          </div>
-          <div class="partnerRow">
-            <div class="partnerName"><b>Adidas</b><div class="muted">Performance e lifestyle</div></div>
-            <button class="btnSecondary" type="button" onclick="abrirLink('https://www.adidas.com.br')">Abrir</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONVITES -->
-    <section id="viewConvites" class="screen">
-      <div class="h1">Convites</div>
-
-      <div class="card">
-        <div class="hint">Compartilhe seu link.</div>
-
-        <div class="card" style="margin-top:12px; background:rgba(255,255,255,.03)">
-          <div class="label">Seu código</div>
-          <div id="myCode" style="font-weight:1000; font-size:18px">—</div>
-
-          <div class="label" style="margin-top:12px">Seu link</div>
-          <div id="myLink" class="muted" style="word-break:break-all">—</div>
-
-          <div class="miniRow" style="margin-top:12px">
-            <button class="miniBtn" type="button" onclick="copyInviteLink()">Copiar link</button>
-            <button class="miniBtn" type="button" onclick="shareInvite()">Compartilhar</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </div>
-
-  <!-- NAV (ordem pedida) -->
-  <div class="nav" id="navBar">
-    <div class="navInner">
-      <button class="navBtn active" data-view="viewWelcome" type="button">INÍCIO</button>
-      <button class="navBtn" data-view="viewManual" type="button">MANUAL</button>
-      <button class="navBtn" data-view="viewCadastro" type="button">CADASTRO</button>
-      <button class="navBtn" data-view="viewPerfil" type="button">PERFIL</button>
-      <button class="navBtn" data-view="viewPrato" type="button">PRATO</button>
-      <button class="navBtn" data-view="viewDieta" type="button">DIETA</button>
-      <button class="navBtn" data-view="viewTreino" type="button">TREINO</button>
-      <button class="navBtn" data-view="viewEvolucao" type="button">EVOLUÇÃO</button>
-      <button class="navBtn" data-view="viewProgresso" type="button">PROGRESSO</button>
-      <button class="navBtn" data-view="viewSaude" type="button">SAÚDE</button>
-      <button class="navBtn" data-view="viewParceiros" type="button">PARCEIROS</button>
-      <button class="navBtn" data-view="viewConvites" type="button">CONVITES</button>
+  </div><div class="tabbar" id="mainNav" style="display:none">
+    <div class="tabitem active" onclick="showOnly('viewDash')" id="navDash">
+      <div class="tabicon">🏠</div>
+      <span>Início</span>
+    </div>
+    <div class="tabitem" onclick="showOnly('viewScanner')" id="navScanner">
+      <div class="tabicon">📷</div>
+      <span>Scanner</span>
+    </div>
+    <div class="tabitem" onclick="showOnly('viewHistory')" id="navHistory">
+      <div class="tabicon">🕒</div>
+      <span>Diário</span>
+    </div>
+    <div class="tabitem" onclick="showOnly('viewPerfil')" id="navPerfil">
+      <div class="tabicon">👤</div>
+      <span>Perfil</span>
     </div>
   </div>
 
-  <button id="btnTop" onclick="scrollToTop()">↑</button>
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <h2 id="modalTitle" style="margin:0 0 10px">Aviso</h2>
+      <div id="modalBody" class="hint">Conteúdo aqui.</div>
+      <button class="btn mt20" onclick="closeModal()">OK</button>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <script>
     /***********************
-     * Helpers
+     * 1) Configurações
      ***********************/
-    const $ = (id)=>document.getElementById(id);
-    function abrirLink(url){ window.open(url, "_blank"); }
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"]/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m]));
-    }
-   <script>
-  // --- GA4 helper: eventos ---
-  function track(name, params = {}) {
-    try {
-      if (typeof gtag === "function") {
-        gtag("event", name, params);
-      }
-    } catch (e) {}
-  }
-</script>
-     * Navegação (SEM depender de event)
-     ***********************/
-    function showView(viewId){
-      document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-      const el = document.getElementById(viewId);
-      if(el) el.classList.add("active");
+    const KEY_PROFILE = "cp_profile";
+    const KEY_HISTORY = "cp_history";
+    const KEY_DIETA   = "cp_dieta";
+    const KEY_TREINO  = "cp_treino";
+    const KEY_GUEST   = "cp_guest_mode";
+    const KEY_INVITES = "cp_invite_count";
+    const KEY_PREMIUM = "cp_is_premium";
 
-      document.querySelectorAll(".navBtn").forEach(b=>b.classList.remove("active"));
-      const btn = document.querySelector(`.navBtn[data-view="${viewId}"]`);
-      if(btn) btn.classList.add("active");
+    const SPORTS_LIST = ["Musculação", "Corrida", "Crossfit", "Yoga", "Futebol", "Natação", "Ciclismo", "Luta"];
+    const PREMIUM_PRICE = 29.90;
 
-      scrollToTop();
-      updateTopBtn();
-    }
-    window.showView = showView;
+    let currentUser = null; // para Firebase
 
-    function wireNav(){
-      document.querySelectorAll(".navBtn").forEach(btn=>{
-        btn.addEventListener("click", ()=> showView(btn.dataset.view));
-      });
-    }
-
-    function scrollToTop(){ window.scrollTo({ top:0, behavior:"smooth" }); }
-    window.scrollToTop = scrollToTop;
-
-    function updateTopBtn(){
-      const btn = $("btnTop");
-      if(!btn) return;
-      btn.style.display = (window.scrollY > 200) ? "block" : "none";
-    }
-    window.addEventListener("scroll", updateTopBtn, { passive:true });
-
-    function goCadastro(){ showView("viewCadastro"); }
-    function goManual(){ showView("viewManual"); }
-    window.goCadastro = goCadastro;
-    window.goManual = goManual;
-
-    /***********************
-     * Storage
-     ***********************/
-    const KEY_PROFILE = "cp_profile_v2";
-    const KEY_PLATE_WEEK = "cp_plate_week_v1";
-    const KEY_DIETA = "cp_dieta_v2";
-    const KEY_TREINO = "cp_treino_v2";
-    const KEY_DASH = "cp_dash_v2";
-    const KEY_EVO = "cp_evo_v1";
-    const KEY_INV = "cp_inv_v1";
+    // Helper
+    const $ = (id) => document.getElementById(id);
 
     function safeJSON(key){
-      try{ return JSON.parse(localStorage.getItem(key) || "null"); }catch{ return null; }
+      try{ return JSON.parse(localStorage.getItem(key) || "{}"); } catch(e){ return {}; }
     }
-    function setJSON(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
-
-    function getWeekKey(){
-      const now = new Date();
-      const start = new Date(now);
-      start.setHours(0,0,0,0);
-      start.setDate(now.getDate() - ((now.getDay()+6)%7)); // segunda
-      return start.toISOString().slice(0,10);
+    function safeArray(key){
+      try{ return JSON.parse(localStorage.getItem(key) || "[]"); } catch(e){ return []; }
     }
 
     /***********************
-     * Welcome dots / carrossel
+     * 2) Navegação
      ***********************/
-    function initWelcomeCarousel(){
-      const slides = Array.from(document.querySelectorAll(".wSlide"));
-      const dotsBox = $("wDots");
-      if(!slides.length || !dotsBox) return;
-
-      dotsBox.innerHTML = "";
-      slides.forEach((_, idx)=>{
-        const d = document.createElement("div");
-        d.className = "wDot" + (idx===0 ? " on" : "");
-        d.addEventListener("click", ()=> setSlide(idx));
-        dotsBox.appendChild(d);
-      });
-
-      let cur = 0;
-      function setSlide(i){
-        cur = i;
-        slides.forEach(s=>s.classList.remove("active"));
-        slides[i].classList.add("active");
-        const dots = dotsBox.querySelectorAll(".wDot");
-        dots.forEach(x=>x.classList.remove("on"));
-        dots[i].classList.add("on");
-      }
-      window.__setSlide = setSlide;
-
-      // auto
-      setInterval(()=>{
-        cur = (cur + 1) % slides.length;
-        setSlide(cur);
-      }, 4500);
-    }
-
-    /***********************
-     * Cadastro + Esportes
-     ***********************/
-    const ESPORTES = ["Musculação","Futebol","Corrida","Crossfit","Ciclismo","Natação","Luta","Basquete","Vôlei","Yoga","Pilates","Caminhada","Muay Thai","Jiu-jitsu","Handebol","Tênis","Funcional"];
-    let selectedSports = new Set();
-
-    function buildSportsChips(){
-      const box = $("chipsEsportes");
-      if(!box) return;
-      box.innerHTML = "";
-      ESPORTES.forEach(name=>{
-        const div = document.createElement("div");
-        div.className = "chip";
-        div.textContent = name;
-        div.addEventListener("click", ()=>{
-          if(selectedSports.has(name)) selectedSports.delete(name);
-          else selectedSports.add(name);
-          div.classList.toggle("on");
-        });
-        box.appendChild(div);
-      });
-
-      const p = safeJSON(KEY_PROFILE);
-      if(p && Array.isArray(p.esportes)){
-        selectedSports = new Set(p.esportes);
-        [...box.querySelectorAll(".chip")].forEach(ch=>{
-          if(selectedSports.has(ch.textContent)) ch.classList.add("on");
-        });
-      }
-    }
-
-    function salvarCadastro(){
-      const perfil = {
-        nome: ($("nome")?.value || "").trim(),
-        objetivo: $("objetivo")?.value || "",
-        restricao: $("restricao")?.value || "",
-        pcd: $("pcd")?.value || "",
-        esportes: Array.from(selectedSports),
-        updatedAt: Date.now(),
+    function showOnly(viewId){
+      document.querySelectorAll(".view").forEach(v => v.style.display = "none");
+      $(viewId).style.display = "block";
+      
+      // Update nav highlights
+      document.querySelectorAll(".tabitem").forEach(t => t.classList.remove("active"));
+      const navMap = {
+        "viewDash": "navDash",
+        "viewScanner": "navScanner",
+        "viewHistory": "navHistory",
+        "viewPerfil": "navPerfil"
       };
-      setJSON(KEY_PROFILE, perfil);
-      const out = $("outCadastro");
-      if(out){ out.style.display="block"; out.textContent="✅ Cadastro salvo."; }
-      updatePerfilBox();
-      hydrateTreinoTema();
-    }
-    window.salvarCadastro = salvarCadastro;
+      if(navMap[viewId]) $(navMap[viewId]).classList.add("active");
 
-    function limparCadastro(){
-      localStorage.removeItem(KEY_PROFILE);
-      ["nome"].forEach(id=>{ if($(id)) $(id).value=""; });
-      ["objetivo","restricao","pcd"].forEach(id=>{ if($(id)) $(id).value=""; });
-      selectedSports = new Set();
-      buildSportsChips();
-      const out = $("outCadastro");
-      if(out){ out.style.display="block"; out.textContent="🧹 Cadastro limpo."; }
-      updatePerfilBox();
-      hydrateTreinoTema();
-    }
-    window.limparCadastro = limparCadastro;
-
-    function updatePerfilBox(){
-      const p = safeJSON(KEY_PROFILE) || {};
-      const sports = Array.isArray(p.esportes) && p.esportes.length ? p.esportes.join(", ") : "—";
-      const html = `
-        <div><b>Nome:</b> ${escapeHtml(p.nome || "—")}</div>
-        <div><b>Objetivo:</b> ${escapeHtml(p.objetivo || "—")}</div>
-        <div><b>Restrição:</b> ${escapeHtml(p.restricao || "—")}</div>
-        <div><b>PCD/Dificuldade:</b> ${escapeHtml(p.pcd || "—")}</div>
-        <div><b>Esportes:</b> ${escapeHtml(sports)}</div>
-      `;
-      if($("perfilBox")) $("perfilBox").innerHTML = html;
+      window.scrollTo(0,0);
     }
 
-    function resetAll(){
-      if(!confirm("Tem certeza? Isso apaga os dados locais do app neste navegador.")) return;
-      Object.keys(localStorage).forEach(k=>{
-        if(k.startsWith("cp_")) localStorage.removeItem(k);
-      });
-      location.reload();
-    }
-    window.resetAll = resetAll;
-
-    /***********************
-     * Prato (foto + score)
-     ***********************/
-    function getPlateWeek(){
-      const weekKey = getWeekKey();
-      const all = safeJSON(KEY_PLATE_WEEK) || {};
-      if(!all[weekKey]) all[weekKey] = [];
-      return { all, weekKey, list: all[weekKey] };
-    }
-    function savePlateWeek(all){ setJSON(KEY_PLATE_WEEK, all); }
-
-    function wirePlateInput(){
-      const btnCam = $("btnCamera");
-      const btnGal = $("btnGaleria");
-      const fc = $("fileCamera");
-      const fg = $("fileGaleria");
-
-      if(btnCam && fc) btnCam.addEventListener("click", ()=> fc.click());
-      if(btnGal && fg) btnGal.addEventListener("click", ()=> fg.click());
-
-      async function onFile(file){
-        if(!file) return;
-        const reader = new FileReader();
-        reader.onload = ()=>{
-          const dataUrl = String(reader.result || "");
-          $("plateImg").src = dataUrl;
-          $("platePreview").style.display = "block";
-          // não salvamos a imagem (pra não estourar storage), só mostramos
-        };
-        reader.readAsDataURL(file);
-      }
-      if(fc) fc.addEventListener("change", ()=> onFile(fc.files?.[0]));
-      if(fg) fg.addEventListener("change", ()=> onFile(fg.files?.[0]));
-    }
-
-    function avaliarPrato(){
-      const desc = ($("plateDesc")?.value || "").trim();
-      const portion = $("platePortion")?.value || "Média";
-      const quality = $("plateQuality")?.value || "Boa";
-
-      // score simples, mas com variação e perfil
-      const p = safeJSON(KEY_PROFILE) || {};
-      let base = 70;
-      if(quality === "Excelente") base += 18;
-      if(quality === "Boa") base += 10;
-      if(quality === "Média") base += 3;
-      if(quality === "Ruim") base -= 10;
-
-      if(portion === "Pequena") base += 3;
-      if(portion === "Grande") base -= 3;
-
-      const t = (desc.toLowerCase());
-      if(t.includes("salada")) base += 6;
-      if(t.includes("frango") || t.includes("ovo") || t.includes("peixe")) base += 5;
-      if(t.includes("refrigerante") || t.includes("frit") || t.includes("doce")) base -= 8;
-
-      // ajusta pelo objetivo
-      const obj = (p.objetivo || "").toLowerCase();
-      if(obj.includes("emag")){ if(portion==="Grande") base -= 6; }
-      if(obj.includes("hiper") || obj.includes("massa")){ if(t.includes("arroz") || t.includes("feijão")) base += 2; }
-
-      // ruído leve
-      base += Math.floor(Math.random()*5) - 2;
-      const score = Math.max(30, Math.min(100, Math.round(base)));
-
-      const { all, weekKey, list } = getPlateWeek();
-      list.push({ ts: Date.now(), desc: desc || "Prato registrado", score });
-      all[weekKey] = list.slice(-50);
-      savePlateWeek(all);
-
-      const pill = $("plateScore");
-      pill.style.display = "inline-flex";
-      pill.textContent = `Score do prato: ${score}/100`;
-
-      renderPlateHistory();
-      // também alimenta evolução
-      addEvoPoint("prato", score >= 80 ? 2 : 1);
-    }
-    window.avaliarPrato = avaliarPrato;
-
-    function renderPlateHistory(){
-      const { list } = getPlateWeek();
-      const el = $("plateHistory");
-      if(!el) return;
-      if(!list.length){
-        el.textContent = "Sem registros nesta semana.";
-        return;
-      }
-      const avg = Math.round(list.reduce((a,b)=>a+(b.score||0),0)/list.length);
-      el.innerHTML = `Registros: <b>${list.length}</b> • Média: <b>${avg}/100</b>`;
-    }
-
-    /***********************
-     * Dieta (variedade grande)
-     ***********************/
-    const DIETA_POOLS = {
-      "Emagrecimento": {
-        kcal: "450–650",
-        meals: [
-          ["Café", ["Omelete 2 ovos + café sem açúcar", "Iogurte natural + fruta + chia", "Aveia + banana + canela"]],
-          ["Almoço", ["Frango grelhado + salada + arroz integral", "Carne magra + legumes + feijão", "Peixe + batata doce + salada"]],
-          ["Lanche", ["Fruta + castanhas", "Sanduíche integral de atum", "Iogurte + granola sem açúcar"]],
-          ["Jantar", ["Omelete + legumes", "Sopa de legumes com frango", "Salada grande com proteína"]],
-        ]
-      },
-      "Hipertrofia": {
-        kcal: "700–1000",
-        meals: [
-          ["Café", ["Aveia + banana + whey", "Pão integral + ovos + queijo", "Tapioca + frango desfiado"]],
-          ["Almoço", ["Arroz + feijão + carne + salada", "Macarrão + frango + legumes", "Mandioca + carne + feijão"]],
-          ["Lanche", ["Vitamina (banana + leite + aveia)", "Iogurte + granola + mel", "Pão + pasta de amendoim"]],
-          ["Jantar", ["Arroz + frango + legumes", "Batata doce + ovos + salada", "Peixe + arroz + feijão"]],
-        ]
-      },
-      "Performance": {
-        kcal: "600–900",
-        meals: [
-          ["Café", ["Ovos + fruta + aveia", "Iogurte + banana + aveia", "Pão integral + ovos"]],
-          ["Almoço", ["Carbo + proteína + salada", "Frango + arroz + feijão", "Peixe + arroz + legumes"]],
-          ["Pré-treino", ["Banana + café", "Pão + mel", "Fruta + iogurte"]],
-          ["Pós-treino", ["Proteína + carbo", "Iogurte + fruta", "Ovos + arroz"]],
-        ]
-      },
-      "Low carb": {
-        kcal: "450–750",
-        meals: [
-          ["Café", ["Ovos mexidos + abacate", "Iogurte natural + castanhas", "Omelete + queijo"]],
-          ["Almoço", ["Carne + salada + legumes", "Frango + legumes + azeite", "Peixe + salada"]],
-          ["Lanche", ["Castanhas + fruta", "Queijo + tomate", "Iogurte + chia"]],
-          ["Jantar", ["Omelete + salada", "Sopa low carb", "Frango + legumes"]],
-        ]
-      },
-      "Econômica": {
-        kcal: "500–850",
-        meals: [
-          ["Café", ["Ovos + pão", "Aveia + banana", "Tapioca simples"]],
-          ["Almoço", ["Arroz + feijão + ovo + salada", "Macarrão + sardinha", "Frango + arroz + feijão"]],
-          ["Lanche", ["Banana", "Pão com pasta", "Iogurte simples"]],
-          ["Jantar", ["Ovos + arroz", "Sopa simples", "Frango + legumes"]],
-        ]
-      },
-      "Vegetariana": {
-        kcal: "500–850",
-        meals: [
-          ["Café", ["Aveia + banana", "Iogurte (se usar) + fruta", "Tapioca + queijo (se usar)"]],
-          ["Almoço", ["Lentilha + arroz + salada", "Grão-de-bico + legumes", "Feijão + arroz + salada"]],
-          ["Lanche", ["Fruta + castanhas", "Iogurte + granola", "Pão integral + pasta"]],
-          ["Jantar", ["Omelete (se usar) + salada", "Lentilha + legumes", "Sopa de legumes"]],
-        ]
-      },
-      "Vegana": {
-        kcal: "500–850",
-        meals: [
-          ["Café", ["Aveia + banana + pasta de amendoim", "Vitamina com leite vegetal", "Pão + pasta"]],
-          ["Almoço", ["Feijão + arroz + salada", "Grão-de-bico + legumes", "Lentilha + arroz"]],
-          ["Lanche", ["Fruta + castanhas", "Pão + pasta", "Mix de sementes"]],
-          ["Jantar", ["Sopa de legumes", "Feijão + salada", "Legumes salteados + arroz"]],
-        ]
-      },
-      "Diabetes": {
-        kcal: "500–850",
-        meals: [
-          ["Café", ["Ovos + fruta", "Iogurte natural + chia", "Aveia em porção controlada"]],
-          ["Almoço", ["Proteína + salada + feijão", "Peixe + legumes + arroz integral", "Carne magra + legumes"]],
-          ["Lanche", ["Castanhas + fruta", "Iogurte natural", "Queijo + tomate"]],
-          ["Jantar", ["Omelete + salada", "Sopa de legumes", "Proteína + legumes"]],
-        ]
-      },
-      "Hipertensão": {
-        kcal: "500–850",
-        meals: [
-          ["Café", ["Ovos + fruta", "Iogurte natural", "Aveia + banana"]],
-          ["Almoço", ["Comida com pouco sal + salada", "Frango + legumes", "Peixe + arroz"]],
-          ["Lanche", ["Fruta", "Castanhas", "Iogurte"]],
-          ["Jantar", ["Sopa leve", "Omelete + salada", "Legumes + proteína"]],
-        ]
-      },
-      "Sem lactose": {
-        kcal: "500–850",
-        meals: [
-          ["Café", ["Ovos + fruta", "Aveia + banana", "Tapioca + frango"]],
-          ["Almoço", ["Frango + arroz + feijão", "Peixe + legumes", "Carne + salada"]],
-          ["Lanche", ["Fruta + castanhas", "Pão + pasta", "Vitamina com leite vegetal"]],
-          ["Jantar", ["Omelete + legumes", "Sopa de legumes", "Proteína + salada"]],
-        ]
-      },
-      "Sem glúten": {
-        kcal: "500–850",
-        meals: [
-          ["Café", ["Tapioca + ovos", "Ovos + fruta", "Aveia sem glúten (se tiver)"]],
-          ["Almoço", ["Arroz + feijão + carne", "Mandioca + frango + salada", "Batata + peixe"]],
-          ["Lanche", ["Fruta + castanhas", "Iogurte (se usar)", "Tapioca"]],
-          ["Jantar", ["Omelete + salada", "Sopa", "Legumes + proteína"]],
-        ]
-      }
-    };
-
-    function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-    function gerarDieta(forceNew=false){
-      const tipo = $("tipoDieta")?.value || "Emagrecimento";
-      const pref = $("prefDieta")?.value || "Brasil (comida normal)";
-      const pool = DIETA_POOLS[tipo] || DIETA_POOLS["Emagrecimento"];
-
-      const seed = Date.now() + (forceNew ? Math.floor(Math.random()*99999) : 0);
-      // monta dieta com variações
-      const plan = [];
-      pool.meals.forEach(([title, opts], idx)=>{
-        // leve variação por preferência
-        let chosen = pick(opts);
-        if(pref.includes("Rápida")){
-          if(title === "Almoço" || title === "Jantar") chosen = chosen.replace(" + ", " • ");
-        }
-        plan.push({ t: title, d: chosen, k: pool.kcal });
-      });
-
-      setJSON(KEY_DIETA, { tipo, pref, plan, createdAt: seed });
-      renderDieta();
-    }
-    window.gerarDieta = gerarDieta;
-
-    function renderDieta(){
-      const box = $("dietaBox");
-      if(!box) return;
-      const d = safeJSON(KEY_DIETA);
-      box.innerHTML = "";
-
-      if(!d || !d.plan){
-        const s = document.createElement("div");
-        s.className="status";
-        s.textContent="Gere uma dieta para aparecer aqui.";
-        box.appendChild(s);
-        return;
-      }
-
-      const head = document.createElement("div");
-      head.className = "status";
-      head.innerHTML = `<b>${escapeHtml(d.tipo)}</b> • ${escapeHtml(d.pref)} • Faixa: <b>${escapeHtml(d.plan[0]?.k || "—")}</b>`;
-      box.appendChild(head);
-
-      d.plan.forEach(m=>{
-        const div = document.createElement("div");
-        div.className="meal";
-        div.innerHTML = `
-          <div>
-            <div class="title">${escapeHtml(m.t)}</div>
-            <p>${escapeHtml(m.d)}</p>
-          </div>
-          <div class="kcal">${escapeHtml(m.k || "—")}<br/>kcal</div>
-        `;
-        box.appendChild(div);
-      });
-    }
-
-    /***********************
-     * Treino (esporte + condição)
-     ***********************/
-    function hydrateTreinoTema(){
-      const sel = $("temaTreino");
-      if(!sel) return;
-      const p = safeJSON(KEY_PROFILE) || {};
-      const sports = Array.isArray(p.esportes) && p.esportes.length ? p.esportes : ["Musculação","Corrida"];
-      sel.innerHTML = "";
-      sports.forEach(s=>{
-        const opt = document.createElement("option");
-        opt.textContent = s;
-        sel.appendChild(opt);
-      });
-    }
-
-    function buildTreinoPlan(tema, intensidade, perfil){
-      const pcd = (perfil.pcd || "").toLowerCase();
-      const restr = (perfil.restricao || "").toLowerCase();
-
-      const lowImpact = pcd.includes("mobil") || pcd.includes("idos") || pcd.includes("les") || pcd.includes("obes") || pcd.includes("visual") || pcd.includes("audit");
-
-      const base = {
-        "Musculação": [
-          ["Segunda", ["Agachamento (ou cadeira)", "Supino (ou flexão)", "Remada (ou elástico)"]],
-          ["Quarta", ["Desenvolvimento", "Puxada", "Abdominal prancha"]],
-          ["Sexta", ["Levantamento terra (leve)", "Rosca", "Tríceps"]],
-        ],
-        "Corrida": [
-          ["Segunda", ["Corrida leve 25–35 min", "Mobilidade 10 min"]],
-          ["Quarta", ["Intervalado leve (8x 1min)", "Alongamento"]],
-          ["Sexta", ["Corrida moderada 35–45 min", "Core"]],
-        ],
-        "Futebol":[
-          ["Segunda", ["Arranque", "Controle de bola", "Finalização"]],
-          ["Quarta", ["Agilidade", "Passe e domínio", "Resistência"]],
-          ["Sexta", ["Jogo reduzido", "Alongamento"]],
-        ],
-        "Basquete":[
-          ["Terça", ["Drible", "Arremessos", "Pliometria"]],
-          ["Quinta", ["Defesa lateral", "Bandejas", "Condicionamento"]],
-          ["Sábado", ["Treino de jogo", "Alongamento"]],
-        ],
-        "Ciclismo":[
-          ["Terça", ["Pedal leve 30–45 min", "Mobilidade"]],
-          ["Quinta", ["Subidas leves", "Core"]],
-          ["Sábado", ["Pedal moderado 45–70 min", "Alongamento"]],
-        ],
-        "Natação":[
-          ["Segunda", ["Técnica 30 min", "Respiração"]],
-          ["Quarta", ["Séries leves", "Alongamento"]],
-          ["Sexta", ["Nado contínuo 25–40 min", "Mobilidade"]],
-        ],
-        "Yoga":[
-          ["Segunda", ["Fluxo leve 20–30 min", "Respiração"]],
-          ["Quarta", ["Mobilidade + equilíbrio", "Relaxamento"]],
-          ["Sexta", ["Alongamentos profundos", "Posturas base"]],
-        ],
-        "Pilates":[
-          ["Segunda", ["Core básico", "Postura"]],
-          ["Quarta", ["Estabilidade", "Mobilidade"]],
-          ["Sexta", ["Fortalecimento leve", "Alongamento"]],
-        ],
-        "Crossfit":[
-          ["Segunda", ["Força + WOD leve", "Mobilidade"]],
-          ["Quarta", ["Técnica + Metcon", "Core"]],
-          ["Sexta", ["WOD moderado", "Alongamento"]],
-        ],
-        "Muay Thai":[
-          ["Terça", ["Sombra 10 min", "Chutes básicos", "Combinações"]],
-          ["Quinta", ["Manopla", "Defesas", "Condicionamento"]],
-          ["Sábado", ["Clinch", "Sequências", "Alongamento"]],
-        ],
-        "Luta":[
-          ["Terça", ["Técnica", "Movimentação", "Condicionamento"]],
-          ["Quinta", ["Drills", "Força geral", "Alongamento"]],
-          ["Sábado", ["Técnica + rounds", "Mobilidade"]],
-        ],
-        "Caminhada":[
-          ["Segunda", ["Caminhada 25–40 min", "Alongamento"]],
-          ["Quarta", ["Caminhada 30–45 min", "Mobilidade"]],
-          ["Sexta", ["Caminhada 35–55 min", "Core leve"]],
-        ],
-        "Funcional":[
-          ["Segunda", ["Agachamento", "Flexão", "Remada elástico"]],
-          ["Quarta", ["Afundo", "Desenvolvimento", "Prancha"]],
-          ["Sexta", ["Circuito leve", "Alongamento"]],
-        ],
-        "Vôlei":[
-          ["Terça", ["Saque + manchete", "Agilidade", "Pliometria leve"]],
-          ["Quinta", ["Ataque + bloqueio", "Core", "Alongamento"]],
-          ["Sábado", ["Treino de jogo", "Mobilidade"]],
-        ],
-        "Handebol":[
-          ["Terça", ["Arremesso", "Passe", "Agilidade"]],
-          ["Quinta", ["Resistência", "Defesa", "Core"]],
-          ["Sábado", ["Jogo reduzido", "Alongamento"]],
-        ],
-        "Tênis":[
-          ["Terça", ["Forehand/Backhand", "Footwork", "Core"]],
-          ["Quinta", ["Saque", "Ralis", "Mobilidade"]],
-          ["Sábado", ["Partida leve", "Alongamento"]],
-        ],
-        "Jiu-jitsu":[
-          ["Terça", ["Técnica base", "Movimentação", "Condicionamento"]],
-          ["Quinta", ["Drills", "Força pegada", "Alongamento"]],
-          ["Sábado", ["Técnica + rolas", "Mobilidade"]],
-        ],
-      };
-
-      let dias = base[tema] || base["Musculação"];
-
-      // se baixo impacto, adapta
-      if(lowImpact){
-        dias = dias.map(([day, exs])=>{
-          const adapted = exs.map(e=>{
-            if(e.toLowerCase().includes("pliometria")) return "Pliometria (opcional) ou caminhada rápida";
-            if(e.toLowerCase().includes("corrida")) return "Caminhada acelerada / bike leve";
-            if(e.toLowerCase().includes("terra")) return "Levantamento terra (muito leve) ou ponte de glúteos";
-            return e + " (adaptado)";
-          });
-          return [day, adapted];
-        });
-      }
-
-      // nota de cuidado se restrição séria
-      let note = "";
-      if(restr.includes("hipert") || restr.includes("diab")){
-        note = "Atenção: monitore sinais, mantenha hidratação e ajuste intensidade conforme se sentir.";
-      }
-
-      // intensidade
-      const intLabel = intensidade;
-      return { tema, intensidade: intLabel, dias, note, createdAt: Date.now() };
-    }
-
-    function renderTreino(){
-      const box = $("treinoSemana");
-      if(!box) return;
-      const t = safeJSON(KEY_TREINO);
-      box.innerHTML = "";
-
-      if(!t || !t.dias){
-        const s = document.createElement("div");
-        s.className="status";
-        s.textContent="Gere um treino para aparecer aqui.";
-        box.appendChild(s);
-        return;
-      }
-
-      if(t.note){
-        const n = document.createElement("div");
-        n.className = "hint";
-        n.style.marginTop = "10px";
-        n.innerHTML = "⚠️ " + escapeHtml(t.note);
-        box.appendChild(n);
-      }
-
-      t.dias.forEach(d=>{
-        const day = document.createElement("div");
-        day.className="dayCard";
-        day.innerHTML = `<div class="dayTitle"><span>${escapeHtml(d[0])}</span><span class="muted">${escapeHtml(t.tema)} • ${escapeHtml(t.intensidade)}</span></div>`;
-        (d[1]||[]).forEach(ex=>{
-          const row = document.createElement("div");
-          row.className="exercise";
-          const left = document.createElement("div");
-          left.innerHTML = `<b>${escapeHtml(ex)}</b><div class="muted" style="font-size:12px; margin-top:4px">Técnica no YouTube</div>`;
-          const btn = document.createElement("button");
-          btn.className="ytBtn";
-          btn.textContent="Ver";
-          btn.addEventListener("click", ()=> abrirLink(`https://www.youtube.com/results?search_query=${encodeURIComponent(ex+" como fazer")}`));
-          row.appendChild(left);
-          row.appendChild(btn);
-          day.appendChild(row);
-        });
-        box.appendChild(day);
-      });
-    }
-
-    function gerarTreino(){
-      const tema = $("temaTreino")?.value || "Musculação";
-      const intensidade = $("intTreino")?.value || "Moderado";
-      const perfil = safeJSON(KEY_PROFILE) || {};
-      const plano = buildTreinoPlan(tema, intensidade, perfil);
-      setJSON(KEY_TREINO, plano);
-      renderTreino();
-
-      const out = $("outTreino");
-      if(out){ out.style.display="block"; out.textContent = `✅ Treino gerado: ${tema} (${intensidade}).`; }
-
-      // marca evolução
-      addEvoPoint("treino", 2);
-    }
-    window.gerarTreino = gerarTreino;
-
-    function limparTreino(){
-      localStorage.removeItem(KEY_TREINO);
-      renderTreino();
-      const out = $("outTreino");
-      if(out){ out.style.display="block"; out.textContent="🧹 Treino removido."; }
-    }
-    window.limparTreino = limparTreino;
-
-    /***********************
-     * Evolução (chart + streak + badges)
-     ***********************/
-    let evoChart = null;
-
-    function getEvo(){
-      const weekKey = getWeekKey();
-      const all = safeJSON(KEY_EVO) || {};
-      if(!all[weekKey]){
-        all[weekKey] = { weekKey, points:[0,0,0,0,0,0,0], streak:0, lastDay:null, level:1 };
-      }
-      return { all, weekKey, data: all[weekKey] };
-    }
-    function saveEvo(all){ setJSON(KEY_EVO, all); }
-
-    function dayIndex(){
-      const now = new Date();
-      // segunda=0 ... domingo=6
-      return (now.getDay()+6)%7;
-    }
-
-    function addEvoPoint(type, pts){
-      const { all, weekKey, data } = getEvo();
-      const idx = dayIndex();
-      data.points[idx] = Math.max(0, (data.points[idx]||0) + (pts||1));
-
-      // streak
-      const today = new Date().toISOString().slice(0,10);
-      if(data.lastDay !== today){
-        // se ontem era o dia anterior, incrementa, senão reseta
-        const y = new Date(); y.setDate(y.getDate()-1);
-        const yesterday = y.toISOString().slice(0,10);
-        if(data.lastDay === yesterday) data.streak = (data.streak||0) + 1;
-        else data.streak = 1;
-        data.lastDay = today;
-      }
-
-      // level (simples)
-      const total = data.points.reduce((a,b)=>a+(b||0),0);
-      data.level = Math.max(1, Math.floor(total/8) + 1);
-
-      all[weekKey] = data;
-      saveEvo(all);
-      renderEvo();
-      renderDash(); // pra refletir
-    }
-
-    function logEvo(kind){
-      if(kind === "treino") addEvoPoint("treino", 2);
-      else addEvoPoint("prato", 1);
-    }
-    window.logEvo = logEvo;
-
-    function renderBadges(total, streak){
-      const box = $("badges");
-      if(!box) return;
-      box.innerHTML = "";
-      const badges = [
-        { t:"🥉 Primeiros passos", ok: total>=3 },
-        { t:"🥈 Ritmo forte", ok: total>=10 },
-        { t:"🥇 Elite semanal", ok: total>=18 },
-        { t:"🔥 Streak 3+", ok: streak>=3 },
-        { t:"⚡ Streak 5+", ok: streak>=5 },
-      ];
-      badges.forEach(b=>{
-        const d = document.createElement("div");
-        d.className = "chip" + (b.ok ? " on" : "");
-        d.textContent = b.t;
-        box.appendChild(d);
-      });
-    }
-
-    function renderEvo(){
-      const { data } = getEvo();
-      const total = data.points.reduce((a,b)=>a+(b||0),0);
-
-      if($("streakTxt")) $("streakTxt").textContent = `${data.streak || 0} dias`;
-      if($("levelTxt")) $("levelTxt").textContent = `Nível ${data.level || 1}`;
-
-      renderBadges(total, data.streak || 0);
-
-      const hint = $("evoHint");
-      if(hint){
-        hint.innerHTML = `Pontos na semana: <b>${total}</b> • Hoje: <b>${data.points[dayIndex()]||0}</b>`;
-      }
-
-      // chart
-      const ctx = $("evoChart");
-      if(!ctx) return;
-
-      const labels = ["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"];
-      if(evoChart) evoChart.destroy();
-      evoChart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels,
-          datasets: [{
-            label: "Evolução",
-            data: data.points,
-            tension: 0.35,
-            fill: true
-          }]
-        },
-        options: {
-          plugins: {
-            legend: { display:false },
-            tooltip: { enabled:true }
-          },
-          scales: {
-            x: { ticks: { color: "rgba(234,242,255,.65)" }, grid: { color: "rgba(255,255,255,.06)" } },
-            y: { ticks: { color: "rgba(234,242,255,.65)" }, grid: { color: "rgba(255,255,255,.06)" }, beginAtZero:true }
-          }
-        }
-      });
-    }
-
-    /***********************
-     * Progresso (dashboard 3D)
-     ***********************/
-    function getDash(){
-      const d = safeJSON(KEY_DASH);
-      if(d && typeof d === "object") return d;
-      // default
-      return { kcal:0, km:0, done:0, goal:5, weekKey: getWeekKey() };
-    }
-    function setDash(d){
-      setJSON(KEY_DASH, d);
-      renderDash();
-    }
-
-    function weekLabelFromKey(weekKey){
-      const [y,m,d] = weekKey.split("-");
-      return `Semana • ${d}/${m}`;
-    }
-
-    function renderDash(){
-      const d = getDash();
-      // se mudou semana, zera
-      const wk = getWeekKey();
-      if(d.weekKey !== wk){
-        d.weekKey = wk; d.kcal=0; d.km=0; d.done=0;
-        setJSON(KEY_DASH, d);
-      }
-
-      $("proKcal").textContent = String(Math.round(d.kcal));
-      $("proKm").textContent = String(Math.round(d.km));
-      $("proDone").textContent = String(d.done);
-      $("proGoal").textContent = String(d.goal);
-      $("proDays").textContent = String(d.done);
-      $("proDaysGoal").textContent = String(d.goal);
-      $("proWeek").textContent = weekLabelFromKey(d.weekKey);
-      $("proMode").textContent = "Local";
-
-      const pct = d.goal > 0 ? Math.max(0, Math.min(100, Math.round((d.done / d.goal) * 100))) : 0;
-      $("proPct").textContent = pct + "%";
-      const C = 301.59;
-      const offset = C - (C * pct / 100);
-      const ring = $("ringProg");
-      ring.style.strokeDasharray = String(C);
-      ring.style.strokeDashoffset = String(offset);
-
-      const resumo = $("proResumo");
-      if(resumo){
-        resumo.innerHTML = `Treinos: <b>${d.done}/${d.goal}</b> • Movimento: <b>${Math.round(d.km)}</b> • Energia: <b>${Math.round(d.kcal)}</b>`;
-      }
-      updatePerfilBox();
-    }
-
-    function addKcal(){
-      const d = getDash();
-      d.kcal += 1;
-      setDash(d);
-    }
-    window.addKcal = addKcal;
-
-    function addKm(){
-      const d = getDash();
-      d.km += 1;
-      setDash(d);
-    }
-    window.addKm = addKm;
-
-    function addTreinoDone(){
-      const d = getDash();
-      d.done = Math.min(d.goal, d.done + 1);
-      setDash(d);
-      addEvoPoint("treino", 2);
-    }
-    window.addTreinoDone = addTreinoDone;
-
-    function resetProgresso(){
-      const d = getDash();
-      d.kcal = 0; d.km = 0; d.done = 0; d.weekKey = getWeekKey();
-      setDash(d);
-    }
-    window.resetProgresso = resetProgresso;
-
-    function setGoalDaysPrompt(){
-      const d = getDash();
-      const v = prompt("Meta de treinos na semana (ex: 4, 5, 6):", String(d.goal));
-      if(v === null) return;
-      const n = Math.max(1, Math.min(14, parseInt(v,10) || d.goal));
-      d.goal = n;
-      if(d.done > d.goal) d.done = d.goal;
-      setDash(d);
-    }
-    window.setGoalDaysPrompt = setGoalDaysPrompt;
-
-    /***********************
-     * Convites
-     ***********************/
-    function getInvite(){
-      let inv = safeJSON(KEY_INV);
-      if(inv) return inv;
-      inv = { code: "ELITE-" + Math.random().toString(16).slice(2,8).toUpperCase() };
-      setJSON(KEY_INV, inv);
-      return inv;
-    }
-    function getMyInviteLink(){
-      const inv = getInvite();
-      const url = new URL(location.href);
-      url.searchParams.set("ref", inv.code);
-      return url.toString();
-    }
-    async function copyInviteLink(){
-      const link = getMyInviteLink();
-      try{ await navigator.clipboard.writeText(link); alert("✅ Link copiado!"); }
-      catch{ prompt("Copie o link:", link); }
-    }
-    window.copyInviteLink = copyInviteLink;
-
-    function shareInvite(){
-      const link = getMyInviteLink();
-      const text = `Baixa o CheckPrato Elite e usa meu link: ${link}`;
-      if(navigator.share){
-        navigator.share({ title:"CheckPrato Elite", text, url: link }).catch(()=>{});
-      }else{
-        copyInviteLink();
-      }
-    }
-    window.shareInvite = shareInvite;
-
-    function renderInvite(){
-      const inv = getInvite();
-      const link = getMyInviteLink();
-      if($("myCode")) $("myCode").textContent = inv.code;
-      if($("myLink")) $("myLink").textContent = link;
-    }
-
-    /***********************
-     * Saúde (abre fonte oficial)
-     ***********************/
-    function openSaude(topic){
-      // mantém oficial. você pode futuramente mapear para páginas específicas.
-      const base = "https://bvsms.saude.gov.br/";
-      abrirLink(base);
-    }
-    window.openSaude = openSaude;
-
-    /***********************
-     * Init
-     ***********************/
-    function init(){
-      wireNav();
-      buildSportsChips();
-      hydrateTreinoTema();
-      wirePlateInput();
-      initWelcomeCarousel();
-
-      updatePerfilBox();
-      renderPlateHistory();
-      renderDieta();
-      renderTreino();
-      renderEvo();
-      renderDash();
-      renderInvite();
-
-      // top msg
-      if($("authTxt")) $("authTxt").textContent = "Modo: Local";
-      updateTopBtn();
-    }
-
-    init();
-  </script>
-</body>
-</html>
+    function showNav(bool){
+      $("mainNav").style.display = bool ? "flex" : "none";
+      $("ma
