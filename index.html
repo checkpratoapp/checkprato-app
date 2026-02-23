@@ -10,8 +10,6 @@
   <link rel="icon" sizes="192x192" href="./icon-192.png">
   <link rel="apple-touch-icon" href="./icon-192.png">
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
   <style>
     :root{
       --bg:#07121f;
@@ -29,9 +27,11 @@
       --max:560px;
 
       --glass: rgba(255,255,255,.06);
+      --glass2: rgba(255,255,255,.03);
       --stroke3d: rgba(255,255,255,.10);
       --shadow3d: 0 24px 70px rgba(0,0,0,.55);
     }
+
     *{ box-sizing:border-box; }
     html, body{
       height:100%;
@@ -50,6 +50,7 @@
 
     .wrap{ max-width: var(--max); margin: 0 auto; padding: 16px 14px 24px; }
 
+    /* Topbar */
     .topbar{
       display:flex;
       align-items:center;
@@ -118,6 +119,9 @@
       margin-bottom: 16px;
     }
 
+    .hint{ color: var(--muted); font-weight: 650; line-height: 1.35; }
+
+    /* Inputs */
     .label{
       margin: 12px 2px 6px;
       color: rgba(234,242,255,.65);
@@ -126,25 +130,36 @@
       text-transform: uppercase;
       font-size: 12px;
     }
-
-    .hint{ color: var(--muted); font-size: 14px; line-height: 1.5; margin-bottom: 12px; }
+    input, select, textarea{
+      width:100%;
+      padding:14px 14px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      color: var(--txt);
+      outline: none;
+      font-size: 15px;
+    }
+    input::placeholder{color: rgba(234,242,255,.35)}
 
     /* Buttons */
     .btn{
       width:100%;
-      padding: 16px;
+      padding: 16px 16px;
       border-radius: 18px;
       border: 0;
       cursor: pointer;
       font-weight: 950;
       font-size: 16px;
+      letter-spacing: .02em;
       background: linear-gradient(135deg, var(--green), var(--green2));
       color:#042019;
       box-shadow: 0 18px 45px rgba(33,230,182,.18);
-      display:flex; align-items:center; justify-content:center; gap:10px;
-      transition: transform .2s;
+      margin-top: 10px;
+      transition: all .2s ease;
+      display:flex;align-items:center;justify-content:center;gap:10px;
     }
-    .btn:active{ transform: scale(.97); }
+    .btn:active{ transform: scale(.97); opacity: .9; }
     .btn.outline{
       background: rgba(255,255,255,.04);
       border: 1px solid var(--stroke);
@@ -157,7 +172,6 @@
       position: fixed; bottom: 0; left: 0; right: 0;
       background: rgba(11, 32, 51, 0.95);
       backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       border-top: 1px solid var(--stroke);
       display: none; justify-content: space-around;
       padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
@@ -172,49 +186,23 @@
     .nav-item.active{ color: var(--green); }
     .nav-item i{ font-size: 22px; font-style: normal; }
 
-    /* Welcome / Tutorial */
-    .w-slide{ text-align: center; display: none; }
-    .w-slide.active{ display: block; }
-    .w-dots{ display:flex; justify-content:center; gap:8px; margin: 20px 0; }
-    .w-dot{ width:8px; height:8px; border-radius:10px; background:var(--stroke); transition: .3s; }
-    .w-dot.active{ background:var(--green); width:24px; }
+    .hidden{ display: none !important; }
+    .mt-2{ margin-top: 20px; }
+    .text-center{ text-align: center; }
 
-    /* Sports Chips */
+    /* Chips */
     .chips{ display:flex; flex-wrap:wrap; gap:8px; margin:10px 0; }
     .chip{
       padding: 8px 16px; border-radius: 12px; background: var(--card);
       border: 1px solid var(--stroke); font-size: 14px; font-weight: 700;
-      cursor: pointer; transition: .2s;
+      cursor: pointer;
     }
     .chip.active{ background: var(--green); color: #042019; border-color: var(--green); }
 
-    /* Inputs */
-    input, select, textarea{
-      width:100%; padding:14px; border-radius:18px;
-      border:1px solid var(--stroke); background: rgba(0,0,0,.18);
-      color: var(--txt); font-size: 15px; outline: none; margin-bottom: 12px;
-    }
-
-    /* Stats */
+    /* Stats Grid */
     .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
     .stat-val{ font-size: 24px; font-weight: 1000; color: var(--green); }
     .stat-label{ font-size: 11px; font-weight: 900; opacity: .6; text-transform: uppercase; }
-
-    /* Modal */
-    #modalBack{
-      position:fixed; inset:0; background:rgba(0,0,0,.8);
-      backdrop-filter:blur(4px); z-index:2000; display:none;
-    }
-    .modal{
-      position:absolute; bottom:0; left:0; right:0;
-      background:var(--bg2); border-radius: 24px 24px 0 0;
-      padding: 24px; max-width: var(--max); margin: 0 auto;
-      border-top: 1px solid var(--stroke);
-    }
-
-    /* Utils */
-    .mt-2{ margin-top: 20px; }
-    .text-center{ text-align: center; }
   </style>
 </head>
 <body>
@@ -233,49 +221,28 @@
     </div>
 
     <div id="viewWelcome" class="view active">
-      <div id="wContainer">
-        <div class="w-slide active">
-          <h1 class="h1">Seu corpo,<br/>suas regras.</h1>
-          <div class="card">
-            <p class="hint">Analise seus pratos em segundos usando IA de ponta e mantenha o foco nos seus resultados.</p>
-          </div>
-        </div>
-        <div class="w-slide">
-          <h1 class="h1">Treinos<br/>Inteligentes.</h1>
-          <div class="card">
-            <p class="hint">Receba sugestões de treinos baseados no seu nível e equipamentos disponíveis.</p>
-          </div>
-        </div>
-        <div class="w-slide">
-          <h1 class="h1">Sincronize<br/>na Nuvem.</h1>
-          <div class="card">
-            <p class="hint">Crie uma conta para salvar seu histórico e acessar de qualquer lugar.</p>
-          </div>
-        </div>
+      <h1 class="h1">Seu corpo,<br/>suas regras.</h1>
+      <div class="card">
+        <p class="hint">Analise seus pratos em segundos usando IA de ponta e mantenha o foco nos seus resultados.</p>
+        <button class="btn" onclick="showOnly('viewAuth')">ENTRAR / CADASTRAR</button>
+        <button class="btn outline mt-2" onclick="guestMode()">CONTINUAR COMO CONVIDADO</button>
       </div>
-      
-      <div class="w-dots" id="wDots"></div>
-
-      <button class="btn" onclick="showOnly('viewAuth')">COMEÇAR AGORA</button>
-      <button class="btn outline mt-2" onclick="guestMode()">CONTINUAR SEM CONTA</button>
     </div>
 
     <div id="viewAuth" class="view">
       <h1 class="h1">Sua Conta</h1>
       <div class="card">
-        <p class="hint">Entre ou crie sua conta para não perder seus dados.</p>
         <div class="label">E-mail</div>
-        <input type="email" id="authEmail" placeholder="nome@exemplo.com">
+        <input type="email" id="authEmail" placeholder="exemplo@email.com">
         <div class="label">Senha</div>
         <input type="password" id="authPass" placeholder="••••••••">
-        <button class="btn" onclick="handleAuth()">ENTRAR / CADASTRAR</button>
+        <button class="btn" onclick="handleAuth()">ENTRAR OU CRIAR</button>
         <button class="btn outline mt-2" onclick="showOnly('viewWelcome')">VOLTAR</button>
       </div>
     </div>
 
     <div id="viewDash" class="view">
-      <h1 class="h1">Olá, Guerreiro!</h1>
-      
+      <h1 class="h1">Dashboard</h1>
       <div class="grid2">
         <div class="card">
           <div class="stat-label">Calorias Hoje</div>
@@ -286,68 +253,29 @@
           <div class="stat-val">2.100</div>
         </div>
       </div>
-
-      <div class="label">Atividade Sugerida</div>
-      <div id="quickSports" class="chips"></div>
-
-      <div class="card mt-2">
-        <b>Dica do Dia:</b>
-        <p class="hint" style="margin-top:8px">Beba pelo menos 3L de água hoje para otimizar seu metabolismo.</p>
-      </div>
+      <button class="btn mt-2" onclick="showOnly('viewCamera')">📸 ANALISAR PRATO</button>
     </div>
 
     <div id="viewCamera" class="view">
-      <h1 class="h1">Analisar Prato</h1>
+      <h1 class="h1">Analisar</h1>
       <div class="card">
-        <p class="hint">Tire uma foto do seu prato. Nossa IA identificará alimentos e macros automaticamente.</p>
-        
-        <div id="platePreviewBox" style="display:none; margin-bottom:16px;">
-          <img id="plateImg" style="width:100%; border-radius:14px; border:1px solid var(--stroke)">
+        <p class="hint">Tire uma foto nítida do seu prato para que a IA identifique os macros.</p>
+        <input type="file" id="plateInput" accept="image/*">
+        <div id="previewBox" class="hidden mt-2">
+          <img id="platePreview" style="width:100%; border-radius:12px; border:1px solid var(--stroke)">
         </div>
-
-        <button class="btn" onclick="$('plateFile').click()">
-          <i>📸</i> TIRAR FOTO / UPLOAD
-        </button>
-        <input type="file" id="plateFile" accept="image/*" style="display:none">
-
-        <div id="anaActions" style="display:none" class="mt-2">
-          <button class="btn" id="btnRunIA" onclick="simularAnalise()">PROCESSAR COM IA</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="viewEvo" class="view">
-      <h1 class="h1">Evolução</h1>
-      <div class="card">
-        <canvas id="chartEvo" style="width:100%; height:200px"></canvas>
-      </div>
-      <div class="label">Histórico Recente</div>
-      <div id="evoList">
-        <div class="card" style="padding:12px; font-size:14px">
-          📅 Ontem: 1.890 kcal - <b>Meta Batida</b>
-        </div>
-        <div class="card" style="padding:12px; font-size:14px">
-          📅 Anteontem: 2.300 kcal - <span style="color:var(--orange)">Excedeu</span>
-        </div>
+        <button id="btnAnalisar" class="btn hidden" onclick="analisarPrato()">ENVIAR PARA IA</button>
+        <button class="btn outline mt-2" onclick="showOnly('viewDash')">CANCELAR</button>
       </div>
     </div>
 
     <div id="viewPerfil" class="view">
       <h1 class="h1">Perfil</h1>
       <div class="card">
-        <div class="label">Seus Esportes</div>
-        <div id="allSports" class="chips"></div>
-        
-        <div class="label">Objetivo</div>
-        <select>
-          <option>Perder Peso</option>
-          <option selected>Manter / Definição</option>
-          <option>Ganhar Massa</option>
-        </select>
-
+        <div class="label">Esportes Favoritos</div>
+        <div id="sportsContainer" class="chips"></div>
         <button class="btn outline mt-2" onclick="logout()">SAIR DA CONTA</button>
       </div>
-      <p class="text-center" style="font-size:11px; opacity:.4">CheckPrato Elite v2.0.1</p>
     </div>
 
   </div>
@@ -355,52 +283,36 @@
   <nav class="nav" id="mainNav">
     <div class="nav-item active" onclick="showOnly('viewDash')"><i>🏠</i><span>Início</span></div>
     <div class="nav-item" onclick="showOnly('viewCamera')"><i>📸</i><span>Prato</span></div>
-    <div class="nav-item" onclick="showOnly('viewEvo')"><i>📈</i><span>Evolução</span></div>
     <div class="nav-item" onclick="showOnly('viewPerfil')"><i>👤</i><span>Perfil</span></div>
   </nav>
 
-  <div id="modalBack" onclick="closeModal()">
-    <div class="modal" onclick="event.stopPropagation()">
-      <h2 id="modalTitle" style="margin-top:0"></h2>
-      <div id="modalBody"></div>
-      <button class="btn mt-2" onclick="closeModal()">FECHAR</button>
-    </div>
-  </div>
-
   <script>
     const $ = id => document.getElementById(id);
+    const KEY_USER = "cp_user_active";
+    const KEY_GUEST = "cp_guest_mode";
     const SPORTS = ["Musculação", "Corrida", "Crossfit", "Yoga", "Natação", "Ciclismo", "Futebol"];
-    let wIndex = 0;
 
-    /***********************
-     * Navegação
-     ***********************/
     function showOnly(id){
       document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
-      const target = $(id);
-      if(target) target.classList.add("active");
+      $(id).classList.add("active");
+      
+      const nav = $("mainNav");
+      if(id === "viewWelcome" || id === "viewAuth") nav.classList.remove("visible");
+      else nav.classList.add("visible");
 
-      // nav highlight
-      document.querySelectorAll(".nav-item").forEach(ni => ni.classList.remove("active"));
-      const idxMap = {"viewDash":0, "viewCamera":1, "viewEvo":2, "viewPerfil":3};
-      if(idxMap[id] !== undefined) {
-        document.querySelectorAll(".nav-item")[idxMap[id]].classList.add("active");
-        $("mainNav").classList.add("visible");
-      } else {
-        $("mainNav").classList.remove("visible");
-      }
-      localStorage.setItem("lastView", id);
+      document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
     }
 
     function guestMode(){
-      localStorage.setItem("cp_user", "guest");
+      localStorage.setItem(KEY_GUEST, "true");
       showOnly("viewDash");
     }
 
     function handleAuth(){
-      const e = $("authEmail").value;
-      if(!e.includes("@")) return alert("E-mail inválido");
-      localStorage.setItem("cp_user", e);
+      const email = $("authEmail").value;
+      if(!email.includes("@")) return alert("E-mail inválido");
+      localStorage.setItem(KEY_USER, email);
+      localStorage.removeItem(KEY_GUEST);
       showOnly("viewDash");
     }
 
@@ -409,173 +321,104 @@
       location.reload();
     }
 
-    /***********************
-     * Tutorial (Welcome)
-     ***********************/
-    function wBuildDots(){
-      const container = $("wDots");
-      container.innerHTML = "";
-      const slides = document.querySelectorAll(".w-slide");
-      slides.forEach((_, i) => {
-        const d = document.createElement("div");
-        d.className = "w-dot" + (i === wIndex ? " active" : "");
-        container.appendChild(d);
-      });
+    $("plateInput").onchange = function(e){
+      const file = e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = (ex) => {
+        $("platePreview").src = ex.target.result;
+        $("previewBox").classList.remove("hidden");
+        $("btnAnalisar").classList.remove("hidden");
+      };
+      reader.readAsDataURL(file);
+    };
+
+    function analisarPrato(){
+      const btn = $("btnAnalisar");
+      btn.textContent = "ANALISANDO...";
+      btn.disabled = true;
+      setTimeout(() => {
+        alert("IA: Frango (200g), Arroz (150g), Salada. Aprox 450kcal.");
+        btn.textContent = "ENVIAR PARA IA";
+        btn.disabled = false;
+        showOnly("viewDash");
+      }, 2000);
     }
 
-    function wNext(){
-      const slides = document.querySelectorAll(".w-slide");
-      slides[wIndex].classList.remove("active");
-      wIndex = (wIndex + 1) % slides.length;
-      slides[wIndex].classList.add("active");
-      wBuildDots();
-    }
-
-    /***********************
-     * Esportes
-     ***********************/
-    function renderSports(){
-      const container = $("allSports");
+    function buildSports(){
+      const container = $("sportsContainer");
       if(!container) return;
       container.innerHTML = SPORTS.map(s => `<div class="chip" onclick="this.classList.toggle('active')">${s}</div>`).join("");
     }
 
-    function renderSportsQuick(){
-      const container = $("quickSports");
-      if(!container) return;
-      container.innerHTML = SPORTS.slice(0,3).map(s => `<div class="chip">${s}</div>`).join("");
-    }
-
-    /***********************
-     * Camera / IA
-     ***********************/
-    function handlePlateFile(file){
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        $("plateImg").src = e.target.result;
-        $("platePreviewBox").style.display = "block";
-        $("anaActions").style.display = "block";
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function simularAnalise(){
-      const btn = $("btnRunIA");
-      btn.disabled = true;
-      btn.textContent = "PROCESSANDO...";
-      
-      setTimeout(() => {
-        openModal("Resultado IA", `
-          <div style="font-size:15px; line-height:1.6">
-            <p>✅ <b>Alimentos detectados:</b> Arroz Branco, Feijão Carioca, Frango Grelhado e Salada.</p>
-            <p>🔥 <b>Estimativa:</b> 520 kcal</p>
-            <p>💪 <b>Proteínas:</b> 35g | <b>Carbos:</b> 60g</p>
-          </div>
-        `);
-        btn.disabled = false;
-        btn.textContent = "PROCESSAR COM IA";
-      }, 2000);
-    }
-
-    /***********************
-     * Gráfico (Chart.js)
-     ***********************/
-    function renderEvo(){
-      const ctx = $("chartEvo");
-      if(!ctx) return;
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
-          datasets: [{
-            label: 'Calorias',
-            data: [2100, 1950, 2300, 1800, 2050, 2500, 2100],
-            borderColor: '#21e6b6',
-            backgroundColor: 'rgba(33, 230, 182, 0.1)',
-            fill: true,
-            tension: 0.4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } },
-            x: { grid: { display: false }, ticks: { color: '#888' } }
-          }
-        }
-      });
-    }
-
-    /***********************
-     * Scroll & Top
-     ***********************/
-    function setupTopBtn(){
-      const btn = document.createElement("div");
-      btn.style = "position:fixed; bottom:100px; right:20px; width:40px; height:40px; background:var(--card); border:1px solid var(--stroke); border-radius:10px; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:900; opacity:0; transition:.3s";
-      btn.innerHTML = "↑";
-      document.body.appendChild(btn);
-
-      window.onscroll = () => btn.style.opacity = window.scrollY > 300 ? "1" : "0";
-      btn.addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
-    }
-
-    /***********************
-     * Modal
-     ***********************/
-    function openModal(title, body){
-      $("modalTitle").textContent = title || "Info";
-      $("modalBody").innerHTML = body || "";
-      $("modalBack").style.display = "block";
-    }
-    function closeModal(){
-      $("modalBack").style.display = "none";
-    }
-
-    /***********************
-     * PWA SW register
-     ***********************/
-    async function registerSW(){
-      try{
-        if("serviceWorker" in navigator){
-          await navigator.serviceWorker.register("./service-worker.js");
-        }
-      }catch(e){
-        // silencioso
-      }
-    }
-
-    /***********************
-     * Init
-     ***********************/
     function init(){
-      // chips e eventos
-      renderSports();
-      renderSportsQuick();
-
-      $("plateFile")?.addEventListener("change", (e) => handlePlateFile(e.target.files?.[0]));
-
-      // welcome dots e auto-advance
-      wIndex = 0;
-      wBuildDots();
-      setInterval(() => {
-        const welcomeActive = document.getElementById("viewWelcome")?.classList.contains("active");
-        if(welcomeActive) wNext();
-      }, 5000);
-
-      // restaurar última aba
-      const last = localStorage.getItem("lastView");
-      if(last && document.getElementById(last)) showOnly(last);
+      buildSports();
+      const user = localStorage.getItem(KEY_USER);
+      const guest = localStorage.getItem(KEY_GUEST);
+      if(user || guest) showOnly("viewDash");
       else showOnly("viewWelcome");
-
-      setupTopBtn();
-      registerSW();
-      renderEvo();
     }
 
     window.onload = init;
+
+    const DIETAS_ADV = {
+      "Emagrecimento": { kcal: 1800, macros: "P:30% C:40% G:30%", treinos: [
+        ["A (Força)", ["Agachamento 3x12", "Supino 3x12", "Remada 3x12"]],
+        ["B (Cardio)", ["30min Corrida leve", "Abdominais 3x20"]],
+      ]},
+      "Hipertrofia": { kcal: 2800, macros: "P:35% C:45% G:20%", treinos: [
+        ["A (Empurrar)", ["Supino Inclinado 4x8", "Desenvolvimento 4x8", "Tríceps 3x10"]],
+        ["B (Puxar)", ["Barra Fixa 4x8", "Remada Curvada 4x8", "Bíceps 3x10"]],
+        ["C (Pernas)", ["Agachamento Livre 4x10", "Leg Press 4x10", "Panturrilha 4x15"]],
+      ]},
+      "Diabetes": { kcal: 2000, macros: "Baixo Índice Glicêmico", treinos: [
+        ["A (Resistência)", ["Circuito funcional 3 voltas", "Caminhada rápida 20min"]],
+      ]},
+      "Hipertensão": { kcal: 2000, macros: "Baixo Sódio / DASH", treinos: [
+        ["A (Leve)", ["Natação 40min", "Alongamento geral"]],
+      ]},
+      "Sem lactose": { kcal: 2200, macros: "Zero Lactose", treinos: [
+        ["A (Geral)", ["Treino Full Body 3x12"]],
+      ]},
+    };
+
+    const PERFIS_TREINO = {
+      "Iniciante": { dias: 3, desc: "Foco em técnica e adaptação" },
+      "Intermediário": { dias: 4, desc: "Progressão de carga e volume" },
+      "Avançado": { dias: 5, desc: "Alta intensidade e especificidade" },
+      "Baixo impacto": { dias: 3, desc: "Preservação articular" },
+      "Mobilidade / Lesão": { dias: 7, desc: "Foco em recuperação e amplitude" },
+      "Idoso": { dias: 3, desc: "Equilíbrio, força funcional e densidade óssea" },
+      "PCD": { dias: 3, treinos: [
+        ["A (Adaptado)", ["Exercícios com elástico", "Fortalecimento de core", "Cardio adaptado (cadeira)"]],
+        ["B (Leve)", ["Alongamento", "Mobilidade", "Caminhada/roda (conforme capacidade)"]],
+      ]},
+    };
+
+    function guessDietaTipo(){
+      const obj = (($("objetivo")?.value || "") + "").toLowerCase();
+      const res = (($("restricao")?.value || "") + "").toLowerCase();
+      if(res.includes("lact")) return "Sem lactose";
+      if(res.includes("diab")) return "Diabetes";
+      if(res.includes("hipert")) return "Hipertensão";
+      if(obj.includes("hiper") || obj.includes("massa")) return "Hipertrofia";
+      return "Emagrecimento";
+    }
+
+    function populateAdvSelects(){
+      const dietaSel = $("dietaTipo");
+      if(dietaSel && dietaSel.options.length === 0){
+        Object.keys(DIETAS_ADV).forEach(k=>{
+          const o=document.createElement("option"); o.value=k; o.textContent=k; dietaSel.appendChild(o);
+        });
+      }
+      const trSel = $("treinoPerfil");
+      if(trSel && trSel.options.length === 0){
+        ["Iniciante","Intermediário","Avançado","Baixo impacto","Mobilidade / Lesão","Idoso","PCD"].forEach(k=>{
+          const o=document.createElement("option"); o.value=k; o.textContent=k; trSel.appendChild(o);
+        });
+      }
+    }
   </script>
 </body>
 </html>
