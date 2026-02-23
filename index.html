@@ -1022,8 +1022,16 @@
     function escapeHtml(s){
       return String(s).replace(/[&<>"]/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m]));
     }
-
-    /***********************
+   <script>
+  // --- GA4 helper: eventos ---
+  function track(name, params = {}) {
+    try {
+      if (typeof gtag === "function") {
+        gtag("event", name, params);
+      }
+    } catch (e) {}
+  }
+</script>
      * Navegação (SEM depender de event)
      ***********************/
     function showView(viewId){
