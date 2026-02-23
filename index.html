@@ -1,16 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>CheckPrato • Elite</title>
-
-  <meta name="theme-color" content="#0a1320"/>
-  <link rel="manifest" href="./manifest.json">
-  <link rel="icon" sizes="192x192" href="./icon-192.png">
-  <link rel="apple-touch-icon" href="./icon-192.png">
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<title>CheckPrato • Elite</title>
+<meta content="#0a1320" name="theme-color"/>
+<link href="./manifest.json" rel="manifest"/>
+<link href="./icon-192.png" rel="icon" sizes="192x192"/>
+<link href="./icon-192.png" rel="apple-touch-icon"/>
+<style>
     :root{
       --bg:#07121f;
       --bg2:#0b2033;
@@ -133,7 +132,10 @@
       outline: none;
       font-size: 15px;
     }
-    textarea{ min-height: 90px; resize: vertical; }
+    textarea{
+      min-height: 90px;
+      resize: vertical;
+    }
     input::placeholder{color: rgba(234,242,255,.35)}
     select{appearance:none}
 
@@ -150,423 +152,206 @@
       color:#042019;
       box-shadow: 0 18px 45px rgba(33,230,182,.18);
       margin-top: 10px;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      transition: transform .1s, opacity .1s;
+      transition: all .2s ease;
+      display:flex;align-items:center;justify-content:center;gap:10px;
     }
-    .btn:active{ transform: scale(.97); opacity: .92; }
-    .btn-sec{
-      background: var(--card);
+    .btn:active{ transform: scale(.97); opacity: .9; }
+    .btn.outline{
+      background: rgba(255,255,255,.04);
       border: 1px solid var(--stroke);
       color: var(--txt);
       box-shadow: none;
     }
-    .btn-orange{
-      background: linear-gradient(135deg, var(--orange), #e39d20);
-      color:#201404;
-      box-shadow: 0 18px 45px rgba(246,178,58,.18);
-    }
-    .btn-red{
-      background: linear-gradient(135deg, #ff4d4d, #e60000);
-      color: #fff;
-      box-shadow: 0 18px 45px rgba(255, 77, 77, .18);
-    }
 
-    /* Tab bar fixo */
-    .tabbar{
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: 92px;
-      padding-bottom: env(safe-area-inset-bottom);
-      background: rgba(7, 18, 31, .85);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+    .nav{
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(11, 32, 51, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-top: 1px solid var(--stroke);
-      display: flex; align-items: center; justify-content: space-around;
+      display: flex; justify-content: space-around;
+      padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
       z-index: 1000;
     }
-    .tabitem{
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-      color: var(--muted); font-size: 11px; font-weight: 800;
-      opacity: .6; flex: 1; transition: .15s;
+    .nav-item{
+      display: flex; flex-direction: column; align-items: center;
+      gap: 4px; color: var(--muted); font-size: 11px; font-weight: 700;
+      flex: 1; cursor: pointer;
     }
-    .tabitem.active{ color: var(--green); opacity: 1; }
-    .tabicon{ font-size: 24px; }
+    .nav-item.active{ color: var(--green); }
+    .nav-item i{ font-size: 22px; }
 
-    /* Views */
-    .view{ display:none; animation: fadeIn .25s ease-out; }
-    @keyframes fadeIn { from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:0} }
-
-    /* Grid cards */
-    .grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .stat{
-      background: var(--card); border: 1px solid var(--stroke);
-      border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 4px;
-    }
-    .stat b{ font-size: 20px; color: var(--green); }
-    .stat span{ font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; }
-
-    /* Avatar circle */
-    .avatar-wrap{
-      width: 100px; height: 100px; margin: 10px auto 20px;
-      position: relative; cursor: pointer;
-    }
-    .avatar{
-      width: 100%; height: 100%; border-radius: 50%;
-      background: var(--bg2); border: 3px solid var(--green);
-      object-fit: cover; display: block;
-    }
-    .avatar-edit{
-      position: absolute; bottom: 0; right: 0;
-      width: 32px; height: 32px; border-radius: 50%;
-      background: var(--green); color: #000;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; border: 3px solid var(--bg);
-    }
-
-    /* Sports chips */
-    .chips{ display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
-    .chip{
-      padding: 8px 14px; border-radius: 99px;
-      background: var(--card); border: 1px solid var(--stroke);
-      font-size: 13px; font-weight: 800; color: var(--muted);
-      cursor: pointer; transition: .2s;
-    }
-    .chip.selected{ background: var(--green); color: #042019; border-color: var(--green); }
-
-    /* History list */
-    .h-list{ display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
-    .h-item{
-      background: var(--card); border: 1px solid var(--stroke);
-      border-radius: 18px; padding: 12px;
-      display: flex; align-items: center; gap: 12px;
-    }
-    .h-img{ width: 50px; height: 50px; border-radius: 12px; object-fit: cover; background: #000; }
-    .h-info{ flex: 1; display: flex; flex-direction: column; gap: 2px; }
-    .h-info b{ font-size: 15px; }
-    .h-info span{ font-size: 12px; color: var(--muted); font-weight: 700; }
-    .h-cal{ font-weight: 1000; color: var(--green); }
-
-    /* Modal / Popup */
-    .modal-overlay{
-      position: fixed; inset: 0; background: rgba(0,0,0,.85);
-      z-index: 2000; display: none; align-items: center; justify-content: center;
-      padding: 20px; backdrop-filter: blur(10px);
-    }
-    .modal{
-      background: var(--bg2); border: 1px solid var(--stroke);
-      border-radius: 24px; width: 100%; max-width: 400px;
-      padding: 24px; position: relative;
-    }
-
-    /* Premium style */
-    .premium-badge{
-      background: linear-gradient(135deg, var(--orange), #ffcd70);
-      color: #3e2600; font-weight: 1000; font-size: 10px;
-      padding: 2px 6px; border-radius: 4px; text-transform: uppercase;
-      margin-left: 6px; vertical-align: middle;
-    }
-
-    /* Glass Effect UI (Elite) */
-    .glass-card{
-      background: var(--glass);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--stroke3d);
-      border-radius: var(--r);
-      padding: 18px;
-      box-shadow: var(--shadow3d);
-      margin-bottom: 16px;
-    }
-
-    .invite-box{
-      background: linear-gradient(135deg, rgba(33,230,182,.1), rgba(0,0,0,0));
-      border: 1px solid rgba(33,230,182,.15);
-      border-radius: 18px; padding: 14px; margin-top: 10px;
-    }
-
-    /* Floating labels */
-    .field{ position: relative; margin-bottom: 12px; }
-
-    /* Hide scrollbar */
-    ::-webkit-scrollbar{ width:0; height:0 }
-
-    /* Utility */
     .hidden{ display: none !important; }
-    .mt20{ margin-top: 20px; }
-    .center{ text-align: center; }
-
-    #videoPreview{
-      width: 100%; height: 260px; border-radius: 18px;
-      background: #000; object-fit: cover; margin-bottom: 12px;
-      display: none;
-    }
+    .mt-2{ margin-top: 20px; }
+    .mb-2{ margin-bottom: 20px; }
+    .text-center{ text-align: center; }
   </style>
 </head>
 <body>
 
   <div class="wrap">
-    
-    <div class="topbar" id="mainTopbar" style="display:none">
-      <div class="logo">C</div>
+    <div class="topbar">
+      <div class="logo">CP</div>
       <div class="brand">
-        <small>CHECKPRATO</small>
-        <b>Elite <span id="authBadge" class="premium-badge" style="display:none">PREMIUM</span></b>
+        <small>PLATAFORMA</small>
+        <b>CheckPrato Elite</b>
       </div>
       <div class="pill">
         <div class="dot"></div>
-        <span id="streakDays">1 Dia</span>
+        <span>Online</span>
       </div>
     </div>
 
-    <div id="viewWelcome" class="view" style="display:block">
-      <div class="center mt20">
-        <div style="font-size: 50px; margin-bottom: 10px">🛡️</div>
-        <h1 class="h1">Acesso<br>Blindado</h1>
-        <p class="hint">Área exclusiva para membros da Elite CheckPrato.</p>
-        
-        <div class="card mt20">
-          <p id="welcomeStatus" style="font-size: 13px; font-weight: 800; color: var(--green); margin-bottom: 14px"></p>
-          <button class="btn" onclick="loginGoogle()">
-            <svg style="width:20px" viewBox="0 0 24 24"><path fill="currentColor" d="M21.35,11.1H12.18V13.83H18.69C18.36,17.64 15.19,19.27 12.19,19.27C8.36,19.27 5.04,17.05 5.04,12.02C5.04,7 8.36,4.78 12.19,4.78C15.31,4.78 17.03,6.58 17.03,6.58L19,4.64C19,4.64 16.59,2.1 12.19,2.1C6.66,2.1 2.1,6.34 2.1,12.02C2.1,17.7 6.66,21.94 12.19,21.94C17.72,21.94 21.6,18.06 21.6,12.02C21.6,11.71 21.35,11.1 21.35,11.1V11.1Z"/></svg>
-            Entrar com Google
-          </button>
-          <div style="margin: 14px 0; font-size: 11px; opacity: .4; font-weight: 900; letter-spacing: 2px">OU</div>
-          <button class="btn btn-sec" onclick="guestMode()">Modo Local (Offline)</button>
-        </div>
-        
-        <p class="hint mt20" style="font-size:12px" id="welcomeManual">Precisa de ajuda? <a href="#" onclick="goManual()">Guia Manual</a></p>
+    <div id="viewWelcome">
+      <h1 class="h1">Seja bem-vindo ao Elite.</h1>
+      <div class="card">
+        <p class="hint">Acesse sua conta para sincronizar seus dados na nuvem ou continue como convidado (apenas local).</p>
+        <button class="btn" onclick="goCadastro()">ENTRAR / CADASTRAR</button>
+        <button class="btn outline" onclick="continueAsGuest()">CONTINUAR COMO CONVIDADO</button>
+        <p id="welcomeStatus" style="font-size:12px; margin-top:14px; opacity:0.7"></p>
       </div>
     </div>
 
-    <div id="viewCadastro" class="view">
-      <h1 class="h1">Configurar<br>Perfil</h1>
-      <p class="hint">Vamos ajustar sua meta para que a IA calcule tudo certo.</p>
-
-      <div class="avatar-wrap">
-        <img src="https://via.placeholder.com/150" id="avatarImg" class="avatar" />
-        <label class="avatar-edit" for="avatarInput">📸</label>
-        <input type="file" id="avatarInput" accept="image/*" style="display:none" />
-      </div>
-
-      <div class="label">Seu Nome</div>
-      <input type="text" id="userName" placeholder="Ex: João Silva" />
-
-      <div class="row">
-        <div class="col">
-          <div class="label">Peso (kg)</div>
-          <input type="number" id="userWeight" placeholder="80" />
-        </div>
-        <div class="col">
-          <div class="label">Meta de Calorias</div>
-          <input type="number" id="userGoal" placeholder="2200" />
-        </div>
-      </div>
-
-      <div class="label">Esportes Favoritos</div>
-      <div class="chips" id="sportsContainer"></div>
-
-      <button class="btn mt20" onclick="saveProfile()">Salvar Perfil</button>
-    </div>
-
-    <div id="viewDash" class="view">
-      <h1 class="h1">Sua Meta</h1>
-      <div class="grid">
-        <div class="stat">
-          <span id="labelKcal">Faltam</span>
-          <b id="dashFaltam">0 kcal</b>
-        </div>
-        <div class="stat">
-          <span>Consumido</span>
-          <b id="dashConsumido">0 kcal</b>
-        </div>
-        <div class="stat">
-          <span>Proteínas</span>
-          <b id="dashProt">0g</b>
-        </div>
-        <div class="stat">
-          <span>Água</span>
-          <b id="dashAgua">0L</b>
-        </div>
-      </div>
-
-      <div class="glass-card mt20">
-        <div style="display:flex; justify-content:space-between; align-items:center">
-          <b>Próxima Refeição</b>
-          <span style="font-size:11px; font-weight:900; color:var(--green)">DIETA IA</span>
-        </div>
-        <div id="dietaSugerida" class="hint mt20" style="font-size:14px">
-          Sua dieta aparecerá aqui após o cadastro.
-        </div>
-      </div>
-
-      <div class="glass-card">
-        <div style="display:flex; justify-content:space-between; align-items:center">
-          <b>Treino de Hoje</b>
-          <span style="font-size:11px; font-weight:900; color:var(--orange)">TREINO IA</span>
-        </div>
-        <div id="treinoSugerido" class="hint mt20" style="font-size:14px">
-          Seu plano de treino personalizado.
-        </div>
-      </div>
-
-      <div id="inviteArea" class="invite-box center hidden">
-        <b style="color:var(--green)">Convide 3 amigos</b>
-        <p style="font-size:12px; margin:4px 0 10px">Desbloqueie o selo Premium Grátis!</p>
-        <div id="inviteProgress" style="background:rgba(255,255,255,.05); height:8px; border-radius:4px; margin-bottom:10px">
-          <div id="inviteBar" style="width:0%; height:100%; background:var(--green); border-radius:4px; transition:.5s"></div>
-        </div>
-        <button class="btn btn-sec" style="font-size:12px; padding:10px" onclick="shareInvite()">Copiar Link de Convite</button>
-      </div>
-
-      <div class="mt20 center">
-        <button class="btn btn-orange" onclick="goPremium()">
-          🚀 Ativar CheckPrato Premium
-        </button>
+    <div class="hidden" id="viewCadastro">
+      <h2 class="h1">Sua Conta</h2>
+      <div class="card">
+        <div class="label">E-mail</div>
+        <input id="authEmail" placeholder="exemplo@email.com" type="email"/>
+        <div class="label">Senha</div>
+        <input id="authPass" placeholder="••••••••" type="password"/>
+        <button class="btn" id="btnAuth" onclick="handleAuth()">ENTRAR OU CRIAR</button>
+        <button class="btn outline" onclick="showOnly('viewWelcome')">VOLTAR</button>
       </div>
     </div>
 
-    <div id="viewScanner" class="view">
-      <h1 class="h1">Analisar<br>Refeição</h1>
-      <p class="hint">Tire uma foto ou grave um pequeno vídeo do seu prato.</p>
-
-      <div class="card mt20 center" style="border-style:dashed; border-width:2px; padding:40px 20px" id="dropArea">
-        <video id="videoPreview" autoplay playsinline muted></video>
-        <div id="uploadPrompt">
-          <div style="font-size:40px; margin-bottom:10px">📸</div>
-          <b>Toque para capturar</b>
-          <p style="font-size:12px; opacity:.5">Foto ou Vídeo do Prato</p>
-        </div>
-        <input type="file" id="plateInput" accept="image/*,video/*" capture="environment" style="display:none" />
+    <div class="hidden" id="viewDash">
+      <h1 class="h1">Dashboard</h1>
+      <div id="dashStats"></div>
+      <div class="label">Última Refeição</div>
+      <div class="card" id="lastPlateBox">
+        <p class="hint">Nenhuma foto enviada hoje.</p>
       </div>
+      <button class="btn mt-2" onclick="showOnly('viewCamera')">📸 ANALISAR PRATO</button>
+    </div>
 
-      <div id="scannerResult" class="hidden mt20">
-        <div class="glass-card">
-          <h2 style="margin:0 0 10px; font-size:18px">Análise da IA</h2>
-          <div id="plateDetails" class="hint" style="font-size:14px">Processando...</div>
-          <button class="btn mt20" onclick="savePlate()">Confirmar e Salvar</button>
+    <div class="hidden" id="viewCamera">
+      <h1 class="h1">Analisar</h1>
+      <div class="card">
+        <p class="hint">Tire uma foto nítida do seu prato para que a IA identifique os macros.</p>
+        <div class="label">Selecionar Imagem</div>
+        <input accept="image/*" id="plateInput" type="file"/>
+        <div id="previewBox" style="margin-top:14px; display:none">
+          <img id="platePreview" style="width:100%; border-radius:12px; border:1px solid var(--stroke)"/>
         </div>
+        <button class="btn" id="btnAnalisar" onclick="analisarPrato()" style="display:none">ENVIAR PARA IA</button>
+        <button class="btn outline" onclick="showOnly('viewDash')">CANCELAR</button>
       </div>
     </div>
 
-    <div id="viewHistory" class="view">
-      <h1 class="h1">Histórico</h1>
-      <p class="hint">Tudo o que você consumiu hoje.</p>
-      
-      <div class="h-list" id="historyList">
-        </div>
-
-      <div class="center mt20">
-        <button class="btn btn-red btn-sec" onclick="clearHistory()">Limpar Histórico</button>
-      </div>
-    </div>
-
-    <div id="viewPerfil" class="view">
+    <div class="hidden" id="viewPerfil">
       <h1 class="h1">Meu Perfil</h1>
-      
-      <div id="perfilBox" class="glass-card">
-        </div>
-
-      <button class="btn btn-sec mt20" onclick="goCadastro()">Editar Dados</button>
-      <button class="btn btn-red mt20" onclick="logout()">Sair da Conta</button>
+      <div class="card" id="perfilBox"></div>
+      <button class="btn outline mt-2" onclick="logout()">SAIR DA CONTA</button>
     </div>
 
-    <div id="viewPremium" class="view">
-      <h1 class="h1">Seja Elite</h1>
-      <p class="hint">Acesso ilimitado, IA avançada e suporte prioritário.</p>
+  </div>
 
-      <div class="card mt20">
-        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px">
-          <li>✅ Análise de vídeo ilimitada</li>
-          <li>✅ Dietas geradas por IA real</li>
-          <li>✅ Treinos dinâmicos semanais</li>
-          <li>✅ Badge de Elite no Perfil</li>
-        </ul>
-      </div>
-
-      <button class="btn btn-orange mt20" id="btnPremium" onclick="confirmPremium()">
-        CONFIRMAR R$ 29,90/MÊS
-      </button>
-      <button class="btn btn-sec mt20" onclick="showOnly('viewDash')">Talvez depois</button>
-    </div>
-
-  </div><div class="tabbar" id="mainNav" style="display:none">
-    <div class="tabitem active" onclick="showOnly('viewDash')" id="navDash">
-      <div class="tabicon">🏠</div>
+  <nav class="nav hidden" id="mainNav">
+    <div class="nav-item active" onclick="showOnly('viewDash')">
+      <i>🏠</i>
       <span>Início</span>
     </div>
-    <div class="tabitem" onclick="showOnly('viewScanner')" id="navScanner">
-      <div class="tabicon">📷</div>
-      <span>Scanner</span>
+    <div class="nav-item" onclick="showOnly('viewCamera')">
+      <i>📸</i>
+      <span>Prato</span>
     </div>
-    <div class="tabitem" onclick="showOnly('viewHistory')" id="navHistory">
-      <div class="tabicon">🕒</div>
-      <span>Diário</span>
-    </div>
-    <div class="tabitem" onclick="showOnly('viewPerfil')" id="navPerfil">
-      <div class="tabicon">👤</div>
+    <div class="nav-item" onclick="showOnly('viewPerfil')">
+      <i>👤</i>
       <span>Perfil</span>
     </div>
-  </div>
-
-  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
-    <div class="modal" onclick="event.stopPropagation()">
-      <h2 id="modalTitle" style="margin:0 0 10px">Aviso</h2>
-      <div id="modalBody" class="hint">Conteúdo aqui.</div>
-      <button class="btn mt20" onclick="closeModal()">OK</button>
-    </div>
-  </div>
-
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  </nav>
 
   <script>
-    /***********************
-     * 1) Configurações
-     ***********************/
-    const KEY_PROFILE = "cp_profile";
-    const KEY_HISTORY = "cp_history";
-    const KEY_DIETA   = "cp_dieta";
-    const KEY_TREINO  = "cp_treino";
-    const KEY_GUEST   = "cp_guest_mode";
-    const KEY_INVITES = "cp_invite_count";
-    const KEY_PREMIUM = "cp_is_premium";
+    const KEY_GUEST = "cp_guest_mode";
+    let currentUser = null;
 
-    const SPORTS_LIST = ["Musculação", "Corrida", "Crossfit", "Yoga", "Futebol", "Natação", "Ciclismo", "Luta"];
-    const PREMIUM_PRICE = 29.90;
+    function $(id){ return document.getElementById(id); }
 
-    let currentUser = null; // para Firebase
-
-    // Helper
-    const $ = (id) => document.getElementById(id);
-
-    function safeJSON(key){
-      try{ return JSON.parse(localStorage.getItem(key) || "{}"); } catch(e){ return {}; }
-    }
-    function safeArray(key){
-      try{ return JSON.parse(localStorage.getItem(key) || "[]"); } catch(e){ return []; }
+    function showOnly(id){
+      ["viewWelcome","viewCadastro","viewDash","viewCamera","viewPerfil"].forEach(v => {
+        if($(v)) $(v).classList.add("hidden");
+      });
+      $(id).classList.remove("hidden");
+      document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
     }
 
-    /***********************
-     * 2) Navegação
-     ***********************/
-    function showOnly(viewId){
-      document.querySelectorAll(".view").forEach(v => v.style.display = "none");
-      $(viewId).style.display = "block";
-      
-      // Update nav highlights
-      document.querySelectorAll(".tabitem").forEach(t => t.classList.remove("active"));
-      const navMap = {
-        "viewDash": "navDash",
-        "viewScanner": "navScanner",
-        "viewHistory": "navHistory",
-        "viewPerfil": "navPerfil"
-      };
-      if(navMap[viewId]) $(navMap[viewId]).classList.add("active");
-
-      window.scrollTo(0,0);
+    function showNav(show){
+      if(show) $("mainNav").classList.remove("hidden");
+      else $("mainNav").classList.add("hidden");
     }
 
-    function showNav(bool){
-      $("mainNav").style.display = bool ? "flex" : "none";
-      $("ma
+    function continueAsGuest(){
+      localStorage.setItem(KEY_GUEST, "true");
+      showNav(true);
+      showOnly("viewDash");
+    }
+
+    function goCadastro(){
+      showOnly("viewCadastro");
+    }
+
+    function handleAuth(){
+      const email = $("authEmail").value;
+      const pass = $("authPass").value;
+      if(!email || !pass){ alert("Preencha tudo"); return; }
+      localStorage.removeItem(KEY_GUEST);
+      showNav(true);
+      showOnly("viewDash");
+    }
+
+    function logout(){
+      localStorage.removeItem(KEY_GUEST);
+      location.reload();
+    }
+
+    $("plateInput").onchange = function(e){
+      const file = e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ex){
+        $("platePreview").src = ex.target.result;
+        $("previewBox").style.display = "block";
+        $("btnAnalisar").style.display = "block";
+      }
+      reader.readAsDataURL(file);
+    };
+
+    function analisarPrato(){
+      const btn = $("btnAnalisar");
+      btn.disabled = true;
+      btn.textContent = "ANALISANDO...";
+      setTimeout(() => {
+        alert("IA: Frango (200g), Arroz (150g), Salada. Aprox 450kcal.");
+        btn.disabled = false;
+        btn.textContent = "ENVIAR PARA IA";
+        showOnly("viewDash");
+      }, 2000);
+    }
+
+    function init(){
+      if($("welcomeStatus")){
+        $("welcomeStatus").textContent = "✅ Dica: se algo não abrir, limpe o cache do navegador e recarregue.";
+      }
+      const isGuest = localStorage.getItem(KEY_GUEST);
+      if(isGuest){
+        showNav(true);
+        showOnly("viewDash");
+      } else {
+        showOnly("viewWelcome");
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
