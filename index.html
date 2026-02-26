@@ -1,424 +1,1312 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>CheckPrato • Elite</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CheckPrato Elite</title>
 
-  <meta name="theme-color" content="#0a1320"/>
-  <link rel="manifest" href="./manifest.json">
-  <link rel="icon" sizes="192x192" href="./icon-192.png">
-  <link rel="apple-touch-icon" href="./icon-192.png">
+<!-- PWA -->
+<meta name="theme-color" content="#050d18">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
 
-  <style>
-    :root{
-      --bg:#07121f;
-      --bg2:#0b2033;
-      --card:rgba(255,255,255,.04);
-      --card2:rgba(255,255,255,.06);
-      --stroke:rgba(255,255,255,.08);
-      --txt:#eaf2ff;
-      --muted:rgba(234,242,255,.72);
-      --green:#21e6b6;
-      --green2:#17caa0;
-      --orange:#f6b23a;
-      --shadow:0 20px 60px rgba(0,0,0,.45);
-      --r:22px;
-      --max:560px;
+<style>
+:root{
+  --bg:#050d18;
+  --bg2:#071728;
+  --card:#0d1b2e;
+  --green:#21e6b6;
+  --green2:#18c79f;
+  --gold:#f6b23a;
+  --txt:#eaf2ff;
+  --muted:#8fa4c7;
+  --stroke:rgba(255,255,255,.08);
+  --shadow:0 25px 70px rgba(0,0,0,.45);
+  --r:24px;
+}
 
-      --glass: rgba(255,255,255,.06);
-      --glass2: rgba(255,255,255,.03);
-      --stroke3d: rgba(255,255,255,.10);
-      --shadow3d: 0 24px 70px rgba(0,0,0,.55);
-    }
+*{box-sizing:border-box}
 
-    *{ box-sizing:border-box; }
-    html, body{
-      height:100%;
-      margin:0;
-      padding:0;
-      background: var(--bg);
-      color: var(--txt);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      overflow-x:hidden;
-    }
-    body{
-      padding-bottom: calc(92px + env(safe-area-inset-bottom));
-    }
-    a{ color: var(--green); text-decoration:none; }
-    a:hover{ text-decoration:underline; }
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:radial-gradient(circle at 20% 10%,#09253f,#050d18);
+  color:var(--txt);
+  overflow-x:hidden;
+}
 
-    .wrap{ max-width: var(--max); margin: 0 auto; padding: 16px 14px 24px; }
+.wrap{
+  max-width:680px;
+  margin:auto;
+  padding:16px;
+  padding-bottom:140px;
+}
 
-    /* Topbar */
-    .topbar{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      margin-top:6px;
-      margin-bottom: 14px;
-    }
-    .logo{
-      width:44px;height:44px;border-radius:14px;
-      background: linear-gradient(135deg, rgba(33,230,182,.35), rgba(33,230,182,.05));
-      border:1px solid rgba(33,230,182,.35);
-      display:flex;align-items:center;justify-content:center;
-      font-weight:1000;
-      color:var(--green);
-      box-shadow: var(--shadow);
-      flex:0 0 auto;
-      overflow:hidden;
-    }
-    .brand{
-      display:flex;flex-direction:column;gap:2px;
-      min-width: 0;
-      flex: 1 1 auto;
-    }
-    .brand small{color:var(--muted); letter-spacing:.08em; font-weight:900}
-    .brand b{font-size:18px}
+/* HEADER */
+.top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
+}
+.logo{
+  width:46px;height:46px;border-radius:14px;
+  background:linear-gradient(135deg,var(--green),#1bb999);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;color:#042019;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+  flex:0 0 auto;
+}
+.title{min-width:0}
+.title b{color:var(--green)}
+.pill{
+  margin-left:auto;
+  display:flex;align-items:center;gap:8px;
+  padding:10px 12px;border-radius:999px;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--stroke);
+  color:rgba(234,242,255,.75);
+  font-weight:800;
+}
+.pill .dot{
+  width:10px;height:10px;border-radius:99px;background:var(--green);
+  box-shadow:0 0 0 6px rgba(33,230,182,.12);
+}
 
-    .pill{
-      display:flex;align-items:center;gap:8px;
-      padding:10px 12px;border-radius:999px;
-      background: rgba(255,255,255,.04);
-      border:1px solid var(--stroke);
-      color:var(--muted);
-      font-weight:800;
-      white-space:nowrap;
-      flex:0 0 auto;
-    }
-    .pill .dot{
-      width:10px;height:10px;border-radius:99px;background:var(--green);
-      box-shadow: 0 0 0 6px rgba(33,230,182,.12);
-    }
+/* CARDS */
+.card{
+  background:linear-gradient(180deg,#0d1b2e,#091423);
+  border-radius:var(--r);
+  padding:18px;
+  margin-top:16px;
+  box-shadow:var(--shadow);
+  border:1px solid rgba(255,255,255,.06);
+}
 
-    /* Views */
-    .view{ display:none; animation: fadeIn .3s ease; }
-    .view.active{ display:block; }
+/* HEADLINE */
+.h1{
+  font-size:34px;
+  font-weight:900;
+  color:var(--green);
+  line-height:1.1;
+  margin:10px 0;
+}
+.h2{
+  font-size:16px;
+  font-weight:900;
+  color:rgba(234,242,255,.92);
+  margin:0 0 10px;
+}
+.sub{color:rgba(234,242,255,.82); font-weight:650; line-height:1.45}
+.muted{color:var(--muted)}
+.hr{height:1px;background:rgba(255,255,255,.08);margin:14px 0}
 
-    @keyframes fadeIn{
-      from{ opacity:0; transform: translateY(10px); }
-      to{ opacity:1; transform: translateY(0); }
-    }
+/* BOTÕES */
+.btn{
+  width:100%;
+  padding:16px;
+  border-radius:20px;
+  border:none;
+  margin-top:14px;
+  font-weight:900;
+  background:linear-gradient(135deg,var(--green),var(--green2));
+  cursor:pointer;
+  color:#042019;
+}
+.btn:active{transform:translateY(1px)}
+.btn2{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.10);
+  color:var(--txt);
+}
+.btnRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btnRow .btn, .btnRow .btn2{flex:1 1 180px;margin-top:0}
 
-    .h1{
-      font-size:34px;
-      margin:12px 2px 14px;
-      letter-spacing:.02em;
-      color:var(--green);
-      font-weight: 1000;
-      line-height: 1.05;
-    }
+/* INPUT */
+label{display:block;margin-top:12px;color:rgba(234,242,255,.70);font-weight:850;letter-spacing:.02em}
+input,select,textarea{
+  width:100%;
+  padding:14px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.10);
+  background:#071728;
+  color:var(--txt);
+  margin-top:8px;
+  outline:none;
+}
+textarea{min-height:90px;resize:vertical}
 
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
-      border: 1px solid var(--stroke);
-      border-radius: var(--r);
-      padding: 16px;
-      box-shadow: var(--shadow);
-      margin-bottom: 16px;
-    }
+/* SCREENS */
+.screen{display:none}
+.screen.active{display:block}
 
-    .hint{ color: var(--muted); font-weight: 650; line-height: 1.35; }
+/* NAV */
+.nav{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:#071728;
+  border-top:1px solid rgba(255,255,255,.10);
+  padding:10px;
+  z-index:999;
+}
+.navInner{
+  max-width:680px;
+  margin:auto;
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  padding-bottom:2px;
+  scrollbar-width:none;
+}
+.navInner::-webkit-scrollbar{display:none}
 
-    /* Inputs */
-    .label{
-      margin: 12px 2px 6px;
-      color: rgba(234,242,255,.65);
-      font-weight: 950;
-      letter-spacing:.12em;
-      text-transform: uppercase;
-      font-size: 12px;
-    }
-    input, select, textarea{
-      width:100%;
-      padding:14px 14px;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      color: var(--txt);
-      outline: none;
-      font-size: 15px;
-    }
-    input::placeholder{color: rgba(234,242,255,.35)}
+.navBtn{
+  flex:0 0 auto;
+  padding:12px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.10);
+  background:#0b1f33;
+  color:#9fb4d6;
+  font-weight:850;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.navBtn.active{
+  color:var(--green);
+  background:#09283e;
+  border-color:rgba(33,230,182,.35);
+  box-shadow:0 0 0 6px rgba(33,230,182,.08);
+}
 
-    /* Buttons */
-    .btn{
-      width:100%;
-      padding: 16px 16px;
-      border-radius: 18px;
-      border: 0;
-      cursor: pointer;
-      font-weight: 950;
-      font-size: 16px;
-      letter-spacing: .02em;
-      background: linear-gradient(135deg, var(--green), var(--green2));
-      color:#042019;
-      box-shadow: 0 18px 45px rgba(33,230,182,.18);
-      margin-top: 10px;
-      transition: all .2s ease;
-      display:flex;align-items:center;justify-content:center;gap:10px;
-    }
-    .btn:active{ transform: scale(.97); opacity: .9; }
-    .btn.outline{
-      background: rgba(255,255,255,.04);
-      border: 1px solid var(--stroke);
-      color: var(--txt);
-      box-shadow: none;
-    }
+/* DASHBOARD 3D */
+.dash3d{
+  background:
+    radial-gradient(700px 220px at 20% 10%, rgba(33,230,182,.20), transparent 60%),
+    radial-gradient(700px 220px at 80% 30%, rgba(246,178,58,.16), transparent 62%),
+    linear-gradient(135deg,#071728,#0d1b2e);
+  border-radius:24px;
+  padding:18px;
+  margin-top:16px;
+  box-shadow:0 40px 80px rgba(0,0,0,.5);
+  border:1px solid rgba(255,255,255,.08);
+  transform:perspective(900px) rotateX(5deg);
+}
+.kpis{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
+.kpi{
+  background:rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:18px;
+  padding:12px;
+}
+.kpi .num{font-size:22px;font-weight:900}
+.kpi .lab{margin-top:2px;font-size:12px;color:rgba(234,242,255,.70);font-weight:850;letter-spacing:.08em;text-transform:uppercase}
 
-    /* Nav */
-    .nav{
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: rgba(11, 32, 51, 0.95);
-      backdrop-filter: blur(12px);
-      border-top: 1px solid var(--stroke);
-      display: none; justify-content: space-around;
-      padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
-      z-index: 1000;
-    }
-    .nav.visible{ display:flex; }
-    .nav-item{
-      display: flex; flex-direction: column; align-items: center;
-      gap: 4px; color: var(--muted); font-size: 11px; font-weight: 700;
-      flex: 1; cursor: pointer;
-    }
-    .nav-item.active{ color: var(--green); }
-    .nav-item i{ font-size: 22px; font-style: normal; }
+/* PROGRESS BAR */
+.barWrap{
+  margin-top:12px;
+  background:#071728;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.10);
+  overflow:hidden;
+}
+.bar{
+  height:12px;
+  background:linear-gradient(135deg,var(--green),var(--green2));
+  width:10%;
+}
 
-    .hidden{ display: none !important; }
-    .mt-2{ margin-top: 20px; }
-    .text-center{ text-align: center; }
+/* BADGES */
+.badgeRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.badge{
+  padding:8px 10px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.04);
+  font-weight:900;color:rgba(234,242,255,.92);
+}
 
-    /* Chips */
-    .chips{ display:flex; flex-wrap:wrap; gap:8px; margin:10px 0; }
-    .chip{
-      padding: 8px 16px; border-radius: 12px; background: var(--card);
-      border: 1px solid var(--stroke); font-size: 14px; font-weight: 700;
-      cursor: pointer;
-    }
-    .chip.active{ background: var(--green); color: #042019; border-color: var(--green); }
+/* CAMERA PREVIEW */
+.preview{
+  margin-top:12px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.18);
+  overflow:hidden;
+}
+.preview img{width:100%;display:block}
 
-    /* Stats Grid */
-    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    .stat-val{ font-size: 24px; font-weight: 1000; color: var(--green); }
-    .stat-label{ font-size: 11px; font-weight: 900; opacity: .6; text-transform: uppercase; }
-  </style>
+/* SIMPLE GRAPH */
+.spark{
+  margin-top:12px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.16);
+  padding:12px;
+}
+.sparkGrid{
+  display:flex;gap:6px;align-items:flex-end;height:90px;
+}
+.sparkBar{
+  flex:1;
+  border-radius:10px 10px 6px 6px;
+  background:rgba(33,230,182,.35);
+  border:1px solid rgba(33,230,182,.30);
+}
+
+/* WELCOME CARDS */
+.wCard{
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.10);
+  background:
+    radial-gradient(700px 220px at 20% 10%, rgba(33,230,182,.16), transparent 60%),
+    radial-gradient(700px 220px at 80% 30%, rgba(246,178,58,.12), transparent 62%),
+    rgba(255,255,255,.04);
+  padding:16px;
+  margin-top:12px;
+}
+.wQuote{
+  margin-top:10px;
+  padding:12px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.16);
+  font-weight:850;
+}
+.small{font-size:12px;color:rgba(234,242,255,.70);font-weight:800}
+</style>
 </head>
+
 <body>
+<div class="wrap">
 
-  <div class="wrap">
-    <div class="topbar">
-      <div class="logo">CP</div>
-      <div class="brand">
-        <small>PLATAFORMA</small>
-        <b>CheckPrato Elite</b>
-      </div>
-      <div class="pill">
-        <div class="dot"></div>
-        <span>Online</span>
-      </div>
+  <div class="top">
+    <div class="logo">E</div>
+    <div class="title">
+      <b>CheckPrato</b><br>
+      <small class="muted">Elite</small>
     </div>
-
-    <div id="viewWelcome" class="view active">
-      <h1 class="h1">Seu corpo,<br/>suas regras.</h1>
-      <div class="card">
-        <p class="hint">Analise seus pratos em segundos usando IA de ponta e mantenha o foco nos seus resultados.</p>
-        <button class="btn" onclick="showOnly('viewAuth')">ENTRAR / CADASTRAR</button>
-        <button class="btn outline mt-2" onclick="guestMode()">CONTINUAR COMO CONVIDADO</button>
-      </div>
-    </div>
-
-    <div id="viewAuth" class="view">
-      <h1 class="h1">Sua Conta</h1>
-      <div class="card">
-        <div class="label">E-mail</div>
-        <input type="email" id="authEmail" placeholder="exemplo@email.com">
-        <div class="label">Senha</div>
-        <input type="password" id="authPass" placeholder="••••••••">
-        <button class="btn" onclick="handleAuth()">ENTRAR OU CRIAR</button>
-        <button class="btn outline mt-2" onclick="showOnly('viewWelcome')">VOLTAR</button>
-      </div>
-    </div>
-
-    <div id="viewDash" class="view">
-      <h1 class="h1">Dashboard</h1>
-      <div class="grid2">
-        <div class="card">
-          <div class="stat-label">Calorias Hoje</div>
-          <div class="stat-val">1.450</div>
-        </div>
-        <div class="card">
-          <div class="stat-label">Meta Diária</div>
-          <div class="stat-val">2.100</div>
-        </div>
-      </div>
-      <button class="btn mt-2" onclick="showOnly('viewCamera')">📸 ANALISAR PRATO</button>
-    </div>
-
-    <div id="viewCamera" class="view">
-      <h1 class="h1">Analisar</h1>
-      <div class="card">
-        <p class="hint">Tire uma foto nítida do seu prato para que a IA identifique os macros.</p>
-        <input type="file" id="plateInput" accept="image/*">
-        <div id="previewBox" class="hidden mt-2">
-          <img id="platePreview" style="width:100%; border-radius:12px; border:1px solid var(--stroke)">
-        </div>
-        <button id="btnAnalisar" class="btn hidden" onclick="analisarPrato()">ENVIAR PARA IA</button>
-        <button class="btn outline mt-2" onclick="showOnly('viewDash')">CANCELAR</button>
-      </div>
-    </div>
-
-    <div id="viewPerfil" class="view">
-      <h1 class="h1">Perfil</h1>
-      <div class="card">
-        <div class="label">Esportes Favoritos</div>
-        <div id="sportsContainer" class="chips"></div>
-        <button class="btn outline mt-2" onclick="logout()">SAIR DA CONTA</button>
-      </div>
-    </div>
-
+    <div class="pill"><span class="dot"></span><span id="modeTxt">Modo: Local</span></div>
   </div>
 
-  <nav class="nav" id="mainNav">
-    <div class="nav-item active" onclick="showOnly('viewDash')"><i>🏠</i><span>Início</span></div>
-    <div class="nav-item" onclick="showOnly('viewCamera')"><i>📸</i><span>Prato</span></div>
-    <div class="nav-item" onclick="showOnly('viewPerfil')"><i>👤</i><span>Perfil</span></div>
-  </nav>
+  <!-- BOAS-VINDAS -->
+  <section id="viewWelcome" class="screen active">
+    <div class="h1">Seu corpo reflete suas escolhas.</div>
 
-  <script>
-    const $ = id => document.getElementById(id);
-    const KEY_USER = "cp_user_active";
-    const KEY_GUEST = "cp_guest_mode";
-    const SPORTS = ["Musculação", "Corrida", "Crossfit", "Yoga", "Natação", "Ciclismo", "Futebol"];
+    <div class="wCard">
+      <div class="sub">
+        Pequenas decisões hoje criam grandes transformações amanhã.
+        Aqui você controla <b>prato</b>, <b>dieta</b>, <b>treino</b> e <b>evolução</b> — sem bagunça.
+      </div>
+      <div class="wQuote">“Direção vence motivação. Um dia de cada vez.”</div>
 
-    function showOnly(id){
-      document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
-      $(id).classList.add("active");
-      
-      const nav = $("mainNav");
-      if(id === "viewWelcome" || id === "viewAuth") nav.classList.remove("visible");
-      else nav.classList.add("visible");
+      <div class="btnRow">
+        <button class="btn" type="button" onclick="show('viewCadastro')">Começar agora</button>
+        <button class="btn btn2" type="button" onclick="show('viewManual')">Ver manual</button>
+      </div>
 
-      document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
+      <div class="small" style="margin-top:10px">
+        Dica: complete o Cadastro e Perfil para personalizar Dieta e Treino.
+      </div>
+    </div>
+
+    <div class="dash3d">
+      <div class="h2">Painel Elite (ao vivo)</div>
+      <div class="sub">Progresso baseado no que você registra. (Sem Firebase por enquanto.)</div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="num" id="kpiStreak">0</div>
+          <div class="lab">streak</div>
+        </div>
+        <div class="kpi">
+          <div class="num" id="kpiNivel">1</div>
+          <div class="lab">nível</div>
+        </div>
+        <div class="kpi">
+          <div class="num" id="kpiScore">—</div>
+          <div class="lab">score prato</div>
+        </div>
+      </div>
+
+      <div class="barWrap" aria-label="Barra de XP">
+        <div class="bar" id="barraXP" style="width:10%"></div>
+      </div>
+
+      <div class="badgeRow" id="badgeRow">
+        <span class="badge">Meta proteína: <b id="metaProtTxt">—</b></span>
+        <span class="badge">Medalhas: <b id="medalhasTxt">0</b></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MANUAL -->
+  <section id="viewManual" class="screen">
+    <div class="h1">Manual do App</div>
+
+    <div class="card">
+      <div class="h2">Como usar (rápido)</div>
+      <div class="sub">
+        1) Vá em <b>Cadastro</b> e preencha o básico.<br>
+        2) Vá em <b>Perfil</b> e escolha esporte + dificuldade (se tiver).<br>
+        3) Em <b>Prato</b>, use a câmera ou descreva e gere seu <b>Score</b>.<br>
+        4) Em <b>Dieta</b> e <b>Treino</b>, gere um plano mais completo.<br>
+        5) Em <b>Evolução</b>, registre para ganhar XP, streak e medalhas.
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="h2">Perguntas comuns</div>
+      <div class="sub">
+        <b>Isso é real?</b> O sistema é local por enquanto. Depois dá pra ligar IA e validações reais.<br><br>
+        <b>Como evitar “burlar”?</b> No modo local não dá garantir 100%. Solução real = login + sensores + checagens (fase 2).<br><br>
+        <b>Como vira PWA?</b> Instale pelo menu do navegador (“Adicionar à tela inicial”). O service worker precisa existir no repo.
+      </div>
+
+      <div class="btnRow">
+        <button class="btn btn2" type="button" onclick="show('viewWelcome')">Voltar</button>
+        <button class="btn" type="button" onclick="show('viewCadastro')">Ir para Cadastro</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CADASTRO -->
+  <section id="viewCadastro" class="screen">
+    <div class="h1">Cadastro</div>
+
+    <div class="card">
+      <div class="sub">Base do seu app. Sem “demo” aparecendo para o usuário.</div>
+
+      <label>Nome</label>
+      <input id="nome" placeholder="Seu nome">
+
+      <label>Objetivo</label>
+      <select id="objetivo">
+        <option>Emagrecimento</option>
+        <option>Hipertrofia</option>
+        <option>Saúde</option>
+      </select>
+
+      <label>Restrições</label>
+      <select id="restricao">
+        <option>Nenhuma</option>
+        <option>Diabetes</option>
+        <option>Hipertensão</option>
+        <option>Colesterol</option>
+        <option>Intolerância à lactose</option>
+        <option>Glúten</option>
+      </select>
+
+      <label>PCD / Dificuldade</label>
+      <select id="pcd">
+        <option>Não</option>
+        <option>Mobilidade</option>
+        <option>Visual</option>
+        <option>Auditiva</option>
+        <option>Idoso</option>
+        <option>Lesões</option>
+        <option>Reabilitação</option>
+      </select>
+
+      <label>Meta diária de proteína (g) (automática, você pode ajustar)</label>
+      <select id="metaProt">
+        <option value="90">90g</option>
+        <option value="110">110g</option>
+        <option value="130">130g</option>
+        <option value="150">150g</option>
+        <option value="180">180g</option>
+      </select>
+
+      <button class="btn" type="button" onclick="salvarCadastro()">Salvar cadastro</button>
+      <div class="small" id="cadastroStatus" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <!-- PERFIL -->
+  <section id="viewPerfil" class="screen">
+    <div class="h1">Perfil</div>
+
+    <div class="card">
+      <div class="sub">Personalização fina: esporte + estilo de treino adaptado.</div>
+
+      <label>Esporte preferido</label>
+      <select id="esporte">
+        <option>Musculação</option>
+        <option>Corrida</option>
+        <option>Futebol</option>
+        <option>Vôlei</option>
+        <option>Crossfit</option>
+        <option>Funcional</option>
+        <option>Natação</option>
+        <option>Ciclismo</option>
+        <option>Luta</option>
+      </select>
+
+      <label>Nível</label>
+      <select id="nivel">
+        <option>Iniciante</option>
+        <option>Intermediário</option>
+        <option>Avançado</option>
+        <option>Baixo impacto</option>
+      </select>
+
+      <label>Dificuldade / Condição</label>
+      <select id="condicao">
+        <option>Nenhuma</option>
+        <option>Obesidade</option>
+        <option>Idoso</option>
+        <option>PCD</option>
+        <option>Mobilidade</option>
+        <option>Lesões</option>
+        <option>Reabilitação</option>
+      </select>
+
+      <button class="btn" type="button" onclick="salvarPerfil()">Salvar perfil</button>
+      <div class="small" id="perfilStatus" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <!-- PRATO -->
+  <section id="viewPrato" class="screen">
+    <div class="h1">Prato</div>
+
+    <div class="card">
+      <div class="h2">Câmera (upload)</div>
+      <div class="sub">Envie uma foto do prato (modo web). Depois a IA real analisa.</div>
+
+      <input id="plateFile" type="file" accept="image/*">
+      <div class="preview" id="platePreview" style="display:none">
+        <img id="plateImg" alt="Prévia do prato">
+      </div>
+
+      <div class="btnRow">
+        <button class="btn btn2" type="button" onclick="limparFoto()">Remover foto</button>
+        <button class="btn" type="button" onclick="salvarFotoPrato()">Salvar foto</button>
+      </div>
+
+      <div class="small" id="plateStatus" style="margin-top:10px"></div>
+    </div>
+
+    <div class="card">
+      <div class="h2">Avaliação rápida</div>
+
+      <label>Descreva seu prato</label>
+      <input id="food" placeholder="Ex: arroz, frango, salada">
+
+      <label>Porção</label>
+      <select id="porcao">
+        <option>Pequena</option>
+        <option>Média</option>
+        <option>Grande</option>
+      </select>
+
+      <label>Qualidade do prato</label>
+      <select id="qualidade">
+        <option>Ruim</option>
+        <option>Média</option>
+        <option>Boa</option>
+        <option>Excelente</option>
+      </select>
+
+      <button class="btn" type="button" onclick="avaliar()">Gerar Score</button>
+
+      <div id="score" style="margin-top:12px;font-weight:900"></div>
+      <div class="small" id="macroTxt" style="margin-top:8px"></div>
+    </div>
+  </section>
+
+  <!-- DIETA -->
+  <section id="viewDieta" class="screen">
+    <div class="h1">Dieta</div>
+
+    <div class="card">
+      <div class="sub">Mais variedade, estilo “plano” (não parece demo).</div>
+
+      <label>Tipo de dieta</label>
+      <select id="tipoDieta">
+        <option>Emagrecimento</option>
+        <option>Low carb</option>
+        <option>Hipertrofia</option>
+        <option>Econômica</option>
+        <option>Vegetariana</option>
+        <option>Diabetes</option>
+        <option>Hipertensão</option>
+        <option>Sem lactose</option>
+        <option>Atletas</option>
+        <option>Idosos</option>
+      </select>
+
+      <label>Quantos dias de plano?</label>
+      <select id="diasPlano">
+        <option value="1">1 dia</option>
+        <option value="3">3 dias</option>
+        <option value="5">5 dias</option>
+        <option value="7">7 dias</option>
+      </select>
+
+      <button class="btn" type="button" onclick="gerarDieta()">Gerar plano</button>
+
+      <div id="dieta" style="margin-top:12px"></div>
+    </div>
+  </section>
+
+  <!-- TREINO -->
+  <section id="viewTreino" class="screen">
+    <div class="h1">Treino</div>
+
+    <div class="card">
+      <div class="sub">Treino por esporte + nível + condição. Ao concluir, ganha XP.</div>
+
+      <button class="btn" type="button" onclick="gerarTreino()">Gerar treino do dia</button>
+
+      <div id="treino" style="margin-top:12px"></div>
+
+      <div class="btnRow">
+        <button class="btn btn2" type="button" onclick="marcarTreinoFeito()">Marcar como feito</button>
+        <button class="btn" type="button" onclick="show('viewEvolucao')">Ver Evolução</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVOLUÇÃO -->
+  <section id="viewEvolucao" class="screen">
+    <div class="h1">Evolução</div>
+
+    <div class="card">
+      <div class="h2">Gamificação</div>
+      <div class="sub">Registre treinos e refeições para subir nível.</div>
+
+      <div style="margin-top:10px">
+        Nível atual: <b id="nivelUser">1</b><br>
+        XP: <b id="xpUser">0</b>/100
+      </div>
+
+      <div class="barWrap">
+        <div class="bar" id="barraXP2" style="width:10%"></div>
+      </div>
+
+      <div class="badgeRow" style="margin-top:12px">
+        <span class="badge">🔥 Streak: <b id="streak">0</b></span>
+        <span class="badge">🏅 Medalhas: <b id="medalhas">0</b></span>
+        <span class="badge">🎯 Meta proteína: <b id="metaProtShow">—</b></span>
+      </div>
+
+      <div class="btnRow" style="margin-top:12px">
+        <button class="btn btn2" type="button" onclick="ganharXP('prato')">Registrar refeição</button>
+        <button class="btn" type="button" onclick="ganharXP('treino')">Registrar treino</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="h2">Gráfico simples (últimos dias)</div>
+      <div class="sub">Baseado no Score do prato + treinos registrados.</div>
+
+      <div class="spark">
+        <div class="sparkGrid" id="sparkGrid"></div>
+        <div class="small" id="sparkLegend" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="h2">Ranking semanal (local)</div>
+      <div class="sub">Enquanto não tem usuários reais, ranking é “sua semana”.</div>
+      <div id="ranking" style="margin-top:10px;font-weight:850;line-height:1.55"></div>
+    </div>
+  </section>
+
+  <!-- PROGRESSO -->
+  <section id="viewProgresso" class="screen">
+    <div class="h1">Progresso</div>
+
+    <div class="card">
+      <label>Intensidade</label>
+      <select id="intensidade">
+        <option>Leve</option>
+        <option>Médio</option>
+        <option>Pesado</option>
+      </select>
+
+      <label>Duração</label>
+      <select id="duracao">
+        <option>20 min</option>
+        <option>40 min</option>
+        <option>60 min</option>
+        <option>90 min</option>
+      </select>
+
+      <button class="btn" type="button" onclick="registrarProgresso()">Registrar treino</button>
+
+      <div id="historico" style="margin-top:12px"></div>
+    </div>
+  </section>
+
+  <!-- SAÚDE -->
+  <section id="viewSaude" class="screen">
+    <div class="h1">Saúde</div>
+
+    <div class="card">
+      <div class="sub">Tópicos com link oficial.</div>
+
+      <div class="btnRow">
+        <button class="btn btn2" type="button" onclick="abrirSaude('diabetes')">Diabetes</button>
+        <button class="btn btn2" type="button" onclick="abrirSaude('hipertensao')">Hipertensão</button>
+        <button class="btn btn2" type="button" onclick="abrirSaude('colesterol')">Colesterol</button>
+        <button class="btn btn2" type="button" onclick="abrirSaude('obesidade')">Obesidade</button>
+        <button class="btn btn2" type="button" onclick="abrirSaude('sono')">Sono</button>
+        <button class="btn btn2" type="button" onclick="abrirSaude('mental')">Saúde mental</button>
+        <button class="btn btn2" type="button" onclick="abrirSaude('anabolizantes')">Anabolizantes</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARCEIROS -->
+  <section id="viewParceiros" class="screen">
+    <div class="h1">Parceiros</div>
+
+    <div class="card">
+      <div class="sub">Academias, nutricionistas e personal trainers.</div>
+      <div class="hr"></div>
+      <div class="sub">
+        Aqui você vai colocar: cupons, links, e benefícios por região.
+      </div>
+      <button class="btn btn2" type="button" onclick="alert('Em breve: parceiros + cupons + indicações.')">Em breve</button>
+    </div>
+  </section>
+
+  <!-- CONVITES -->
+  <section id="viewConvites" class="screen">
+    <div class="h1">Convites</div>
+
+    <div class="card">
+      <div class="sub">Sistema viral (modo local por enquanto).</div>
+
+      <label>Seu código de convite</label>
+      <input id="inviteCode" readonly>
+
+      <label>Mensagem</label>
+      <textarea id="inviteMsg"></textarea>
+
+      <div class="btnRow">
+        <button class="btn btn2" type="button" onclick="copiarConvite()">Copiar</button>
+        <button class="btn" type="button" onclick="compartilharConvite()">Compartilhar</button>
+      </div>
+
+      <div class="small" id="inviteStatus" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+</div><!-- wrap -->
+
+<!-- MENU (ordem que você pediu) -->
+<div class="nav">
+  <div class="navInner">
+    <button class="navBtn active" data-target="viewWelcome" onclick="show('viewWelcome', this)">Boas-vindas</button>
+    <button class="navBtn" data-target="viewCadastro" onclick="show('viewCadastro', this)">Cadastro</button>
+    <button class="navBtn" data-target="viewPerfil" onclick="show('viewPerfil', this)">Perfil</button>
+    <button class="navBtn" data-target="viewPrato" onclick="show('viewPrato', this)">Prato</button>
+    <button class="navBtn" data-target="viewDieta" onclick="show('viewDieta', this)">Dieta</button>
+    <button class="navBtn" data-target="viewTreino" onclick="show('viewTreino', this)">Treino</button>
+    <button class="navBtn" data-target="viewEvolucao" onclick="show('viewEvolucao', this)">Evolução</button>
+    <button class="navBtn" data-target="viewProgresso" onclick="show('viewProgresso', this)">Progresso</button>
+    <button class="navBtn" data-target="viewSaude" onclick="show('viewSaude', this)">Saúde</button>
+    <button class="navBtn" data-target="viewParceiros" onclick="show('viewParceiros', this)">Parceiros</button>
+    <button class="navBtn" data-target="viewConvites" onclick="show('viewConvites', this)">Convites</button>
+  </div>
+</div>
+
+<script>
+/* =========================
+   STATE (localStorage)
+========================= */
+const LS_KEY = "checkprato_elite_v1";
+
+const state = {
+  cadastro: {
+    nome: "",
+    objetivo: "Emagrecimento",
+    restricao: "Nenhuma",
+    pcd: "Não",
+    metaProt: 110
+  },
+  perfil: {
+    esporte: "Musculação",
+    nivel: "Iniciante",
+    condicao: "Nenhuma"
+  },
+  prato: {
+    lastScore: null,
+    lastMacros: "",
+    photoDataUrl: null
+  },
+  evolucao: {
+    xp: 0,
+    nivel: 1,
+    streak: 0,
+    medalhas: 0,
+    weekPoints: 0,
+    history: [] // números 0-100 para gráfico
+  },
+  progresso: {
+    registros: []
+  }
+};
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(!raw) return;
+    const parsed = JSON.parse(raw);
+    deepMerge(state, parsed);
+  }catch(e){}
+}
+
+function saveState(){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){}
+}
+
+function deepMerge(target, src){
+  if(!src || typeof src !== "object") return;
+  for(const k of Object.keys(src)){
+    if(src[k] && typeof src[k] === "object" && !Array.isArray(src[k])){
+      if(!target[k] || typeof target[k] !== "object") target[k] = {};
+      deepMerge(target[k], src[k]);
+    }else{
+      target[k] = src[k];
     }
+  }
+}
 
-    function guestMode(){
-      localStorage.setItem(KEY_GUEST, "true");
-      showOnly("viewDash");
-    }
+/* =========================
+   NAV (BLINDADO)
+========================= */
+function show(id, el){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const target = document.getElementById(id);
+  if(target) target.classList.add('active');
 
-    function handleAuth(){
-      const email = $("authEmail").value;
-      if(!email.includes("@")) return alert("E-mail inválido");
-      localStorage.setItem(KEY_USER, email);
-      localStorage.removeItem(KEY_GUEST);
-      showOnly("viewDash");
-    }
+  document.querySelectorAll('.navBtn').forEach(b=>b.classList.remove('active'));
 
-    function logout(){
-      localStorage.clear();
-      location.reload();
-    }
+  if(el && el.classList && el.classList.contains('navBtn')){
+    el.classList.add('active');
+  }else{
+    const navMatch = document.querySelector(`.navBtn[data-target="${id}"]`);
+    if(navMatch) navMatch.classList.add('active');
+  }
+  window.scrollTo({top:0, behavior:"smooth"});
+}
 
-    $("plateInput").onchange = function(e){
-      const file = e.target.files[0];
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = (ex) => {
-        $("platePreview").src = ex.target.result;
-        $("previewBox").classList.remove("hidden");
-        $("btnAnalisar").classList.remove("hidden");
-      };
-      reader.readAsDataURL(file);
+/* =========================
+   CADASTRO / PERFIL
+========================= */
+function bindFormFromState(){
+  // cadastro
+  document.getElementById("nome").value = state.cadastro.nome || "";
+  document.getElementById("objetivo").value = state.cadastro.objetivo || "Emagrecimento";
+  document.getElementById("restricao").value = state.cadastro.restricao || "Nenhuma";
+  document.getElementById("pcd").value = state.cadastro.pcd || "Não";
+  document.getElementById("metaProt").value = String(state.cadastro.metaProt || 110);
+
+  // perfil
+  document.getElementById("esporte").value = state.perfil.esporte || "Musculação";
+  document.getElementById("nivel").value = state.perfil.nivel || "Iniciante";
+  document.getElementById("condicao").value = state.perfil.condicao || "Nenhuma";
+
+  // convites
+  const code = makeInviteCode(state.cadastro.nome || "CHECK");
+  document.getElementById("inviteCode").value = code;
+  document.getElementById("inviteMsg").value =
+`Baixa o CheckPrato Elite e entra com meu código: ${code}
+https://checkpratoapp.github.io/checkprato-app/`;
+
+  // prato foto
+  if(state.prato.photoDataUrl){
+    document.getElementById("platePreview").style.display = "block";
+    document.getElementById("plateImg").src = state.prato.photoDataUrl;
+  }
+
+  // evolução UI
+  refreshEvolutionUI();
+  refreshHomeKpis();
+  renderHistory();
+  renderRanking();
+  renderProgresso();
+}
+
+function salvarCadastro(){
+  state.cadastro.nome = (document.getElementById("nome").value || "").trim();
+  state.cadastro.objetivo = document.getElementById("objetivo").value;
+  state.cadastro.restricao = document.getElementById("restricao").value;
+  state.cadastro.pcd = document.getElementById("pcd").value;
+  state.cadastro.metaProt = Number(document.getElementById("metaProt").value || 110);
+
+  saveState();
+  document.getElementById("cadastroStatus").textContent = "✅ Cadastro salvo. Agora vá em Perfil para personalizar esporte e nível.";
+  document.getElementById("metaProtShow").textContent = `${state.cadastro.metaProt}g/dia`;
+  document.getElementById("metaProtTxt").textContent = `${state.cadastro.metaProt}g`;
+  refreshHomeKpis();
+}
+
+function salvarPerfil(){
+  state.perfil.esporte = document.getElementById("esporte").value;
+  state.perfil.nivel = document.getElementById("nivel").value;
+  state.perfil.condicao = document.getElementById("condicao").value;
+
+  saveState();
+  document.getElementById("perfilStatus").textContent = "✅ Perfil salvo. Pronto: agora Dieta e Treino ficam mais alinhados com você.";
+}
+
+/* =========================
+   PRATO: FOTO + SCORE
+========================= */
+const fileInput = document.getElementById("plateFile");
+fileInput.addEventListener("change", (e)=>{
+  const f = e.target.files && e.target.files[0];
+  if(!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    state.prato.photoDataUrl = String(reader.result || "");
+    document.getElementById("platePreview").style.display = "block";
+    document.getElementById("plateImg").src = state.prato.photoDataUrl;
+    document.getElementById("plateStatus").textContent = "📸 Foto carregada. Clique em “Salvar foto”.";
+  };
+  reader.readAsDataURL(f);
+});
+
+function limparFoto(){
+  state.prato.photoDataUrl = null;
+  document.getElementById("platePreview").style.display = "none";
+  document.getElementById("plateImg").src = "";
+  document.getElementById("plateStatus").textContent = "Foto removida.";
+  saveState();
+}
+
+function salvarFotoPrato(){
+  if(!state.prato.photoDataUrl){
+    document.getElementById("plateStatus").textContent = "Envie uma foto primeiro.";
+    return;
+  }
+  saveState();
+  document.getElementById("plateStatus").textContent = "✅ Foto salva no modo local.";
+}
+
+function avaliar(){
+  const porcao = document.getElementById("porcao").value;
+  const qualidade = document.getElementById("qualidade").value;
+  const objetivo = state.cadastro.objetivo || "Emagrecimento";
+
+  // score base
+  let base = 70 + Math.floor(Math.random()*16); // 70-85
+  if(qualidade === "Boa") base += 7;
+  if(qualidade === "Excelente") base += 12;
+  if(qualidade === "Ruim") base -= 10;
+
+  if(porcao === "Pequena") base += (objetivo==="Emagrecimento") ? 6 : -2;
+  if(porcao === "Grande") base += (objetivo==="Hipertrofia") ? 6 : -6;
+
+  base = Math.max(40, Math.min(100, base));
+
+  // macros estimados (sem forçar o usuário a “marcar” manualmente)
+  const macro = estimateMacros(porcao, qualidade, objetivo);
+  state.prato.lastScore = base;
+  state.prato.lastMacros = macro;
+
+  // salva no histórico da evolução (gráfico)
+  pushHistory(base);
+
+  document.getElementById("score").innerHTML = `Score do Prato: <span style="color:var(--gold)">${base}</span>/100`;
+  document.getElementById("macroTxt").textContent = macro;
+
+  // efeito na evolução
+  ganharXP("prato");
+
+  saveState();
+  refreshHomeKpis();
+  renderHistory();
+  renderRanking();
+}
+
+function estimateMacros(porcao, qualidade, objetivo){
+  // heurística simples (modo local)
+  const multPorcao = porcao==="Pequena" ? 0.85 : (porcao==="Grande" ? 1.25 : 1.0);
+  const multQual = qualidade==="Excelente" ? 1.1 : (qualidade==="Boa" ? 1.05 : (qualidade==="Ruim" ? 0.9 : 1.0));
+  const baseCal = objetivo==="Hipertrofia" ? 650 : (objetivo==="Emagrecimento" ? 480 : 560);
+  const baseProt = objetivo==="Hipertrofia" ? 45 : 30;
+
+  const cal = Math.round(baseCal*multPorcao*multQual);
+  const prot = Math.round(baseProt*multPorcao);
+  return `Estimativa: ~${cal} kcal • ~${prot}g proteína (ajuste fino vem na IA real).`;
+}
+
+/* =========================
+   DIETA (VARIADA)
+========================= */
+const dietBank = {
+  "Emagrecimento": {
+    cafe: ["Ovos mexidos + café", "Iogurte + fruta", "Aveia + banana", "Pão integral + ovo", "Vitamina de banana (sem açúcar)"],
+    almoco: ["Frango + salada + arroz integral", "Carne magra + legumes", "Peixe + salada + batata doce", "Omelete + salada", "Frango desfiado + feijão + salada"],
+    jantar: ["Sopa de legumes + proteína", "Salada grande + frango", "Omelete + legumes", "Peixe + legumes", "Frango + salada"],
+    snack: ["Castanhas", "Fruta", "Iogurte", "Gelatina zero", "Queijo (se não tiver restrição)"]
+  },
+  "Low carb": {
+    cafe: ["Ovos + abacate", "Omelete + queijo", "Iogurte natural + chia", "Café + ovos", "Panqueca low carb"],
+    almoco: ["Carne + salada", "Frango + legumes", "Peixe + salada", "Hambúrguer caseiro + salada", "Frango + brócolis"],
+    jantar: ["Omelete + salada", "Sopa low carb", "Peixe + legumes", "Frango + legumes", "Carne + salada"],
+    snack: ["Castanhas", "Queijo", "Ovos cozidos", "Pepino", "Iogurte"]
+  },
+  "Hipertrofia": {
+    cafe: ["Aveia + banana + whey", "Pão + ovos + fruta", "Iogurte + granola", "Tapioca + frango", "Vitamina + pasta de amendoim"],
+    almoco: ["Arroz + feijão + carne", "Macarrão + frango", "Arroz + frango + legumes", "Batata doce + frango", "Arroz + peixe + legumes"],
+    jantar: ["Arroz + ovos + salada", "Batata + carne + salada", "Macarrão + carne", "Arroz + feijão + frango", "Wrap + frango"],
+    snack: ["Banana + pasta de amendoim", "Iogurte + granola", "Sanduíche integral", "Fruta + castanhas", "Vitamina"]
+  },
+  "Econômica": {
+    cafe: ["Ovos + café", "Pão + ovo", "Banana + aveia", "Cuscuz + ovo", "Fruta"],
+    almoco: ["Arroz + feijão + ovo", "Frango + arroz", "Carne moída + arroz", "Sardinha + arroz", "Feijão + ovo + salada"],
+    jantar: ["Sopa simples", "Omelete", "Arroz + feijão", "Cuscuz + ovos", "Frango desfiado"],
+    snack: ["Banana", "Maçã", "Iogurte", "Amendoim", "Pipoca sem óleo"]
+  },
+  "Vegetariana": {
+    cafe: ["Aveia + fruta", "Iogurte + granola", "Pão integral + pasta", "Vitamina", "Tapioca + queijo (se permitido)"],
+    almoco: ["Lentilha + arroz + salada", "Grão-de-bico + salada", "Feijão + arroz + legumes", "Quinoa + legumes", "Tofu + legumes"],
+    jantar: ["Sopa de legumes", "Omelete (ovolacto) + salada", "Lentilha + legumes", "Salada + grãos", "Legumes salteados"],
+    snack: ["Castanhas", "Frutas", "Iogurte", "Pasta de amendoim", "Chia + fruta"]
+  },
+  "Diabetes": {
+    cafe: ["Iogurte natural + chia", "Ovos + café", "Aveia (porção) + fruta", "Pão integral + ovo", "Vitamina sem açúcar"],
+    almoco: ["Proteína + fibras", "Frango + legumes + feijão", "Peixe + legumes", "Carne + salada", "Omelete + salada"],
+    jantar: ["Sopa + proteína", "Salada + frango", "Omelete + legumes", "Peixe + legumes", "Carne + salada"],
+    snack: ["Castanhas", "Iogurte", "Fruta com moderação", "Queijo (se permitido)", "Pepino"]
+  },
+  "Hipertensão": {
+    cafe: ["Fruta + aveia", "Ovos", "Iogurte", "Pão integral + ovo", "Cuscuz sem muito sal"],
+    almoco: ["Pouco sódio + legumes", "Frango + salada", "Peixe + legumes", "Carne + legumes", "Feijão + salada"],
+    jantar: ["Sopa leve", "Salada + proteína", "Omelete", "Peixe + legumes", "Frango + legumes"],
+    snack: ["Frutas", "Castanhas sem sal", "Iogurte", "Pepino", "Cenoura"]
+  },
+  "Sem lactose": {
+    cafe: ["Ovos", "Aveia + fruta", "Leite vegetal + café", "Pão + ovos", "Vitamina com leite vegetal"],
+    almoco: ["Frango + salada + arroz", "Carne + legumes", "Peixe + legumes", "Arroz + feijão + carne", "Batata doce + frango"],
+    jantar: ["Sopa", "Omelete", "Salada + frango", "Peixe + legumes", "Carne + salada"],
+    snack: ["Frutas", "Castanhas", "Pipoca", "Iogurte zero lactose (se tolerar)", "Barra simples"]
+  },
+  "Atletas": {
+    cafe: ["Aveia + banana + whey", "Pão + ovos + fruta", "Iogurte + granola", "Tapioca + frango", "Vitamina + pasta amendoim"],
+    almoco: ["Alto carbo + proteína", "Arroz + feijão + frango", "Macarrão + carne", "Batata + frango", "Arroz + peixe"],
+    jantar: ["Arroz + ovos", "Macarrão + frango", "Batata + carne", "Wrap + frango", "Arroz + feijão"],
+    snack: ["Fruta + pasta amendoim", "Iogurte + granola", "Sanduíche integral", "Vitamina", "Castanhas"]
+  },
+  "Idosos": {
+    cafe: ["Refeições leves + proteína", "Iogurte + fruta", "Aveia", "Ovos", "Vitamina leve"],
+    almoco: ["Frango desfiado + legumes", "Peixe + legumes", "Carne macia + legumes", "Sopa com proteína", "Arroz + feijão + frango"],
+    jantar: ["Sopa leve", "Omelete", "Peixe + legumes", "Frango + legumes", "Salada + frango"],
+    snack: ["Fruta", "Iogurte", "Castanhas", "Chá + fruta", "Gelatina"]
+  }
+};
+
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)] }
+
+function gerarDieta(){
+  const tipo = document.getElementById("tipoDieta").value;
+  const dias = Number(document.getElementById("diasPlano").value || 1);
+
+  const bank = dietBank[tipo] || dietBank["Saúde"] || dietBank["Emagrecimento"];
+  let html = "";
+  for(let d=1; d<=dias; d++){
+    html += `
+      <div class="card" style="margin-top:12px">
+        <div class="h2">Dia ${d}</div>
+        <div class="sub"><b>Café:</b> ${pick(bank.cafe)}</div>
+        <div class="sub" style="margin-top:8px"><b>Almoço:</b> ${pick(bank.almoco)}</div>
+        <div class="sub" style="margin-top:8px"><b>Jantar:</b> ${pick(bank.jantar)}</div>
+        <div class="small" style="margin-top:10px"><b>Snack:</b> ${pick(bank.snack)}</div>
+      </div>
+    `;
+  }
+  document.getElementById("dieta").innerHTML = html;
+}
+
+/* =========================
+   TREINO (ESPORTE + NÍVEL + CONDIÇÃO)
+========================= */
+function gerarTreino(){
+  const esporte = state.perfil.esporte || "Musculação";
+  const nivel = state.perfil.nivel || "Iniciante";
+  const cond = state.perfil.condicao || "Nenhuma";
+
+  const base = buildTreino(esporte, nivel, cond);
+  document.getElementById("treino").innerHTML = `
+    <div class="card" style="margin-top:0">
+      <div class="h2">Hoje: ${esporte} • ${nivel}</div>
+      <div class="sub">${base.desc}</div>
+      <div class="hr"></div>
+      <div class="sub" style="white-space:pre-line">${base.lista}</div>
+      <div class="small" style="margin-top:10px">${base.obs}</div>
+    </div>
+  `;
+}
+
+function buildTreino(esporte, nivel, cond){
+  const adapt = (cond !== "Nenhuma") ? `Adaptado para: ${cond}.` : "Treino padrão.";
+  const lowImpact = (cond==="Idoso" || cond==="Mobilidade" || cond==="Lesões" || cond==="Reabilitação" || nivel==="Baixo impacto" || cond==="PCD");
+
+  // templates simples porém “com cara de app”
+  if(esporte==="Corrida"){
+    return {
+      desc: lowImpact ? "Foco em consistência, baixo impacto e progressão." : "Foco em condicionamento e ritmo.",
+      lista: lowImpact
+        ? "• Caminhada 25min\n• 6x (1min trote leve + 2min caminhada)\n• Alongamento 8min"
+        : (nivel==="Avançado"
+          ? "• Aquecimento 10min\n• Intervalado: 10x 400m forte / 200m leve\n• Desaceleração 10min"
+          : (nivel==="Intermediário"
+            ? "• Aquecimento 8min\n• Ritmo: 20min contínuo\n• Final: 6 tiros de 20s"
+            : "• Caminhada 8min\n• Corrida leve 15min\n• 5 tiros de 15s + descanso")),
+      obs: adapt
     };
+  }
 
-    function analisarPrato(){
-      const btn = $("btnAnalisar");
-      btn.textContent = "ANALISANDO...";
-      btn.disabled = true;
-      setTimeout(() => {
-        alert("IA: Frango (200g), Arroz (150g), Salada. Aprox 450kcal.");
-        btn.textContent = "ENVIAR PARA IA";
-        btn.disabled = false;
-        showOnly("viewDash");
-      }, 2000);
-    }
-
-    function buildSports(){
-      const container = $("sportsContainer");
-      if(!container) return;
-      container.innerHTML = SPORTS.map(s => `<div class="chip" onclick="this.classList.toggle('active')">${s}</div>`).join("");
-    }
-
-    function init(){
-      buildSports();
-      const user = localStorage.getItem(KEY_USER);
-      const guest = localStorage.getItem(KEY_GUEST);
-      if(user || guest) showOnly("viewDash");
-      else showOnly("viewWelcome");
-    }
-
-    window.onload = init;
-
-    const DIETAS_ADV = {
-      "Emagrecimento": { kcal: 1800, macros: "P:30% C:40% G:30%", treinos: [
-        ["A (Força)", ["Agachamento 3x12", "Supino 3x12", "Remada 3x12"]],
-        ["B (Cardio)", ["30min Corrida leve", "Abdominais 3x20"]],
-      ]},
-      "Hipertrofia": { kcal: 2800, macros: "P:35% C:45% G:20%", treinos: [
-        ["A (Empurrar)", ["Supino Inclinado 4x8", "Desenvolvimento 4x8", "Tríceps 3x10"]],
-        ["B (Puxar)", ["Barra Fixa 4x8", "Remada Curvada 4x8", "Bíceps 3x10"]],
-        ["C (Pernas)", ["Agachamento Livre 4x10", "Leg Press 4x10", "Panturrilha 4x15"]],
-      ]},
-      "Diabetes": { kcal: 2000, macros: "Baixo Índice Glicêmico", treinos: [
-        ["A (Resistência)", ["Circuito funcional 3 voltas", "Caminhada rápida 20min"]],
-      ]},
-      "Hipertensão": { kcal: 2000, macros: "Baixo Sódio / DASH", treinos: [
-        ["A (Leve)", ["Natação 40min", "Alongamento geral"]],
-      ]},
-      "Sem lactose": { kcal: 2200, macros: "Zero Lactose", treinos: [
-        ["A (Geral)", ["Treino Full Body 3x12"]],
-      ]},
+  if(esporte==="Futebol" || esporte==="Vôlei" || esporte==="Funcional"){
+    return {
+      desc: lowImpact ? "Mobilidade + resistência leve." : "Explosão + resistência + core.",
+      lista: lowImpact
+        ? "• Mobilidade 10min\n• Circuito leve 3x: agacha em cadeira (10), elevação panturrilha (12), remo elástico (12)\n• Caminhada 15min"
+        : (nivel==="Avançado"
+          ? "• Aquecimento 10min\n• Circuito 5x: sprint 20m, agacha 12, burpee 10, prancha 40s\n• Core: 3x (abdominal 20 + prancha 45s)"
+          : "• Aquecimento 8min\n• Circuito 4x: corrida curta 30s, agacha 12, flexão 10, prancha 30s\n• Alongamento 6min"),
+      obs: adapt
     };
+  }
 
-    const PERFIS_TREINO = {
-      "Iniciante": { dias: 3, desc: "Foco em técnica e adaptação" },
-      "Intermediário": { dias: 4, desc: "Progressão de carga e volume" },
-      "Avançado": { dias: 5, desc: "Alta intensidade e especificidade" },
-      "Baixo impacto": { dias: 3, desc: "Preservação articular" },
-      "Mobilidade / Lesão": { dias: 7, desc: "Foco em recuperação e amplitude" },
-      "Idoso": { dias: 3, desc: "Equilíbrio, força funcional e densidade óssea" },
-      "PCD": { dias: 3, treinos: [
-        ["A (Adaptado)", ["Exercícios com elástico", "Fortalecimento de core", "Cardio adaptado (cadeira)"]],
-        ["B (Leve)", ["Alongamento", "Mobilidade", "Caminhada/roda (conforme capacidade)"]],
-      ]},
+  if(esporte==="Natação" || esporte==="Ciclismo"){
+    return {
+      desc: lowImpact ? "Cardio contínuo leve." : "Cardio com variações.",
+      lista: lowImpact
+        ? "• 25–35min contínuo leve\n• 6min mobilidade\n• Respiração 3min"
+        : (nivel==="Avançado"
+          ? "• 10min leve\n• 6x 3min forte / 2min leve\n• 8min leve"
+          : "• 8min leve\n• 4x 3min moderado / 2min leve\n• 6min leve"),
+      obs: adapt
     };
+  }
 
-    function guessDietaTipo(){
-      const obj = (($("objetivo")?.value || "") + "").toLowerCase();
-      const res = (($("restricao")?.value || "") + "").toLowerCase();
-      if(res.includes("lact")) return "Sem lactose";
-      if(res.includes("diab")) return "Diabetes";
-      if(res.includes("hipert")) return "Hipertensão";
-      if(obj.includes("hiper") || obj.includes("massa")) return "Hipertrofia";
-      return "Emagrecimento";
-    }
+  // Musculação / Crossfit / Luta (genérico forte)
+  const hipertrofia = (state.cadastro.objetivo==="Hipertrofia");
+  const baseDesc = lowImpact ? "Força controlada + segurança." : (hipertrofia ? "Foco em hipertrofia e progressão." : "Foco em força e condicionamento.");
+  const lista = lowImpact
+    ? "• Agachamento em cadeira 3x10\n• Remada elástico 3x12\n• Elevação lateral leve 3x12\n• Ponte glúteo 3x12\n• Prancha joelhos 3x25s"
+    : (nivel==="Avançado"
+      ? "• Agachamento 5x5\n• Supino 5x5\n• Remada 4x8\n• Terra 3x5\n• Core: prancha 3x60s"
+      : (nivel==="Intermediário"
+        ? "• Agachamento 4x8\n• Supino 4x8\n• Remada 4x10\n• Desenvolvimento 3x10\n• Core: 3x (abdominal 20 + prancha 40s)"
+        : "• Agacha 3x10\n• Flexão 3x8\n• Remada 3x10\n• Desenvolvimento 3x10\n• Caminhada 10min"));
+  return {desc: baseDesc, lista, obs: adapt};
+}
 
-    function populateAdvSelects(){
-      const dietaSel = $("dietaTipo");
-      if(dietaSel && dietaSel.options.length === 0){
-        Object.keys(DIETAS_ADV).forEach(k=>{
-          const o=document.createElement("option"); o.value=k; o.textContent=k; dietaSel.appendChild(o);
-        });
-      }
-      const trSel = $("treinoPerfil");
-      if(trSel && trSel.options.length === 0){
-        ["Iniciante","Intermediário","Avançado","Baixo impacto","Mobilidade / Lesão","Idoso","PCD"].forEach(k=>{
-          const o=document.createElement("option"); o.value=k; o.textContent=k; trSel.appendChild(o);
-        });
-      }
-    }
-  </script>
+function marcarTreinoFeito(){
+  // validação real depende de backend/sensores; aqui é modo local
+  ganharXP("treino");
+  alert("✅ Treino registrado. Você ganhou XP e aumentou o streak.");
+  saveState();
+  refreshHomeKpis();
+  renderHistory();
+  renderRanking();
+}
+
+/* =========================
+   SAÚDE (links por tópico)
+========================= */
+function abrirSaude(tipo){
+  const map = {
+    diabetes: "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/diabetes",
+    hipertensao: "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/h/hipertensao",
+    colesterol: "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/c/colesterol",
+    obesidade: "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/o/obesidade",
+    sono: "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/sono",
+    mental: "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-mental",
+    anabolizantes: "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/anabolizantes"
+  };
+  const url = map[tipo] || "https://www.gov.br/saude";
+  window.open(url, "_blank");
+}
+
+/* =========================
+   PROGRESSO
+========================= */
+function registrarProgresso(){
+  const intensidade = document.getElementById("intensidade").value;
+  const duracao = document.getElementById("duracao").value;
+  const now = new Date();
+  const item = `${now.toLocaleDateString("pt-BR")} • ${intensidade} • ${duracao}`;
+
+  state.progresso.registros.unshift(item);
+  if(state.progresso.registros.length > 30) state.progresso.registros.length = 30;
+
+  // também conta como treino
+  ganharXP("treino");
+
+  saveState();
+  renderProgresso();
+  refreshHomeKpis();
+  renderHistory();
+  renderRanking();
+}
+
+function renderProgresso(){
+  const box = document.getElementById("historico");
+  if(!state.progresso.registros.length){
+    box.innerHTML = `<div class="small">Nenhum treino registrado ainda.</div>`;
+    return;
+  }
+  box.innerHTML = state.progresso.registros.map(x=>`<div class="badge" style="display:block;border-radius:16px;margin-top:8px">${x}</div>`).join("");
+}
+
+/* =========================
+   EVOLUÇÃO (XP / STREAK / MEDALHAS)
+========================= */
+function ganharXP(from){
+  // incrementos
+  const add = (from==="treino") ? 18 : 10;
+  state.evolucao.xp += add;
+  state.evolucao.weekPoints += add;
+
+  // streak (local): cada ação incrementa, depois você pode trocar por “1 por dia”
+  state.evolucao.streak += 1;
+
+  // level up
+  while(state.evolucao.xp >= 100){
+    state.evolucao.xp -= 100;
+    state.evolucao.nivel += 1;
+    state.evolucao.medalhas += 1;
+  }
+
+  refreshEvolutionUI();
+  refreshHomeKpis();
+  saveState();
+}
+
+function refreshEvolutionUI(){
+  document.getElementById("xpUser").textContent = state.evolucao.xp;
+  document.getElementById("nivelUser").textContent = state.evolucao.nivel;
+  document.getElementById("streak").textContent = state.evolucao.streak;
+  document.getElementById("medalhas").textContent = state.evolucao.medalhas;
+
+  const pct = Math.max(10, Math.min(100, state.evolucao.xp));
+  document.getElementById("barraXP2").style.width = pct + "%";
+  document.getElementById("barraXP").style.width = pct + "%";
+
+  document.getElementById("medalhasTxt").textContent = state.evolucao.medalhas;
+  document.getElementById("kpiStreak").textContent = state.evolucao.streak;
+  document.getElementById("kpiNivel").textContent = state.evolucao.nivel;
+
+  document.getElementById("metaProtShow").textContent = `${state.cadastro.metaProt}g/dia`;
+  document.getElementById("metaProtTxt").textContent = `${state.cadastro.metaProt}g`;
+}
+
+function refreshHomeKpis(){
+  const last = state.prato.lastScore;
+  document.getElementById("kpiScore").textContent = (last===null || last===undefined) ? "—" : String(last);
+}
+
+/* history for graph */
+function pushHistory(score){
+  if(!Number.isFinite(score)) return;
+  state.evolucao.history.push(score);
+  if(state.evolucao.history.length > 14) state.evolucao.history.shift();
+}
+
+function renderHistory(){
+  const grid = document.getElementById("sparkGrid");
+  const legend = document.getElementById("sparkLegend");
+  const data = state.evolucao.history.length ? state.evolucao.history : [10,18,25,35,42,55,60,48,62,70,74];
+
+  grid.innerHTML = "";
+  const max = Math.max(...data, 1);
+  data.forEach((v)=>{
+    const h = Math.round((v/max)*100);
+    const el = document.createElement("div");
+    el.className = "sparkBar";
+    el.style.height = Math.max(12, h) + "%";
+    el.title = `Score: ${v}`;
+    grid.appendChild(el);
+  });
+
+  const last = data[data.length-1];
+  legend.textContent = `Último Score: ${last} • Treinos semana: ${countTreinosSemana()} • Pontos semana: ${state.evolucao.weekPoints}`;
+}
+
+function countTreinosSemana(){
+  // local simplificado: conta registros do progresso como “semana”
+  return Math.min(state.progresso.registros.length, 7);
+}
+
+/* ranking local */
+function renderRanking(){
+  const box = document.getElementById("ranking");
+
+  const you = (state.cadastro.nome || "Você").trim() || "Você";
+  const points = state.evolucao.weekPoints;
+
+  // ranking local “bonito”, sem mentir que é multi-usuário real
+  const rivals = [
+    {name:"Lucas", pts: Math.max(40, points-12)},
+    {name:"Maria", pts: Math.max(35, points-18)},
+    {name:"João",  pts: Math.max(30, points-22)},
+    {name:you,     pts: points}
+  ].sort((a,b)=>b.pts-a.pts);
+
+  box.innerHTML = rivals.map((r,i)=>{
+    const medal = i===0?"🥇":(i===1?"🥈":(i===2?"🥉":"🏁"));
+    const me = r.name===you ? ` <span style="color:var(--green)">(você)</span>` : "";
+    return `<div class="badge" style="display:block;border-radius:16px;margin-top:8px">
+      ${medal} <b>#${i+1}</b> ${r.name}${me} — <b>${r.pts}</b> pts
+    </div>`;
+  }).join("");
+}
+
+/* =========================
+   CONVITES
+========================= */
+function makeInviteCode(nome){
+  const base = String(nome || "CHECK").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,5) || "CHECK";
+  const rnd = Math.floor(Math.random()*900 + 100); // 3 dígitos
+  return `${base}-${rnd}`;
+}
+
+function copiarConvite(){
+  const msg = document.getElementById("inviteMsg").value;
+  navigator.clipboard?.writeText(msg).then(()=>{
+    document.getElementById("inviteStatus").textContent = "✅ Copiado.";
+  }).catch(()=>{
+    document.getElementById("inviteStatus").textContent = "Copie manualmente o texto acima.";
+  });
+}
+
+function compartilharConvite(){
+  const msg = document.getElementById("inviteMsg").value;
+  if(navigator.share){
+    navigator.share({text: msg}).then(()=>{
+      document.getElementById("inviteStatus").textContent = "✅ Compartilhado.";
+    }).catch(()=>{});
+  }else{
+    copiarConvite();
+  }
+}
+
+/* =========================
+   PWA SW REGISTER (se existir no repo)
+========================= */
+(function registerSW(){
+  if(!("serviceWorker" in navigator)) return;
+  navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
+})();
+
+/* =========================
+   INIT
+========================= */
+loadState();
+bindFormFromState();
+renderHistory();
+renderRanking();
+renderProgresso();
+</script>
 </body>
 </html>
