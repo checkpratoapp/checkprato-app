@@ -1,1597 +1,1934 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>CheckPrato • Elite</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CheckPrato Elite</title>
 
-  <meta name="theme-color" content="#03070f" />
-  <link rel="manifest" href="./manifest.json" />
+<style>
+:root{
+--bg:#02050b;
+--card:#081524;
+--neo:#21e6b6;
+--txt:#eaf2ff;
+--muted:#8aa0c7;
+}
 
-  <style>
-    :root{
-      --bg0:#02050b;
-      --bg1:#050d18;
-      --glass: rgba(8, 18, 32, .72);
-      --glass2: rgba(12, 26, 44, .62);
-      --stroke: rgba(255,255,255,.08);
+body{
+margin:0;
+font-family:system-ui;
+background:radial-gradient(circle at 20% 0%,#0a1f38,#000);
+color:var(--txt);
+}
 
-      --txt:#eaf2ff;
-      --muted:#9bb0d6;
+.wrap{
+max-width:760px;
+margin:auto;
+padding:18px;
+padding-bottom:120px;
+}
 
-      --neo:#21e6b6;
-      --neo2:#18c79f;
-      --gold:#f6b23a;
+.screen{display:none}
+.screen.active{display:block}
 
-      --shadow: 0 25px 80px rgba(0,0,0,.55);
-      --r: 22px;
-    }
+.h1{
+font-size:34px;
+font-weight:900;
+margin:10px 0;
+}
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color:var(--txt);
-      background: radial-gradient(1200px 700px at 20% 0%, #0a1f38 0%, var(--bg0) 55%, #000 100%);
-      overflow-x:hidden;
-    }
+.card{
+background:linear-gradient(180deg,#0b1a2d,#07111f);
+border-radius:22px;
+padding:16px;
+margin-top:14px;
+box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
 
-    /* STARFIELD + NEON */
-    body:before{
-      content:"";
-      position:fixed;
-      inset:-20%;
-      background:
-        radial-gradient(circle at 10% 20%, rgba(33,230,182,.20), transparent 40%),
-        radial-gradient(circle at 70% 30%, rgba(33,230,182,.12), transparent 45%),
-        radial-gradient(circle at 30% 80%, rgba(246,178,58,.10), transparent 45%),
-        radial-gradient(circle at 80% 85%, rgba(33,230,182,.10), transparent 45%),
-        radial-gradient(rgba(255,255,255,.22) 1px, transparent 1.5px),
-        radial-gradient(rgba(255,255,255,.10) 1px, transparent 1.5px);
-      background-size:
-        900px 900px,
-        900px 900px,
-        900px 900px,
-        900px 900px,
-        140px 140px,
-        240px 240px;
-      background-position:
-        0 0, 0 0, 0 0, 0 0,
-        0 0, 40px 30px;
-      filter: blur(.1px);
-      opacity:.95;
-      pointer-events:none;
-      z-index:-2;
-      animation: drift 18s linear infinite;
-    }
-    @keyframes drift{
-      from{transform: translate3d(0,0,0)}
-      to{transform: translate3d(-3%, 2%, 0)}
-    }
+.btn{
+width:100%;
+padding:14px;
+border:none;
+border-radius:18px;
+font-weight:900;
+background:linear-gradient(135deg,var(--neo),#18c79f);
+margin-top:12px;
+}
 
-    body:after{
-      content:"";
-      position:fixed;
-      inset:0;
-      background: radial-gradient(800px 400px at 50% 110%, rgba(33,230,182,.18), transparent 55%);
-      pointer-events:none;
-      z-index:-1;
-    }
+input,select{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:14px;
+border:none;
+background:#071728;
+color:var(--txt);
+}
 
-    .wrap{
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 18px 16px 120px;
-    }
+.nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:#071728;
+padding:10px;
+}
 
-    /* HEADER */
-    .top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin: 8px 0 14px;
-    }
-    .brand{
-      display:flex; align-items:center; gap:12px;
-      min-width: 0;
-    }
-    .logo{
-      width:44px; height:44px; border-radius:14px;
-      background: linear-gradient(135deg, rgba(33,230,182,1), rgba(24,199,159,1));
-      display:flex; align-items:center; justify-content:center;
-      color:#041a14; font-weight:900;
-      box-shadow: 0 12px 32px rgba(0,0,0,.55), 0 0 28px rgba(33,230,182,.25);
-      flex: 0 0 auto;
-      user-select:none;
-    }
-    .brandTxt{min-width:0}
-    .brandTxt b{color: var(--neo)}
-    .brandTxt .sub{color:var(--muted); font-size:12px; opacity:.95}
+.navInner{
+display:flex;
+gap:8px;
+}
 
-    .pill{
-      display:flex; align-items:center; gap:10px;
-      padding: 10px 12px;
-      border-radius: 999px;
-      background: rgba(8, 18, 32, .65);
-      border: 1px solid var(--stroke);
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-      font-weight: 800;
-      color: var(--txt);
-      flex: 0 0 auto;
-    }
-    .dot{
-      width:10px; height:10px; border-radius:50%;
-      background: var(--neo);
-      box-shadow: 0 0 16px rgba(33,230,182,.65);
-    }
-    .pill small{color:var(--muted); font-weight:700}
-
-    /* LAYOUT */
-    .screen{display:none}
-    .screen.active{display:block}
-
-    .h1{
-      font-size: 38px;
-      line-height: 1.05;
-      margin: 10px 0 12px;
-      font-weight: 950;
-      letter-spacing: -0.6px;
-      text-shadow: 0 0 18px rgba(33,230,182,.10);
-    }
-    .h1 .neo{color:var(--neo)}
-    .hint{color:var(--muted); font-weight:650; max-width: 62ch}
-
-    .card{
-      background: linear-gradient(180deg, rgba(12, 26, 44, .66), rgba(7, 16, 28, .70));
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
-      padding: 16px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      position: relative;
-      overflow:hidden;
-      margin-top: 14px;
-    }
-    .card:before{
-      content:"";
-      position:absolute; inset:-1px;
-      background: radial-gradient(500px 120px at 20% 0%, rgba(33,230,182,.16), transparent 60%);
-      pointer-events:none;
-    }
-
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    @media (max-width:520px){
-      .grid2{grid-template-columns:1fr}
-      .h1{font-size:34px}
-    }
-
-    .label{
-      font-size: 12px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: rgba(234,242,255,.72);
-      font-weight: 900;
-      margin: 10px 0 6px;
-    }
-
-    input, select, textarea{
-      width:100%;
-      padding: 14px 14px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(5, 12, 22, .65);
-      color: var(--txt);
-      outline: none;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,.15);
-    }
-    textarea{min-height: 96px; resize: vertical}
-
-    .btnRow{display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px}
-    .btn{
-      flex: 1 1 160px;
-      padding: 14px 14px;
-      border-radius: 18px;
-      border: 0;
-      cursor: pointer;
-      font-weight: 950;
-      letter-spacing: .02em;
-      color: #032219;
-      background: linear-gradient(135deg, var(--neo), var(--neo2));
-      box-shadow: 0 18px 44px rgba(0,0,0,.42), 0 0 24px rgba(33,230,182,.20);
-    }
-    .btn.secondary{
-      background: rgba(255,255,255,.06);
-      color: var(--txt);
-      border: 1px solid rgba(255,255,255,.10);
-      box-shadow: 0 16px 40px rgba(0,0,0,.35);
-    }
-    .btn.ghost{
-      background: transparent;
-      color: var(--txt);
-      border: 1px dashed rgba(255,255,255,.18);
-      box-shadow: none;
-    }
-
-    .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top: 10px}
-    .chip{
-      padding: 10px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      color: rgba(234,242,255,.92);
-      font-weight: 850;
-      cursor:pointer;
-      user-select:none;
-    }
-    .chip.on{
-      border-color: rgba(33,230,182,.55);
-      box-shadow: 0 0 0 1px rgba(33,230,182,.30), 0 0 18px rgba(33,230,182,.18);
-      background: rgba(33,230,182,.10);
-    }
-
-    /* STATS */
-    .statGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 12px;
-    }
-    @media (max-width:520px){ .statGrid{grid-template-columns:1fr} }
-    .stat{
-      background: rgba(3,7,15,.40);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 18px;
-      padding: 14px;
-      position:relative;
-      overflow:hidden;
-    }
-    .stat:before{
-      content:"";
-      position:absolute; inset:-1px;
-      background: radial-gradient(400px 140px at 15% 0%, rgba(33,230,182,.20), transparent 60%);
-      pointer-events:none;
-      opacity:.8;
-    }
-    .stat .k{font-size:12px; letter-spacing:.14em; text-transform:uppercase; color: rgba(234,242,255,.70); font-weight:900}
-    .stat .v{font-size:28px; font-weight:950; margin-top: 6px}
-    .stat .s{color: var(--muted); font-weight:700; margin-top: 2px}
-
-    .ring{
-      width: 120px; height: 120px;
-      border-radius: 999px;
-      border: 2px solid rgba(255,255,255,.10);
-      display:grid; place-items:center;
-      margin-left:auto;
-      background: radial-gradient(circle at 40% 30%, rgba(33,230,182,.18), transparent 60%);
-      box-shadow: inset 0 0 0 10px rgba(0,0,0,.18), 0 0 26px rgba(33,230,182,.14);
-      position: relative;
-      overflow:hidden;
-    }
-    .ring .big{font-size:34px; font-weight:950; color: rgba(234,242,255,.95)}
-    .ring .small{font-size:12px; color: rgba(234,242,255,.70); font-weight:800}
-    .ringbar{
-      position:absolute; inset:-20%;
-      background: conic-gradient(var(--neo) var(--pct), rgba(255,255,255,.08) 0);
-      mask: radial-gradient(circle at 50% 50%, transparent 56%, #000 58%);
-      -webkit-mask: radial-gradient(circle at 50% 50%, transparent 56%, #000 58%);
-      filter: drop-shadow(0 0 16px rgba(33,230,182,.22));
-    }
-
-    /* LIST */
-    .list{margin-top: 12px; display:flex; flex-direction:column; gap:10px}
-    .item{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding: 12px 12px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.09);
-    }
-    .item b{font-weight:950}
-    .item .sub{color:var(--muted); font-weight:700; font-size: 13px}
-    .miniBtn{
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(33,230,182,.40);
-      background: rgba(33,230,182,.10);
-      color: var(--txt);
-      font-weight: 900;
-      cursor:pointer;
-    }
-
-    /* NAV */
-    .nav{
-      position: fixed;
-      left: 0; right: 0; bottom: 0;
-      padding: 12px 12px calc(14px + env(safe-area-inset-bottom));
-      background: linear-gradient(180deg, rgba(2,5,11,0), rgba(2,5,11,.55) 22%, rgba(2,5,11,.92));
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-top: 1px solid rgba(255,255,255,.06);
-      z-index: 50;
-    }
-    .navInner{
-      max-width: 760px;
-      margin: 0 auto;
-      display:flex;
-      gap: 10px;
-      justify-content: space-between;
-    }
-    .navBtn{
-      flex: 1;
-      padding: 10px 10px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(8, 18, 32, .55);
-      color: rgba(234,242,255,.74);
-      font-weight: 900;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      user-select:none;
-      min-width: 0;
-    }
-    .navBtn span{font-size:12px}
-    .navBtn.active{
-      color: var(--neo);
-      border-color: rgba(33,230,182,.35);
-      background: rgba(33,230,182,.10);
-      box-shadow: 0 0 0 1px rgba(33,230,182,.18), 0 0 18px rgba(33,230,182,.14);
-    }
-
-    /* TOAST */
-    .toast{
-      position: fixed;
-      left: 50%;
-      bottom: 92px;
-      transform: translateX(-50%);
-      padding: 10px 12px;
-      border-radius: 999px;
-      background: rgba(0,0,0,.55);
-      border: 1px solid rgba(255,255,255,.10);
-      color: rgba(234,242,255,.92);
-      font-weight: 850;
-      opacity: 0;
-      pointer-events:none;
-      transition: opacity .22s ease, transform .22s ease;
-      z-index: 60;
-      max-width: 92vw;
-      text-align:center;
-    }
-    .toast.on{
-      opacity: 1;
-      transform: translateX(-50%) translateY(-6px);
-    }
-
-    .divider{
-      height:1px;
-      background: rgba(255,255,255,.08);
-      margin: 12px 0;
-    }
-  </style>
+.navBtn{
+flex:1;
+border:none;
+padding:10px;
+border-radius:14px;
+background:#0c2138;
+color:#a0b6da;
+font-weight:700;
+}
+.navBtn.active{
+color:var(--neo);
+}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="top">
-      <div class="brand">
-        <div class="logo" id="logoBtn">E</div>
-        <div class="brandTxt">
-          <div><b>CheckPrato</b> <span style="opacity:.85">• Elite</span></div>
-          <div class="sub" id="hdrSub">Modo: Local • Offline ready</div>
-        </div>
-      </div>
-      <div class="pill" title="Status">
-        <span class="dot" id="netDot"></span>
-        <div><div style="font-weight:950" id="netTxt">Online</div><small id="hdrUser">Visitante</small></div>
-      </div>
+
+<div class="wrap">
+
+<!-- 1 ACESSO -->
+<section id="viewAcesso" class="screen active">
+
+<div class="h1">Acesso</div>
+
+<div class="card">
+
+<button class="btn" onclick="loginGoogle()">Entrar com Google</button>
+
+<input id="email" placeholder="Email">
+<input id="senha" placeholder="Senha" type="password">
+
+<button class="btn" onclick="login()">Entrar</button>
+
+<button class="btn" onclick="show('viewCadastro')">Criar conta</button>
+
+</div>
+</section>
+<!-- 2 CADASTRO -->
+<section id="viewCadastro" class="screen">
+
+<div class="h1">Cadastro</div>
+
+<div class="card">
+
+<div style="display:flex;gap:14px;align-items:center">
+
+  <div style="width:88px;height:88px;border-radius:18px;background:#071728;overflow:hidden;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center">
+    <img id="previewFoto" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none">
+    <div id="fotoPlaceholder" style="font-weight:900;color:rgba(234,242,255,.65);text-align:center;font-size:12px;line-height:1.2">
+      FOTO<br>PERFIL
     </div>
-
-    <!-- 1) ACESSO -->
-    <section id="viewAcesso" class="screen">
-      <div class="h1">Acesso</div>
-      <div class="hint">Entre com Google, e-mail ou use modo local.</div>
-
-      <div class="card">
-        <div class="label">Entrar rápido</div>
-        <div class="btnRow">
-          <button class="btn" type="button" onclick="loginGoogle()">Continuar com Google</button>
-          <button class="btn secondary" type="button" onclick="useLocal()">Usar modo local</button>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="label">E-mail e senha</div>
-        <div class="grid2">
-          <input id="l_email" placeholder="Seu e-mail" inputmode="email" />
-          <input id="l_senha" placeholder="Sua senha" type="password" />
-        </div>
-
-        <div class="btnRow">
-          <button class="btn" type="button" onclick="loginEmail()">Entrar</button>
-          <button class="btn secondary" type="button" onclick="criarConta()">Criar conta</button>
-        </div>
-
-        <div class="btnRow">
-          <button class="btn ghost" type="button" onclick="goCadastro()">Ir para cadastro</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2) CADASTRO -->
-    <section id="viewCadastro" class="screen">
-      <div class="h1">Cadastro</div>
-      <div class="hint">Seu perfil define dieta, treinos e adaptações.</div>
-
-      <div class="card">
-        <div class="grid2">
-          <div>
-            <div class="label">Nome</div>
-            <input id="f_nome" placeholder="Seu nome" />
-          </div>
-          <div>
-            <div class="label">Objetivo</div>
-            <select id="f_objetivo">
-              <option value="emagrecimento">Emagrecimento</option>
-              <option value="hipertrofia">Hipertrofia</option>
-              <option value="saude">Saúde</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid2">
-          <div>
-            <div class="label">Restrição</div>
-            <select id="f_restricao">
-              <option value="nenhuma">Nenhuma</option>
-              <option value="diabetes">Diabetes</option>
-              <option value="hipertensao">Hipertensão</option>
-              <option value="colesterol">Colesterol</option>
-              <option value="lactose">Intolerância à lactose</option>
-              <option value="gluten">Intolerância ao glúten</option>
-            </select>
-          </div>
-          <div>
-            <div class="label">PCD / dificuldade</div>
-            <select id="f_pcd">
-              <option value="nao">Não</option>
-              <option value="mobilidade">Mobilidade reduzida</option>
-              <option value="visual">Visual</option>
-              <option value="auditiva">Auditiva</option>
-              <option value="idoso">Idoso</option>
-              <option value="lesoes">Lesões / limitações</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="label">Esportes (marque vários)</div>
-        <div class="chips" id="sportChips"></div>
-
-        <div class="grid2">
-          <div>
-            <div class="label">Meta semanal (treinos)</div>
-            <select id="f_goal">
-              <option value="3">3 treinos</option>
-              <option value="5" selected>5 treinos</option>
-              <option value="6">6 treinos</option>
-              <option value="7">7 treinos</option>
-            </select>
-          </div>
-          <div>
-            <div class="label">Aceite</div>
-            <label style="display:flex; gap:10px; align-items:center; padding:12px 12px; border:1px solid rgba(255,255,255,.10); border-radius:16px; background: rgba(255,255,255,.04); margin-top:6px; font-weight:850">
-              <input id="f_terms" type="checkbox" style="width:18px;height:18px; margin:0" />
-              Aceito o termo (informativo)
-            </label>
-          </div>
-        </div>
-
-        <div class="btnRow">
-          <button class="btn" type="button" onclick="saveProfile()">Salvar cadastro</button>
-          <button class="btn secondary" type="button" onclick="openView('viewBoasVindas')">Ir para boas-vindas</button>
-        </div>
-        <div class="btnRow">
-          <button class="btn ghost" type="button" onclick="resetAll()">Resetar tudo</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3) BOAS-VINDAS -->
-    <section id="viewBoasVindas" class="screen">
-      <div class="h1">Boas-vindas</div>
-      <div class="hint">Frases de impacto para manter sua mente no jogo.</div>
-
-      <div class="card">
-        <div class="label">Mensagem</div>
-        <div style="font-size:20px; font-weight:950; line-height:1.25" id="welcomePhrase">
-          Você não precisa de motivação. Precisa de direção.
-        </div>
-        <div style="margin-top:10px; color:var(--muted); font-weight:750" id="welcomeSub">
-          Pequenas escolhas hoje. Uma versão absurda de você amanhã.
-        </div>
-
-        <div class="btnRow">
-          <button class="btn" type="button" onclick="nextWelcome()">Trocar frase</button>
-          <button class="btn secondary" type="button" onclick="openView('viewDashboard')">Entrar no app</button>
-        </div>
-
-        <div class="btnRow">
-          <button class="btn ghost" type="button" onclick="disableWelcome()">Não mostrar novamente</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 7) DASHBOARD (Evolução / visão geral) -->
-    <section id="viewDashboard" class="screen">
-      <div class="h1">Dashboard</div>
-      <div class="hint">Visão geral do seu dia e da sua semana.</div>
-
-      <div class="card">
-        <div class="grid2" style="align-items:center">
-          <div>
-            <div class="label">Seu progresso</div>
-            <div style="font-size:22px;font-weight:950" id="dashName">Visitante</div>
-            <div style="color:var(--muted);font-weight:750" id="dashMeta">Meta semanal: <b id="dashGoal">5 treinos</b></div>
-            <div style="margin-top:10px;color:rgba(234,242,255,.85);font-weight:800">
-              🔥 Streak: <b id="dashStreak">0</b> dias • 🏅 Medalhas: <b id="dashBadges">0</b>
-            </div>
-          </div>
-
-          <div class="ring" aria-label="Score nutricional">
-            <div class="ringbar" id="ringBar" style="--pct: 0deg"></div>
-            <div style="text-align:center; position:relative; z-index:1">
-              <div class="big" id="dashNutri">0.0</div>
-              <div class="small">Nutrition Score</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="statGrid">
-          <div class="stat">
-            <div class="k">Treinos na semana</div>
-            <div class="v"><span id="dashWorkouts">0</span></div>
-            <div class="s">Conclua treino para registrar.</div>
-          </div>
-          <div class="stat">
-            <div class="k">Pratos avaliados</div>
-            <div class="v"><span id="dashMeals">0</span></div>
-            <div class="s">Score por qualidade.</div>
-          </div>
-        </div>
-
-        <div class="btnRow">
-          <button class="btn" type="button" onclick="openView('viewPrato')">📸 Analisar prato</button>
-          <button class="btn secondary" type="button" onclick="openView('viewTreino')">🏋️ Gerar treino</button>
-        </div>
-
-        <div class="btnRow">
-          <button class="btn secondary" type="button" onclick="openView('viewDieta')">🥗 Dietas</button>
-          <button class="btn secondary" type="button" onclick="openView('viewProgresso')">📈 Progresso</button>
-        </div>
-
-        <div class="btnRow">
-          <button class="btn secondary" type="button" onclick="openView('viewEvolucao')">🏆 Evolução</button>
-          <button class="btn secondary" type="button" onclick="openView('viewMenu')">≡ Menu</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="label">Última refeição</div>
-        <div id="lastMealBox" class="item">
-          <div>
-            <b>Nenhuma refeição registrada</b>
-            <div class="sub">Use “Analisar prato”.</div>
-          </div>
-          <button class="miniBtn" type="button" onclick="openView('viewPrato')">Ir</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- MENU (atalhos para as abas 10/11 e extras) -->
-    <section id="viewMenu" class="screen">
-      <div class="h1">Menu</div>
-      <div class="hint">Acesso rápido às áreas do app.</div>
-
-      <div class="card">
-        <div class="list">
-          <div class="item"><div><b>🥗 Dietas</b><div class="sub">Gerar / trocar</div></div><button class="miniBtn" onclick="openView('viewDieta')">Abrir</button></div>
-          <div class="item"><div><b>🏋️ Treinos</b><div class="sub">Gerar / concluir</div></div><button class="miniBtn" onclick="openView('viewTreino')">Abrir</button></div>
-          <div class="item"><div><b>🏆 Evolução</b><div class="sub">XP, streak, ranking</div></div><button class="miniBtn" onclick="openView('viewEvolucao')">Abrir</button></div>
-          <div class="item"><div><b>📈 Progresso</b><div class="sub">Meta semanal</div></div><button class="miniBtn" onclick="openView('viewProgresso')">Abrir</button></div>
-          <div class="item"><div><b>🩺 Saúde</b><div class="sub">Tópicos e fontes</div></div><button class="miniBtn" onclick="openView('viewSaude')">Abrir</button></div>
-          <div class="item"><div><b>🛍️ Loja</b><div class="sub">Oficial / parceiros</div></div><button class="miniBtn" onclick="openView('viewLoja')">Abrir</button></div>
-          <div class="item"><div><b>📩 Convite</b><div class="sub">Compartilhar app</div></div><button class="miniBtn" onclick="openView('viewConvite')">Abrir</button></div>
-          <div class="item"><div><b>👤 Perfil</b><div class="sub">Configurações</div></div><button class="miniBtn" onclick="openView('viewPerfil')">Abrir</button></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4) PRATO -->
-    <section id="viewPrato" class="screen">
-      <div class="h1">Prato</div>
-      <div class="hint">Score por qualidade (descrição + foto opcional).</div>
-
-      <div class="card">
-        <div class="grid2">
-          <div>
-            <div class="label">Modo</div>
-            <select id="m_mealMode">
-              <option value="descricao">Descrição</option>
-              <option value="foto">Foto</option>
-              <option value="descricao_foto">Descrição + Foto</option>
-            </select>
-          </div>
-          <div>
-            <div class="label">Porção</div>
-            <select id="m_portion">
-              <option value="p">Pequena</option>
-              <option value="m" selected>Média</option>
-              <option value="g">Grande</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="label">Descrição</div>
-        <textarea id="m_desc" placeholder="Ex: arroz, feijão, frango, salada, suco..."></textarea>
-
-        <div class="label">Foto (opcional)</div>
-        <input id="m_photo" type="file" accept="image/*" />
-
-        <div class="btnRow">
-          <button class="btn" type="button" onclick="analyzeMeal()">Analisar & salvar</button>
-          <button class="btn secondary" type="button" onclick="clearMealForm()">Limpar</button>
-        </div>
-
-        <div class="statGrid">
-          <div class="stat">
-            <div class="k">Score do prato</div>
-            <div class="v"><span id="m_score">—</span> <span style="font-size:16px; opacity:.85">/ 100</span></div>
-            <div class="s" id="m_msg">Dica: inclua proteína + fibras.</div>
-          </div>
-          <div class="stat">
-            <div class="k">Nutrição (0–10)</div>
-            <div class="v"><span id="m_nutri">—</span></div>
-            <div class="s">Atualiza seu score do dashboard.</div>
-          </div>
-        </div>
-
-        <div class="list" id="mealHistory"></div>
-      </div>
-    </section>
-
-    <!-- 5) DIETAS -->
-    <section id="viewDieta" class="screen">
-      <div class="h1">Dietas</div>
-      <div class="hint">Gere e troque sem ficar repetitivo.</div>
-
-      <div class="card">
-        <div class="grid2">
-          <div>
-            <div class="label">Tipo</div>
-            <select id="d_tipo">
-              <option value="hipertrofia">Hipertrofia</option>
-              <option value="emagrecimento">Emagrecimento</option>
-              <option value="lowcarb">Low carb</option>
-              <option value="economica">Econômica</option>
-              <option value="vegetariana">Vegetariana</option>
-              <option value="diabetes">Diabetes</option>
-              <option value="hipertensao">Hipertensão</option>
-              <option value="sem_lactose">Sem lactose</option>
-              <option value="idoso">Idosos</option>
-              <option value="atleta">Atletas</option>
-            </select>
-          </div>
-          <div>
-            <div class="label">Preferência</div>
-            <select id="d_pref">
-              <option value="brasil">Brasil (comida normal)</option>
-              <option value="pratica">Prática / rápida</option>
-              <option value="sem_fogao">Sem fogão</option>
-              <option value="barata">Mais barata</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="btnRow">
-          <button class="btn" type="button" onclick="genDiet(false)">Gerar dieta</button>
-          <button class="btn secondary" type="button" onclick="genDiet(true)">Trocar</button>
-        </div>
-
-        <div class="card" style="margin-top:12px">
-          <div class="label" id="dietHdr">Escolha um estilo e gere uma rotina.</div>
-          <div id="dietOut" class="list"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 6) TREINOS -->
-    <section id="viewTreino" class="screen">
-      <div class="h1">Treinos</div>
-      <div class="hint">Treino por esporte + intensidade + condição. Concluir soma pontos na evolução.</div>
-
-      <div class="card">
-        <div class="grid2">
-          <div>
-            <div class="label">Esporte</div>
-            <select id="t_sport"></select>
-          </div>
-          <div>
-            <div class="label">Intensidade</div>
-            <select id="t_int">
-              <option value="leve">Leve</option>
-              <option value="moderado" selected>Moderado</option>
-              <option value="pesado">Pesado</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid2">
-          <div>
-            <div class="label">Condição</div>
-            <select id="t_cond">
-              <option value="normal" selected>Normal</option>
-              <option value="baixo_impacto">Baixo impacto</option>
-              <option value="obesidade">Obesidade</option>
-              <option value="idoso">Idoso</option>
-              <option value="pcd">PCD / dificuldade</option>
-              <option value="reabilitacao">Reabilitação</option>
-            </select>
-          </div>
-          <div>
-            <div class="label">Meta do dia</div>
-            <select id="t_time">
-              <option value="15">15 min</option>
-              <option value="30" selected>30 min</option>
-              <option value="45">45 min</option>
-              <option value="60">60 min</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="btnRow">
-          <button class="btn" type="button" onclick="genWorkout()">Gerar treino</button>
-          <button class="btn secondary" type="button" onclick="clearWorkout()">Limpar</button>
-        </div>
-
-        <div class="list" id="workoutOut"></div>
-
-        <div class="btnRow">
-          <button class="btn secondary" type="button" onclick="startWorkoutTimer()">▶️ Iniciar timer</button>
-          <button class="btn" type="button" onclick="finishWorkout()">✅ Concluir treino</button>
-        </div>
-
-        <div class="item" style="margin-top:12px">
-          <div>
-            <b>Timer</b>
-            <div class="sub">Use o timer antes de concluir para registrar o treino.</div>
-          </div>
-          <div style="font-weight:950" id="timerTxt">00:00</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 8) PROGRESSO (dashboard) -->
-    <section id="viewProgresso" class="screen">
-      <div class="h1">Progresso</div>
-      <div class="hint">Meta semanal + histórico. Tudo por botões claros.</div>
-
-      <div class="card">
-        <div class="grid2">
-          <div class="stat">
-            <div class="k">Meta semanal</div>
-            <div class="v"><span id="p_goal">5</span> treinos</div>
-            <div class="s">Configure no cadastro.</div>
-          </div>
-          <div class="stat">
-            <div class="k">Concluídos</div>
-            <div class="v"><span id="p_done">0</span></div>
-            <div class="s">Atualiza quando você conclui o treino.</div>
-          </div>
-        </div>
-
-        <div class="btnRow">
-          <button class="btn secondary" type="button" onclick="resetWeek()">Reset semana</button>
-          <button class="btn" type="button" onclick="openView('viewEvolucao')">Ver evolução</button>
-        </div>
-
-        <div class="card" style="margin-top:12px">
-          <div class="label">Histórico (semana)</div>
-          <div class="list" id="p_list"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 7) EVOLUÇÃO (dashboard) -->
-    <section id="viewEvolucao" class="screen">
-      <div class="h1">Evolução</div>
-      <div class="hint">Streak, medalhas, XP e ranking.</div>
-
-      <div class="card">
-        <div class="grid2" style="align-items:center">
-          <div>
-            <div class="label">Status</div>
-            <div style="font-size:22px;font-weight:950">
-              <span id="e_name">Visitante</span>
-              • <span style="color:var(--neo)">+<span id="e_xp">0</span> XP</span>
-            </div>
-            <div style="margin-top:10px; font-weight:900"> 🔥 <span id="e_streak">0</span> dias streak • 🏅 <span id="e_badges">0</span> medalhas </div>
-            <div style="margin-top:8px; color:var(--muted); font-weight:750"> Nível <b id="e_lvl">1</b> Elite </div>
-
-            <div class="card" style="margin-top:12px">
-              <div class="label">Seu coach</div>
-              <div id="coachTxt" style="font-weight:900; line-height:1.3">
-                Progresso constante dá resultado.
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="label" style="text-align:right">Gráfico semanal</div>
-            <div id="chartWrap" style="height:80px; display:flex; align-items:flex-end; gap:6px; justify-content:flex-end; padding:8px 0"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="label">Ranking semanal</div>
-        <div class="list" id="rankingList"></div>
-      </div>
-    </section>
-
-    <!-- 9) SAÚDE -->
-    <section id="viewSaude" class="screen">
-      <div class="h1">Saúde</div>
-      <div class="hint">Tópicos + link para fonte oficial.</div>
-      <div class="card">
-        <div class="list" id="healthTopics"></div>
-      </div>
-    </section>
-
-    <!-- 10) LOJA -->
-    <section id="viewLoja" class="screen">
-      <div class="h1">Loja</div>
-      <div class="hint">Acesso a itens oficiais / parceiros.</div>
-      <div class="card">
-        <div class="list">
-          <div class="item">
-            <div><b>Vestuário</b><div class="sub">Linha oficial CheckPrato</div></div>
-            <button class="miniBtn" onclick="openOfficial('loja vestuario checkprato')">Abrir</button>
-          </div>
-          <div class="item">
-            <div><b>Suplementos</b><div class="sub">Parceiros recomendados</div></div>
-            <button class="miniBtn" onclick="openOfficial('loja suplementos parceiros')">Abrir</button>
-          </div>
-          <div class="item">
-            <div><b>Acessórios</b><div class="sub">Treino e saúde</div></div>
-            <button class="miniBtn" onclick="openOfficial('loja acessorios treino')">Abrir</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 11) CONVITE -->
-    <section id="viewConvite" class="screen">
-      <div class="h1">Convite</div>
-      <div class="hint">Compartilhe o app nas redes mais usadas.</div>
-      <div class="card">
-        <div class="label">Seu link</div>
-        <input id="inviteLink" readonly />
-
-        <div class="btnRow">
-          <button class="btn" type="button" onclick="shareInvite()">Compartilhar</button>
-          <button class="btn secondary" type="button" onclick="copyInvite()">Copiar link</button>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="label">Atalhos</div>
-        <div class="btnRow">
-          <button class="btn secondary" type="button" onclick="openShare('whatsapp')">WhatsApp</button>
-          <button class="btn secondary" type="button" onclick="openShare('instagram')">Instagram</button>
-          <button class="btn secondary" type="button" onclick="openShare('tiktok')">TikTok</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 12) PERFIL -->
-    <section id="viewPerfil" class="screen">
-      <div class="h1">Perfil</div>
-      <div class="hint">Configurações e atalhos.</div>
-
-      <div class="card">
-        <div class="label">Usuário</div>
-        <div class="item">
-          <div>
-            <b id="perfilNome">Visitante</b>
-            <div class="sub" id="perfilInfo">Meta semanal: 5 treinos</div>
-          </div>
-          <button class="miniBtn" onclick="openView('viewCadastro')">Editar</button>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="label">Acesso rápido</div>
-        <div class="btnRow">
-          <button class="btn secondary" type="button" onclick="openView('viewMenu')">≡ Menu</button>
-          <button class="btn secondary" type="button" onclick="openView('viewBoasVindas')">Boas-vindas</button>
-        </div>
-
-        <div class="btnRow">
-          <button class="btn ghost" type="button" onclick="resetAll()">Resetar tudo</button>
-        </div>
-      </div>
-    </section>
   </div>
 
-  <!-- NAV principal (5 abas como app real) -->
-  <nav class="nav">
-    <div class="navInner">
-      <button class="navBtn" data-nav="acesso" onclick="openView('viewAcesso')">
-        <span>🔐</span> Acesso
-      </button>
-      <button class="navBtn" data-nav="dashboard" onclick="openView('viewDashboard')">
-        <span>🏠</span> Dash
-      </button>
-      <button class="navBtn" data-nav="prato" onclick="openView('viewPrato')">
-        <span>📸</span> Prato
-      </button>
-      <button class="navBtn" data-nav="treino" onclick="openView('viewTreino')">
-        <span>🏋️</span> Treino
-      </button>
-      <button class="navBtn" data-nav="saude" onclick="openView('viewSaude')">
-        <span>🩺</span> Saúde
-      </button>
-      <button class="navBtn" data-nav="perfil" onclick="openView('viewPerfil')">
-        <span>👤</span> Perfil
-      </button>
+  <div style="flex:1">
+    <button class="btn" type="button" onclick="abrirGaleria()">Escolher foto (galeria)</button>
+    <button class="btn" type="button" onclick="abrirCamera()">Tirar foto agora</button>
+    <input id="fotoGaleria" type="file" accept="image/*" style="display:none">
+    <input id="fotoCamera" type="file" accept="image/*" capture="environment" style="display:none">
+  </div>
+
+</div>
+
+<div style="margin-top:14px">
+  <input id="cadNome" placeholder="Nome">
+  <input id="cadSobrenome" placeholder="Sobrenome">
+
+  <div style="display:flex;gap:10px">
+    <input id="cadPeso" placeholder="Peso (kg)" inputmode="decimal">
+    <input id="cadAltura" placeholder="Altura (cm)" inputmode="numeric">
+  </div>
+
+  <select id="cadSexo">
+    <option value="">Sexo</option>
+    <option>Masculino</option>
+    <option>Feminino</option>
+    <option>Prefiro não informar</option>
+  </select>
+
+  <select id="cadObjetivo">
+    <option value="">Objetivo</option>
+    <option>Emagrecimento</option>
+    <option>Hipertrofia</option>
+    <option>Saúde</option>
+  </select>
+
+  <select id="cadCondicao">
+    <option value="">Condição</option>
+    <option>Nenhuma</option>
+    <option>PCD</option>
+    <option>Idoso</option>
+    <option>Mobilidade reduzida</option>
+    <option>Lesões / limitações</option>
+  </select>
+
+  <select id="cadNivel">
+    <option value="">Nível</option>
+    <option>Iniciante</option>
+    <option>Intermediário</option>
+    <option>Avançado</option>
+  </select>
+
+  <select id="cadRestricao">
+    <option value="">Restrições</option>
+    <option>Nenhuma</option>
+    <option>Diabetes</option>
+    <option>Hipertensão</option>
+    <option>Colesterol alto</option>
+    <option>Intolerância à lactose</option>
+    <option>Intolerância ao glúten</option>
+  </select>
+</div>
+
+<div style="margin-top:16px;font-weight:900;color:rgba(234,242,255,.9)">Esportes</div>
+<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:10px" id="sportsBox"></div>
+
+<div style="margin-top:16px;padding:12px;border-radius:16px;background:#071728;border:1px solid rgba(255,255,255,.08)">
+  <div style="font-weight:900;margin-bottom:10px">Termo de uso</div>
+
+  <div id="termoBox" style="height:110px;overflow:auto;padding:10px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(234,242,255,.85);font-size:13px;line-height:1.35">
+    <b>Termo Informativo</b><br><br>
+    Ao continuar, você concorda em utilizar o CheckPrato Elite com responsabilidade.<br><br>
+    As recomendações são de caráter geral e não substituem acompanhamento médico/nutricional quando necessário.<br><br>
+    Você confirma que os dados informados são verdadeiros e que entende que resultados dependem de consistência e hábitos.<br><br>
+    <b>Role até o final para liberar o aceite.</b><br><br>
+    1) Use o app com consciência.<br>
+    2) Não utilize informações para automedicação.<br>
+    3) Consulte profissionais em casos específicos.<br><br>
+    Obrigado por fazer parte da Elite.<br><br>
+    <b>Fim do termo.</b>
+  </div>
+
+  <label style="display:flex;gap:10px;align-items:center;margin-top:12px;font-weight:900;opacity:.6" id="aceiteLabel">
+    <input id="aceiteTermo" type="checkbox" disabled style="width:18px;height:18px">
+    Li e aceito o termo
+  </label>
+
+</div>
+
+<button class="btn" id="btnSalvarCadastro" onclick="salvarCadastro()" disabled style="opacity:.6">Salvar e continuar</button>
+<button class="btn" onclick="show('viewBoasVindas')">Pular (ir para boas-vindas)</button>
+
+</div>
+</section>
+
+<!-- 3 BOAS-VINDAS -->
+<section id="viewBoasVindas" class="screen">
+
+<div class="h1">Boas-vindas</div>
+
+<div class="card">
+
+<div style="font-weight:900;font-size:18px;line-height:1.25" id="bvFrase1">
+Você não precisa de motivação. Precisa de direção.
+</div>
+
+<div style="margin-top:12px;opacity:.9;font-weight:800" id="bvFrase2">
+Pequenas escolhas hoje. Uma versão absurda de você amanhã.
+</div>
+
+<div style="margin-top:12px;color:var(--muted);font-weight:800" id="bvFrase3">
+Sua mente precisa acreditar antes do seu corpo acompanhar.
+</div>
+
+<button class="btn" onclick="trocarBoasVindas()">Trocar frases</button>
+<button class="btn" onclick="show('viewPrato')">Seguir</button>
+
+</div>
+</section>
+<!-- 4 PRATO -->
+<section id="viewPrato" class="screen">
+  <div style="display:flex;align-items:center;gap:12px;margin:6px 0 10px">
+    <div style="width:44px;height:44px;border-radius:14px;background:#071728;border:1px solid rgba(255,255,255,.08);overflow:hidden;display:flex;align-items:center;justify-content:center">
+      <img id="miniFotoPrato" src="" style="width:100%;height:100%;object-fit:cover;display:none" alt="">
+      <div id="miniFotoPratoPH" style="font-weight:950;color:rgba(234,242,255,.65);font-size:12px">👤</div>
     </div>
-  </nav>
+    <div style="min-width:0">
+      <div style="font-weight:950;font-size:16px;line-height:1.1" id="miniNomePrato">Visitante</div>
+      <div style="color:var(--muted);font-weight:800;font-size:12px">Prato • análise completa</div>
+    </div>
+  </div>
 
-  <div id="toast" class="toast">Notificação</div>
+  <div class="h1">Prato</div>
+  <div class="hint">Tire a foto, descreva e analise. Sem “marcação manual”.</div>
 
-  <script>
-    /* ========= CORE / STATE ========= */
-    let state = JSON.parse(localStorage.getItem("checkPrato_state")) || {
-      onboarded: false,
-      welcomeOff: false,
-      user: {
-        nome: "Visitante",
-        objetivo: "emagrecimento",
-        restricao: "nenhuma",
-        pcd: "nao",
-        sports: [],
-        goal: 5
-      },
-      access: {
-        mode: "local", // local | email | google
-        email: ""
-      },
-      stats: {
-        streak: 0,
-        badges: 0,
-        xp: 0,
-        nutriScore: 0.0,
-        mealsCount: 0,
-        workoutsWeek: 0,
-        lastMeal: null,
-        historyWeek: []
-      },
-      diet: { tipo: null, pref: null, items: [] }
+  <div class="card">
+    <div class="label">Foto do prato</div>
+    <div class="btnRow">
+      <button class="btn" type="button" onclick="abrirCameraPrato()">Câmera</button>
+      <button class="btn secondary" type="button" onclick="abrirGaleriaPrato()">Galeria</button>
+      <input id="fotoPratoCamera" type="file" accept="image/*" capture="environment" style="display:none">
+      <input id="fotoPratoGaleria" type="file" accept="image/*" style="display:none">
+    </div>
+
+    <div style="margin-top:10px;width:100%;height:190px;border-radius:18px;background:#071728;border:1px solid rgba(255,255,255,.08);overflow:hidden;display:flex;align-items:center;justify-content:center">
+      <img id="previewPrato" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none">
+      <div id="previewPratoPH" style="font-weight:950;color:rgba(234,242,255,.65);text-align:center;line-height:1.2">
+        SEM FOTO AINDA<br><span style="font-size:12px;font-weight:800;color:var(--muted)">use câmera ou galeria</span>
+      </div>
+    </div>
+
+    <div class="label">Descrição do prato</div>
+    <textarea id="descPrato" placeholder="Ex: arroz, feijão, frango grelhado, salada, suco..."></textarea>
+
+    <div class="btnRow">
+      <button class="btn" type="button" onclick="analisarPrato()">Analisar</button>
+      <button class="btn secondary" type="button" onclick="novaAnalisePrato()">Gerar outra análise</button>
+    </div>
+
+    <div class="statGrid" style="margin-top:12px">
+      <div class="stat">
+        <div class="k">Calorias</div>
+        <div class="v"><span id="outCal">—</span></div>
+        <div class="s">Estimativa</div>
+      </div>
+      <div class="stat">
+        <div class="k">Proteína</div>
+        <div class="v"><span id="outProt">—</span></div>
+        <div class="s">g</div>
+      </div>
+      <div class="stat">
+        <div class="k">Carboidrato</div>
+        <div class="v"><span id="outCarb">—</span></div>
+        <div class="s">g</div>
+      </div>
+      <div class="stat">
+        <div class="k">Gordura</div>
+        <div class="v"><span id="outGord">—</span></div>
+        <div class="s">g</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="label">Histórico</div>
+    <div class="list" id="histPrato"></div>
+  </div>
+</section>
+
+
+<!-- 5 DIETAS -->
+<section id="viewDieta" class="screen">
+  <div style="display:flex;align-items:center;gap:12px;margin:6px 0 10px">
+    <div style="width:44px;height:44px;border-radius:14px;background:#071728;border:1px solid rgba(255,255,255,.08);overflow:hidden;display:flex;align-items:center;justify-content:center">
+      <img id="miniFotoDieta" src="" style="width:100%;height:100%;object-fit:cover;display:none" alt="">
+      <div id="miniFotoDietaPH" style="font-weight:950;color:rgba(234,242,255,.65);font-size:12px">👤</div>
+    </div>
+    <div style="min-width:0">
+      <div style="font-weight:950;font-size:16px;line-height:1.1" id="miniNomeDieta">Visitante</div>
+      <div style="color:var(--muted);font-weight:800;font-size:12px">Dietas • variedade real</div>
+    </div>
+  </div>
+
+  <div class="h1">Dietas</div>
+  <div class="hint">Aparece somente depois de você clicar em gerar.</div>
+
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <div class="label">Tipo</div>
+        <select id="tipoDieta">
+          <option value="emagrecimento">Emagrecimento</option>
+          <option value="hipertrofia">Hipertrofia</option>
+          <option value="lowcarb">Low carb</option>
+          <option value="economica">Econômica</option>
+          <option value="vegetariana">Vegetariana</option>
+          <option value="diabetes">Diabetes</option>
+          <option value="hipertensao">Hipertensão</option>
+          <option value="sem_lactose">Sem lactose</option>
+          <option value="atleta">Atleta</option>
+          <option value="idoso">Idoso</option>
+        </select>
+      </div>
+      <div>
+        <div class="label">Preferência</div>
+        <select id="prefDieta">
+          <option value="br">Brasil (comida normal)</option>
+          <option value="pratica">Prática / rápida</option>
+          <option value="barata">Mais barata</option>
+          <option value="sem_fogao">Sem fogão</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="btnRow">
+      <button class="btn" type="button" onclick="gerarDieta(false)">Gerar dieta</button>
+      <button class="btn secondary" type="button" onclick="gerarDieta(true)">Trocar dieta</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="label">Sugestões</div>
+    <div class="list" id="outDieta">
+      <div class="item">
+        <div>
+          <b>Nenhuma dieta gerada</b>
+          <div class="sub">Clique em “Gerar dieta” para ver as sugestões.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="label">Dietas salvas</div>
+    <div class="list" id="dietasSalvas"></div>
+  </div>
+</section>
+
+
+<!-- 6 TREINOS -->
+<section id="viewTreino" class="screen">
+  <div style="display:flex;align-items:center;gap:12px;margin:6px 0 10px">
+    <div style="width:44px;height:44px;border-radius:14px;background:#071728;border:1px solid rgba(255,255,255,.08);overflow:hidden;display:flex;align-items:center;justify-content:center">
+      <img id="miniFotoTreino" src="" style="width:100%;height:100%;object-fit:cover;display:none" alt="">
+      <div id="miniFotoTreinoPH" style="font-weight:950;color:rgba(234,242,255,.65);font-size:12px">👤</div>
+    </div>
+    <div style="min-width:0">
+      <div style="font-weight:950;font-size:16px;line-height:1.1" id="miniNomeTreino">Visitante</div>
+      <div style="color:var(--muted);font-weight:800;font-size:12px">Treinos • com técnica e conclusão</div>
+    </div>
+  </div>
+
+  <div class="h1">Treinos</div>
+  <div class="hint">Gera a semana. Você conclui e o app soma pontos automático.</div>
+
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <div class="label">Esporte</div>
+        <select id="selEsporte"></select>
+      </div>
+      <div>
+        <div class="label">Intensidade</div>
+        <select id="selIntensidade">
+          <option value="leve">Leve</option>
+          <option value="moderado" selected>Moderado</option>
+          <option value="pesado">Pesado</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <div class="label">Nível</div>
+        <select id="selNivel">
+          <option value="iniciante">Iniciante</option>
+          <option value="intermediario" selected>Intermediário</option>
+          <option value="avancado">Avançado</option>
+        </select>
+      </div>
+      <div>
+        <div class="label">Condição</div>
+        <select id="selCondicao">
+          <option value="normal" selected>Normal</option>
+          <option value="pcd">PCD / dificuldade</option>
+          <option value="idoso">Idoso</option>
+          <option value="mobilidade">Mobilidade reduzida</option>
+          <option value="lesoes">Lesões</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="btnRow">
+      <button class="btn" type="button" onclick="gerarTreino(false)">Gerar treino</button>
+      <button class="btn secondary" type="button" onclick="gerarTreino(true)">Trocar treino</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="label">Treino da semana</div>
+    <div class="list" id="outTreino">
+      <div class="item">
+        <div>
+          <b>Nenhum treino gerado</b>
+          <div class="sub">Clique em “Gerar treino” para montar a semana.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+/* ==========================
+   PARTE 3 - LÓGICA (PRATO/DIETA/TREINO)
+   ========================== */
+
+/* fallback caso show ainda não exista */
+window.show = window.show || function(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  const el = document.getElementById(id);
+  if(el) el.classList.add("active");
+  window.scrollTo(0,0);
+};
+
+/* ======= DADOS / STORAGE ======= */
+function getDB(){
+  try { return JSON.parse(localStorage.getItem("cp_db")) || {}; } catch(e){ return {}; }
+}
+function setDB(db){
+  localStorage.setItem("cp_db", JSON.stringify(db));
+}
+function dbInit(){
+  const db = getDB();
+  if(!db.user) db.user = {};
+  if(!db.user.sports) db.user.sports = [];
+  if(!db.pratos) db.pratos = [];
+  if(!db.dietasSalvas) db.dietasSalvas = [];
+  if(!db.pontos) db.pontos = {xp:0, pratos:0, treinos:0};
+  setDB(db);
+}
+dbInit();
+
+function cpToast(msg){
+  const t = document.getElementById("toast");
+  if(!t){ alert(msg); return; }
+  t.textContent = msg;
+  t.classList.add("on");
+  setTimeout(()=>t.classList.remove("on"), 2200);
+}
+
+/* ======= CADASTRO: FOTO ======= */
+function abrirGaleria(){
+  document.getElementById("fotoGaleria").click();
+}
+function abrirCamera(){
+  document.getElementById("fotoCamera").click();
+}
+function onFotoPerfil(file){
+  if(!file) return;
+  const rd = new FileReader();
+  rd.onload = ()=>{
+    const db = getDB();
+    db.user.foto = rd.result;
+    setDB(db);
+    atualizarMiniPerfis();
+    const img = document.getElementById("previewFoto");
+    const ph = document.getElementById("fotoPlaceholder");
+    img.src = rd.result;
+    img.style.display = "block";
+    ph.style.display = "none";
+    cpToast("Foto salva!");
+  };
+  rd.readAsDataURL(file);
+}
+document.getElementById("fotoGaleria")?.addEventListener("change", e=> onFotoPerfil(e.target.files[0]));
+document.getElementById("fotoCamera")?.addEventListener("change", e=> onFotoPerfil(e.target.files[0]));
+
+/* ======= ESPORTES (somente os seus) ======= */
+const LISTA_ESPORTES_FIXA = [
+  "Musculação","CrossFit","Corrida","Muay Thai","Boxe","Capoeira","Jiu-jitsu","Karatê","Taekwondo","Ciclismo","Basquete","Vôlei"
+];
+
+function renderEsportesCadastro(){
+  const box = document.getElementById("sportsBox");
+  if(!box) return;
+  const db = getDB();
+  box.innerHTML = "";
+  LISTA_ESPORTES_FIXA.forEach(sp=>{
+    const c = document.createElement("div");
+    const on = (db.user.sports||[]).includes(sp);
+    c.className = "chip" + (on ? " on" : "");
+    c.textContent = sp;
+    c.onclick = ()=>{
+      const d = getDB();
+      d.user.sports = d.user.sports || [];
+      if(d.user.sports.includes(sp)) d.user.sports = d.user.sports.filter(x=>x!==sp);
+      else d.user.sports.push(sp);
+      setDB(d);
+      renderEsportesCadastro();
+      preencherSelectEsporteTreino();
     };
+    box.appendChild(c);
+  });
+}
+renderEsportesCadastro();
 
-    function saveState(){
-      localStorage.setItem("checkPrato_state", JSON.stringify(state));
+/* ======= TERMO: rolagem obrigatória ======= */
+(function termoScrollLock(){
+  const box = document.getElementById("termoBox");
+  const chk = document.getElementById("aceiteTermo");
+  const lbl = document.getElementById("aceiteLabel");
+  const btn = document.getElementById("btnSalvarCadastro");
+  if(!box || !chk || !lbl || !btn) return;
+
+  function checkUnlock(){
+    const nearBottom = (box.scrollTop + box.clientHeight) >= (box.scrollHeight - 8);
+    if(nearBottom){
+      chk.disabled = false;
+      lbl.style.opacity = "1";
+    }
+    btn.disabled = !(chk.checked && !chk.disabled);
+    btn.style.opacity = btn.disabled ? ".6" : "1";
+  }
+  box.addEventListener("scroll", checkUnlock);
+  chk.addEventListener("change", checkUnlock);
+  checkUnlock();
+})();
+
+/* ======= SALVAR CADASTRO ======= */
+function salvarCadastro(){
+  const db = getDB();
+
+  const nome = (document.getElementById("cadNome").value||"").trim();
+  const sobrenome = (document.getElementById("cadSobrenome").value||"").trim();
+  const peso = (document.getElementById("cadPeso").value||"").trim();
+  const altura = (document.getElementById("cadAltura").value||"").trim();
+  const sexo = document.getElementById("cadSexo").value;
+  const objetivo = document.getElementById("cadObjetivo").value;
+  const cond = document.getElementById("cadCondicao").value;
+  const nivel = document.getElementById("cadNivel").value;
+  const rest = document.getElementById("cadRestricao").value;
+
+  const aceitou = document.getElementById("aceiteTermo").checked;
+  if(!aceitou){
+    cpToast("Role o termo e aceite para salvar.");
+    return;
+  }
+  if(!nome || !sobrenome || !peso || !altura || !sexo || !objetivo || !cond || !nivel || !rest){
+    cpToast("Preencha todos os campos do cadastro.");
+    return;
+  }
+  if(!db.user.foto){
+    cpToast("Escolha uma foto de perfil.");
+    return;
+  }
+  if(!db.user.sports || db.user.sports.length === 0){
+    cpToast("Selecione pelo menos 1 esporte.");
+    return;
+  }
+
+  db.user.nome = nome;
+  db.user.sobrenome = sobrenome;
+  db.user.peso = peso;
+  db.user.altura = altura;
+  db.user.sexo = sexo;
+  db.user.objetivo = objetivo;
+  db.user.condicao = cond;
+  db.user.nivel = nivel;
+  db.user.restricao = rest;
+
+  setDB(db);
+  atualizarMiniPerfis();
+  preencherSelectEsporteTreino();
+  cpToast("Cadastro salvo!");
+  show("viewBoasVindas");
+}
+
+/* ======= BOAS-VINDAS: frases ======= */
+const BV = [
+  ["Você não precisa de motivação. Precisa de direção.","Pequenas escolhas hoje. Uma versão absurda de você amanhã.","Sua mente precisa acreditar antes do seu corpo acompanhar."],
+  ["Disciplina é liberdade.","O que você faz quando ninguém está vendo te define.","Se é difícil, é porque funciona."],
+  ["Não é sobre perfeição. É sobre consistência.","Sua saúde é seu maior patrimônio.","A dor da disciplina é menor que a dor do arrependimento."]
+];
+let bvIdx = 0;
+function trocarBoasVindas(){
+  bvIdx = (bvIdx+1) % BV.length;
+  document.getElementById("bvFrase1").textContent = BV[bvIdx][0];
+  document.getElementById("bvFrase2").textContent = BV[bvIdx][1];
+  document.getElementById("bvFrase3").textContent = BV[bvIdx][2];
+}
+
+/* ======= MINI PERFIS nas abas ======= */
+function atualizarMiniPerfis(){
+  const db = getDB();
+  const nome = db.user?.nome ? (db.user.nome + " " + (db.user.sobrenome||"")) : "Visitante";
+  const foto = db.user?.foto || "";
+
+  const pairs = [
+    ["miniNomePrato","miniFotoPrato","miniFotoPratoPH"],
+    ["miniNomeDieta","miniFotoDieta","miniFotoDietaPH"],
+    ["miniNomeTreino","miniFotoTreino","miniFotoTreinoPH"],
+  ];
+  pairs.forEach(([n,i,ph])=>{
+    const elN = document.getElementById(n);
+    const elI = document.getElementById(i);
+    const elPH = document.getElementById(ph);
+    if(elN) elN.textContent = nome;
+    if(elI && foto){
+      elI.src = foto; elI.style.display="block";
+      if(elPH) elPH.style.display="none";
+    }else{
+      if(elI) elI.style.display="none";
+      if(elPH) elPH.style.display="block";
+    }
+  });
+
+  // também atualiza header do topo se existir ids
+  const hdrUser = document.getElementById("hdrUser");
+  if(hdrUser) hdrUser.textContent = (db.user?.nome || "Visitante");
+}
+atualizarMiniPerfis();
+
+/* =======================
+   PRATO: foto + análise
+   ======================= */
+function abrirCameraPrato(){ document.getElementById("fotoPratoCamera").click(); }
+function abrirGaleriaPrato(){ document.getElementById("fotoPratoGaleria").click(); }
+
+function onFotoPrato(file){
+  if(!file) return;
+  const rd = new FileReader();
+  rd.onload = ()=>{
+    const img = document.getElementById("previewPrato");
+    const ph = document.getElementById("previewPratoPH");
+    img.src = rd.result;
+    img.style.display="block";
+    ph.style.display="none";
+    // guarda temporário no elemento
+    img.dataset.base64 = rd.result;
+    cpToast("Foto do prato pronta.");
+  };
+  rd.readAsDataURL(file);
+}
+document.getElementById("fotoPratoCamera")?.addEventListener("change", e=> onFotoPrato(e.target.files[0]));
+document.getElementById("fotoPratoGaleria")?.addEventListener("change", e=> onFotoPrato(e.target.files[0]));
+
+function estimarMacros(desc){
+  // heurística bem “real” (não perfeita), mas consistente
+  const d = desc.toLowerCase();
+
+  let cal = 420, prot=28, carb=45, gord=12;
+
+  if(d.includes("frango")) {prot+=18; cal+=110;}
+  if(d.includes("carne")) {prot+=20; gord+=8; cal+=160;}
+  if(d.includes("ovo")) {prot+=10; gord+=6; cal+=90;}
+  if(d.includes("peixe") || d.includes("atum") || d.includes("salmão")) {prot+=16; gord+=4; cal+=120;}
+  if(d.includes("arroz")) {carb+=35; cal+=140;}
+  if(d.includes("feijão")) {carb+=18; prot+=6; cal+=90;}
+  if(d.includes("batata")) {carb+=28; cal+=110;}
+  if(d.includes("salada") || d.includes("legume")) {carb+=6; cal-=40;}
+  if(d.includes("refrigerante") || d.includes("doce") || d.includes("fritura")) {cal+=220; gord+=14; carb+=20;}
+
+  // ajusta por tamanho (se tiver pista)
+  if(d.includes("prato grande") || d.includes("muito")) {cal+=180; carb+=20; prot+=8; gord+=6;}
+  if(d.includes("prato pequeno") || d.includes("pouco")) {cal-=120; carb-=15; prot-=6; gord-=4;}
+
+  // mínimos
+  cal = Math.max(120, Math.round(cal));
+  prot = Math.max(5, Math.round(prot));
+  carb = Math.max(5, Math.round(carb));
+  gord = Math.max(3, Math.round(gord));
+
+  return {cal, prot, carb, gord};
+}
+
+function analisarPrato(){
+  const img = document.getElementById("previewPrato");
+  const desc = (document.getElementById("descPrato").value||"").trim();
+
+  if(!img.dataset.base64){
+    cpToast("Adicione a foto do prato.");
+    return;
+  }
+  if(desc.length < 8){
+    cpToast("Descreva melhor o prato (mínimo 8 caracteres).");
+    return;
+  }
+
+  const mac = estimarMacros(desc);
+
+  document.getElementById("outCal").textContent = mac.cal + " kcal";
+  document.getElementById("outProt").textContent = mac.prot + " g";
+  document.getElementById("outCarb").textContent = mac.carb + " g";
+  document.getElementById("outGord").textContent = mac.gord + " g";
+
+  const db = getDB();
+  const item = {
+    foto: img.dataset.base64,
+    desc,
+    cal: mac.cal,
+    prot: mac.prot,
+    carb: mac.carb,
+    gord: mac.gord,
+    data: new Date().toLocaleString()
+  };
+  db.pratos.unshift(item);
+  db.pratos = db.pratos.slice(0, 12);
+
+  db.pontos.pratos = (db.pontos.pratos||0) + 1;
+  db.pontos.xp = (db.pontos.xp||0) + 25;
+
+  setDB(db);
+  renderHistPrato();
+  cpToast("Prato analisado! +25 XP");
+}
+
+function novaAnalisePrato(){
+  document.getElementById("descPrato").value = "";
+  const img = document.getElementById("previewPrato");
+  const ph = document.getElementById("previewPratoPH");
+  img.src = "";
+  img.style.display="none";
+  ph.style.display="block";
+  delete img.dataset.base64;
+
+  document.getElementById("outCal").textContent = "—";
+  document.getElementById("outProt").textContent = "—";
+  document.getElementById("outCarb").textContent = "—";
+  document.getElementById("outGord").textContent = "—";
+  cpToast("Pronto para nova análise.");
+}
+
+function renderHistPrato(){
+  const db = getDB();
+  const box = document.getElementById("histPrato");
+  if(!box) return;
+  box.innerHTML = "";
+  if(!db.pratos || db.pratos.length===0){
+    box.innerHTML = `<div class="item"><div><b>Nenhum prato ainda</b><div class="sub">Faça sua primeira análise.</div></div></div>`;
+    return;
+  }
+  db.pratos.forEach(p=>{
+    const row = document.createElement("div");
+    row.className="item";
+    row.innerHTML = `
+      <div style="display:flex;gap:10px;align-items:center;min-width:0">
+        <div style="width:46px;height:46px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.10);background:#071728;flex:0 0 auto">
+          <img src="${p.foto}" style="width:100%;height:100%;object-fit:cover" alt="">
+        </div>
+        <div style="min-width:0">
+          <b style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46vw">${p.desc}</b>
+          <div class="sub">${p.cal}kcal • P${p.prot} C${p.carb} G${p.gord} • ${p.data}</div>
+        </div>
+      </div>
+      <div style="font-weight:950;color:var(--neo)">OK</div>
+    `;
+    box.appendChild(row);
+  });
+}
+renderHistPrato();
+
+/* =======================
+   DIETA: gerar só no clique + salvar
+   ======================= */
+const DIETA_DB = {
+  emagrecimento: [
+    "Café: omelete + café sem açúcar",
+    "Almoço: frango grelhado + salada + arroz integral",
+    "Lanche: iogurte natural + fruta",
+    "Jantar: peixe + legumes + batata doce",
+    "Ceia: chá + castanhas"
+  ],
+  hipertrofia: [
+    "Café: pão integral + ovos + fruta",
+    "Almoço: arroz + feijão + carne + salada",
+    "Lanche: vitamina (banana + aveia + leite)",
+    "Jantar: macarrão + frango + legumes",
+    "Ceia: iogurte + granola"
+  ],
+  lowcarb: [
+    "Café: ovos mexidos + abacate",
+    "Almoço: carne + salada + azeite",
+    "Lanche: castanhas + queijo",
+    "Jantar: peixe + legumes",
+    "Ceia: iogurte sem açúcar"
+  ],
+  economica: [
+    "Café: ovos + banana",
+    "Almoço: arroz + feijão + frango",
+    "Lanche: fruta da estação",
+    "Jantar: sopa de legumes",
+    "Ceia: chá"
+  ],
+  vegetariana: [
+    "Café: aveia + fruta",
+    "Almoço: grão-de-bico + quinoa + salada",
+    "Lanche: pasta de amendoim + fruta",
+    "Jantar: lentilha + legumes",
+    "Ceia: iogurte vegetal"
+  ],
+  diabetes: [
+    "Café: ovos + pão integral",
+    "Almoço: proteína + salada + carbo controlado",
+    "Lanche: iogurte natural + chia",
+    "Jantar: peixe + legumes",
+    "Ceia: castanhas"
+  ],
+  hipertensao: [
+    "Café: fruta + aveia",
+    "Almoço: frango + salada (baixo sódio)",
+    "Lanche: iogurte natural",
+    "Jantar: peixe + legumes",
+    "Ceia: chá"
+  ],
+  sem_lactose: [
+    "Café: pão + ovos",
+    "Almoço: carne + arroz + salada",
+    "Lanche: fruta + castanhas",
+    "Jantar: frango + legumes",
+    "Ceia: leite vegetal"
+  ],
+  atleta: [
+    "Pré: banana + aveia",
+    "Pós: arroz + frango + legumes",
+    "Lanche: sanduíche integral",
+    "Jantar: massa + proteína",
+    "Ceia: iogurte + granola"
+  ],
+  idoso: [
+    "Café: ovos + fruta",
+    "Almoço: proteína macia + legumes",
+    "Lanche: iogurte + fruta",
+    "Jantar: sopa rica em proteína",
+    "Ceia: chá + castanhas"
+  ]
+};
+
+function gerarDieta(swap){
+  const tipo = document.getElementById("tipoDieta").value;
+  const pref = document.getElementById("prefDieta").value;
+  let itens = (DIETA_DB[tipo] || DIETA_DB.emagrecimento).slice();
+
+  if(swap) itens.sort(()=> Math.random()-0.5);
+  // “tempero” pra não ficar repetitivo
+  if(pref==="pratica") itens = itens.map(x=> x.replace("Almoço:", "Almoço rápido:").replace("Jantar:", "Jantar rápido:"));
+  if(pref==="barata") itens = itens.map(x=> x.replace("frango", "ovos").replace("peixe", "frango"));
+  if(pref==="sem_fogao") itens = itens.map(x=> x.replace("grelhado", "pronto").replace("sopa", "salada completa"));
+
+  const out = document.getElementById("outDieta");
+  out.innerHTML = "";
+
+  itens.forEach((txt, idx)=>{
+    const row = document.createElement("div");
+    row.className="item";
+    row.innerHTML = `
+      <div style="min-width:0">
+        <b>Refeição ${idx+1}</b>
+        <div class="sub">${txt}</div>
+      </div>
+      <button class="miniBtn" type="button" onclick="salvarDietaItem('${encodeURIComponent(txt)}','${tipo}')">Salvar</button>
+    `;
+    out.appendChild(row);
+  });
+
+  cpToast(swap ? "Dieta trocada!" : "Dieta gerada!");
+  renderDietasSalvas();
+}
+
+function salvarDietaItem(encTxt, tipo){
+  const txt = decodeURIComponent(encTxt);
+  const db = getDB();
+  db.dietasSalvas = db.dietasSalvas || [];
+  const key = tipo + "|" + txt;
+  if(db.dietasSalvas.find(x=>x.key===key)){
+    cpToast("Já está salva.");
+    return;
+  }
+  db.dietasSalvas.unshift({key, tipo, txt, data:new Date().toLocaleDateString()});
+  db.dietasSalvas = db.dietasSalvas.slice(0, 20);
+  db.pontos.xp = (db.pontos.xp||0) + 10;
+  setDB(db);
+  renderDietasSalvas();
+  cpToast("Dieta salva! +10 XP");
+}
+
+function renderDietasSalvas(){
+  const box = document.getElementById("dietasSalvas");
+  if(!box) return;
+  const db = getDB();
+  box.innerHTML = "";
+  if(!db.dietasSalvas || db.dietasSalvas.length===0){
+    box.innerHTML = `<div class="item"><div><b>Nenhuma dieta salva</b><div class="sub">Clique em “Salvar” ao lado da dieta.</div></div></div>`;
+    return;
+  }
+  db.dietasSalvas.forEach(d=>{
+    const row = document.createElement("div");
+    row.className="item";
+    row.innerHTML = `
+      <div style="min-width:0">
+        <b>${d.tipo.toUpperCase()}</b>
+        <div class="sub">${d.txt} • ${d.data}</div>
+      </div>
+      <button class="miniBtn" type="button" onclick="removerDietaSalva('${encodeURIComponent(d.key)}')">Remover</button>
+    `;
+    box.appendChild(row);
+  });
+}
+function removerDietaSalva(encKey){
+  const key = decodeURIComponent(encKey);
+  const db = getDB();
+  db.dietasSalvas = (db.dietasSalvas||[]).filter(x=>x.key!==key);
+  setDB(db);
+  renderDietasSalvas();
+  cpToast("Removida.");
+}
+renderDietasSalvas();
+
+/* =======================
+   TREINO: gerar semana + técnica + concluir
+   ======================= */
+function preencherSelectEsporteTreino(){
+  const sel = document.getElementById("selEsporte");
+  if(!sel) return;
+  const db = getDB();
+  const sports = (db.user?.sports && db.user.sports.length) ? db.user.sports : LISTA_ESPORTES_FIXA;
+  sel.innerHTML = "";
+  sports.forEach(sp=>{
+    const o = document.createElement("option");
+    o.value = sp; o.textContent = sp;
+    sel.appendChild(o);
+  });
+}
+preencherSelectEsporteTreino();
+
+const TREINO_MODELOS = {
+  "Musculação": [
+    ["Segunda","Peito + Tríceps","Supino reto","Crucifixo","Tríceps testa","Tríceps corda"],
+    ["Terça","Costas + Posterior","Puxada alta","Remada","Stiff","Mesa flexora"],
+    ["Quarta","Ombro + Panturrilha","Desenvolvimento","Elevação lateral","Panturrilha em pé","Panturrilha sentado"],
+    ["Quinta","Bíceps + Quadríceps","Rosca direta","Rosca alternada","Agachamento","Extensora"],
+    ["Sexta","Pernas + Glúteos","Leg press","Afundo","Elevação pélvica","Abdução"]
+  ],
+  "Corrida": [
+    ["Segunda","Base","Corrida leve 20–30min","Mobilidade","Alongamento"],
+    ["Terça","Tiro","6x (1min forte / 1min leve)","Caminhada","Alongamento"],
+    ["Quarta","Recuperação","Caminhada 30min","Core","Alongamento"],
+    ["Quinta","Ritmo","Corrida moderada 25min","Mobilidade","Alongamento"],
+    ["Sexta","Longo","Corrida leve 35–45min","Respiração","Alongamento"]
+  ]
+};
+
+function adaptarExercicio(ex, cond){
+  if(cond==="idoso" || cond==="pcd" || cond==="mobilidade"){
+    return ex.replace("Agachamento","Agachamento assistido")
+             .replace("Supino reto","Supino máquina leve")
+             .replace("Stiff","Levantamento leve (sem dor)")
+             .replace("Tiro","Intervalo leve");
+  }
+  if(cond==="lesoes"){
+    return ex + " (controle e técnica)";
+  }
+  return ex;
+}
+
+function gerarTreino(trocar){
+  const esporte = document.getElementById("selEsporte").value;
+  const intensidade = document.getElementById("selIntensidade").value;
+  const nivel = document.getElementById("selNivel").value;
+  const cond = document.getElementById("selCondicao").value;
+
+  let base = TREINO_MODELOS[esporte] ? JSON.parse(JSON.stringify(TREINO_MODELOS[esporte])) : JSON.parse(JSON.stringify(TREINO_MODELOS["Musculação"]));
+  if(trocar) base.sort(()=> Math.random()-0.5);
+
+  const out = document.getElementById("outTreino");
+  out.innerHTML = "";
+
+  base.forEach((dia)=>{
+    const dayName = dia[0];
+    const foco = dia[1];
+    const exercicios = dia.slice(2).map(x=>adaptarExercicio(x, cond));
+
+    const card = document.createElement("div");
+    card.className="item";
+    card.style.flexDirection="column";
+    card.style.alignItems="stretch";
+
+    const top = document.createElement("div");
+    top.style.display="flex";
+    top.style.justifyContent="space-between";
+    top.style.alignItems="center";
+    top.style.gap="10px";
+
+    top.innerHTML = `
+      <div style="min-width:0">
+        <b>${dayName} • ${foco}</b>
+        <div class="sub">${esporte} • ${intensidade} • ${nivel}</div>
+      </div>
+      <button class="miniBtn" type="button" onclick="concluirTreinoDia('${encodeURIComponent(dayName+"|"+foco)}')">Concluir</button>
+    `;
+
+    const list = document.createElement("div");
+    list.style.marginTop="10px";
+    list.style.display="flex";
+    list.style.flexDirection="column";
+    list.style.gap="8px";
+
+    exercicios.forEach(ex=>{
+      const row = document.createElement("div");
+      row.style.display="flex";
+      row.style.justifyContent="space-between";
+      row.style.alignItems="center";
+      row.style.gap="10px";
+      row.style.padding="10px";
+      row.style.borderRadius="14px";
+      row.style.border="1px solid rgba(255,255,255,.08)";
+      row.style.background="rgba(255,255,255,.04)";
+      row.innerHTML = `
+        <div style="min-width:0">
+          <div style="font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:52vw">${ex}</div>
+          <div class="sub">Técnica e execução</div>
+        </div>
+        <button class="miniBtn" type="button" onclick="verTecnica('${encodeURIComponent(ex + ' ' + esporte)}')">Ver técnica</button>
+      `;
+      list.appendChild(row);
+    });
+
+    card.appendChild(top);
+    card.appendChild(list);
+    out.appendChild(card);
+  });
+
+  cpToast(trocar ? "Treino trocado!" : "Treino gerado!");
+}
+
+function verTecnica(enc){
+  const q = encodeURIComponent(decodeURIComponent(enc));
+  window.open("https://www.youtube.com/results?search_query=" + q, "_blank");
+}
+
+function concluirTreinoDia(enc){
+  const db = getDB();
+  const key = decodeURIComponent(enc);
+  db.treinosConcluidos = db.treinosConcluidos || {};
+  const hoje = new Date().toLocaleDateString();
+  const k = hoje + "|" + key;
+
+  if(db.treinosConcluidos[k]){
+    cpToast("Esse treino já foi concluído hoje.");
+    return;
+  }
+
+  db.treinosConcluidos[k] = true;
+  db.pontos.treinos = (db.pontos.treinos||0) + 1;
+  db.pontos.xp = (db.pontos.xp||0) + 60;
+
+  setDB(db);
+  cpToast("Treino concluído! +60 XP");
+}
+
+/* ======= preencher cadastro (se já existir) ======= */
+(function hydrateCadastro(){
+  const db = getDB();
+  if(db.user?.nome){
+    document.getElementById("cadNome").value = db.user.nome || "";
+    document.getElementById("cadSobrenome").value = db.user.sobrenome || "";
+    document.getElementById("cadPeso").value = db.user.peso || "";
+    document.getElementById("cadAltura").value = db.user.altura || "";
+    document.getElementById("cadSexo").value = db.user.sexo || "";
+    document.getElementById("cadObjetivo").value = db.user.objetivo || "";
+    document.getElementById("cadCondicao").value = db.user.condicao || "";
+    document.getElementById("cadNivel").value = db.user.nivel || "";
+    document.getElementById("cadRestricao").value = db.user.restricao || "";
+  }
+
+  if(db.user?.foto){
+    const img = document.getElementById("previewFoto");
+    const ph = document.getElementById("fotoPlaceholder");
+    img.src = db.user.foto;
+    img.style.display="block";
+    ph.style.display="none";
+  }
+})();
+</script>
+<!-- 7) EVOLUÇÃO (DASHBOARD) -->
+<section id="viewEvolucao" class="screen">
+  <div style="display:flex;align-items:center;gap:12px;margin:6px 0 10px">
+    <div style="width:44px;height:44px;border-radius:14px;background:#071728;border:1px solid rgba(255,255,255,.08);overflow:hidden;display:flex;align-items:center;justify-content:center">
+      <img id="miniFotoEvo" src="" style="width:100%;height:100%;object-fit:cover;display:none" alt="">
+      <div id="miniFotoEvoPH" style="font-weight:950;color:rgba(234,242,255,.65);font-size:12px">👤</div>
+    </div>
+    <div style="min-width:0">
+      <div style="font-weight:950;font-size:16px;line-height:1.1" id="miniNomeEvo">Visitante</div>
+      <div style="color:var(--muted);font-weight:800;font-size:12px">Evolução • streak • medalhas • nível</div>
+    </div>
+  </div>
+
+  <div class="h1">Evolução</div>
+  <div class="hint">Tudo automático: prato e treino somam pontos, XP e medalhas.</div>
+
+  <div class="card">
+    <div class="grid2" style="align-items:center">
+      <div>
+        <div class="label">Status Elite</div>
+        <div style="font-size:22px;font-weight:950;line-height:1.1">
+          <span id="e_nome">Visitante</span>
+        </div>
+        <div style="margin-top:10px;font-weight:900;color:rgba(234,242,255,.90)">
+          🔥 Streak: <b id="e_streak">0</b> dias<br>
+          🏅 Medalhas: <b id="e_medalhas">0</b><br>
+          ⭐ Nível: <b id="e_nivel">1</b>
+        </div>
+        <div style="margin-top:10px;color:var(--muted);font-weight:800" id="e_frase">
+          “Consistência vence talento quando o talento não é consistente.”
+        </div>
+      </div>
+
+      <div class="ring" aria-label="Progresso XP">
+        <div class="ringbar" id="xpRingBar" style="--pct:0deg"></div>
+        <div style="text-align:center; position:relative; z-index:1">
+          <div class="big" id="e_xp">0</div>
+          <div class="small">XP total</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="label">Progresso do nível</div>
+    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden">
+      <div id="xpBar" style="height:14px;width:0%;background:linear-gradient(135deg,var(--neo),var(--neo2))"></div>
+    </div>
+    <div style="margin-top:8px;color:var(--muted);font-weight:800">
+      Próximo nível em <b id="xpFalta">0</b> XP
+    </div>
+
+    <div class="statGrid" style="margin-top:14px">
+      <div class="stat">
+        <div class="k">Pratos analisados</div>
+        <div class="v"><span id="e_pratos">0</span></div>
+        <div class="s">+25 XP por prato</div>
+      </div>
+      <div class="stat">
+        <div class="k">Treinos concluídos</div>
+        <div class="v"><span id="e_treinos">0</span></div>
+        <div class="s">+60 XP por treino</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="label">Ranking Elite (semana)</div>
+    <div class="list" id="e_rank"></div>
+  </div>
+</section>
+
+
+<!-- 8) PROGRESSO (DASHBOARD) -->
+<section id="viewProgresso" class="screen">
+  <div style="display:flex;align-items:center;gap:12px;margin:6px 0 10px">
+    <div style="width:44px;height:44px;border-radius:14px;background:#071728;border:1px solid rgba(255,255,255,.08);overflow:hidden;display:flex;align-items:center;justify-content:center">
+      <img id="miniFotoProg" src="" style="width:100%;height:100%;object-fit:cover;display:none" alt="">
+      <div id="miniFotoProgPH" style="font-weight:950;color:rgba(234,242,255,.65);font-size:12px">👤</div>
+    </div>
+    <div style="min-width:0">
+      <div style="font-weight:950;font-size:16px;line-height:1.1" id="miniNomeProg">Visitante</div>
+      <div style="color:var(--muted);font-weight:800;font-size:12px">Progresso • metas • semana</div>
+    </div>
+  </div>
+
+  <div class="h1">Progresso</div>
+  <div class="hint">Registro automático quando você conclui treinos e analisa pratos.</div>
+
+  <div class="card">
+    <div class="statGrid">
+      <div class="stat">
+        <div class="k">Meta semanal</div>
+        <div class="v"><span id="p_meta">5</span> treinos</div>
+        <div class="s">Definida no cadastro</div>
+      </div>
+      <div class="stat">
+        <div class="k">Feitos na semana</div>
+        <div class="v"><span id="p_feitos">0</span></div>
+        <div class="s">Atualiza ao concluir treinos</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="label">Barra semanal</div>
+    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden">
+      <div id="p_bar" style="height:14px;width:0%;background:linear-gradient(135deg,var(--neo),var(--neo2))"></div>
+    </div>
+
+    <div style="margin-top:10px;color:var(--muted);font-weight:800" id="p_msg">Comece hoje. Um passo de cada vez.</div>
+
+    <div class="divider"></div>
+
+    <div class="label">Histórico (7 dias)</div>
+    <div class="list" id="p_hist"></div>
+
+    <div class="btnRow">
+      <button class="btn secondary" type="button" onclick="cpResetSemana()">Reset semana</button>
+      <button class="btn" type="button" onclick="show('viewEvolucao')">Ir para evolução</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- 9) SAÚDE -->
+<section id="viewSaude" class="screen">
+  <div class="h1">Saúde</div>
+  <div class="hint">Toque no tópico para abrir uma fonte oficial (gov.br/saude). Cada tema tem imagem para facilitar.</div>
+
+  <div class="card">
+    <div class="list" id="saudeLista"></div>
+  </div>
+</section>
+
+
+<!-- 10) LOJA -->
+<section id="viewLoja" class="screen">
+  <div class="h1">Loja</div>
+  <div class="hint">Produtos e parceiros. Ao clicar, abre o site oficial.</div>
+
+  <div class="card">
+    <div class="list" id="lojaLista"></div>
+  </div>
+</section>
+
+
+<!-- 11) CONVITE -->
+<section id="viewConvite" class="screen">
+  <div class="h1">Convite</div>
+  <div class="hint">Convide pelo WhatsApp, Instagram e TikTok.</div>
+
+  <div class="card">
+    <div class="label">Seu link</div>
+    <input id="conviteLink" value="https://checkpratoapp.github.io/checkprato-app/" readonly>
+
+    <div class="btnRow">
+      <button class="btn" type="button" onclick="conviteShare('whatsapp')">WhatsApp</button>
+      <button class="btn secondary" type="button" onclick="conviteShare('instagram')">Instagram</button>
+    </div>
+
+    <div class="btnRow">
+      <button class="btn secondary" type="button" onclick="conviteShare('tiktok')">TikTok</button>
+      <button class="btn ghost" type="button" onclick="copiarConvite()">Copiar link</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="label">Texto pronto</div>
+    <textarea id="conviteTxt">Tô usando o CheckPrato Elite pra dieta e treino. Testa aí: https://checkpratoapp.github.io/checkprato-app/</textarea>
+  </div>
+</section>
+
+
+<!-- 12) PERFIL -->
+<section id="viewPerfil" class="screen">
+  <div class="h1">Perfil</div>
+  <div class="hint">Apenas o que importa: foto, objetivo, nível, esportes e restrições.</div>
+
+  <div class="card">
+    <div style="display:flex;gap:12px;align-items:center">
+      <div style="width:68px;height:68px;border-radius:22px;background:#071728;border:1px solid rgba(255,255,255,.10);overflow:hidden;display:flex;align-items:center;justify-content:center">
+        <img id="perfilFoto" src="" style="width:100%;height:100%;object-fit:cover;display:none" alt="">
+        <div id="perfilFotoPH" style="font-weight:950;color:rgba(234,242,255,.65)">👤</div>
+      </div>
+      <div style="min-width:0">
+        <div style="font-size:18px;font-weight:950" id="perfilNome">Visitante</div>
+        <div style="color:var(--muted);font-weight:800" id="perfilSub">Configurações</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="label">Alterar foto</div>
+    <div class="btnRow">
+      <button class="btn" type="button" onclick="abrirCamera()">Câmera</button>
+      <button class="btn secondary" type="button" onclick="abrirGaleria()">Galeria</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="grid2">
+      <div>
+        <div class="label">Objetivo</div>
+        <select id="perfilObjetivo">
+          <option value="emagrecimento">Emagrecimento</option>
+          <option value="hipertrofia">Hipertrofia</option>
+          <option value="saude">Saúde</option>
+        </select>
+      </div>
+      <div>
+        <div class="label">Nível</div>
+        <select id="perfilNivel">
+          <option value="iniciante">Iniciante</option>
+          <option value="intermediario">Intermediário</option>
+          <option value="avancado">Avançado</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <div class="label">Restrição</div>
+        <select id="perfilRestricao">
+          <option value="nenhuma">Nenhuma</option>
+          <option value="diabetes">Diabetes</option>
+          <option value="hipertensao">Hipertensão</option>
+          <option value="colesterol">Colesterol</option>
+          <option value="lactose">Intolerância à lactose</option>
+          <option value="gluten">Intolerância ao glúten</option>
+        </select>
+      </div>
+      <div>
+        <div class="label">Esportes</div>
+        <button class="btn secondary" type="button" onclick="show('viewCadastro')">Editar esportes</button>
+      </div>
+    </div>
+
+    <div class="btnRow">
+      <button class="btn" type="button" onclick="salvarPerfilConfig()">Salvar alterações</button>
+      <button class="btn ghost" type="button" onclick="resetAll()">Resetar tudo</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- NAV (ORDEM DAS ABAS EXATA) -->
+<nav class="nav">
+  <div class="navInner" style="overflow:auto;gap:10px">
+    <button class="navBtn" onclick="show('viewAcesso')"><span>🔒</span> Acesso</button>
+    <button class="navBtn" onclick="show('viewCadastro')"><span>📝</span> Cadastro</button>
+    <button class="navBtn" onclick="show('viewBoasVindas')"><span>✨</span> Boas-vindas</button>
+    <button class="navBtn" onclick="show('viewPrato')"><span>📸</span> Prato</button>
+    <button class="navBtn" onclick="show('viewDieta')"><span>🥗</span> Dietas</button>
+    <button class="navBtn" onclick="show('viewTreino')"><span>🏋️</span> Treinos</button>
+    <button class="navBtn" onclick="show('viewEvolucao')"><span>🏆</span> Evolução</button>
+    <button class="navBtn" onclick="show('viewProgresso')"><span>📈</span> Progresso</button>
+    <button class="navBtn" onclick="show('viewSaude')"><span>🩺</span> Saúde</button>
+    <button class="navBtn" onclick="show('viewLoja')"><span>🛍️</span> Loja</button>
+    <button class="navBtn" onclick="show('viewConvite')"><span>📨</span> Convite</button>
+    <button class="navBtn" onclick="show('viewPerfil')"><span>👤</span> Perfil</button>
+  </div>
+</nav>
+
+
+<script>
+/* ==========================
+   PARTE 4 - DASH/SAÚDE/LOJA/CONVITE/PERFIL + AUTO-REFRESH
+   ========================== */
+
+/* 🔧 “Blindagem” importante:
+   Reescreve setDB para SEMPRE atualizar dashboards depois de qualquer mudança
+   (isso garante que prato/treino atualizem evolução/progresso automaticamente).
+*/
+function setDB(db){
+  localStorage.setItem("cp_db", JSON.stringify(db));
+  cpUpdateAll();
+}
+
+/* ======= helpers ======= */
+function cpGet(){
+  try { return JSON.parse(localStorage.getItem("cp_db")) || {}; } catch(e){ return {}; }
+}
+function cpEnsure(){
+  const db = cpGet();
+  if(!db.user) db.user = {};
+  if(!db.user.sports) db.user.sports = [];
+  if(!db.pratos) db.pratos = [];
+  if(!db.dietasSalvas) db.dietasSalvas = [];
+  if(!db.pontos) db.pontos = {xp:0, pratos:0, treinos:0};
+  if(!db.semana) db.semana = {inicio: cpWeekKey(), treinos:0, hist:[]};
+  if(!db.evo) db.evo = {streak:0, medalhas:0, lastDay:""};
+  setDB(db);
+  return db;
+}
+cpEnsure();
+
+function cpWeekKey(){
+  const d = new Date();
+  const day = d.getDay(); // 0..6
+  const diff = d.getDate() - day; // domingo
+  const s = new Date(d.setDate(diff));
+  return s.toISOString().slice(0,10);
+}
+
+function cpTodayKey(){
+  return new Date().toISOString().slice(0,10);
+}
+
+function cpLevelFromXP(xp){
+  // 1.. infinito (cada nível 250xp)
+  return Math.floor((xp||0)/250) + 1;
+}
+
+function cpXPToNext(xp){
+  const lvl = cpLevelFromXP(xp);
+  const nextAt = lvl * 250;
+  return Math.max(0, nextAt - (xp||0));
+}
+
+function cpPctLevel(xp){
+  const lvl = cpLevelFromXP(xp);
+  const start = (lvl-1)*250;
+  const end = lvl*250;
+  const cur = (xp||0) - start;
+  const span = end - start;
+  return Math.max(0, Math.min(100, Math.round((cur/span)*100)));
+}
+
+/* ======= mini perfis em todas as abas ======= */
+function cpApplyMiniProfile(){
+  const db = cpGet();
+  const nome = db.user?.nome ? (db.user.nome + " " + (db.user.sobrenome||"")) : "Visitante";
+  const foto = db.user?.foto || "";
+
+  const ids = [
+    ["miniNomeEvo","miniFotoEvo","miniFotoEvoPH"],
+    ["miniNomeProg","miniFotoProg","miniFotoProgPH"],
+    ["miniNomePrato","miniFotoPrato","miniFotoPratoPH"],
+    ["miniNomeDieta","miniFotoDieta","miniFotoDietaPH"],
+    ["miniNomeTreino","miniFotoTreino","miniFotoTreinoPH"],
+  ];
+  ids.forEach(([n,i,ph])=>{
+    const elN = document.getElementById(n);
+    const elI = document.getElementById(i);
+    const elPH = document.getElementById(ph);
+    if(elN) elN.textContent = nome;
+    if(elI && foto){
+      elI.src = foto; elI.style.display="block";
+      if(elPH) elPH.style.display="none";
+    }else{
+      if(elI) elI.style.display="none";
+      if(elPH) elPH.style.display="block";
+    }
+  });
+
+  const hdrUser = document.getElementById("hdrUser");
+  if(hdrUser) hdrUser.textContent = db.user?.nome || "Visitante";
+
+  const pfN = document.getElementById("perfilNome");
+  const pfS = document.getElementById("perfilSub");
+  const pfF = document.getElementById("perfilFoto");
+  const pfPH = document.getElementById("perfilFotoPH");
+  if(pfN) pfN.textContent = nome;
+  if(pfS) pfS.textContent = `Objetivo: ${(db.user?.objetivo||"—")} • Nível: ${(db.user?.nivel||"—")}`;
+  if(pfF && foto){
+    pfF.src = foto; pfF.style.display="block";
+    if(pfPH) pfPH.style.display="none";
+  }else{
+    if(pfF) pfF.style.display="none";
+    if(pfPH) pfPH.style.display="block";
+  }
+}
+
+/* ======= evolução: streak/medalhas ======= */
+function cpTouchDaily(){
+  const db = cpGet();
+  const today = cpTodayKey();
+  if(!db.evo) db.evo = {streak:0, medalhas:0, lastDay:""};
+
+  if(db.evo.lastDay !== today){
+    // streak simples: se ontem existia atividade -> +1
+    // aqui validamos por “houve mudança hoje” (qualquer XP/registro)
+    db.evo.streak = (db.evo.streak||0) + 1;
+    db.evo.lastDay = today;
+
+    // medalha a cada 5 dias de streak
+    if(db.evo.streak % 5 === 0){
+      db.evo.medalhas = (db.evo.medalhas||0) + 1;
+    }
+    setDB(db);
+  }
+}
+
+/* ======= intercepta ações: quando XP muda, garante streak e semana ======= */
+function cpSyncSemana(){
+  const db = cpGet();
+  const wk = cpWeekKey();
+  if(!db.semana) db.semana = {inicio:wk, treinos:0, hist:[]};
+  if(db.semana.inicio !== wk){
+    db.semana = {inicio:wk, treinos:0, hist:[]};
+    setDB(db);
+  }
+}
+
+/* ======= progresso / semana ======= */
+function cpAddWeekHistory(type, label, xp){
+  const db = cpGet();
+  cpSyncSemana();
+  const today = new Date().toLocaleDateString();
+  db.semana.hist.unshift({type,label,day:today,xp});
+  db.semana.hist = db.semana.hist.slice(0, 20);
+  setDB(db);
+}
+
+/* ======= saúde (com imagem) ======= */
+const SAUDE_TOPICS = [
+  {t:"Diabetes", img:"🩸", q:"diabetes"},
+  {t:"Hipertensão", img:"❤️", q:"hipertensao"},
+  {t:"Sono", img:"🌙", q:"sono"},
+  {t:"Saúde mental", img:"🧠", q:"saude mental"},
+  {t:"Obesidade", img:"⚖️", q:"obesidade"},
+  {t:"Hidratação", img:"💧", q:"hidratacao"},
+  {t:"PCD e atividade física", img:"♿", q:"pcd atividade fisica"},
+  {t:"Alimentação saudável", img:"🥗", q:"alimentacao saudavel"}
+];
+
+function renderSaude(){
+  const box = document.getElementById("saudeLista");
+  if(!box) return;
+  box.innerHTML = "";
+  SAUDE_TOPICS.forEach(tp=>{
+    const row = document.createElement("div");
+    row.className = "item";
+    row.innerHTML = `
+      <div style="display:flex;gap:10px;align-items:center;min-width:0">
+        <div style="width:46px;height:46px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);font-size:22px">${tp.img}</div>
+        <div style="min-width:0">
+          <b>${tp.t}</b>
+          <div class="sub">Abrir fonte oficial (gov.br/saude)</div>
+        </div>
+      </div>
+      <button class="miniBtn" type="button" onclick="abrirSaude('${encodeURIComponent(tp.q)}')">Abrir</button>
+    `;
+    box.appendChild(row);
+  });
+}
+
+function abrirSaude(encQ){
+  const q = encodeURIComponent(decodeURIComponent(encQ));
+  window.open("https://www.google.com/search?q=site:gov.br+saude+" + q, "_blank");
+}
+
+/* ======= loja ======= */
+const LOJA_ITEMS = [
+  {t:"Vestuário fitness", img:"👕", sub:"Camisetas, shorts e kits", url:"https://www.google.com/search?q=loja+oficial+vestu%C3%A1rio+fitness"},
+  {t:"Suplementos", img:"🥤", sub:"Whey, creatina, vitaminas", url:"https://www.google.com/search?q=site:com.br+loja+oficial+creatina+whey"},
+  {t:"Acessórios treino", img:"🎒", sub:"Luvas, straps, garrafas", url:"https://www.google.com/search?q=loja+oficial+acess%C3%B3rios+treino"},
+  {t:"Tênis corrida", img:"👟", sub:"Corrida e caminhada", url:"https://www.google.com/search?q=loja+oficial+t%C3%AAnis+corrida"}
+];
+
+function renderLoja(){
+  const box = document.getElementById("lojaLista");
+  if(!box) return;
+  box.innerHTML = "";
+  LOJA_ITEMS.forEach(it=>{
+    const row = document.createElement("div");
+    row.className = "item";
+    row.innerHTML = `
+      <div style="display:flex;gap:10px;align-items:center;min-width:0">
+        <div style="width:46px;height:46px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);font-size:22px">${it.img}</div>
+        <div style="min-width:0">
+          <b>${it.t}</b>
+          <div class="sub">${it.sub}</div>
+        </div>
+      </div>
+      <button class="miniBtn" type="button" onclick="window.open('${it.url}','_blank')">Abrir</button>
+    `;
+    box.appendChild(row);
+  });
+}
+
+/* ======= convite ======= */
+function copiarConvite(){
+  const link = document.getElementById("conviteLink").value;
+  navigator.clipboard?.writeText(link);
+  cpToast("Link copiado!");
+}
+function conviteShare(rede){
+  const link = document.getElementById("conviteLink").value;
+  const txt = document.getElementById("conviteTxt").value;
+  const msg = encodeURIComponent(txt);
+
+  if(rede==="whatsapp"){
+    window.open("https://wa.me/?text=" + msg, "_blank");
+    return;
+  }
+  // instagram/tiktok: não tem deep link universal confiável no browser, então copiamos
+  navigator.clipboard?.writeText(txt);
+  cpToast("Texto copiado. Cole no " + rede + ".");
+}
+
+/* ======= perfil config ======= */
+function salvarPerfilConfig(){
+  const db = cpGet();
+  db.user.objetivo = document.getElementById("perfilObjetivo").value;
+  db.user.nivel = document.getElementById("perfilNivel").value;
+  db.user.restricao = document.getElementById("perfilRestricao").value;
+  setDB(db);
+  cpToast("Perfil atualizado!");
+}
+
+/* ======= reset geral ======= */
+function resetAll(){
+  if(!confirm("Resetar tudo?")) return;
+  localStorage.removeItem("cp_db");
+  location.reload();
+}
+
+/* ======= reset semana ======= */
+function cpResetSemana(){
+  if(!confirm("Resetar semana?")) return;
+  const db = cpGet();
+  db.semana = {inicio: cpWeekKey(), treinos:0, hist:[]};
+  setDB(db);
+  cpToast("Semana resetada.");
+}
+
+/* ======= atualizar dashboards ======= */
+function cpUpdateEvolucao(){
+  const db = cpGet();
+
+  const nome = db.user?.nome ? (db.user.nome + " " + (db.user.sobrenome||"")) : "Visitante";
+  const xp = db.pontos?.xp || 0;
+  const pratos = db.pontos?.pratos || 0;
+  const treinos = db.pontos?.treinos || 0;
+
+  const lvl = cpLevelFromXP(xp);
+  const pct = cpPctLevel(xp);
+  const falta = cpXPToNext(xp);
+
+  doc
+<script>
+/* ==========================
+   PARTE 5 (FINAL) — BLINDAGEM + CORREÇÕES
+   - show() sem bug de event
+   - nav ativo correto
+   - start no Acesso
+   - Dieta só aparece após clique + salvar dieta
+   ========================== */
+
+/* ======== SHOW (NAVEGAÇÃO) — BLINDADO ======== */
+function show(viewId){
+  try{
+    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+    const el = document.getElementById(viewId);
+    if(el) el.classList.add("active");
+
+    // seta nav ativo pelo atributo onclick contendo o viewId
+    document.querySelectorAll(".navBtn").forEach(b=>{
+      const oc = (b.getAttribute("onclick") || "");
+      b.classList.toggle("active", oc.includes("'" + viewId + "'") || oc.includes('"' + viewId + '"'));
+    });
+
+    window.scrollTo({top:0, behavior:"instant"});
+  }catch(e){}
+}
+
+/* ======== START (APP ABRE NO ACESSO) ======== */
+(function startCheckPrato(){
+  try{
+    // garante DB
+    if(typeof getDB === "function"){ getDB(); }
+    if(typeof cpEnsure === "function"){ cpEnsure(); }
+
+    // sempre começa no acesso (como você pediu)
+    show("viewAcesso");
+
+    // status online/offline no header
+    function refreshNet(){
+      const dot = document.getElementById("netDot");
+      const txt = document.getElementById("netTxt");
+      const sub = document.getElementById("hdrSub");
+      if(dot) dot.style.background = navigator.onLine ? "var(--neo)" : "var(--gold)";
+      if(txt) txt.textContent = navigator.onLine ? "Online" : "Offline";
+      if(sub) sub.textContent = navigator.onLine ? "Modo: Online" : "Modo: Local • Offline ready";
+    }
+    refreshNet();
+    window.addEventListener("online", refreshNet);
+    window.addEventListener("offline", refreshNet);
+
+    // PWA sw
+    if("serviceWorker" in navigator){
+      navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
     }
 
-    /* ========= UTILS ========= */
-    const $ = (s)=> document.querySelector(s);
-    const $$ = (s)=> document.querySelectorAll(s);
+    // atualiza UI geral
+    if(typeof cpUpdateAll === "function") cpUpdateAll();
+  }catch(e){}
+})();
+
+/* ==========================
+   DIETA — SÓ APÓS CLIQUE + SALVAR
+   (override seguro sem mexer no HTML anterior)
+   ========================== */
+
+// Garante área limpa antes de clicar
+(function dietInit(){
+  const out = document.getElementById("dietOut");
+  const hdr = document.getElementById("dietHdr");
+  if(out) out.innerHTML = "";
+  if(hdr) hdr.textContent = "Escolha um estilo e clique em GERAR.";
+})();
+
+// banco maior para evitar repetição
+const DIET_DB2 = {
+  hipertrofia: [
+    "Ovos + aveia + banana",
+    "Frango + arroz + feijão + salada",
+    "Carne moída + batata doce + legumes",
+    "Iogurte + granola + frutas",
+    "Whey + fruta + castanhas",
+    "Peixe + purê de mandioca + brócolis",
+    "Macarrão integral + frango desfiado"
+  ],
+  emagrecimento: [
+    "Omelete + salada",
+    "Peixe + legumes no vapor",
+    "Frango grelhado + mix de folhas",
+    "Sopa de legumes + proteína",
+    "Iogurte natural + frutas",
+    "Atum + salada + azeite",
+    "Carne magra + legumes"
+  ],
+  lowcarb: [
+    "Ovos mexidos + abacate",
+    "Frango + salada + azeite",
+    "Carne + legumes + castanhas",
+    "Queijo branco + tomate + pepino",
+    "Peixe + brócolis + manteiga",
+    "Omelete + queijo + folhas"
+  ],
+  economica: [
+    "Ovos + banana",
+    "Arroz + feijão + frango",
+    "Macarrão + sardinha",
+    "Cuscuz + ovos",
+    "Frango desfiado + salada simples",
+    "Banana + aveia",
+    "Carne moída + arroz"
+  ],
+  vegetariana: [
+    "Grão-de-bico + arroz + salada",
+    "Tofu + legumes salteados",
+    "Lentilha + quinoa + folhas",
+    "Húmus + legumes crus",
+    "Ovos (se ovolacto) + salada",
+    "Feijão + arroz + verduras",
+    "Bowl de frutas + sementes"
+  ],
+  diabetes: [
+    "Proteína + fibras + legumes",
+    "Ovos + salada + azeite",
+    "Peixe + legumes + folhas",
+    "Frango + verduras + castanhas",
+    "Iogurte natural + sementes",
+    "Carne + legumes + salada"
+  ],
+  hipertensao: [
+    "Frango + salada (baixo sódio)",
+    "Peixe + legumes",
+    "Arroz integral + feijão + salada",
+    "Ovos + verduras",
+    "Frutas + iogurte natural",
+    "Legumes + grão-de-bico"
+  ],
+  sem_lactose: [
+    "Ovos + banana + aveia",
+    "Frango + arroz + legumes",
+    "Peixe + batata + salada",
+    "Leite vegetal + granola",
+    "Carne + legumes",
+    "Tofu + salada"
+  ],
+  idoso: [
+    "Sopa nutritiva + proteína",
+    "Iogurte + frutas (sem açúcar)",
+    "Frango desfiado + purê + legumes",
+    "Ovos + verduras",
+    "Peixe + arroz + legumes",
+    "Vitamina com leite vegetal"
+  ],
+  atleta: [
+    "Panqueca de banana + aveia",
+    "Macarrão integral + frango",
+    "Arroz + feijão + carne + salada",
+    "Suco de beterraba + fruta",
+    "Sanduíche integral + atum",
+    "Batata doce + frango"
+  ]
+};
+
+function cpShuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function cpDietSavedHas(text){
+  const db = (typeof cpGet==="function") ? cpGet() : (typeof getDB==="function" ? getDB() : {});
+  const saved = db.dietasSalvas || [];
+  return saved.includes(text);
+}
+
+function cpDietSave(text){
+  let db = (typeof cpGet==="function") ? cpGet() : (typeof getDB==="function" ? getDB() : {});
+  if(!db.dietasSalvas) db.dietasSalvas = [];
+  if(!db.dietasSalvas.includes(text)){
+    db.dietasSalvas.push(text);
+    if(typeof setDB==="function") setDB(db);
+    if(typeof cpToast==="function") cpToast("Dieta salva!");
+  }else{
+    if(typeof cpToast==="function") cpToast("Já está salva.");
+  }
+}
+
+// OVERRIDE do genDiet do código anterior (para garantir o comportamento correto)
+function genDiet(isSwap){
+  const out = document.getElementById("dietOut");
+  const hdr = document.getElementById("dietHdr");
+  if(!out || !hdr) return;
+
+  const tipo = (document.getElementById("d_tipo")?.value || "hipertrofia");
+  const pref = (document.getElementById("d_pref")?.value || "brasil");
+
+  const base = DIET_DB2[tipo] || DIET_DB2.hipertrofia;
+  let items = cpShuffle(base);
+
+  // evita repetição imediata (se já tinha uma dieta gerada)
+  let db = (typeof cpGet==="function") ? cpGet() : (typeof getDB==="function" ? getDB() : {});
+  const last = (db.diet && db.diet.items) ? db.diet.items : [];
+  if(last.length){
+    items = items.filter(x=>!last.includes(x)).concat(items.filter(x=>last.includes(x)));
+  }
+
+  // escolhe 6 sugestões
+  items = items.slice(0, 6);
+
+  // salva no state
+  if(!db.diet) db.diet = {};
+  db.diet.tipo = tipo;
+  db.diet.pref = pref;
+  db.diet.items = items;
+  if(typeof setDB==="function") setDB(db);
+
+  // render SOMENTE depois do clique
+  hdr.textContent = `Plano ${tipo.toUpperCase()} • ${pref.replace("_"," ")}`;
+  out.innerHTML = "";
+
+  items.forEach((it, idx)=>{
+    const row = document.createElement("div");
+    row.className = "item";
+    const isSaved = cpDietSavedHas(it);
+
+    row.innerHTML = `
+      <div style="min-width:0">
+        <b>Refeição ${idx+1}</b>
+        <div class="sub" style="white-space:normal">${it}</div>
+      </div>
+      <div style="display:flex;gap:8px;flex:0 0 auto">
+        <button class="miniBtn" type="button" onclick="cpDietSave('${it.replace(/'/g,"\\'")}')">
+          ${isSaved ? "Salvo" : "Salvar"}
+        </button>
+      </div>
+    `;
+    out.appendChild(row);
+  });
+
+  if(typeof cpToast==="function"){
+    cpToast(isSwap ? "Dieta trocada!" : "Dieta gerada!");
+  }
+}
+
+/* ==========================
+   “AUTO” — prato/treino alimentam evolução/progresso
+   (Se suas funções da PARTE 3 já somam XP/pontos, isso só reforça UI)
+   ========================== */
+(function autoSyncLoop(){
+  setInterval(()=>{
+    try{
+      if(typeof cpUpdateAll==="function") cpUpdateAll();
+    }catch(e){}
+  }, 1500);
+})();
+</script>
 
-    function showToast(m){
-      const t = $("#toast");
-      t.textContent = m;
-      t.classList.add("on");
-      setTimeout(()=> t.classList.remove("on"), 2500);
-    }
-
-    function setNavActive(id){
-      const keyMap = {
-        viewAcesso: "acesso",
-        viewDashboard: "dashboard",
-        viewPrato: "prato",
-        viewTreino: "treino",
-        viewSaude: "saude",
-        viewPerfil: "perfil",
-        viewCadastro: "perfil",
-        viewBoasVindas: "perfil",
-        viewMenu: "dashboard",
-        viewDieta: "dashboard",
-        viewEvolucao: "dashboard",
-        viewProgresso: "dashboard",
-        viewLoja: "dashboard",
-        viewConvite: "dashboard"
-      };
-      const navKey = keyMap[id] || "dashboard";
-      $$(".navBtn").forEach(b=> b.classList.toggle("active", b.dataset.nav === navKey));
-    }
-
-    function openView(id){
-      $$(".screen").forEach(s=> s.classList.remove("active"));
-      $("#"+id).classList.add("active");
-      setNavActive(id);
-      window.scrollTo(0,0);
-    }
-
-    /* ========= 1) ACESSO ========= */
-    function loginGoogle(){
-      state.access.mode = "google";
-      state.user.nome = state.user.nome || "Visitante";
-      saveState();
-      showToast("Conectado.");
-      goAfterAccess();
-    }
-
-    function loginEmail(){
-      const email = $("#l_email").value.trim();
-      const senha = $("#l_senha").value.trim();
-      if(!email || !senha){
-        showToast("Preencha e-mail e senha.");
-        return;
-      }
-      state.access.mode = "email";
-      state.access.email = email;
-      if(state.user.nome === "Visitante") state.user.nome = email.split("@")[0];
-      saveState();
-      showToast("Bem-vindo!");
-      goAfterAccess();
-    }
-
-    function criarConta(){
-      showToast("Conta criada.");
-      const email = $("#l_email").value.trim();
-      if(email) {
-        state.access.mode = "email";
-        state.access.email = email;
-        if(state.user.nome === "Visitante") state.user.nome = email.split("@")[0];
-        saveState();
-        goAfterAccess();
-      }
-    }
-
-    function useLocal(){
-      state.access.mode = "local";
-      saveState();
-      showToast("Modo local ativado.");
-      goAfterAccess();
-    }
-
-    function goCadastro(){
-      openView("viewCadastro");
-    }
-
-    function goAfterAccess(){
-      // ordem: se não tem cadastro completo, vai cadastro, senão boas-vindas (se não estiver desativada), senão dashboard
-      const hasName = (state.user.nome && state.user.nome !== "Visitante");
-      if(!state.onboarded || !hasName){
-        openView("viewCadastro");
-        return;
-      }
-      if(!state.welcomeOff){
-        openView("viewBoasVindas");
-        return;
-      }
-      openView("viewDashboard");
-    }
-
-    /* ========= 2) CADASTRO ========= */
-    const SPORTS_LIST = ["Musculação", "Corrida", "Natação", "Ciclismo", "Crossfit", "Futebol", "Lutas", "Yoga", "Dança", "Funcional"];
-
-    function buildSportChips(){
-      const wrap = $("#sportChips");
-      wrap.innerHTML = "";
-      SPORTS_LIST.forEach(s => {
-        const c = document.createElement("div");
-        c.className = "chip" + (state.user.sports.includes(s) ? " on" : "");
-        c.textContent = s;
-        c.onclick = ()=> {
-          if(state.user.sports.includes(s)) state.user.sports = state.user.sports.filter(x=>x!==s);
-          else state.user.sports.push(s);
-          c.classList.toggle("on");
-          fillWorkoutSportSelect();
-          saveState();
-        };
-        wrap.appendChild(c);
-      });
-    }
-
-    function hydrateProfileForm(){
-      const u = state.user;
-      $("#f_nome").value = u.nome || "";
-      $("#f_objetivo").value = u.objetivo || "emagrecimento";
-      $("#f_restricao").value = u.restricao || "nenhuma";
-      $("#f_pcd").value = u.pcd || "nao";
-      $("#f_goal").value = u.goal || 5;
-      $("#f_terms").checked = true;
-    }
-
-    function saveProfile(){
-      if(!$("#f_terms").checked){
-        showToast("Aceite o termo para prosseguir.");
-        return;
-      }
-      const nome = $("#f_nome").value.trim();
-      if(!nome){
-        showToast("Informe seu nome.");
-        return;
-      }
-      state.user.nome = nome;
-      state.user.objetivo = $("#f_objetivo").value;
-      state.user.restricao = $("#f_restricao").value;
-      state.user.pcd = $("#f_pcd").value;
-      state.user.goal = parseInt($("#f_goal").value);
-      state.onboarded = true;
-      saveState();
-      refreshAll();
-      showToast("Cadastro salvo!");
-      // segue a ordem: boas-vindas depois do cadastro
-      if(!state.welcomeOff) openView("viewBoasVindas");
-      else openView("viewDashboard");
-    }
-
-    function resetAll(){
-      localStorage.removeItem("checkPrato_state");
-      location.reload();
-    }
-
-    /* ========= 3) BOAS-VINDAS ========= */
-    const WELCOME_POOL = [
-      {a:"Você não precisa de motivação.", b:"Precisa de direção."},
-      {a:"Disciplina é liberdade.", b:"Hoje você constrói o amanhã."},
-      {a:"O corpo segue a mente.", b:"Controle o mental, domina o físico."},
-      {a:"Sem desculpa.", b:"Só consistência."},
-      {a:"Você não está atrasado.", b:"Você só começou do jeito certo."},
-      {a:"Pequenas escolhas.", b:"Grande transformação."},
-      {a:"A dor de agora", b:"vira orgulho depois."},
-      {a:"Um dia por vez.", b:"Um nível acima sempre."},
-    ];
-    let welcomeIdx = 0;
-
-    function nextWelcome(){
-      welcomeIdx = (welcomeIdx + 1) % WELCOME_POOL.length;
-      $("#welcomePhrase").textContent = WELCOME_POOL[welcomeIdx].a;
-      $("#welcomeSub").textContent = WELCOME_POOL[welcomeIdx].b;
-      showToast("Frase atualizada.");
-    }
-
-    function disableWelcome(){
-      state.welcomeOff = true;
-      saveState();
-      showToast("Boas-vindas desativadas.");
-      openView("viewDashboard");
-    }
-
-    /* ========= 4) PRATO ========= */
-    function analyzeMeal(){
-      const mode = $("#m_mealMode").value;
-      const desc = $("#m_desc").value.trim().toLowerCase();
-
-      if(mode !== "foto" && !desc){
-        showToast("Descreva o prato.");
-        return;
-      }
-
-      let score = 50;
-      if(desc.includes("frango") || desc.includes("carne") || desc.includes("ovo") || desc.includes("peixe") || desc.includes("whey")) score += 20;
-      if(desc.includes("salada") || desc.includes("alface") || desc.includes("legume") || desc.includes("fruta") || desc.includes("fibra")) score += 20;
-      if(desc.includes("arroz") || desc.includes("batata") || desc.includes("mandioca")) score += 5;
-      if(desc.includes("doce") || desc.includes("refrigerante") || desc.includes("fritura")) score -= 15;
-
-      const portion = $("#m_portion").value;
-      if(portion === "g") score -= 3;
-      if(portion === "p") score += 2;
-
-      score = Math.max(0, Math.min(100, score));
-      const nutri = (score / 10).toFixed(1);
-
-      $("#m_score").textContent = score;
-      $("#m_nutri").textContent = nutri;
-      $("#m_msg").textContent = score >= 80 ? "Excelente equilíbrio!" : "Dá pra melhorar a densidade nutritiva.";
-
-      const meal = {
-        name: desc || "Refeição (foto)",
-        score,
-        nutri: parseFloat(nutri),
-        date: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
-      };
-
-      state.stats.lastMeal = meal;
-      state.stats.mealsCount++;
-
-      state.stats.nutriScore = ((state.stats.nutriScore * (state.stats.mealsCount-1)) + meal.nutri) / state.stats.mealsCount;
-      state.stats.xp += 15;
-
-      saveState();
-      renderMeals();
-      refreshDashboard();
-      refreshEvolution();
-      showToast("Refeição registrada! +15 XP");
-    }
-
-    function renderMeals(){
-      const box = $("#lastMealBox");
-      const m = state.stats.lastMeal;
-      if(m){
-        box.innerHTML = `<div><b>${escapeHTML(m.name)}</b><div class="sub">Score ${m.score} • Hoje, ${m.date}</div></div><div class="miniBtn" style="border-color:var(--neo); background:rgba(33,230,182,.15)">OK</div>`;
-      }
-    }
-
-    function clearMealForm(){
-      $("#m_desc").value = "";
-      $("#m_photo").value = "";
-      $("#m_score").textContent = "—";
-      $("#m_nutri").textContent = "—";
-      $("#m_msg").textContent = "Dica: inclua proteína + fibras.";
-    }
-
-    /* ========= 5) DIETAS ========= */
-    const DIET_DB = {
-      hipertrofia: ["Omelete c/ aveia", "Frango, arroz e brócolis", "Iogurte c/ granola", "Carne moída e batata doce", "Shake de albumina", "Atum + mandioca", "Pão integral + ovos"],
-      emagrecimento: ["Clara de ovo e mamão", "Filé de peixe e mix legumes", "Abacate e sementes", "Sopa de vegetais c/ frango", "Chá e oleaginosas", "Fruta + iogurte"],
-      lowcarb: ["Ovos mexidos", "Salmão e aspargos", "Mix de castanhas", "Zucchini c/ carne", "Queijo branco", "Frango + salada"],
-      economica: ["Ovos + banana", "Arroz + feijão + frango", "Macarrão + sardinha", "Cuscuz + ovos", "Carne moída + arroz"],
-      vegetariana: ["Tofu mexido", "Feijoada vegetariana", "Húmus + cenoura", "Quinoa + grão-de-bico", "Lentilha + salada"],
-      diabetes: ["Proteína + fibras", "Legumes + frango", "Ovos + salada", "Carne magra + vegetais"],
-      hipertensao: ["Pouco sódio + frutas", "Peixe + legumes", "Frango grelhado + salada"],
-      sem_lactose: ["Leite vegetal + aveia", "Frutas + castanhas", "Arroz + feijão + carne"],
-      idoso: ["Refeição leve + proteína", "Sopa + frango", "Iogurte sem lactose + frutas"],
-      atleta: ["Panqueca de banana", "Macarrão integral c/ proteína", "Suco de beterraba", "Arroz + carne + salada"]
-    };
-
-    function genDiet(isSwap){
-      const tipo = $("#d_tipo").value;
-      const pref = $("#d_pref").value;
-      const list = DIET_DB[tipo] || DIET_DB.hipertrofia;
-
-      let items = [...list];
-      items.sort(()=> Math.random() - 0.5);
-
-      if(isSwap && state.diet.items?.length){
-        items = items.filter(x => !state.diet.items.includes(x)).concat(items);
-      }
-
-      items = items.slice(0, 5);
-
-      state.diet.tipo = tipo;
-      state.diet.pref = pref;
-      state.diet.items = items;
-      saveState();
-
-      $("#dietHdr").textContent = `Plano ${tipo.toUpperCase()} • ${pref}`;
-      const out = $("#dietOut");
-      out.innerHTML = "";
-
-      items.forEach((it, i) => {
-        const d = document.createElement("div");
-        d.className = "item";
-        d.innerHTML = `<div><b>Refeição ${i+1}</b><div class="sub">${escapeHTML(it)}</div></div> <button class="miniBtn" type="button" onclick="showToast('Salvo')">✓</button>`;
-        out.appendChild(d);
-      });
-
-      showToast(isSwap ? "Dieta trocada!" : "Dieta gerada!");
-    }
-
-    /* ========= 6) TREINOS ========= */
-    function fillWorkoutSportSelect(){
-      const s = $("#t_sport");
-      if(!s) return;
-      s.innerHTML = "";
-      const userSports = state.user.sports.length > 0 ? state.user.sports : SPORTS_LIST;
-      userSports.forEach(sp => {
-        const opt = document.createElement("option");
-        opt.value = sp; opt.textContent = sp;
-        s.appendChild(opt);
-      });
-    }
-
-    function genWorkout(){
-      const sport = $("#t_sport").value;
-      const int = $("#t_int").value;
-      const cond = $("#t_cond").value;
-      const time = $("#t_time").value;
-
-      const blocks = [
-        {name:"Aquecimento", sub:`Mobilidade + cardio leve (${time}min alvo)`},
-        {name:"Série principal", sub:`${sport} • Intensidade ${int}`},
-        {name:"Complementar", sub:`Ajustado para ${cond}`},
-        {name:"Finalização", sub:"Core / alongamento"},
-      ];
-
-      const out = $("#workoutOut");
-      out.innerHTML = "";
-
-      blocks.forEach(it => {
-        const row = document.createElement("div");
-        row.className = "item";
-        row.innerHTML = `<div><b>${escapeHTML(it.name)}</b><div class="sub">${escapeHTML(it.sub)}</div></div>
-                         <button class="miniBtn" type="button" onclick="openTech('${it.name} ${sport}')">Ver</button>`;
-        out.appendChild(row);
-      });
-
-      showToast("Treino pronto.");
-    }
-
-    function openTech(q){
-      window.open("https://www.youtube.com/results?search_query=" + encodeURIComponent("como fazer " + q), "_blank");
-    }
-
-    let timerSec = 0;
-    let timerIntv = null;
-
-    function startWorkoutTimer(){
-      if(timerIntv) return;
-      showToast("Timer iniciado.");
-      timerIntv = setInterval(()=> {
-        timerSec++;
-        const m = Math.floor(timerSec/60).toString().padStart(2,'0');
-        const s = (timerSec%60).toString().padStart(2,'0');
-        $("#timerTxt").textContent = `${m}:${s}`;
-      }, 1000);
-    }
-
-    function finishWorkout(){
-      if(timerSec < 60){
-        showToast("Use o timer por 1 minuto antes de concluir.");
-        return;
-      }
-      clearInterval(timerIntv);
-      timerIntv = null;
-
-      timerSec = 0;
-      $("#timerTxt").textContent = "00:00";
-
-      state.stats.workoutsWeek++;
-      state.stats.xp += 50;
-      state.stats.historyWeek.push({
-        type: "workout",
-        name: $("#t_sport").value || "Treino",
-        date: new Date().toLocaleDateString(),
-        xp: 50
-      });
-
-      state.stats.streak++;
-      if(state.stats.workoutsWeek % 5 === 0) state.stats.badges++;
-
-      saveState();
-      refreshAll();
-      showToast("Treino concluído! +50 XP");
-      openView("viewDashboard");
-    }
-
-    function clearWorkout(){
-      $("#workoutOut").innerHTML = "";
-      showToast("Treino limpo.");
-    }
-
-    /* ========= 9) SAÚDE ========= */
-    const TOPICS = [
-      {t:"Hipertensão", d:"Controle de pressão e hábitos."},
-      {t:"Diabetes", d:"Como evitar picos glicêmicos."},
-      {t:"Hidratação", d:"Água e performance."},
-      {t:"Saúde mental", d:"Rotina, sono, ansiedade."},
-      {t:"Saúde do idoso", d:"Força, proteína e prevenção."}
-    ];
-
-    function buildHealthTopics(){
-      const wrap = $("#healthTopics");
-      wrap.innerHTML = "";
-      TOPICS.forEach(tp => {
-        const d = document.createElement("div");
-        d.className = "item";
-        d.innerHTML = `<div><b>${escapeHTML(tp.t)}</b><div class="sub">${escapeHTML(tp.d)}</div></div>
-                       <button class="miniBtn" type="button" onclick="openGov('${tp.t}')">Ler</button>`;
-        wrap.appendChild(d);
-      });
-    }
-    function openGov(topic){
-      window.open("https://www.google.com/search?q=" + encodeURIComponent("site:gov.br saúde " + topic), "_blank");
-    }
-
-    /* ========= 8) PROGRESSO ========= */
-    function refreshProgress(){
-      $("#p_goal").textContent = state.user.goal;
-      $("#p_done").textContent = state.stats.workoutsWeek;
-      const list = $("#p_list");
-      list.innerHTML = "";
-      state.stats.historyWeek.slice(-7).reverse().forEach(h => {
-        const d = document.createElement("div");
-        d.className = "item";
-        d.innerHTML = `<div><b>${escapeHTML(h.name)}</b><div class="sub">${escapeHTML(h.date)}</div></div> <span style="color:var(--neo); font-weight:950">+${h.xp} XP</span>`;
-        list.appendChild(d);
-      });
-    }
-
-    function resetWeek(){
-      state.stats.workoutsWeek = 0;
-      state.stats.historyWeek = [];
-      saveState();
-      refreshAll();
-      showToast("Semana zerada.");
-    }
-
-    /* ========= 7) EVOLUÇÃO ========= */
-    function drawWeekChart(){
-      const wrap = $("#chartWrap");
-      wrap.innerHTML = "";
-      const base = Math.max(1, state.stats.workoutsWeek);
-      for(let i=0; i<7; i++){
-        const h = Math.floor(Math.random()*25) + (i < base ? 35 : 10);
-        const bar = document.createElement("div");
-        bar.style.width = "10px";
-        bar.style.height = h+"px";
-        bar.style.background = i === 6 ? "var(--neo)" : "rgba(255,255,255,.15)";
-        bar.style.borderRadius = "6px";
-        wrap.appendChild(bar);
-      }
-    }
-
-    function refreshEvolution(){
-      $("#e_name").textContent = state.user.nome;
-      $("#e_xp").textContent = state.stats.xp;
-      $("#e_streak").textContent = state.stats.streak;
-      $("#e_badges").textContent = state.stats.badges;
-      $("#e_lvl").textContent = Math.floor(state.stats.xp / 200) + 1;
-
-      const coach = state.stats.streak >= 5
-        ? "Excelente! Mantém a consistência e melhora um detalhe por dia."
-        : "Progresso constante dá resultado. Faz 1 treino hoje e registra.";
-      $("#coachTxt").textContent = coach;
-
-      const rank = [
-        {name: state.user.nome || "Você", xp: state.stats.xp},
-        {name:"João Elite", xp: 1250},
-        {name:"Maria Power", xp: 980}
-      ].sort((a,b)=> b.xp - a.xp);
-
-      const wrap = $("#rankingList");
-      wrap.innerHTML = "";
-      rank.forEach((r, idx) => {
-        const row = document.createElement("div");
-        row.className = "item";
-        row.innerHTML = `<div><b>${idx+1}º ${escapeHTML(r.name)}</b><div class="sub">Ranking semanal</div></div>
-                         <span style="color:var(--neo); font-weight:950">${r.xp} XP</span>`;
-        wrap.appendChild(row);
-      });
-
-      drawWeekChart();
-    }
-
-    /* ========= 10/11 helpers ========= */
-    function openOfficial(q){
-      window.open("https://www.google.com/search?q=" + encodeURIComponent(q), "_blank");
-    }
-
-    function setInviteLink(){
-      // se estiver no GitHub Pages, usa o próprio link atual
-      const url = location.href.replace(/#.*$/,"");
-      $("#inviteLink").value = url;
-    }
-
-    function copyInvite(){
-      const val = $("#inviteLink").value;
-      navigator.clipboard?.writeText(val).then(()=>{
-        showToast("Link copiado.");
-      }).catch(()=>{
-        showToast("Não foi possível copiar.");
-      });
-    }
-
-    function shareInvite(){
-      const val = $("#inviteLink").value;
-      const text = "Acesse o CheckPrato: " + val;
-      if(navigator.share){
-        navigator.share({title:"CheckPrato", text, url: val}).catch(()=>{});
-      }else{
-        copyInvite();
-      }
-    }
-
-    function openShare(app){
-      const link = encodeURIComponent($("#inviteLink").value);
-      const msg = encodeURIComponent("Acesse o CheckPrato: " + $("#inviteLink").value);
-      if(app === "whatsapp") window.open("https://wa.me/?text=" + msg, "_blank");
-      if(app === "instagram") window.open("https://www.instagram.com/", "_blank");
-      if(app === "tiktok") window.open("https://www.tiktok.com/", "_blank");
-    }
-
-    /* ========= HEADER / DASH ========= */
-    function refreshHeader(){
-      $("#hdrUser").textContent = state.user.nome || "Visitante";
-      const online = navigator.onLine;
-      $("#hdrSub").textContent = online ? `Modo: ${labelMode()} • Online` : `Modo: ${labelMode()} • Offline`;
-      $("#netTxt").textContent = online ? "Online" : "Offline";
-      $("#netDot").style.background = online ? "var(--neo)" : "var(--gold)";
-    }
-
-    function labelMode(){
-      if(state.access.mode === "google") return "Google";
-      if(state.access.mode === "email") return "Conta";
-      return "Local";
-    }
-
-    function refreshDashboard(){
-      $("#dashName").textContent = state.user.nome;
-      $("#dashGoal").textContent = state.user.goal + " treinos";
-      $("#dashStreak").textContent = state.stats.streak;
-      $("#dashBadges").textContent = state.stats.badges;
-      $("#dashWorkouts").textContent = state.stats.workoutsWeek;
-      $("#dashMeals").textContent = state.stats.mealsCount;
-
-      const n = state.stats.nutriScore.toFixed(1);
-      $("#dashNutri").textContent = n;
-      const pct = (state.stats.nutriScore * 10) * 3.6;
-      $("#ringBar").style.setProperty("--pct", pct + "deg");
-    }
-
-    function refreshPerfil(){
-      $("#perfilNome").textContent = state.user.nome || "Visitante";
-      $("#perfilInfo").textContent = `Meta semanal: ${state.user.goal} treinos`;
-    }
-
-    function refreshAll(){
-      hydrateProfileForm();
-      fillWorkoutSportSelect();
-      renderMeals();
-      refreshDashboard();
-      refreshProgress();
-      refreshEvolution();
-      refreshPerfil();
-      refreshHeader();
-      setInviteLink();
-      saveState();
-    }
-
-    function escapeHTML(s){
-      return String(s || "").replace(/[&<>"']/g, m => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-      }[m]));
-    }
-
-    /* ========= INIT ========= */
-    function init(){
-      // PWA service worker
-      if("serviceWorker" in navigator){
-        navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
-      }
-
-      buildHealthTopics();
-      buildSportChips();
-      fillWorkoutSportSelect();
-
-      // decisão de primeira tela pela ordem
-      // 1) acesso sempre disponível; se não onboarded -> acesso, senão segue fluxo
-      if(!state.onboarded){
-        openView("viewAcesso");
-      }else{
-        // se boas-vindas não desativada, mostra; senão dash
-        if(!state.welcomeOff) openView("viewBoasVindas");
-        else openView("viewDashboard");
-      }
-
-      refreshAll();
-
-      window.addEventListener("online", refreshHeader);
-      window.addEventListener("offline", refreshHeader);
-    }
-
-    init();
-  </script>
 </body>
 </html>
