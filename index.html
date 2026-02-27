@@ -1,1934 +1,1337 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CheckPrato Elite</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CheckPrato Elite — Dieta. Treino. Prato. Evolução.</title>
+    <meta name="description" content="CheckPrato Elite — App de fitness com análise de prato, dietas personalizadas e treinos.">
+    <meta name="theme-color" content="#02050b">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============================================================
+           CheckPrato Elite — Global Styles
+           Design: Cyber-Fitness Dark Neon
+           ============================================================ */
 
-<style>
-:root{
---bg:#02050b;
---card:#081524;
---neo:#21e6b6;
---txt:#eaf2ff;
---muted:#8aa0c7;
-}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-body{
-margin:0;
-font-family:system-ui;
-background:radial-gradient(circle at 20% 0%,#0a1f38,#000);
-color:var(--txt);
-}
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #02050b;
+            color: #eaf2ff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
 
-.wrap{
-max-width:760px;
-margin:auto;
-padding:18px;
-padding-bottom:120px;
-}
+        body {
+            background: radial-gradient(circle at 20% 0%, #0a1f38, #000) fixed;
+            min-height: 100vh;
+        }
 
-.screen{display:none}
-.screen.active{display:block}
+        /* ============================================================
+           CheckPrato Custom Utilities
+           ============================================================ */
 
-.h1{
-font-size:34px;
-font-weight:900;
-margin:10px 0;
-}
+        .app-shell {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle at 20% 0%, #0a1f38, #000);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.card{
-background:linear-gradient(180deg,#0b1a2d,#07111f);
-border-radius:22px;
-padding:16px;
-margin-top:14px;
-box-shadow:0 20px 60px rgba(0,0,0,.5);
-}
+        .screen-enter {
+            animation: screenIn 0.25s ease-out forwards;
+        }
 
-.btn{
-width:100%;
-padding:14px;
-border:none;
-border-radius:18px;
-font-weight:900;
-background:linear-gradient(135deg,var(--neo),#18c79f);
-margin-top:12px;
-}
+        @keyframes screenIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-input,select{
-width:100%;
-padding:12px;
-margin-top:10px;
-border-radius:14px;
-border:none;
-background:#071728;
-color:var(--txt);
-}
+        /* Buttons */
+        .btn-neon {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff;
+            font-weight: 900;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 24px;
+            width: 100%;
+            font-size: 16px;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.4), 0 4px 16px rgba(0,0,0,0.4);
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+        }
 
-.nav{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:#071728;
-padding:10px;
-}
+        .btn-neon:hover, .btn-neon:active {
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.6), 0 6px 20px rgba(0,0,0,0.5);
+            transform: translateY(-1px);
+        }
 
-.navInner{
-display:flex;
-gap:8px;
-}
+        .btn-neon:disabled {
+            opacity: 0.5;
+            transform: none;
+            box-shadow: none;
+        }
 
-.navBtn{
-flex:1;
-border:none;
-padding:10px;
-border-radius:14px;
-background:#0c2138;
-color:#a0b6da;
-font-weight:700;
-}
-.navBtn.active{
-color:var(--neo);
-}
-</style>
+        .btn-outline {
+            background: transparent;
+            color: #eaf2ff;
+            font-weight: 700;
+            border: 1.5px solid rgba(234, 242, 255, 0.3);
+            border-radius: 50px;
+            padding: 13px 24px;
+            width: 100%;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-outline:hover, .btn-outline:active {
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.06);
+            color: #eaf2ff;
+            font-weight: 700;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 12px 18px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        /* Cards */
+        .cp-card {
+            background: linear-gradient(180deg, #0b1a2d, #07111f);
+            border-radius: 22px;
+            padding: 18px;
+            margin-top: 14px;
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        /* Input */
+        .cp-input {
+            width: 100%;
+            padding: 12px 14px;
+            margin-top: 10px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: #071728;
+            color: #eaf2ff;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .cp-input:focus {
+            border-color: rgba(34, 197, 94, 0.5);
+        }
+
+        .cp-input::placeholder {
+            color: #8aa0c7;
+        }
+
+        /* Label */
+        .cp-label {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #8aa0c7;
+            margin-top: 14px;
+            margin-bottom: 4px;
+        }
+
+        /* Titles */
+        .cp-h1 {
+            font-size: 30px;
+            font-weight: 900;
+            color: #eaf2ff;
+            margin: 8px 0 4px;
+            line-height: 1.1;
+        }
+
+        .cp-hint {
+            font-size: 13px;
+            color: #8aa0c7;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        /* Stats */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-key {
+            font-size: 11px;
+            font-weight: 700;
+            color: #8aa0c7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-val {
+            font-size: 22px;
+            font-weight: 900;
+            color: #22c55e;
+            line-height: 1.1;
+            margin: 4px 0 2px;
+        }
+
+        .stat-sub {
+            font-size: 10px;
+            color: #8aa0c7;
+            font-weight: 600;
+        }
+
+        /* Divider */
+        .cp-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+            margin: 16px 0;
+        }
+
+        /* List item */
+        .cp-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 8px;
+            transition: background 0.2s;
+        }
+
+        .cp-item:hover {
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .cp-item-title {
+            font-weight: 800;
+            font-size: 14px;
+            color: #eaf2ff;
+        }
+
+        .cp-item-sub {
+            font-size: 12px;
+            color: #8aa0c7;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* Chip */
+        .cp-chip {
+            padding: 7px 14px;
+            border-radius: 50px;
+            border: 1.5px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.04);
+            color: #8aa0c7;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .cp-chip.active {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.12);
+            color: #22c55e;
+        }
+
+        /* Bottom navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            background: rgba(7, 23, 40, 0.97);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding: 8px 12px 20px;
+            z-index: 100;
+        }
+
+        .bottom-nav-inner {
+            display: flex;
+            gap: 4px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            border: none;
+            padding: 8px 4px;
+            border-radius: 14px;
+            background: transparent;
+            color: #8aa0c7;
+            font-weight: 700;
+            font-size: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-btn .nav-icon {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .nav-btn.active {
+            color: #22c55e;
+            background: rgba(34, 197, 94, 0.08);
+        }
+
+        .nav-btn:hover {
+            color: #4ade80;
+        }
+
+        /* Toast */
+        .cp-toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-80px);
+            background: #0b1a2d;
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #eaf2ff;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            z-index: 9999;
+            transition: transform 0.3s ease;
+            white-space: nowrap;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+
+        .cp-toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(34, 197, 94, 0.3); border-radius: 2px; }
+
+        /* Photo preview */
+        .photo-preview {
+            width: 100%;
+            height: 190px;
+            border-radius: 18px;
+            background: #071728;
+            border: 1px solid rgba(255,255,255,0.08);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        /* Grid 2 cols */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        /* Btn row */
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        /* Neon text */
+        .neon-text {
+            color: #22c55e;
+            text-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+        }
+
+        /* Splash dots */
+        .splash-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .splash-dot.active {
+            background: #22c55e;
+            box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+        }
+
+        /* Splash screen */
+        .splash-screen {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .splash-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .splash-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(2,5,11,0.3), rgba(2,5,11,0.85));
+        }
+
+        .splash-content {
+            position: relative;
+            z-index: 10;
+            padding: 18px 18px 80px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .splash-hero-title {
+            font-size: 38px;
+            font-weight: 900;
+            color: #eaf2ff;
+            line-height: 1.15;
+            text-align: center;
+        }
+
+        /* Logo */
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 900;
+            color: #eaf2ff;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: #22c55e;
+        }
+
+        /* Mini profile */
+        .mini-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 14px;
+            margin-bottom: 12px;
+        }
+
+        .mini-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .mini-name {
+            font-weight: 800;
+            font-size: 14px;
+            color: #eaf2ff;
+        }
+
+        .mini-sub {
+            font-size: 12px;
+            color: #8aa0c7;
+            font-weight: 600;
+        }
+
+        /* Page wrap */
+        .page-wrap {
+            width: 100%;
+            max-width: 100%;
+            padding: 18px 18px 130px;
+            overflow-y: auto;
+        }
+
+        /* Neon badge */
+        .neon-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 50px;
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        /* Acesso header */
+        .acesso-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .acesso-header p {
+            color: #8aa0c7;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        /* Divider text */
+        .divider-or {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .divider-or::before,
+        .divider-or::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+        }
+
+        .divider-or span {
+            color: #8aa0c7;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* Termo box */
+        .termo-box {
+            width: 100%;
+            height: 120px;
+            background: #071728;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 12px;
+            overflow-y: auto;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #8aa0c7;
+            line-height: 1.5;
+        }
+
+        /* Checkbox wrap */
+        .cp-checkbox-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            cursor: pointer;
+        }
+
+        .cp-checkbox-wrap input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #22c55e;
+        }
+
+        .cp-checkbox-wrap input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Boas-vindas */
+        .bv-quote {
+            font-size: 18px;
+            font-weight: 900;
+            color: #eaf2ff;
+            line-height: 1.4;
+            margin: 16px 0;
+        }
+
+        .bv-sub {
+            font-size: 14px;
+            font-weight: 700;
+            color: #8aa0c7;
+            line-height: 1.4;
+            margin: 12px 0;
+        }
+
+        .bv-muted {
+            font-size: 12px;
+            color: #8aa0c7;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        /* Dieta meal */
+        .dieta-meal {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .dieta-meal-title {
+            font-weight: 800;
+            font-size: 13px;
+            color: #22c55e;
+            margin-bottom: 8px;
+        }
+
+        .dieta-meal-item {
+            font-size: 13px;
+            color: #eaf2ff;
+            font-weight: 600;
+            padding: 4px 0;
+        }
+
+        /* Treino day */
+        .treino-day {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .treino-day-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .treino-day-title {
+            font-weight: 800;
+            font-size: 13px;
+            color: #22c55e;
+        }
+
+        .treino-exercise {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .treino-exercise:last-child {
+            border-bottom: none;
+        }
+
+        .treino-ex-name {
+            font-size: 13px;
+            color: #eaf2ff;
+            font-weight: 700;
+        }
+
+        .treino-ex-detail {
+            font-size: 12px;
+            color: #8aa0c7;
+            font-weight: 600;
+        }
+
+        /* XP bar */
+        .xp-bar-bg {
+            width: 100%;
+            height: 12px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .xp-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+            border-radius: 50px;
+            transition: width 0.3s ease;
+        }
+
+        /* Evolution stat */
+        .evo-stat {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .evo-stat-val {
+            font-size: 22px;
+            font-weight: 900;
+            color: #22c55e;
+            line-height: 1.1;
+            margin: 4px 0 2px;
+        }
+
+        .evo-stat-label {
+            font-size: 10px;
+            color: #8aa0c7;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Hidden input */
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .splash-hero-title {
+                font-size: 32px;
+            }
+
+            .cp-h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-
-<div class="wrap">
-
-<!-- 1 ACESSO -->
-<section id="viewAcesso" class="screen active">
-
-<div class="h1">Acesso</div>
-
-<div class="card">
-
-<button class="btn" onclick="loginGoogle()">Entrar com Google</button>
-
-<input id="email" placeholder="Email">
-<input id="senha" placeholder="Senha" type="password">
-
-<button class="btn" onclick="login()">Entrar</button>
-
-<button class="btn" onclick="show('viewCadastro')">Criar conta</button>
-
-</div>
-</section>
-<!-- 2 CADASTRO -->
-<section id="viewCadastro" class="screen">
-
-<div class="h1">Cadastro</div>
-
-<div class="card">
-
-<div style="display:flex;gap:14px;align-items:center">
-
-  <div style="width:88px;height:88px;border-radius:18px;background:#071728;overflow:hidden;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center">
-    <img id="previewFoto" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none">
-    <div id="fotoPlaceholder" style="font-weight:900;color:rgba(234,242,255,.65);text-align:center;font-size:12px;line-height:1.2">
-      FOTO<br>PERFIL
-    </div>
-  </div>
-
-  <div style="flex:1">
-    <button class="btn" type="button" onclick="abrirGaleria()">Escolher foto (galeria)</button>
-    <button class="btn" type="button" onclick="abrirCamera()">Tirar foto agora</button>
-    <input id="fotoGaleria" type="file" accept="image/*" style="display:none">
-    <input id="fotoCamera" type="file" accept="image/*" capture="environment" style="display:none">
-  </div>
-
-</div>
-
-<div style="margin-top:14px">
-  <input id="cadNome" placeholder="Nome">
-  <input id="cadSobrenome" placeholder="Sobrenome">
-
-  <div style="display:flex;gap:10px">
-    <input id="cadPeso" placeholder="Peso (kg)" inputmode="decimal">
-    <input id="cadAltura" placeholder="Altura (cm)" inputmode="numeric">
-  </div>
-
-  <select id="cadSexo">
-    <option value="">Sexo</option>
-    <option>Masculino</option>
-    <option>Feminino</option>
-    <option>Prefiro não informar</option>
-  </select>
-
-  <select id="cadObjetivo">
-    <option value="">Objetivo</option>
-    <option>Emagrecimento</option>
-    <option>Hipertrofia</option>
-    <option>Saúde</option>
-  </select>
-
-  <select id="cadCondicao">
-    <option value="">Condição</option>
-    <option>Nenhuma</option>
-    <option>PCD</option>
-    <option>Idoso</option>
-    <option>Mobilidade reduzida</option>
-    <option>Lesões / limitações</option>
-  </select>
-
-  <select id="cadNivel">
-    <option value="">Nível</option>
-    <option>Iniciante</option>
-    <option>Intermediário</option>
-    <option>Avançado</option>
-  </select>
-
-  <select id="cadRestricao">
-    <option value="">Restrições</option>
-    <option>Nenhuma</option>
-    <option>Diabetes</option>
-    <option>Hipertensão</option>
-    <option>Colesterol alto</option>
-    <option>Intolerância à lactose</option>
-    <option>Intolerância ao glúten</option>
-  </select>
-</div>
-
-<div style="margin-top:16px;font-weight:900;color:rgba(234,242,255,.9)">Esportes</div>
-<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:10px" id="sportsBox"></div>
-
-<div style="margin-top:16px;padding:12px;border-radius:16px;background:#071728;border:1px solid rgba(255,255,255,.08)">
-  <div style="font-weight:900;margin-bottom:10px">Termo de uso</div>
-
-  <div id="termoBox" style="height:110px;overflow:auto;padding:10px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(234,242,255,.85);font-size:13px;line-height:1.35">
-    <b>Termo Informativo</b><br><br>
-    Ao continuar, você concorda em utilizar o CheckPrato Elite com responsabilidade.<br><br>
-    As recomendações são de caráter geral e não substituem acompanhamento médico/nutricional quando necessário.<br><br>
-    Você confirma que os dados informados são verdadeiros e que entende que resultados dependem de consistência e hábitos.<br><br>
-    <b>Role até o final para liberar o aceite.</b><br><br>
-    1) Use o app com consciência.<br>
-    2) Não utilize informações para automedicação.<br>
-    3) Consulte profissionais em casos específicos.<br><br>
-    Obrigado por fazer parte da Elite.<br><br>
-    <b>Fim do termo.</b>
-  </div>
-
-  <label style="display:flex;gap:10px;align-items:center;margin-top:12px;font-weight:900;opacity:.6" id="aceiteLabel">
-    <input id="aceiteTermo" type="checkbox" disabled style="width:18px;height:18px">
-    Li e aceito o termo
-  </label>
-
-</div>
-
-<button class="btn" id="btnSalvarCadastro" onclick="salvarCadastro()" disabled style="opacity:.6">Salvar e continuar</button>
-<button class="btn" onclick="show('viewBoasVindas')">Pular (ir para boas-vindas)</button>
-
-</div>
-</section>
-
-<!-- 3 BOAS-VINDAS -->
-<section id="viewBoasVindas" class="screen">
-
-<div class="h1">Boas-vindas</div>
-
-<div class="card">
-
-<div style="font-weight:900;font-size:18px;line-height:1.25" id="bvFrase1">
-Você não precisa de motivação. Precisa de direção.
-</div>
-
-<div style="margin-top:12px;opacity:.9;font-weight:800" id="bvFrase2">
-Pequenas escolhas hoje. Uma versão absurda de você amanhã.
-</div>
-
-<div style="margin-top:12px;color:var(--muted);font-weight:800" id="bvFrase3">
-Sua mente precisa acreditar antes do seu corpo acompanhar.
-</div>
-
-<button class="btn" onclick="trocarBoasVindas()">Trocar frases</button>
-<button class="btn" onclick="show('viewPrato')">Seguir</button>
-
-</div>
-</section>
-<!-- 4 PRATO -->
-<section id="viewPrato" class="screen">
-  <div style="display:flex;align-items:center;gap:12px;margin:6px 0 10px">
-    <div style="width:44px;height:44px;border-radius:14px;background:#071728;border:1px solid rgba(255,255,255,.08);overflow:hidden;display:flex;align-items:center;justify-content:center">
-      <img id="miniFotoPrato" src="" style="width:100%;height:100%;object-fit:cover;display:none" alt="">
-      <div id="miniFotoPratoPH" style="font-weight:950;color:rgba(234,242,255,.65);font-size:12px">👤</div>
-    </div>
-    <div style="min-width:0">
-      <div style="font-weight:950;font-size:16px;line-height:1.1" id="miniNomePrato">Visitante</div>
-      <div style="color:var(--muted);font-weight:800;font-size:12px">Prato • análise completa</div>
-    </div>
-  </div>
-
-  <div class="h1">Prato</div>
-  <div class="hint">Tire a foto, descreva e analise. Sem “marcação manual”.</div>
-
-  <div class="card">
-    <div class="label">Foto do prato</div>
-    <div class="btnRow">
-      <button class="btn" type="button" onclick="abrirCameraPrato()">Câmera</button>
-      <button class="btn secondary" type="button" onclick="abrirGaleriaPrato()">Galeria</button>
-      <input id="fotoPratoCamera" type="file" accept="image/*" capture="environment" style="display:none">
-      <input id="fotoPratoGaleria" type="file" accept="image/*" style="display:none">
-    </div>
-
-    <div style="margin-top:10px;width:100%;height:190px;border-radius:18px;background:#071728;border:1px solid rgba(255,255,255,.08);overflow:hidden;display:flex;align-items:center;justify-content:center">
-      <img id="previewPrato" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none">
-      <div id="previewPratoPH" style="font-weight:950;color:rgba(234,242,255,.65);text-align:center;line-height:1.2">
-        SEM FOTO AINDA<br><span style="font-size:12px;font-weight:800;color:var(--muted)">use câmera ou galeria</span>
-      </div>
-    </div>
-
-    <div class="label">Descrição do prato</div>
-    <textarea id="descPrato" placeholder="Ex: arroz, feijão, frango grelhado, salada, suco..."></textarea>
-
-    <div class="btnRow">
-      <button class="btn" type="button" onclick="analisarPrato()">Analisar</button>
-      <button class="btn secondary" type="button" onclick="novaAnalisePrato()">Gerar outra análise</button>
-    </div>
-
-    <div class="statGrid" style="margin-top:12px">
-      <div class="stat">
-        <div class="k">Calorias</div>
-        <div class="v"><span id="outCal">—</span></div>
-        <div class="s">Estimativa</div>
-      </div>
-      <div class="stat">
-        <div class="k">Proteína</div>
-        <div class="v"><span id="outProt">—</span></div>
-        <div class="s">g</div>
-      </div>
-      <div class="stat">
-        <div class="k">Carboidrato</div>
-        <div class="v"><span id="outCarb">—</span></div>
-        <div class="s">g</div>
-      </div>
-      <div class="stat">
-        <div class="k">Gordura</div>
-        <div class="v"><span id="outGord">—</span></div>
-        <div class="s">g</div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="label">Histórico</div>
-    <div class="list" id="histPrato"></div>
-  </div>
-</section>
-
-
-<!-- 5 DIETAS -->
-<section id="viewDieta" class="screen">
-  <div style="display:flex;align-items:center;gap:12px;margin:6px 0 10px">
-    <div style="width:44px;height:44px;border-radius:14px;background:#071728;border:1px solid rgba(255,255,255,.08);overflow:hidden;display:flex;align-items:center;justify-content:center">
-      <img id="miniFotoDieta" src="" style="width:100%;height:100%;object-fit:cover;display:none" alt="">
-      <div id="miniFotoDietaPH" style="font-weight:950;color:rgba(234,242,255,.65);font-size:12px">👤</div>
-    </div>
-    <div style="min-width:0">
-      <div style="font-weight:950;font-size:16px;line-height:1.1" id="miniNomeDieta">Visitante</div>
-      <div style="color:var(--muted);font-weight:800;font-size:12px">Dietas • variedade real</div>
-    </div>
-  </div>
-
-  <div class="h1">Dietas</div>
-  <div class="hint">Aparece somente depois de você clicar em gerar.</div>
-
-  <div class="card">
-    <div class="grid2">
-      <div>
-        <div class="label">Tipo</div>
-        <select id="tipoDieta">
-          <option value="emagrecimento">Emagrecimento</option>
-          <option value="hipertrofia">Hipertrofia</option>
-          <option value="lowcarb">Low carb</option>
-          <option value="economica">Econômica</option>
-          <option value="vegetariana">Vegetariana</option>
-          <option value="diabetes">Diabetes</option>
-          <option value="hipertensao">Hipertensão</option>
-          <option value="sem_lactose">Sem lactose</option>
-          <option value="atleta">Atleta</option>
-          <option value="idoso">Idoso</option>
-        </select>
-      </div>
-      <div>
-        <div class="label">Preferência</div>
-        <select id="prefDieta">
-          <option value="br">Brasil (comida normal)</option>
-          <option value="pratica">Prática / rápida</option>
-          <option value="barata">Mais barata</option>
-          <option value="sem_fogao">Sem fogão</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="btnRow">
-      <button class="btn" type="button" onclick="gerarDieta(false)">Gerar dieta</button>
-      <button class="btn secondary" type="button" onclick="gerarDieta(true)">Trocar dieta</button>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="label">Sugestões</div>
-    <div class="list" id="outDieta">
-      <div class="item">
-        <div>
-          <b>Nenhuma dieta gerada</b>
-          <div class="sub">Clique em “Gerar dieta” para ver as sugestões.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-    <div class="label">Dietas salvas</div>
-    <div class="list" id="dietasSalvas"></div>
-  </div>
-</section>
-
-
-<!-- 6 TREINOS -->
-<section id="viewTreino" class="screen">
-  <div style="display:flex;align-items:center;gap:12px;margin:6px 0 10px">
-    <div style="width:44px;height:44px;border-radius:14px;background:#071728;border:1px solid rgba(255,255,255,.08);overflow:hidden;display:flex;align-items:center;justify-content:center">
-      <img id="miniFotoTreino" src="" style="width:100%;height:100%;object-fit:cover;display:none" alt="">
-      <div id="miniFotoTreinoPH" style="font-weight:950;color:rgba(234,242,255,.65);font-size:12px">👤</div>
-    </div>
-    <div style="min-width:0">
-      <div style="font-weight:950;font-size:16px;line-height:1.1" id="miniNomeTreino">Visitante</div>
-      <div style="color:var(--muted);font-weight:800;font-size:12px">Treinos • com técnica e conclusão</div>
-    </div>
-  </div>
-
-  <div class="h1">Treinos</div>
-  <div class="hint">Gera a semana. Você conclui e o app soma pontos automático.</div>
-
-  <div class="card">
-    <div class="grid2">
-      <div>
-        <div class="label">Esporte</div>
-        <select id="selEsporte"></select>
-      </div>
-      <div>
-        <div class="label">Intensidade</div>
-        <select id="selIntensidade">
-          <option value="leve">Leve</option>
-          <option value="moderado" selected>Moderado</option>
-          <option value="pesado">Pesado</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="grid2">
-      <div>
-        <div class="label">Nível</div>
-        <select id="selNivel">
-          <option value="iniciante">Iniciante</option>
-          <option value="intermediario" selected>Intermediário</option>
-          <option value="avancado">Avançado</option>
-        </select>
-      </div>
-      <div>
-        <div class="label">Condição</div>
-        <select id="selCondicao">
-          <option value="normal" selected>Normal</option>
-          <option value="pcd">PCD / dificuldade</option>
-          <option value="idoso">Idoso</option>
-          <option value="mobilidade">Mobilidade reduzida</option>
-          <option value="lesoes">Lesões</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="btnRow">
-      <button class="btn" type="button" onclick="gerarTreino(false)">Gerar treino</button>
-      <button class="btn secondary" type="button" onclick="gerarTreino(true)">Trocar treino</button>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="label">Treino da semana</div>
-    <div class="list" id="outTreino">
-      <div class="item">
-        <div>
-          <b>Nenhum treino gerado</b>
-          <div class="sub">Clique em “Gerar treino” para montar a semana.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<script>
-/* ==========================
-   PARTE 3 - LÓGICA (PRATO/DIETA/TREINO)
-   ========================== */
-
-/* fallback caso show ainda não exista */
-window.show = window.show || function(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  const el = document.getElementById(id);
-  if(el) el.classList.add("active");
-  window.scrollTo(0,0);
-};
-
-/* ======= DADOS / STORAGE ======= */
-function getDB(){
-  try { return JSON.parse(localStorage.getItem("cp_db")) || {}; } catch(e){ return {}; }
-}
-function setDB(db){
-  localStorage.setItem("cp_db", JSON.stringify(db));
-}
-function dbInit(){
-  const db = getDB();
-  if(!db.user) db.user = {};
-  if(!db.user.sports) db.user.sports = [];
-  if(!db.pratos) db.pratos = [];
-  if(!db.dietasSalvas) db.dietasSalvas = [];
-  if(!db.pontos) db.pontos = {xp:0, pratos:0, treinos:0};
-  setDB(db);
-}
-dbInit();
-
-function cpToast(msg){
-  const t = document.getElementById("toast");
-  if(!t){ alert(msg); return; }
-  t.textContent = msg;
-  t.classList.add("on");
-  setTimeout(()=>t.classList.remove("on"), 2200);
-}
-
-/* ======= CADASTRO: FOTO ======= */
-function abrirGaleria(){
-  document.getElementById("fotoGaleria").click();
-}
-function abrirCamera(){
-  document.getElementById("fotoCamera").click();
-}
-function onFotoPerfil(file){
-  if(!file) return;
-  const rd = new FileReader();
-  rd.onload = ()=>{
-    const db = getDB();
-    db.user.foto = rd.result;
-    setDB(db);
-    atualizarMiniPerfis();
-    const img = document.getElementById("previewFoto");
-    const ph = document.getElementById("fotoPlaceholder");
-    img.src = rd.result;
-    img.style.display = "block";
-    ph.style.display = "none";
-    cpToast("Foto salva!");
-  };
-  rd.readAsDataURL(file);
-}
-document.getElementById("fotoGaleria")?.addEventListener("change", e=> onFotoPerfil(e.target.files[0]));
-document.getElementById("fotoCamera")?.addEventListener("change", e=> onFotoPerfil(e.target.files[0]));
-
-/* ======= ESPORTES (somente os seus) ======= */
-const LISTA_ESPORTES_FIXA = [
-  "Musculação","CrossFit","Corrida","Muay Thai","Boxe","Capoeira","Jiu-jitsu","Karatê","Taekwondo","Ciclismo","Basquete","Vôlei"
-];
-
-function renderEsportesCadastro(){
-  const box = document.getElementById("sportsBox");
-  if(!box) return;
-  const db = getDB();
-  box.innerHTML = "";
-  LISTA_ESPORTES_FIXA.forEach(sp=>{
-    const c = document.createElement("div");
-    const on = (db.user.sports||[]).includes(sp);
-    c.className = "chip" + (on ? " on" : "");
-    c.textContent = sp;
-    c.onclick = ()=>{
-      const d = getDB();
-      d.user.sports = d.user.sports || [];
-      if(d.user.sports.includes(sp)) d.user.sports = d.user.sports.filter(x=>x!==sp);
-      else d.user.sports.push(sp);
-      setDB(d);
-      renderEsportesCadastro();
-      preencherSelectEsporteTreino();
-    };
-    box.appendChild(c);
-  });
-}
-renderEsportesCadastro();
-
-/* ======= TERMO: rolagem obrigatória ======= */
-(function termoScrollLock(){
-  const box = document.getElementById("termoBox");
-  const chk = document.getElementById("aceiteTermo");
-  const lbl = document.getElementById("aceiteLabel");
-  const btn = document.getElementById("btnSalvarCadastro");
-  if(!box || !chk || !lbl || !btn) return;
-
-  function checkUnlock(){
-    const nearBottom = (box.scrollTop + box.clientHeight) >= (box.scrollHeight - 8);
-    if(nearBottom){
-      chk.disabled = false;
-      lbl.style.opacity = "1";
-    }
-    btn.disabled = !(chk.checked && !chk.disabled);
-    btn.style.opacity = btn.disabled ? ".6" : "1";
-  }
-  box.addEventListener("scroll", checkUnlock);
-  chk.addEventListener("change", checkUnlock);
-  checkUnlock();
-})();
-
-/* ======= SALVAR CADASTRO ======= */
-function salvarCadastro(){
-  const db = getDB();
-
-  const nome = (document.getElementById("cadNome").value||"").trim();
-  const sobrenome = (document.getElementById("cadSobrenome").value||"").trim();
-  const peso = (document.getElementById("cadPeso").value||"").trim();
-  const altura = (document.getElementById("cadAltura").value||"").trim();
-  const sexo = document.getElementById("cadSexo").value;
-  const objetivo = document.getElementById("cadObjetivo").value;
-  const cond = document.getElementById("cadCondicao").value;
-  const nivel = document.getElementById("cadNivel").value;
-  const rest = document.getElementById("cadRestricao").value;
-
-  const aceitou = document.getElementById("aceiteTermo").checked;
-  if(!aceitou){
-    cpToast("Role o termo e aceite para salvar.");
-    return;
-  }
-  if(!nome || !sobrenome || !peso || !altura || !sexo || !objetivo || !cond || !nivel || !rest){
-    cpToast("Preencha todos os campos do cadastro.");
-    return;
-  }
-  if(!db.user.foto){
-    cpToast("Escolha uma foto de perfil.");
-    return;
-  }
-  if(!db.user.sports || db.user.sports.length === 0){
-    cpToast("Selecione pelo menos 1 esporte.");
-    return;
-  }
-
-  db.user.nome = nome;
-  db.user.sobrenome = sobrenome;
-  db.user.peso = peso;
-  db.user.altura = altura;
-  db.user.sexo = sexo;
-  db.user.objetivo = objetivo;
-  db.user.condicao = cond;
-  db.user.nivel = nivel;
-  db.user.restricao = rest;
-
-  setDB(db);
-  atualizarMiniPerfis();
-  preencherSelectEsporteTreino();
-  cpToast("Cadastro salvo!");
-  show("viewBoasVindas");
-}
-
-/* ======= BOAS-VINDAS: frases ======= */
-const BV = [
-  ["Você não precisa de motivação. Precisa de direção.","Pequenas escolhas hoje. Uma versão absurda de você amanhã.","Sua mente precisa acreditar antes do seu corpo acompanhar."],
-  ["Disciplina é liberdade.","O que você faz quando ninguém está vendo te define.","Se é difícil, é porque funciona."],
-  ["Não é sobre perfeição. É sobre consistência.","Sua saúde é seu maior patrimônio.","A dor da disciplina é menor que a dor do arrependimento."]
-];
-let bvIdx = 0;
-function trocarBoasVindas(){
-  bvIdx = (bvIdx+1) % BV.length;
-  document.getElementById("bvFrase1").textContent = BV[bvIdx][0];
-  document.getElementById("bvFrase2").textContent = BV[bvIdx][1];
-  document.getElementById("bvFrase3").textContent = BV[bvIdx][2];
-}
-
-/* ======= MINI PERFIS nas abas ======= */
-function atualizarMiniPerfis(){
-  const db = getDB();
-  const nome = db.user?.nome ? (db.user.nome + " " + (db.user.sobrenome||"")) : "Visitante";
-  const foto = db.user?.foto || "";
-
-  const pairs = [
-    ["miniNomePrato","miniFotoPrato","miniFotoPratoPH"],
-    ["miniNomeDieta","miniFotoDieta","miniFotoDietaPH"],
-    ["miniNomeTreino","miniFotoTreino","miniFotoTreinoPH"],
-  ];
-  pairs.forEach(([n,i,ph])=>{
-    const elN = document.getElementById(n);
-    const elI = document.getElementById(i);
-    const elPH = document.getElementById(ph);
-    if(elN) elN.textContent = nome;
-    if(elI && foto){
-      elI.src = foto; elI.style.display="block";
-      if(elPH) elPH.style.display="none";
-    }else{
-      if(elI) elI.style.display="none";
-      if(elPH) elPH.style.display="block";
-    }
-  });
-
-  // também atualiza header do topo se existir ids
-  const hdrUser = document.getElementById("hdrUser");
-  if(hdrUser) hdrUser.textContent = (db.user?.nome || "Visitante");
-}
-atualizarMiniPerfis();
-
-/* =======================
-   PRATO: foto + análise
-   ======================= */
-function abrirCameraPrato(){ document.getElementById("fotoPratoCamera").click(); }
-function abrirGaleriaPrato(){ document.getElementById("fotoPratoGaleria").click(); }
-
-function onFotoPrato(file){
-  if(!file) return;
-  const rd = new FileReader();
-  rd.onload = ()=>{
-    const img = document.getElementById("previewPrato");
-    const ph = document.getElementById("previewPratoPH");
-    img.src = rd.result;
-    img.style.display="block";
-    ph.style.display="none";
-    // guarda temporário no elemento
-    img.dataset.base64 = rd.result;
-    cpToast("Foto do prato pronta.");
-  };
-  rd.readAsDataURL(file);
-}
-document.getElementById("fotoPratoCamera")?.addEventListener("change", e=> onFotoPrato(e.target.files[0]));
-document.getElementById("fotoPratoGaleria")?.addEventListener("change", e=> onFotoPrato(e.target.files[0]));
-
-function estimarMacros(desc){
-  // heurística bem “real” (não perfeita), mas consistente
-  const d = desc.toLowerCase();
-
-  let cal = 420, prot=28, carb=45, gord=12;
-
-  if(d.includes("frango")) {prot+=18; cal+=110;}
-  if(d.includes("carne")) {prot+=20; gord+=8; cal+=160;}
-  if(d.includes("ovo")) {prot+=10; gord+=6; cal+=90;}
-  if(d.includes("peixe") || d.includes("atum") || d.includes("salmão")) {prot+=16; gord+=4; cal+=120;}
-  if(d.includes("arroz")) {carb+=35; cal+=140;}
-  if(d.includes("feijão")) {carb+=18; prot+=6; cal+=90;}
-  if(d.includes("batata")) {carb+=28; cal+=110;}
-  if(d.includes("salada") || d.includes("legume")) {carb+=6; cal-=40;}
-  if(d.includes("refrigerante") || d.includes("doce") || d.includes("fritura")) {cal+=220; gord+=14; carb+=20;}
-
-  // ajusta por tamanho (se tiver pista)
-  if(d.includes("prato grande") || d.includes("muito")) {cal+=180; carb+=20; prot+=8; gord+=6;}
-  if(d.includes("prato pequeno") || d.includes("pouco")) {cal-=120; carb-=15; prot-=6; gord-=4;}
-
-  // mínimos
-  cal = Math.max(120, Math.round(cal));
-  prot = Math.max(5, Math.round(prot));
-  carb = Math.max(5, Math.round(carb));
-  gord = Math.max(3, Math.round(gord));
-
-  return {cal, prot, carb, gord};
-}
-
-function analisarPrato(){
-  const img = document.getElementById("previewPrato");
-  const desc = (document.getElementById("descPrato").value||"").trim();
-
-  if(!img.dataset.base64){
-    cpToast("Adicione a foto do prato.");
-    return;
-  }
-  if(desc.length < 8){
-    cpToast("Descreva melhor o prato (mínimo 8 caracteres).");
-    return;
-  }
-
-  const mac = estimarMacros(desc);
-
-  document.getElementById("outCal").textContent = mac.cal + " kcal";
-  document.getElementById("outProt").textContent = mac.prot + " g";
-  document.getElementById("outCarb").textContent = mac.carb + " g";
-  document.getElementById("outGord").textContent = mac.gord + " g";
-
-  const db = getDB();
-  const item = {
-    foto: img.dataset.base64,
-    desc,
-    cal: mac.cal,
-    prot: mac.prot,
-    carb: mac.carb,
-    gord: mac.gord,
-    data: new Date().toLocaleString()
-  };
-  db.pratos.unshift(item);
-  db.pratos = db.pratos.slice(0, 12);
-
-  db.pontos.pratos = (db.pontos.pratos||0) + 1;
-  db.pontos.xp = (db.pontos.xp||0) + 25;
-
-  setDB(db);
-  renderHistPrato();
-  cpToast("Prato analisado! +25 XP");
-}
-
-function novaAnalisePrato(){
-  document.getElementById("descPrato").value = "";
-  const img = document.getElementById("previewPrato");
-  const ph = document.getElementById("previewPratoPH");
-  img.src = "";
-  img.style.display="none";
-  ph.style.display="block";
-  delete img.dataset.base64;
-
-  document.getElementById("outCal").textContent = "—";
-  document.getElementById("outProt").textContent = "—";
-  document.getElementById("outCarb").textContent = "—";
-  document.getElementById("outGord").textContent = "—";
-  cpToast("Pronto para nova análise.");
-}
-
-function renderHistPrato(){
-  const db = getDB();
-  const box = document.getElementById("histPrato");
-  if(!box) return;
-  box.innerHTML = "";
-  if(!db.pratos || db.pratos.length===0){
-    box.innerHTML = `<div class="item"><div><b>Nenhum prato ainda</b><div class="sub">Faça sua primeira análise.</div></div></div>`;
-    return;
-  }
-  db.pratos.forEach(p=>{
-    const row = document.createElement("div");
-    row.className="item";
-    row.innerHTML = `
-      <div style="display:flex;gap:10px;align-items:center;min-width:0">
-        <div style="width:46px;height:46px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.10);background:#071728;flex:0 0 auto">
-          <img src="${p.foto}" style="width:100%;height:100%;object-fit:cover" alt="">
-        </div>
-        <div style="min-width:0">
-          <b style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46vw">${p.desc}</b>
-          <div class="sub">${p.cal}kcal • P${p.prot} C${p.carb} G${p.gord} • ${p.data}</div>
-        </div>
-      </div>
-      <div style="font-weight:950;color:var(--neo)">OK</div>
-    `;
-    box.appendChild(row);
-  });
-}
-renderHistPrato();
-
-/* =======================
-   DIETA: gerar só no clique + salvar
-   ======================= */
-const DIETA_DB = {
-  emagrecimento: [
-    "Café: omelete + café sem açúcar",
-    "Almoço: frango grelhado + salada + arroz integral",
-    "Lanche: iogurte natural + fruta",
-    "Jantar: peixe + legumes + batata doce",
-    "Ceia: chá + castanhas"
-  ],
-  hipertrofia: [
-    "Café: pão integral + ovos + fruta",
-    "Almoço: arroz + feijão + carne + salada",
-    "Lanche: vitamina (banana + aveia + leite)",
-    "Jantar: macarrão + frango + legumes",
-    "Ceia: iogurte + granola"
-  ],
-  lowcarb: [
-    "Café: ovos mexidos + abacate",
-    "Almoço: carne + salada + azeite",
-    "Lanche: castanhas + queijo",
-    "Jantar: peixe + legumes",
-    "Ceia: iogurte sem açúcar"
-  ],
-  economica: [
-    "Café: ovos + banana",
-    "Almoço: arroz + feijão + frango",
-    "Lanche: fruta da estação",
-    "Jantar: sopa de legumes",
-    "Ceia: chá"
-  ],
-  vegetariana: [
-    "Café: aveia + fruta",
-    "Almoço: grão-de-bico + quinoa + salada",
-    "Lanche: pasta de amendoim + fruta",
-    "Jantar: lentilha + legumes",
-    "Ceia: iogurte vegetal"
-  ],
-  diabetes: [
-    "Café: ovos + pão integral",
-    "Almoço: proteína + salada + carbo controlado",
-    "Lanche: iogurte natural + chia",
-    "Jantar: peixe + legumes",
-    "Ceia: castanhas"
-  ],
-  hipertensao: [
-    "Café: fruta + aveia",
-    "Almoço: frango + salada (baixo sódio)",
-    "Lanche: iogurte natural",
-    "Jantar: peixe + legumes",
-    "Ceia: chá"
-  ],
-  sem_lactose: [
-    "Café: pão + ovos",
-    "Almoço: carne + arroz + salada",
-    "Lanche: fruta + castanhas",
-    "Jantar: frango + legumes",
-    "Ceia: leite vegetal"
-  ],
-  atleta: [
-    "Pré: banana + aveia",
-    "Pós: arroz + frango + legumes",
-    "Lanche: sanduíche integral",
-    "Jantar: massa + proteína",
-    "Ceia: iogurte + granola"
-  ],
-  idoso: [
-    "Café: ovos + fruta",
-    "Almoço: proteína macia + legumes",
-    "Lanche: iogurte + fruta",
-    "Jantar: sopa rica em proteína",
-    "Ceia: chá + castanhas"
-  ]
-};
-
-function gerarDieta(swap){
-  const tipo = document.getElementById("tipoDieta").value;
-  const pref = document.getElementById("prefDieta").value;
-  let itens = (DIETA_DB[tipo] || DIETA_DB.emagrecimento).slice();
-
-  if(swap) itens.sort(()=> Math.random()-0.5);
-  // “tempero” pra não ficar repetitivo
-  if(pref==="pratica") itens = itens.map(x=> x.replace("Almoço:", "Almoço rápido:").replace("Jantar:", "Jantar rápido:"));
-  if(pref==="barata") itens = itens.map(x=> x.replace("frango", "ovos").replace("peixe", "frango"));
-  if(pref==="sem_fogao") itens = itens.map(x=> x.replace("grelhado", "pronto").replace("sopa", "salada completa"));
-
-  const out = document.getElementById("outDieta");
-  out.innerHTML = "";
-
-  itens.forEach((txt, idx)=>{
-    const row = document.createElement("div");
-    row.className="item";
-    row.innerHTML = `
-      <div style="min-width:0">
-        <b>Refeição ${idx+1}</b>
-        <div class="sub">${txt}</div>
-      </div>
-      <button class="miniBtn" type="button" onclick="salvarDietaItem('${encodeURIComponent(txt)}','${tipo}')">Salvar</button>
-    `;
-    out.appendChild(row);
-  });
-
-  cpToast(swap ? "Dieta trocada!" : "Dieta gerada!");
-  renderDietasSalvas();
-}
-
-function salvarDietaItem(encTxt, tipo){
-  const txt = decodeURIComponent(encTxt);
-  const db = getDB();
-  db.dietasSalvas = db.dietasSalvas || [];
-  const key = tipo + "|" + txt;
-  if(db.dietasSalvas.find(x=>x.key===key)){
-    cpToast("Já está salva.");
-    return;
-  }
-  db.dietasSalvas.unshift({key, tipo, txt, data:new Date().toLocaleDateString()});
-  db.dietasSalvas = db.dietasSalvas.slice(0, 20);
-  db.pontos.xp = (db.pontos.xp||0) + 10;
-  setDB(db);
-  renderDietasSalvas();
-  cpToast("Dieta salva! +10 XP");
-}
-
-function renderDietasSalvas(){
-  const box = document.getElementById("dietasSalvas");
-  if(!box) return;
-  const db = getDB();
-  box.innerHTML = "";
-  if(!db.dietasSalvas || db.dietasSalvas.length===0){
-    box.innerHTML = `<div class="item"><div><b>Nenhuma dieta salva</b><div class="sub">Clique em “Salvar” ao lado da dieta.</div></div></div>`;
-    return;
-  }
-  db.dietasSalvas.forEach(d=>{
-    const row = document.createElement("div");
-    row.className="item";
-    row.innerHTML = `
-      <div style="min-width:0">
-        <b>${d.tipo.toUpperCase()}</b>
-        <div class="sub">${d.txt} • ${d.data}</div>
-      </div>
-      <button class="miniBtn" type="button" onclick="removerDietaSalva('${encodeURIComponent(d.key)}')">Remover</button>
-    `;
-    box.appendChild(row);
-  });
-}
-function removerDietaSalva(encKey){
-  const key = decodeURIComponent(encKey);
-  const db = getDB();
-  db.dietasSalvas = (db.dietasSalvas||[]).filter(x=>x.key!==key);
-  setDB(db);
-  renderDietasSalvas();
-  cpToast("Removida.");
-}
-renderDietasSalvas();
-
-/* =======================
-   TREINO: gerar semana + técnica + concluir
-   ======================= */
-function preencherSelectEsporteTreino(){
-  const sel = document.getElementById("selEsporte");
-  if(!sel) return;
-  const db = getDB();
-  const sports = (db.user?.sports && db.user.sports.length) ? db.user.sports : LISTA_ESPORTES_FIXA;
-  sel.innerHTML = "";
-  sports.forEach(sp=>{
-    const o = document.createElement("option");
-    o.value = sp; o.textContent = sp;
-    sel.appendChild(o);
-  });
-}
-preencherSelectEsporteTreino();
-
-const TREINO_MODELOS = {
-  "Musculação": [
-    ["Segunda","Peito + Tríceps","Supino reto","Crucifixo","Tríceps testa","Tríceps corda"],
-    ["Terça","Costas + Posterior","Puxada alta","Remada","Stiff","Mesa flexora"],
-    ["Quarta","Ombro + Panturrilha","Desenvolvimento","Elevação lateral","Panturrilha em pé","Panturrilha sentado"],
-    ["Quinta","Bíceps + Quadríceps","Rosca direta","Rosca alternada","Agachamento","Extensora"],
-    ["Sexta","Pernas + Glúteos","Leg press","Afundo","Elevação pélvica","Abdução"]
-  ],
-  "Corrida": [
-    ["Segunda","Base","Corrida leve 20–30min","Mobilidade","Alongamento"],
-    ["Terça","Tiro","6x (1min forte / 1min leve)","Caminhada","Alongamento"],
-    ["Quarta","Recuperação","Caminhada 30min","Core","Alongamento"],
-    ["Quinta","Ritmo","Corrida moderada 25min","Mobilidade","Alongamento"],
-    ["Sexta","Longo","Corrida leve 35–45min","Respiração","Alongamento"]
-  ]
-};
-
-function adaptarExercicio(ex, cond){
-  if(cond==="idoso" || cond==="pcd" || cond==="mobilidade"){
-    return ex.replace("Agachamento","Agachamento assistido")
-             .replace("Supino reto","Supino máquina leve")
-             .replace("Stiff","Levantamento leve (sem dor)")
-             .replace("Tiro","Intervalo leve");
-  }
-  if(cond==="lesoes"){
-    return ex + " (controle e técnica)";
-  }
-  return ex;
-}
-
-function gerarTreino(trocar){
-  const esporte = document.getElementById("selEsporte").value;
-  const intensidade = document.getElementById("selIntensidade").value;
-  const nivel = document.getElementById("selNivel").value;
-  const cond = document.getElementById("selCondicao").value;
-
-  let base = TREINO_MODELOS[esporte] ? JSON.parse(JSON.stringify(TREINO_MODELOS[esporte])) : JSON.parse(JSON.stringify(TREINO_MODELOS["Musculação"]));
-  if(trocar) base.sort(()=> Math.random()-0.5);
-
-  const out = document.getElementById("outTreino");
-  out.innerHTML = "";
-
-  base.forEach((dia)=>{
-    const dayName = dia[0];
-    const foco = dia[1];
-    const exercicios = dia.slice(2).map(x=>adaptarExercicio(x, cond));
-
-    const card = document.createElement("div");
-    card.className="item";
-    card.style.flexDirection="column";
-    card.style.alignItems="stretch";
-
-    const top = document.createElement("div");
-    top.style.display="flex";
-    top.style.justifyContent="space-between";
-    top.style.alignItems="center";
-    top.style.gap="10px";
-
-    top.innerHTML = `
-      <div style="min-width:0">
-        <b>${dayName} • ${foco}</b>
-        <div class="sub">${esporte} • ${intensidade} • ${nivel}</div>
-      </div>
-      <button class="miniBtn" type="button" onclick="concluirTreinoDia('${encodeURIComponent(dayName+"|"+foco)}')">Concluir</button>
-    `;
-
-    const list = document.createElement("div");
-    list.style.marginTop="10px";
-    list.style.display="flex";
-    list.style.flexDirection="column";
-    list.style.gap="8px";
-
-    exercicios.forEach(ex=>{
-      const row = document.createElement("div");
-      row.style.display="flex";
-      row.style.justifyContent="space-between";
-      row.style.alignItems="center";
-      row.style.gap="10px";
-      row.style.padding="10px";
-      row.style.borderRadius="14px";
-      row.style.border="1px solid rgba(255,255,255,.08)";
-      row.style.background="rgba(255,255,255,.04)";
-      row.innerHTML = `
-        <div style="min-width:0">
-          <div style="font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:52vw">${ex}</div>
-          <div class="sub">Técnica e execução</div>
-        </div>
-        <button class="miniBtn" type="button" onclick="verTecnica('${encodeURIComponent(ex + ' ' + esporte)}')">Ver técnica</button>
-      `;
-      list.appendChild(row);
-    });
-
-    card.appendChild(top);
-    card.appendChild(list);
-    out.appendChild(card);
-  });
-
-  cpToast(trocar ? "Treino trocado!" : "Treino gerado!");
-}
-
-function verTecnica(enc){
-  const q = encodeURIComponent(decodeURIComponent(enc));
-  window.open("https://www.youtube.com/results?search_query=" + q, "_blank");
-}
-
-function concluirTreinoDia(enc){
-  const db = getDB();
-  const key = decodeURIComponent(enc);
-  db.treinosConcluidos = db.treinosConcluidos || {};
-  const hoje = new Date().toLocaleDateString();
-  const k = hoje + "|" + key;
-
-  if(db.treinosConcluidos[k]){
-    cpToast("Esse treino já foi concluído hoje.");
-    return;
-  }
-
-  db.treinosConcluidos[k] = true;
-  db.pontos.treinos = (db.pontos.treinos||0) + 1;
-  db.pontos.xp = (db.pontos.xp||0) + 60;
-
-  setDB(db);
-  cpToast("Treino concluído! +60 XP");
-}
-
-/* ======= preencher cadastro (se já existir) ======= */
-(function hydrateCadastro(){
-  const db = getDB();
-  if(db.user?.nome){
-    document.getElementById("cadNome").value = db.user.nome || "";
-    document.getElementById("cadSobrenome").value = db.user.sobrenome || "";
-    document.getElementById("cadPeso").value = db.user.peso || "";
-    document.getElementById("cadAltura").value = db.user.altura || "";
-    document.getElementById("cadSexo").value = db.user.sexo || "";
-    document.getElementById("cadObjetivo").value = db.user.objetivo || "";
-    document.getElementById("cadCondicao").value = db.user.condicao || "";
-    document.getElementById("cadNivel").value = db.user.nivel || "";
-    document.getElementById("cadRestricao").value = db.user.restricao || "";
-  }
-
-  if(db.user?.foto){
-    const img = document.getElementById("previewFoto");
-    const ph = document.getElementById("fotoPlaceholder");
-    img.src = db.user.foto;
-    img.style.display="block";
-    ph.style.display="none";
-  }
-})();
-</script>
-<!-- 7) EVOLUÇÃO (DASHBOARD) -->
-<section id="viewEvolucao" class="screen">
-  <div style="display:flex;align-items:center;gap:12px;margin:6px 0 10px">
-    <div style="width:44px;height:44px;border-radius:14px;background:#071728;border:1px solid rgba(255,255,255,.08);overflow:hidden;display:flex;align-items:center;justify-content:center">
-      <img id="miniFotoEvo" src="" style="width:100%;height:100%;object-fit:cover;display:none" alt="">
-      <div id="miniFotoEvoPH" style="font-weight:950;color:rgba(234,242,255,.65);font-size:12px">👤</div>
-    </div>
-    <div style="min-width:0">
-      <div style="font-weight:950;font-size:16px;line-height:1.1" id="miniNomeEvo">Visitante</div>
-      <div style="color:var(--muted);font-weight:800;font-size:12px">Evolução • streak • medalhas • nível</div>
-    </div>
-  </div>
-
-  <div class="h1">Evolução</div>
-  <div class="hint">Tudo automático: prato e treino somam pontos, XP e medalhas.</div>
-
-  <div class="card">
-    <div class="grid2" style="align-items:center">
-      <div>
-        <div class="label">Status Elite</div>
-        <div style="font-size:22px;font-weight:950;line-height:1.1">
-          <span id="e_nome">Visitante</span>
-        </div>
-        <div style="margin-top:10px;font-weight:900;color:rgba(234,242,255,.90)">
-          🔥 Streak: <b id="e_streak">0</b> dias<br>
-          🏅 Medalhas: <b id="e_medalhas">0</b><br>
-          ⭐ Nível: <b id="e_nivel">1</b>
-        </div>
-        <div style="margin-top:10px;color:var(--muted);font-weight:800" id="e_frase">
-          “Consistência vence talento quando o talento não é consistente.”
-        </div>
-      </div>
-
-      <div class="ring" aria-label="Progresso XP">
-        <div class="ringbar" id="xpRingBar" style="--pct:0deg"></div>
-        <div style="text-align:center; position:relative; z-index:1">
-          <div class="big" id="e_xp">0</div>
-          <div class="small">XP total</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="label">Progresso do nível</div>
-    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden">
-      <div id="xpBar" style="height:14px;width:0%;background:linear-gradient(135deg,var(--neo),var(--neo2))"></div>
-    </div>
-    <div style="margin-top:8px;color:var(--muted);font-weight:800">
-      Próximo nível em <b id="xpFalta">0</b> XP
-    </div>
-
-    <div class="statGrid" style="margin-top:14px">
-      <div class="stat">
-        <div class="k">Pratos analisados</div>
-        <div class="v"><span id="e_pratos">0</span></div>
-        <div class="s">+25 XP por prato</div>
-      </div>
-      <div class="stat">
-        <div class="k">Treinos concluídos</div>
-        <div class="v"><span id="e_treinos">0</span></div>
-        <div class="s">+60 XP por treino</div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="label">Ranking Elite (semana)</div>
-    <div class="list" id="e_rank"></div>
-  </div>
-</section>
-
-
-<!-- 8) PROGRESSO (DASHBOARD) -->
-<section id="viewProgresso" class="screen">
-  <div style="display:flex;align-items:center;gap:12px;margin:6px 0 10px">
-    <div style="width:44px;height:44px;border-radius:14px;background:#071728;border:1px solid rgba(255,255,255,.08);overflow:hidden;display:flex;align-items:center;justify-content:center">
-      <img id="miniFotoProg" src="" style="width:100%;height:100%;object-fit:cover;display:none" alt="">
-      <div id="miniFotoProgPH" style="font-weight:950;color:rgba(234,242,255,.65);font-size:12px">👤</div>
-    </div>
-    <div style="min-width:0">
-      <div style="font-weight:950;font-size:16px;line-height:1.1" id="miniNomeProg">Visitante</div>
-      <div style="color:var(--muted);font-weight:800;font-size:12px">Progresso • metas • semana</div>
-    </div>
-  </div>
-
-  <div class="h1">Progresso</div>
-  <div class="hint">Registro automático quando você conclui treinos e analisa pratos.</div>
-
-  <div class="card">
-    <div class="statGrid">
-      <div class="stat">
-        <div class="k">Meta semanal</div>
-        <div class="v"><span id="p_meta">5</span> treinos</div>
-        <div class="s">Definida no cadastro</div>
-      </div>
-      <div class="stat">
-        <div class="k">Feitos na semana</div>
-        <div class="v"><span id="p_feitos">0</span></div>
-        <div class="s">Atualiza ao concluir treinos</div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="label">Barra semanal</div>
-    <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden">
-      <div id="p_bar" style="height:14px;width:0%;background:linear-gradient(135deg,var(--neo),var(--neo2))"></div>
-    </div>
-
-    <div style="margin-top:10px;color:var(--muted);font-weight:800" id="p_msg">Comece hoje. Um passo de cada vez.</div>
-
-    <div class="divider"></div>
-
-    <div class="label">Histórico (7 dias)</div>
-    <div class="list" id="p_hist"></div>
-
-    <div class="btnRow">
-      <button class="btn secondary" type="button" onclick="cpResetSemana()">Reset semana</button>
-      <button class="btn" type="button" onclick="show('viewEvolucao')">Ir para evolução</button>
-    </div>
-  </div>
-</section>
-
-
-<!-- 9) SAÚDE -->
-<section id="viewSaude" class="screen">
-  <div class="h1">Saúde</div>
-  <div class="hint">Toque no tópico para abrir uma fonte oficial (gov.br/saude). Cada tema tem imagem para facilitar.</div>
-
-  <div class="card">
-    <div class="list" id="saudeLista"></div>
-  </div>
-</section>
-
-
-<!-- 10) LOJA -->
-<section id="viewLoja" class="screen">
-  <div class="h1">Loja</div>
-  <div class="hint">Produtos e parceiros. Ao clicar, abre o site oficial.</div>
-
-  <div class="card">
-    <div class="list" id="lojaLista"></div>
-  </div>
-</section>
-
-
-<!-- 11) CONVITE -->
-<section id="viewConvite" class="screen">
-  <div class="h1">Convite</div>
-  <div class="hint">Convide pelo WhatsApp, Instagram e TikTok.</div>
-
-  <div class="card">
-    <div class="label">Seu link</div>
-    <input id="conviteLink" value="https://checkpratoapp.github.io/checkprato-app/" readonly>
-
-    <div class="btnRow">
-      <button class="btn" type="button" onclick="conviteShare('whatsapp')">WhatsApp</button>
-      <button class="btn secondary" type="button" onclick="conviteShare('instagram')">Instagram</button>
-    </div>
-
-    <div class="btnRow">
-      <button class="btn secondary" type="button" onclick="conviteShare('tiktok')">TikTok</button>
-      <button class="btn ghost" type="button" onclick="copiarConvite()">Copiar link</button>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="label">Texto pronto</div>
-    <textarea id="conviteTxt">Tô usando o CheckPrato Elite pra dieta e treino. Testa aí: https://checkpratoapp.github.io/checkprato-app/</textarea>
-  </div>
-</section>
-
-
-<!-- 12) PERFIL -->
-<section id="viewPerfil" class="screen">
-  <div class="h1">Perfil</div>
-  <div class="hint">Apenas o que importa: foto, objetivo, nível, esportes e restrições.</div>
-
-  <div class="card">
-    <div style="display:flex;gap:12px;align-items:center">
-      <div style="width:68px;height:68px;border-radius:22px;background:#071728;border:1px solid rgba(255,255,255,.10);overflow:hidden;display:flex;align-items:center;justify-content:center">
-        <img id="perfilFoto" src="" style="width:100%;height:100%;object-fit:cover;display:none" alt="">
-        <div id="perfilFotoPH" style="font-weight:950;color:rgba(234,242,255,.65)">👤</div>
-      </div>
-      <div style="min-width:0">
-        <div style="font-size:18px;font-weight:950" id="perfilNome">Visitante</div>
-        <div style="color:var(--muted);font-weight:800" id="perfilSub">Configurações</div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="label">Alterar foto</div>
-    <div class="btnRow">
-      <button class="btn" type="button" onclick="abrirCamera()">Câmera</button>
-      <button class="btn secondary" type="button" onclick="abrirGaleria()">Galeria</button>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="grid2">
-      <div>
-        <div class="label">Objetivo</div>
-        <select id="perfilObjetivo">
-          <option value="emagrecimento">Emagrecimento</option>
-          <option value="hipertrofia">Hipertrofia</option>
-          <option value="saude">Saúde</option>
-        </select>
-      </div>
-      <div>
-        <div class="label">Nível</div>
-        <select id="perfilNivel">
-          <option value="iniciante">Iniciante</option>
-          <option value="intermediario">Intermediário</option>
-          <option value="avancado">Avançado</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="grid2">
-      <div>
-        <div class="label">Restrição</div>
-        <select id="perfilRestricao">
-          <option value="nenhuma">Nenhuma</option>
-          <option value="diabetes">Diabetes</option>
-          <option value="hipertensao">Hipertensão</option>
-          <option value="colesterol">Colesterol</option>
-          <option value="lactose">Intolerância à lactose</option>
-          <option value="gluten">Intolerância ao glúten</option>
-        </select>
-      </div>
-      <div>
-        <div class="label">Esportes</div>
-        <button class="btn secondary" type="button" onclick="show('viewCadastro')">Editar esportes</button>
-      </div>
-    </div>
-
-    <div class="btnRow">
-      <button class="btn" type="button" onclick="salvarPerfilConfig()">Salvar alterações</button>
-      <button class="btn ghost" type="button" onclick="resetAll()">Resetar tudo</button>
-    </div>
-  </div>
-</section>
-
-
-<!-- NAV (ORDEM DAS ABAS EXATA) -->
-<nav class="nav">
-  <div class="navInner" style="overflow:auto;gap:10px">
-    <button class="navBtn" onclick="show('viewAcesso')"><span>🔒</span> Acesso</button>
-    <button class="navBtn" onclick="show('viewCadastro')"><span>📝</span> Cadastro</button>
-    <button class="navBtn" onclick="show('viewBoasVindas')"><span>✨</span> Boas-vindas</button>
-    <button class="navBtn" onclick="show('viewPrato')"><span>📸</span> Prato</button>
-    <button class="navBtn" onclick="show('viewDieta')"><span>🥗</span> Dietas</button>
-    <button class="navBtn" onclick="show('viewTreino')"><span>🏋️</span> Treinos</button>
-    <button class="navBtn" onclick="show('viewEvolucao')"><span>🏆</span> Evolução</button>
-    <button class="navBtn" onclick="show('viewProgresso')"><span>📈</span> Progresso</button>
-    <button class="navBtn" onclick="show('viewSaude')"><span>🩺</span> Saúde</button>
-    <button class="navBtn" onclick="show('viewLoja')"><span>🛍️</span> Loja</button>
-    <button class="navBtn" onclick="show('viewConvite')"><span>📨</span> Convite</button>
-    <button class="navBtn" onclick="show('viewPerfil')"><span>👤</span> Perfil</button>
-  </div>
-</nav>
-
-
-<script>
-/* ==========================
-   PARTE 4 - DASH/SAÚDE/LOJA/CONVITE/PERFIL + AUTO-REFRESH
-   ========================== */
-
-/* 🔧 “Blindagem” importante:
-   Reescreve setDB para SEMPRE atualizar dashboards depois de qualquer mudança
-   (isso garante que prato/treino atualizem evolução/progresso automaticamente).
-*/
-function setDB(db){
-  localStorage.setItem("cp_db", JSON.stringify(db));
-  cpUpdateAll();
-}
-
-/* ======= helpers ======= */
-function cpGet(){
-  try { return JSON.parse(localStorage.getItem("cp_db")) || {}; } catch(e){ return {}; }
-}
-function cpEnsure(){
-  const db = cpGet();
-  if(!db.user) db.user = {};
-  if(!db.user.sports) db.user.sports = [];
-  if(!db.pratos) db.pratos = [];
-  if(!db.dietasSalvas) db.dietasSalvas = [];
-  if(!db.pontos) db.pontos = {xp:0, pratos:0, treinos:0};
-  if(!db.semana) db.semana = {inicio: cpWeekKey(), treinos:0, hist:[]};
-  if(!db.evo) db.evo = {streak:0, medalhas:0, lastDay:""};
-  setDB(db);
-  return db;
-}
-cpEnsure();
-
-function cpWeekKey(){
-  const d = new Date();
-  const day = d.getDay(); // 0..6
-  const diff = d.getDate() - day; // domingo
-  const s = new Date(d.setDate(diff));
-  return s.toISOString().slice(0,10);
-}
-
-function cpTodayKey(){
-  return new Date().toISOString().slice(0,10);
-}
-
-function cpLevelFromXP(xp){
-  // 1.. infinito (cada nível 250xp)
-  return Math.floor((xp||0)/250) + 1;
-}
-
-function cpXPToNext(xp){
-  const lvl = cpLevelFromXP(xp);
-  const nextAt = lvl * 250;
-  return Math.max(0, nextAt - (xp||0));
-}
-
-function cpPctLevel(xp){
-  const lvl = cpLevelFromXP(xp);
-  const start = (lvl-1)*250;
-  const end = lvl*250;
-  const cur = (xp||0) - start;
-  const span = end - start;
-  return Math.max(0, Math.min(100, Math.round((cur/span)*100)));
-}
-
-/* ======= mini perfis em todas as abas ======= */
-function cpApplyMiniProfile(){
-  const db = cpGet();
-  const nome = db.user?.nome ? (db.user.nome + " " + (db.user.sobrenome||"")) : "Visitante";
-  const foto = db.user?.foto || "";
-
-  const ids = [
-    ["miniNomeEvo","miniFotoEvo","miniFotoEvoPH"],
-    ["miniNomeProg","miniFotoProg","miniFotoProgPH"],
-    ["miniNomePrato","miniFotoPrato","miniFotoPratoPH"],
-    ["miniNomeDieta","miniFotoDieta","miniFotoDietaPH"],
-    ["miniNomeTreino","miniFotoTreino","miniFotoTreinoPH"],
-  ];
-  ids.forEach(([n,i,ph])=>{
-    const elN = document.getElementById(n);
-    const elI = document.getElementById(i);
-    const elPH = document.getElementById(ph);
-    if(elN) elN.textContent = nome;
-    if(elI && foto){
-      elI.src = foto; elI.style.display="block";
-      if(elPH) elPH.style.display="none";
-    }else{
-      if(elI) elI.style.display="none";
-      if(elPH) elPH.style.display="block";
-    }
-  });
-
-  const hdrUser = document.getElementById("hdrUser");
-  if(hdrUser) hdrUser.textContent = db.user?.nome || "Visitante";
-
-  const pfN = document.getElementById("perfilNome");
-  const pfS = document.getElementById("perfilSub");
-  const pfF = document.getElementById("perfilFoto");
-  const pfPH = document.getElementById("perfilFotoPH");
-  if(pfN) pfN.textContent = nome;
-  if(pfS) pfS.textContent = `Objetivo: ${(db.user?.objetivo||"—")} • Nível: ${(db.user?.nivel||"—")}`;
-  if(pfF && foto){
-    pfF.src = foto; pfF.style.display="block";
-    if(pfPH) pfPH.style.display="none";
-  }else{
-    if(pfF) pfF.style.display="none";
-    if(pfPH) pfPH.style.display="block";
-  }
-}
-
-/* ======= evolução: streak/medalhas ======= */
-function cpTouchDaily(){
-  const db = cpGet();
-  const today = cpTodayKey();
-  if(!db.evo) db.evo = {streak:0, medalhas:0, lastDay:""};
-
-  if(db.evo.lastDay !== today){
-    // streak simples: se ontem existia atividade -> +1
-    // aqui validamos por “houve mudança hoje” (qualquer XP/registro)
-    db.evo.streak = (db.evo.streak||0) + 1;
-    db.evo.lastDay = today;
-
-    // medalha a cada 5 dias de streak
-    if(db.evo.streak % 5 === 0){
-      db.evo.medalhas = (db.evo.medalhas||0) + 1;
-    }
-    setDB(db);
-  }
-}
-
-/* ======= intercepta ações: quando XP muda, garante streak e semana ======= */
-function cpSyncSemana(){
-  const db = cpGet();
-  const wk = cpWeekKey();
-  if(!db.semana) db.semana = {inicio:wk, treinos:0, hist:[]};
-  if(db.semana.inicio !== wk){
-    db.semana = {inicio:wk, treinos:0, hist:[]};
-    setDB(db);
-  }
-}
-
-/* ======= progresso / semana ======= */
-function cpAddWeekHistory(type, label, xp){
-  const db = cpGet();
-  cpSyncSemana();
-  const today = new Date().toLocaleDateString();
-  db.semana.hist.unshift({type,label,day:today,xp});
-  db.semana.hist = db.semana.hist.slice(0, 20);
-  setDB(db);
-}
-
-/* ======= saúde (com imagem) ======= */
-const SAUDE_TOPICS = [
-  {t:"Diabetes", img:"🩸", q:"diabetes"},
-  {t:"Hipertensão", img:"❤️", q:"hipertensao"},
-  {t:"Sono", img:"🌙", q:"sono"},
-  {t:"Saúde mental", img:"🧠", q:"saude mental"},
-  {t:"Obesidade", img:"⚖️", q:"obesidade"},
-  {t:"Hidratação", img:"💧", q:"hidratacao"},
-  {t:"PCD e atividade física", img:"♿", q:"pcd atividade fisica"},
-  {t:"Alimentação saudável", img:"🥗", q:"alimentacao saudavel"}
-];
-
-function renderSaude(){
-  const box = document.getElementById("saudeLista");
-  if(!box) return;
-  box.innerHTML = "";
-  SAUDE_TOPICS.forEach(tp=>{
-    const row = document.createElement("div");
-    row.className = "item";
-    row.innerHTML = `
-      <div style="display:flex;gap:10px;align-items:center;min-width:0">
-        <div style="width:46px;height:46px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);font-size:22px">${tp.img}</div>
-        <div style="min-width:0">
-          <b>${tp.t}</b>
-          <div class="sub">Abrir fonte oficial (gov.br/saude)</div>
-        </div>
-      </div>
-      <button class="miniBtn" type="button" onclick="abrirSaude('${encodeURIComponent(tp.q)}')">Abrir</button>
-    `;
-    box.appendChild(row);
-  });
-}
-
-function abrirSaude(encQ){
-  const q = encodeURIComponent(decodeURIComponent(encQ));
-  window.open("https://www.google.com/search?q=site:gov.br+saude+" + q, "_blank");
-}
-
-/* ======= loja ======= */
-const LOJA_ITEMS = [
-  {t:"Vestuário fitness", img:"👕", sub:"Camisetas, shorts e kits", url:"https://www.google.com/search?q=loja+oficial+vestu%C3%A1rio+fitness"},
-  {t:"Suplementos", img:"🥤", sub:"Whey, creatina, vitaminas", url:"https://www.google.com/search?q=site:com.br+loja+oficial+creatina+whey"},
-  {t:"Acessórios treino", img:"🎒", sub:"Luvas, straps, garrafas", url:"https://www.google.com/search?q=loja+oficial+acess%C3%B3rios+treino"},
-  {t:"Tênis corrida", img:"👟", sub:"Corrida e caminhada", url:"https://www.google.com/search?q=loja+oficial+t%C3%AAnis+corrida"}
-];
-
-function renderLoja(){
-  const box = document.getElementById("lojaLista");
-  if(!box) return;
-  box.innerHTML = "";
-  LOJA_ITEMS.forEach(it=>{
-    const row = document.createElement("div");
-    row.className = "item";
-    row.innerHTML = `
-      <div style="display:flex;gap:10px;align-items:center;min-width:0">
-        <div style="width:46px;height:46px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);font-size:22px">${it.img}</div>
-        <div style="min-width:0">
-          <b>${it.t}</b>
-          <div class="sub">${it.sub}</div>
-        </div>
-      </div>
-      <button class="miniBtn" type="button" onclick="window.open('${it.url}','_blank')">Abrir</button>
-    `;
-    box.appendChild(row);
-  });
-}
-
-/* ======= convite ======= */
-function copiarConvite(){
-  const link = document.getElementById("conviteLink").value;
-  navigator.clipboard?.writeText(link);
-  cpToast("Link copiado!");
-}
-function conviteShare(rede){
-  const link = document.getElementById("conviteLink").value;
-  const txt = document.getElementById("conviteTxt").value;
-  const msg = encodeURIComponent(txt);
-
-  if(rede==="whatsapp"){
-    window.open("https://wa.me/?text=" + msg, "_blank");
-    return;
-  }
-  // instagram/tiktok: não tem deep link universal confiável no browser, então copiamos
-  navigator.clipboard?.writeText(txt);
-  cpToast("Texto copiado. Cole no " + rede + ".");
-}
-
-/* ======= perfil config ======= */
-function salvarPerfilConfig(){
-  const db = cpGet();
-  db.user.objetivo = document.getElementById("perfilObjetivo").value;
-  db.user.nivel = document.getElementById("perfilNivel").value;
-  db.user.restricao = document.getElementById("perfilRestricao").value;
-  setDB(db);
-  cpToast("Perfil atualizado!");
-}
-
-/* ======= reset geral ======= */
-function resetAll(){
-  if(!confirm("Resetar tudo?")) return;
-  localStorage.removeItem("cp_db");
-  location.reload();
-}
-
-/* ======= reset semana ======= */
-function cpResetSemana(){
-  if(!confirm("Resetar semana?")) return;
-  const db = cpGet();
-  db.semana = {inicio: cpWeekKey(), treinos:0, hist:[]};
-  setDB(db);
-  cpToast("Semana resetada.");
-}
-
-/* ======= atualizar dashboards ======= */
-function cpUpdateEvolucao(){
-  const db = cpGet();
-
-  const nome = db.user?.nome ? (db.user.nome + " " + (db.user.sobrenome||"")) : "Visitante";
-  const xp = db.pontos?.xp || 0;
-  const pratos = db.pontos?.pratos || 0;
-  const treinos = db.pontos?.treinos || 0;
-
-  const lvl = cpLevelFromXP(xp);
-  const pct = cpPctLevel(xp);
-  const falta = cpXPToNext(xp);
-
-  doc
-<script>
-/* ==========================
-   PARTE 5 (FINAL) — BLINDAGEM + CORREÇÕES
-   - show() sem bug de event
-   - nav ativo correto
-   - start no Acesso
-   - Dieta só aparece após clique + salvar dieta
-   ========================== */
-
-/* ======== SHOW (NAVEGAÇÃO) — BLINDADO ======== */
-function show(viewId){
-  try{
-    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-    const el = document.getElementById(viewId);
-    if(el) el.classList.add("active");
-
-    // seta nav ativo pelo atributo onclick contendo o viewId
-    document.querySelectorAll(".navBtn").forEach(b=>{
-      const oc = (b.getAttribute("onclick") || "");
-      b.classList.toggle("active", oc.includes("'" + viewId + "'") || oc.includes('"' + viewId + '"'));
-    });
-
-    window.scrollTo({top:0, behavior:"instant"});
-  }catch(e){}
-}
-
-/* ======== START (APP ABRE NO ACESSO) ======== */
-(function startCheckPrato(){
-  try{
-    // garante DB
-    if(typeof getDB === "function"){ getDB(); }
-    if(typeof cpEnsure === "function"){ cpEnsure(); }
-
-    // sempre começa no acesso (como você pediu)
-    show("viewAcesso");
-
-    // status online/offline no header
-    function refreshNet(){
-      const dot = document.getElementById("netDot");
-      const txt = document.getElementById("netTxt");
-      const sub = document.getElementById("hdrSub");
-      if(dot) dot.style.background = navigator.onLine ? "var(--neo)" : "var(--gold)";
-      if(txt) txt.textContent = navigator.onLine ? "Online" : "Offline";
-      if(sub) sub.textContent = navigator.onLine ? "Modo: Online" : "Modo: Local • Offline ready";
-    }
-    refreshNet();
-    window.addEventListener("online", refreshNet);
-    window.addEventListener("offline", refreshNet);
-
-    // PWA sw
-    if("serviceWorker" in navigator){
-      navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
-    }
-
-    // atualiza UI geral
-    if(typeof cpUpdateAll === "function") cpUpdateAll();
-  }catch(e){}
-})();
-
-/* ==========================
-   DIETA — SÓ APÓS CLIQUE + SALVAR
-   (override seguro sem mexer no HTML anterior)
-   ========================== */
-
-// Garante área limpa antes de clicar
-(function dietInit(){
-  const out = document.getElementById("dietOut");
-  const hdr = document.getElementById("dietHdr");
-  if(out) out.innerHTML = "";
-  if(hdr) hdr.textContent = "Escolha um estilo e clique em GERAR.";
-})();
-
-// banco maior para evitar repetição
-const DIET_DB2 = {
-  hipertrofia: [
-    "Ovos + aveia + banana",
-    "Frango + arroz + feijão + salada",
-    "Carne moída + batata doce + legumes",
-    "Iogurte + granola + frutas",
-    "Whey + fruta + castanhas",
-    "Peixe + purê de mandioca + brócolis",
-    "Macarrão integral + frango desfiado"
-  ],
-  emagrecimento: [
-    "Omelete + salada",
-    "Peixe + legumes no vapor",
-    "Frango grelhado + mix de folhas",
-    "Sopa de legumes + proteína",
-    "Iogurte natural + frutas",
-    "Atum + salada + azeite",
-    "Carne magra + legumes"
-  ],
-  lowcarb: [
-    "Ovos mexidos + abacate",
-    "Frango + salada + azeite",
-    "Carne + legumes + castanhas",
-    "Queijo branco + tomate + pepino",
-    "Peixe + brócolis + manteiga",
-    "Omelete + queijo + folhas"
-  ],
-  economica: [
-    "Ovos + banana",
-    "Arroz + feijão + frango",
-    "Macarrão + sardinha",
-    "Cuscuz + ovos",
-    "Frango desfiado + salada simples",
-    "Banana + aveia",
-    "Carne moída + arroz"
-  ],
-  vegetariana: [
-    "Grão-de-bico + arroz + salada",
-    "Tofu + legumes salteados",
-    "Lentilha + quinoa + folhas",
-    "Húmus + legumes crus",
-    "Ovos (se ovolacto) + salada",
-    "Feijão + arroz + verduras",
-    "Bowl de frutas + sementes"
-  ],
-  diabetes: [
-    "Proteína + fibras + legumes",
-    "Ovos + salada + azeite",
-    "Peixe + legumes + folhas",
-    "Frango + verduras + castanhas",
-    "Iogurte natural + sementes",
-    "Carne + legumes + salada"
-  ],
-  hipertensao: [
-    "Frango + salada (baixo sódio)",
-    "Peixe + legumes",
-    "Arroz integral + feijão + salada",
-    "Ovos + verduras",
-    "Frutas + iogurte natural",
-    "Legumes + grão-de-bico"
-  ],
-  sem_lactose: [
-    "Ovos + banana + aveia",
-    "Frango + arroz + legumes",
-    "Peixe + batata + salada",
-    "Leite vegetal + granola",
-    "Carne + legumes",
-    "Tofu + salada"
-  ],
-  idoso: [
-    "Sopa nutritiva + proteína",
-    "Iogurte + frutas (sem açúcar)",
-    "Frango desfiado + purê + legumes",
-    "Ovos + verduras",
-    "Peixe + arroz + legumes",
-    "Vitamina com leite vegetal"
-  ],
-  atleta: [
-    "Panqueca de banana + aveia",
-    "Macarrão integral + frango",
-    "Arroz + feijão + carne + salada",
-    "Suco de beterraba + fruta",
-    "Sanduíche integral + atum",
-    "Batata doce + frango"
-  ]
-};
-
-function cpShuffle(arr){
-  const a = [...arr];
-  for(let i=a.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-}
-
-function cpDietSavedHas(text){
-  const db = (typeof cpGet==="function") ? cpGet() : (typeof getDB==="function" ? getDB() : {});
-  const saved = db.dietasSalvas || [];
-  return saved.includes(text);
-}
-
-function cpDietSave(text){
-  let db = (typeof cpGet==="function") ? cpGet() : (typeof getDB==="function" ? getDB() : {});
-  if(!db.dietasSalvas) db.dietasSalvas = [];
-  if(!db.dietasSalvas.includes(text)){
-    db.dietasSalvas.push(text);
-    if(typeof setDB==="function") setDB(db);
-    if(typeof cpToast==="function") cpToast("Dieta salva!");
-  }else{
-    if(typeof cpToast==="function") cpToast("Já está salva.");
-  }
-}
-
-// OVERRIDE do genDiet do código anterior (para garantir o comportamento correto)
-function genDiet(isSwap){
-  const out = document.getElementById("dietOut");
-  const hdr = document.getElementById("dietHdr");
-  if(!out || !hdr) return;
-
-  const tipo = (document.getElementById("d_tipo")?.value || "hipertrofia");
-  const pref = (document.getElementById("d_pref")?.value || "brasil");
-
-  const base = DIET_DB2[tipo] || DIET_DB2.hipertrofia;
-  let items = cpShuffle(base);
-
-  // evita repetição imediata (se já tinha uma dieta gerada)
-  let db = (typeof cpGet==="function") ? cpGet() : (typeof getDB==="function" ? getDB() : {});
-  const last = (db.diet && db.diet.items) ? db.diet.items : [];
-  if(last.length){
-    items = items.filter(x=>!last.includes(x)).concat(items.filter(x=>last.includes(x)));
-  }
-
-  // escolhe 6 sugestões
-  items = items.slice(0, 6);
-
-  // salva no state
-  if(!db.diet) db.diet = {};
-  db.diet.tipo = tipo;
-  db.diet.pref = pref;
-  db.diet.items = items;
-  if(typeof setDB==="function") setDB(db);
-
-  // render SOMENTE depois do clique
-  hdr.textContent = `Plano ${tipo.toUpperCase()} • ${pref.replace("_"," ")}`;
-  out.innerHTML = "";
-
-  items.forEach((it, idx)=>{
-    const row = document.createElement("div");
-    row.className = "item";
-    const isSaved = cpDietSavedHas(it);
-
-    row.innerHTML = `
-      <div style="min-width:0">
-        <b>Refeição ${idx+1}</b>
-        <div class="sub" style="white-space:normal">${it}</div>
-      </div>
-      <div style="display:flex;gap:8px;flex:0 0 auto">
-        <button class="miniBtn" type="button" onclick="cpDietSave('${it.replace(/'/g,"\\'")}')">
-          ${isSaved ? "Salvo" : "Salvar"}
-        </button>
-      </div>
-    `;
-    out.appendChild(row);
-  });
-
-  if(typeof cpToast==="function"){
-    cpToast(isSwap ? "Dieta trocada!" : "Dieta gerada!");
-  }
-}
-
-/* ==========================
-   “AUTO” — prato/treino alimentam evolução/progresso
-   (Se suas funções da PARTE 3 já somam XP/pontos, isso só reforça UI)
-   ========================== */
-(function autoSyncLoop(){
-  setInterval(()=>{
-    try{
-      if(typeof cpUpdateAll==="function") cpUpdateAll();
-    }catch(e){}
-  }, 1500);
-})();
-</script>
-
+    <div id="root"></div>
+
+    <script>
+        // ============================================================
+        // CheckPrato Elite — Complete App
+        // Design: Cyber-Fitness Dark Neon
+        // All screens: Splash, Acesso, Cadastro, Boas-vindas, Prato, Dieta, Treino, Evolução
+        // ============================================================
+
+        // Constants
+        const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663388243015/7hwT4Rcpzmt9PDwsiCfqK7/checkprato-hero-PJzdhsav9GuvFxECAtVKXF.webp";
+
+        const ESPORTES = [
+            "Musculação","CrossFit","Corrida","Muay Thai","Boxe","Capoeira",
+            "Jiu-jitsu","Karatê","Taekwondo","Ciclismo","Basquete","Vôlei"
+        ];
+
+        const BV_FRASES = [
+            ["Você não precisa de motivação. Precisa de direção.", "Pequenas escolhas hoje. Uma versão absurda de você amanhã.", "Sua mente precisa acreditar antes do seu corpo acompanhar."],
+            ["Disciplina é a ponte entre objetivos e conquistas.", "Cada rep conta. Cada refeição importa. Cada dia é uma escolha.", "O corpo alcança o que a mente acredita."],
+            ["Não existe atalho para onde vale a pena chegar.", "Consistência supera intensidade. Todo. Santo. Dia.", "Sua maior competição é quem você era ontem."],
+        ];
+
+        const DIETAS_MOCK = {
+            emagrecimento: [
+                { titulo: "☀️ Café da manhã", refeicoes: ["2 ovos mexidos", "1 fatia de pão integral", "Café sem açúcar", "1 fruta (banana ou maçã)"] },
+                { titulo: "🥗 Almoço", refeicoes: ["Frango grelhado 150g", "Arroz integral 4 col.", "Feijão 2 col.", "Salada verde à vontade"] },
+                { titulo: "🍎 Lanche", refeicoes: ["Iogurte grego sem açúcar", "Castanhas 30g"] },
+                { titulo: "🌙 Jantar", refeicoes: ["Omelete de 3 ovos", "Legumes refogados", "Chá sem açúcar"] },
+            ],
+            hipertrofia: [
+                { titulo: "☀️ Café da manhã", refeicoes: ["Aveia 80g", "3 ovos inteiros", "Leite integral 200ml", "Banana 1 unidade"] },
+                { titulo: "🥗 Almoço", refeicoes: ["Frango 200g", "Arroz branco 6 col.", "Feijão 3 col.", "Batata doce 150g"] },
+                { titulo: "🍎 Pré-treino", refeicoes: ["Whey protein 1 dose", "Banana 1 unidade", "Água 500ml"] },
+                { titulo: "🌙 Pós-treino / Jantar", refeicoes: ["Carne vermelha 200g", "Macarrão integral 100g", "Brócolis refogado"] },
+            ],
+            lowcarb: [
+                { titulo: "☀️ Café da manhã", refeicoes: ["Ovos mexidos com queijo", "Abacate 1/2 unidade", "Café com leite sem açúcar"] },
+                { titulo: "🥗 Almoço", refeicoes: ["Salmão grelhado 150g", "Salada verde com azeite", "Brócolis no vapor"] },
+                { titulo: "🍎 Lanche", refeicoes: ["Castanhas mistas 40g", "Queijo cottage 100g"] },
+                { titulo: "🌙 Jantar", refeicoes: ["Frango assado 150g", "Couve-flor gratinada", "Chá verde"] },
+            ],
+        };
+
+        const TREINOS_MOCK = {
+            Musculação: [
+                { dia: "Segunda — Peito + Tríceps", exercicios: [{ nome: "Supino reto", series: "4x10" }, { nome: "Crucifixo", series: "3x12" }, { nome: "Tríceps corda", series: "4x12" }, { nome: "Mergulho", series: "3x10" }] },
+                { dia: "Terça — Costas + Bíceps", exercicios: [{ nome: "Puxada frontal", series: "4x10" }, { nome: "Remada curvada", series: "4x10" }, { nome: "Rosca direta", series: "3x12" }, { nome: "Rosca martelo", series: "3x12" }] },
+                { dia: "Quarta — Pernas", exercicios: [{ nome: "Agachamento livre", series: "4x10" }, { nome: "Leg press", series: "4x12" }, { nome: "Cadeira extensora", series: "3x15" }, { nome: "Panturrilha em pé", series: "4x20" }] },
+                { dia: "Quinta — Ombros", exercicios: [{ nome: "Desenvolvimento", series: "4x10" }, { nome: "Elevação lateral", series: "4x12" }, { nome: "Remada alta", series: "3x12" }] },
+                { dia: "Sexta — Full body leve", exercicios: [{ nome: "Agachamento goblet", series: "3x15" }, { nome: "Flexão", series: "3x15" }, { nome: "Prancha", series: "3x40s" }] },
+            ],
+            Corrida: [
+                { dia: "Segunda — Corrida leve", exercicios: [{ nome: "Aquecimento 5min", series: "caminhada" }, { nome: "Corrida contínua", series: "30min" }, { nome: "Alongamento", series: "10min" }] },
+                { dia: "Quarta — Intervalado", exercicios: [{ nome: "Aquecimento", series: "5min" }, { nome: "Sprint 30s + caminhada 1min", series: "8x" }, { nome: "Desaquecimento", series: "5min" }] },
+                { dia: "Sexta — Corrida longa", exercicios: [{ nome: "Corrida contínua", series: "45min" }, { nome: "Alongamento completo", series: "15min" }] },
+            ],
+        };
+
+        // Storage
+        function getDB() {
+            try { return JSON.parse(localStorage.getItem("cp_db") || "{}"); } catch { return {}; }
+        }
+        function setDB(db) { localStorage.setItem("cp_db", JSON.stringify(db)); }
+        function dbInit() {
+            const db = getDB();
+            if (!db.user) db.user = {};
+            if (!db.user.sports) db.user.sports = [];
+            if (!db.pratos) db.pratos = [];
+            if (!db.dietasSalvas) db.dietasSalvas = [];
+            if (!db.pontos) db.pontos = { xp: 0, pratos: 0, treinos: 0 };
+            setDB(db);
+            return db;
+        }
+
+        // App State
+        let currentScreen = "splash";
+        let dbState = dbInit();
+        let toastMsg = "";
+        let toastShow = false;
+
+        // Toast
+        function showToast(msg) {
+            toastMsg = msg;
+            toastShow = true;
+            render();
+            setTimeout(() => {
+                toastShow = false;
+                render();
+            }, 2400);
+        }
+
+        // Navigation
+        function goTo(screen) {
+            currentScreen = screen;
+            dbState = dbInit();
+            render();
+        }
+
+        // Render
+        function render() {
+            const root = document.getElementById("root");
+            root.innerHTML = `
+                <div class="app-shell">
+                    ${currentScreen === "splash" ? renderSplash() : ""}
+                    ${currentScreen === "acesso" ? renderAcesso() : ""}
+                    ${currentScreen === "cadastro" ? renderCadastro() : ""}
+                    ${currentScreen === "boasvindas" ? renderBoasVindas() : ""}
+                    ${currentScreen === "prato" ? renderPrato() : ""}
+                    ${currentScreen === "dieta" ? renderDieta() : ""}
+                    ${currentScreen === "treino" ? renderTreino() : ""}
+                    ${currentScreen === "evolucao" ? renderEvolucao() : ""}
+                    ${renderBottomNav()}
+                    ${renderToast()}
+                </div>
+            `;
+            attachEventListeners();
+        }
+
+        function renderSplash() {
+            const slides = [
+                { title: "Seu corpo<br>reflete<br><span class='neon-text'>suas escolhas.</span>", sub: "Pequenas decisões hoje criam grandes transformações amanhã." },
+                { title: "Dieta.<br>Treino.<br><span class='neon-text'>Evolução.</span>", sub: "Tudo em um só lugar. Simples, direto e eficiente." },
+                { title: "Comece<br>agora.<br><span class='neon-text'>Sem desculpas.</span>", sub: "Seu melhor eu está a um passo de distância." },
+            ];
+            let dot = 0;
+            const slide = slides[dot];
+            return `
+                <div class="splash-screen screen-enter">
+                    <div class="splash-bg" style="background-image: url('${HERO_IMG}')"></div>
+                    <div class="splash-overlay"></div>
+                    <div class="splash-content">
+                        <div class="logo-wrap">
+                            <div class="logo-icon">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 2L12.5 7.5H18L13.5 11L15.5 17L10 13.5L4.5 17L6.5 11L2 7.5H7.5L10 2Z" fill="white" opacity="0.9"/>
+                                    <path d="M7 10L9 12L13 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="logo-text">Check<span>Prato</span></div>
+                        </div>
+                        <div style="flex: 1;"></div>
+                        <div style="text-align: center; margin-bottom: 12px;">
+                            <h1 class="splash-hero-title">${slide.title}</h1>
+                            <p style="color: rgba(234,242,255,0.85); font-weight: 700; font-size: 15px; margin-top: 14px; line-height: 1.5;">${slide.sub}</p>
+                            <p style="color: #8aa0c7; font-weight: 600; font-size: 13px; margin-top: 8px;">Dieta. Treino. Prato, Evolução.<br>Tudo em um só lugar.</p>
+                        </div>
+                        <div style="display: flex; gap: 8px; justify-content: center; margin: 16px 0;">
+                            ${slides.map((_, i) => `<div class="splash-dot ${dot === i ? "active" : ""}" data-dot="${i}"></div>`).join("")}
+                        </div>
+                        <button class="btn-neon" onclick="goTo('acesso')">Começar agora</button>
+                        <button class="btn-outline" style="margin-top: 12px;" onclick="goTo('prato')">Explorar Saúde</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAcesso() {
+            return `
+                <div class="page-wrap screen-enter">
+                    <div class="acesso-header">
+                        <div class="logo-wrap">
+                            <div class="logo-icon">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 2L12.5 7.5H18L13.5 11L15.5 17L10 13.5L4.5 17L6.5 11L2 7.5H7.5L10 2Z" fill="white" opacity="0.9"/>
+                                    <path d="M7 10L9 12L13 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="logo-text">Check<span>Prato</span></div>
+                        </div>
+                        <p>Bem-vindo de volta</p>
+                    </div>
+                    <div class="cp-card">
+                        <button class="btn-neon" onclick="showToast('Google Sign-In simulado')">G Entrar com Google</button>
+                        <div class="divider-or"><span>ou</span></div>
+                        <input class="cp-input" placeholder="Email" type="email">
+                        <input class="cp-input" placeholder="Senha" type="password" style="margin-top: 10px;">
+                        <button class="btn-neon" style="margin-top: 14px;" onclick="goTo('boasvindas')">Entrar</button>
+                        <button class="btn-outline" style="margin-top: 10px;" onclick="goTo('cadastro')">Criar conta</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCadastro() {
+            return `
+                <div class="page-wrap screen-enter">
+                    <div class="cp-h1">Cadastro</div>
+                    <div class="cp-card">
+                        <div style="display: flex; gap: 14px; margin-bottom: 16px;">
+                            <div class="mini-avatar" style="width: 60px; height: 60px; font-size: 24px;">📷</div>
+                            <div style="flex: 1;">
+                                <button class="btn-secondary" onclick="document.getElementById('file-camera').click()">📷 Câmera</button>
+                                <button class="btn-secondary" style="margin-top: 8px;" onclick="document.getElementById('file-gallery').click()">🖼️ Galeria</button>
+                                <input id="file-camera" type="file" accept="image/*" capture="environment">
+                                <input id="file-gallery" type="file" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="grid-2">
+                            <input class="cp-input" placeholder="Nome">
+                            <input class="cp-input" placeholder="Sobrenome">
+                        </div>
+                        <div class="grid-2">
+                            <input class="cp-input" placeholder="Peso (kg)" inputmode="decimal">
+                            <input class="cp-input" placeholder="Altura (cm)" inputmode="numeric">
+                        </div>
+                        <select class="cp-input">
+                            <option>Sexo</option>
+                            <option>Masculino</option>
+                            <option>Feminino</option>
+                            <option>Prefiro não informar</option>
+                        </select>
+                        <select class="cp-input">
+                            <option>Objetivo</option>
+                            <option>Emagrecimento</option>
+                            <option>Hipertrofia</option>
+                            <option>Saúde</option>
+                        </select>
+                        <select class="cp-input">
+                            <option>Condição</option>
+                            <option>Nenhuma</option>
+                            <option>PCD</option>
+                            <option>Idoso</option>
+                            <option>Mobilidade reduzida</option>
+                            <option>Lesões / limitações</option>
+                        </select>
+                        <select class="cp-input">
+                            <option>Nível</option>
+                            <option>Iniciante</option>
+                            <option>Intermediário</option>
+                            <option>Avançado</option>
+                        </select>
+                        <select class="cp-input">
+                            <option>Restrições</option>
+                            <option>Nenhuma</option>
+                            <option>Diabetes</option>
+                            <option>Hipertensão</option>
+                            <option>Colesterol alto</option>
+                            <option>Intolerância à lactose</option>
+                            <option>Intolerância ao glúten</option>
+                        </select>
+                        <div style="margin-top: 16px;">
+                            <div style="font-weight: 900;">Esportes</div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
+                                ${ESPORTES.map(e => `<div class="cp-chip" data-sport="${e}">${e}</div>`).join("")}
+                            </div>
+                        </div>
+                        <div style="margin-top: 16px; padding: 12px; border-radius: 16px;">
+                            <div style="font-weight: 900;">Termo de uso</div>
+                            <div class="termo-box">Ao usar o CheckPrato, você concorda com nossos termos de serviço. Seus dados serão protegidos e usados apenas para melhorar sua experiência. Você pode cancelar sua conta a qualquer momento. Leia nossos termos completos para mais informações sobre privacidade e segurança.</div>
+                            <label class="cp-checkbox-wrap">
+                                <input type="checkbox" id="termo-check">
+                                Li e aceito o termo
+                            </label>
+                        </div>
+                        <button class="btn-neon" style="margin-top: 14px;" onclick="goTo('boasvindas')">Salvar e continuar</button>
+                        <button class="btn-outline" style="margin-top: 10px;" onclick="goTo('boasvindas')">Pular (ir para boas-vindas)</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderBoasVindas() {
+            const frases = BV_FRASES[Math.floor(Math.random() * BV_FRASES.length)];
+            return `
+                <div class="page-wrap screen-enter">
+                    <div class="cp-h1" style="text-align: center;">Boas-vindas</div>
+                    <p style="text-align: center; color: #8aa0c7;">Sua jornada começa agora</p>
+                    <div class="cp-card" style="text-align: center;">
+                        <div style="font-size: 48px;">🏆</div>
+                        <div class="bv-quote">${frases[0]}</div>
+                        <div class="bv-sub">${frases[1]}</div>
+                        <div class="bv-muted">${frases[2]}</div>
+                        <button class="btn-secondary" style="margin-top: 16px; width: auto;" onclick="location.reload()">🔄 Trocar frases</button>
+                        <button class="btn-neon" style="margin-top: 12px;" onclick="goTo('prato')">Seguir →</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPrato() {
+            return `
+                <div class="page-wrap screen-enter">
+                    <div class="mini-profile">
+                        <div class="mini-avatar">👤</div>
+                        <div>
+                            <div class="mini-name">Visitante</div>
+                            <div class="mini-sub">Prato • análise completa</div>
+                        </div>
+                    </div>
+                    <div class="cp-h1">Prato</div>
+                    <p class="cp-hint">Tire a foto, descreva e analise. Sem marcação manual.</p>
+                    <div class="cp-card">
+                        <div class="cp-label">Foto do prato</div>
+                        <div class="btn-row">
+                            <button class="btn-neon" onclick="document.getElementById('prato-camera').click()">📷 Câmera</button>
+                            <button class="btn-secondary" onclick="document.getElementById('prato-gallery').click()">🖼️ Galeria</button>
+                            <input id="prato-camera" type="file" accept="image/*" capture="environment">
+                            <input id="prato-gallery" type="file" accept="image/*">
+                        </div>
+                        <div class="photo-preview">📸 Foto do prato</div>
+                        <div class="cp-label">Descrição do prato</div>
+                        <textarea class="cp-input" placeholder="Ex: arroz, feijão, frango grelhado..." style="height: 80px; resize: none;"></textarea>
+                        <div class="btn-row">
+                            <button class="btn-neon" onclick="showToast('Prato analisado! +10 XP')">🔍 Analisar</button>
+                            <button class="btn-secondary" onclick="showToast('Análise resetada')">↺ Nova análise</button>
+                        </div>
+                        <div class="stat-grid">
+                            <div class="stat-box"><div class="stat-key">Calorias</div><div class="stat-val">380</div><div class="stat-sub">kcal</div></div>
+                            <div class="stat-box"><div class="stat-key">Proteína</div><div class="stat-val">28g</div><div class="stat-sub">g</div></div>
+                            <div class="stat-box"><div class="stat-key">Carboidrato</div><div class="stat-val">45g</div><div class="stat-sub">g</div></div>
+                            <div class="stat-box"><div class="stat-key">Gordura</div><div class="stat-val">12g</div><div class="stat-sub">g</div></div>
+                        </div>
+                        <div class="cp-divider"></div>
+                        <div class="cp-label">Histórico</div>
+                        <div class="cp-item">
+                            <div>
+                                <div class="cp-item-title">Arroz, feijão, frango...</div>
+                                <div class="cp-item-sub">380 kcal · 28g prot · 45g carb · 12g gord</div>
+                            </div>
+                            <span class="neon-badge">+10 XP</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDieta() {
+            const dietaKeys = Object.keys(DIETAS_MOCK);
+            const dietaKey = dietaKeys[0];
+            const dieta = DIETAS_MOCK[dietaKey];
+            return `
+                <div class="page-wrap screen-enter">
+                    <div class="mini-profile">
+                        <div class="mini-avatar">👤</div>
+                        <div>
+                            <div class="mini-name">Visitante</div>
+                            <div class="mini-sub">Dietas • variedade real</div>
+                        </div>
+                    </div>
+                    <div class="cp-h1">Dietas</div>
+                    <p class="cp-hint">Aparece somente depois de você clicar em gerar.</p>
+                    <div class="cp-card">
+                        <div class="grid-2">
+                            <div>
+                                <div class="cp-label">Tipo</div>
+                                <select class="cp-input">
+                                    <option>Emagrecimento</option>
+                                    <option>Hipertrofia</option>
+                                    <option>Low carb</option>
+                                </select>
+                            </div>
+                            <div>
+                                <div class="cp-label">Preferência</div>
+                                <select class="cp-input">
+                                    <option>Brasil (comida normal)</option>
+                                    <option>Prática / rápida</option>
+                                    <option>Mais barata</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="btn-row">
+                            <button class="btn-neon" onclick="showToast('Dieta gerada!')">🥗 Gerar dieta</button>
+                            <button class="btn-secondary" onclick="showToast('Dieta trocada')">↺ Trocar</button>
+                        </div>
+                        <div class="cp-divider"></div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div class="cp-label">Sugestões</div>
+                            <button class="btn-secondary" style="width: auto;" onclick="showToast('Dieta salva!')">💾 Salvar</button>
+                        </div>
+                        ${dieta.map(m => `
+                            <div class="dieta-meal">
+                                <div class="dieta-meal-title">${m.titulo}</div>
+                                ${m.refeicoes.map(r => `<div class="dieta-meal-item">• ${r}</div>`).join("")}
+                            </div>
+                        `).join("")}
+                        <div class="cp-divider"></div>
+                        <div class="cp-label">Dietas salvas</div>
+                        <div class="cp-item">
+                            <div>
+                                <div class="cp-item-title">Emagrecimento</div>
+                                <div class="cp-item-sub">☀️ Café da manhã · 🥗 Almoço · 🍎 Lanche · 🌙 Jantar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTreino() {
+            const treino = TREINOS_MOCK["Musculação"];
+            return `
+                <div class="page-wrap screen-enter">
+                    <div class="mini-profile">
+                        <div class="mini-avatar">👤</div>
+                        <div>
+                            <div class="mini-name">Visitante</div>
+                            <div class="mini-sub">Treinos • com técnica e conclusão</div>
+                        </div>
+                    </div>
+                    <div class="cp-h1">Treinos</div>
+                    <p class="cp-hint">Gera a semana. Você conclui e o app soma pontos automático.</p>
+                    <div class="cp-card">
+                        <div class="grid-2">
+                            <div>
+                                <div class="cp-label">Esporte</div>
+                                <select class="cp-input">
+                                    <option>Musculação</option>
+                                    <option>Corrida</option>
+                                </select>
+                            </div>
+                            <div>
+                                <div class="cp-label">Intensidade</div>
+                                <select class="cp-input">
+                                    <option>Leve</option>
+                                    <option selected>Moderado</option>
+                                    <option>Pesado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid-2">
+                            <div>
+                                <div class="cp-label">Nível</div>
+                                <select class="cp-input">
+                                    <option>Iniciante</option>
+                                    <option selected>Intermediário</option>
+                                    <option>Avançado</option>
+                                </select>
+                            </div>
+                            <div>
+                                <div class="cp-label">Condição</div>
+                                <select class="cp-input">
+                                    <option selected>Normal</option>
+                                    <option>PCD / dificuldade</option>
+                                    <option>Idoso</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="btn-row">
+                            <button class="btn-neon" onclick="showToast('Treino gerado!')">💪 Gerar treino</button>
+                            <button class="btn-secondary" onclick="showToast('Treino trocado')">↺ Trocar</button>
+                        </div>
+                        <div class="cp-divider"></div>
+                        <div class="cp-label">Treino da semana</div>
+                        ${treino.map(t => `
+                            <div class="treino-day">
+                                <div class="treino-day-header">
+                                    <div class="treino-day-title">${t.dia}</div>
+                                    <button class="btn-secondary" style="width: auto;" onclick="showToast('Dia concluído! +20 XP')">✓</button>
+                                </div>
+                                ${t.exercicios.map(e => `
+                                    <div class="treino-exercise">
+                                        <div class="treino-ex-name">${e.nome}</div>
+                                        <div class="treino-ex-detail">${e.series}</div>
+                                    </div>
+                                `).join("")}
+                            </div>
+                        `).join("")}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderEvolucao() {
+            return `
+                <div class="page-wrap screen-enter">
+                    <div class="mini-profile">
+                        <div class="mini-avatar">👤</div>
+                        <div>
+                            <div class="mini-name">Visitante</div>
+                            <div class="mini-sub">Evolução • seu progresso</div>
+                        </div>
+                    </div>
+                    <div class="cp-h1">Evolução</div>
+                    <p class="cp-hint">Acompanhe seu progresso e conquistas.</p>
+                    <div class="cp-card">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div>
+                                <div style="font-weight: 900;">João Silva</div>
+                                <div style="color: #22c55e; font-weight: 800;">Nível: Intermediário</div>
+                            </div>
+                            <div class="neon-badge">⚡ 150 XP</div>
+                        </div>
+                        <div class="xp-bar-bg">
+                            <div class="xp-bar-fill" style="width: 60%;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 4px;">
+                            <span style="font-size: 11px; color: #8aa0c7;">150 XP</span>
+                            <span style="font-size: 11px; color: #8aa0c7;">Meta: 300 XP</span>
+                        </div>
+                        <div class="cp-divider"></div>
+                        <div class="stat-grid">
+                            <div class="evo-stat"><div class="evo-stat-val">150</div><div class="evo-stat-label">Total XP</div></div>
+                            <div class="evo-stat"><div class="evo-stat-val">8</div><div class="evo-stat-label">Pratos</div></div>
+                            <div class="evo-stat"><div class="evo-stat-val">3</div><div class="evo-stat-label">Treinos</div></div>
+                            <div class="evo-stat"><div class="evo-stat-val">Intermediário</div><div class="evo-stat-label">Nível</div></div>
+                        </div>
+                        <div class="cp-divider"></div>
+                        <div class="cp-label">Perfil</div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0;"><span style="color: #8aa0c7; font-weight: 700;">Peso</span><span style="color: #eaf2ff; font-weight: 800;">75 kg</span></div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0;"><span style="color: #8aa0c7; font-weight: 700;">Altura</span><span style="color: #eaf2ff; font-weight: 800;">180 cm</span></div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0;"><span style="color: #8aa0c7; font-weight: 700;">Objetivo</span><span style="color: #eaf2ff; font-weight: 800;">Hipertrofia</span></div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0;"><span style="color: #8aa0c7; font-weight: 700;">Nível</span><span style="color: #eaf2ff; font-weight: 800;">Intermediário</span></div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0;"><span style="color: #8aa0c7; font-weight: 700;">Restrições</span><span style="color: #eaf2ff; font-weight: 800;">Nenhuma</span></div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0;"><span style="color: #8aa0c7; font-weight: 700;">Esportes</span><span style="color: #eaf2ff; font-weight: 800;">Musculação, Corrida</span></div>
+                        <div class="cp-divider"></div>
+                        <div class="cp-label">Conquistas</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
+                            <div style="padding: 8px 12px; border-radius: 12px; border: 1.5px solid rgba(34,197,94,0.4); background: rgba(34,197,94,0.08);"><span style="font-size: 18px;">🍽️</span><span style="font-size: 12px; font-weight: 800; color: #22c55e;"> Primeiro prato</span></div>
+                            <div style="padding: 8px 12px; border-radius: 12px; border: 1.5px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); opacity: 0.4;"><span style="font-size: 18px;">💪</span><span style="font-size: 12px; font-weight: 800; color: #8aa0c7;"> Primeiro treino</span></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderBottomNav() {
+            if (currentScreen === "splash") return "";
+            const items = [
+                { id: "prato", icon: "🍽️", label: "Prato" },
+                { id: "dieta", icon: "🥗", label: "Dieta" },
+                { id: "treino", icon: "💪", label: "Treino" },
+                { id: "evolucao", icon: "📈", label: "Evolução" },
+            ];
+            return `
+                <nav class="bottom-nav">
+                    <div class="bottom-nav-inner">
+                        ${items.map(n => `
+                            <button class="nav-btn ${currentScreen === n.id ? "active" : ""}" onclick="goTo('${n.id}')">
+                                <span class="nav-icon">${n.icon}</span>
+                                ${n.label}
+                            </button>
+                        `).join("")}
+                    </div>
+                </nav>
+            `;
+        }
+
+        function renderToast() {
+            return `
+                <div class="cp-toast ${toastShow ? "show" : ""}">${toastMsg}</div>
+            `;
+        }
+
+        function attachEventListeners() {
+            // Splash dots
+            document.querySelectorAll(".splash-dot").forEach(dot => {
+                dot.addEventListener("click", () => {
+                    const index = parseInt(dot.dataset.dot);
+                    // Update slide logic here if needed
+                });
+            });
+
+            // Sport chips
+            document.querySelectorAll(".cp-chip").forEach(chip => {
+                chip.addEventListener("click", () => {
+                    chip.classList.toggle("active");
+                });
+            });
+
+            // Termo scroll
+            const termoBox = document.querySelector(".termo-box");
+            const termoCheck = document.getElementById("termo-check");
+            if (termoBox && termoCheck) {
+                termoBox.addEventListener("scroll", () => {
+                    if (termoBox.scrollTop + termoBox.clientHeight >= termoBox.scrollHeight - 10) {
+                        termoCheck.disabled = false;
+                    }
+                });
+            }
+        }
+
+        // Initial render
+        render();
+    </script>
 </body>
 </html>
