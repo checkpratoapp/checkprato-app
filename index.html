@@ -5,22 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>CheckPrato Elite — Dieta. Treino. Prato. Evolução.</title>
 
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BS7KTD7E7X"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-BS7KTD7E7X');
-</script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; background: #02050b; color: #eaf2ff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; overflow-x: hidden; }
     body { background: radial-gradient(circle at 20% 0%, #0a1f38, #000) fixed; min-height: 100vh; }
-
-    /* evita flicker */
-    body, .app-shell, .page-wrap { -webkit-font-smoothing: antialiased; -webkit-transform: translateZ(0); transform: translateZ(0); }
 
     .app-shell { width: 100%; min-height: 100vh; position: relative; overflow: hidden; background: radial-gradient(circle at 20% 0%, #0a1f38, #000); display: flex; align-items: center; justify-content: center; }
     .screen-enter { animation: screenIn 0.25s ease-out forwards; }
@@ -37,7 +25,6 @@
 
     .btn-secondary { background: rgba(255,255,255,0.06); color: #eaf2ff; font-weight: 800; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 12px 14px; font-size: 13px; transition: all 0.2s ease; flex: 1; cursor: pointer; }
     .btn-secondary:hover { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.3); }
-    .btn-secondary:disabled { opacity: 0.45; cursor: not-allowed; }
 
     .cp-card { background: linear-gradient(180deg, #0b1a2d, #07111f); border-radius: 22px; padding: 18px; margin-top: 14px; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
     .cp-input { width: 100%; padding: 12px 14px; margin-top: 10px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); background: #071728; color: #eaf2ff; font-size: 14px; outline: none; }
@@ -49,14 +36,9 @@
 
     .cp-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); margin: 16px 0; }
 
-    .logo-wrap { display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 8px; }
-    .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(59,130,246,0.4); font-weight: 900; }
-    .logo-text { font-size: 20px; font-weight: 900; color: #eaf2ff; }
-    .logo-text span { color: #3b82f6; }
-
     .mini-profile { display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 14px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.06); }
     .mini-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #2563eb); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; flex-shrink: 0; font-size: 18px; overflow: hidden; }
-    .mini-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .mini-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .mini-name { font-weight: 900; font-size: 14px; color: #eaf2ff; }
     .mini-sub { font-size: 12px; color: #8aa0c7; font-weight: 700; }
 
@@ -68,56 +50,22 @@
     .stat-val { font-size: 22px; font-weight: 950; color: #3b82f6; line-height: 1.1; margin: 4px 0 2px; }
     .stat-key { font-size: 11px; font-weight: 800; color: #8aa0c7; text-transform: uppercase; }
 
-    .cp-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-80px); background: #0b1a2d; border: 1px solid rgba(59,130,246,0.4); color: #eaf2ff; padding: 12px 18px; border-radius: 50px; font-weight: 800; font-size: 13px; z-index: 9999; transition: transform 0.3s ease; white-space: nowrap; box-shadow: 0 8px 32px rgba(0,0,0,0.5); max-width: calc(100vw - 24px); overflow: hidden; text-overflow: ellipsis; }
+    .cp-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-80px); background: #0b1a2d; border: 1px solid rgba(59,130,246,0.4); color: #eaf2ff; padding: 12px 18px; border-radius: 50px; font-weight: 800; font-size: 13px; z-index: 9999; transition: transform 0.3s ease; white-space: nowrap; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
     .cp-toast.show { transform: translateX(-50%) translateY(0); }
-
-    .splash-screen { position: relative; width: 100%; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden; max-width: 430px; }
-    .splash-bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
-    .splash-overlay { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(2,5,11,0.3), rgba(2,5,11,0.88)); }
-    .splash-content { position: relative; z-index: 10; padding: 18px 18px 90px; display: flex; flex-direction: column; height: 100vh; }
-
-    .splash-hero-title { font-size: 38px; font-weight: 950; color: #eaf2ff; line-height: 1.15; text-align: center; }
-    .neon-text { color: #3b82f6; text-shadow: 0 0 20px rgba(59,130,246,0.5); }
-
-    .photo-preview { width: 100%; height: 190px; border-radius: 18px; background: #071728; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; display: flex; align-items: center; justify-content: center; margin-top: 10px; color: rgba(234,242,255,0.7); font-weight: 900; text-align: center; padding: 12px; }
-    .photo-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .divider-or { display: flex; align-items: center; gap: 12px; margin: 16px 0; }
-    .divider-or::before, .divider-or::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); }
-    .divider-or span { color: #8aa0c7; font-size: 13px; font-weight: 800; }
-
-    .acesso-header { text-align: center; margin-bottom: 24px; }
-    .acesso-header p { color: #8aa0c7; font-size: 14px; font-weight: 700; margin-top: 8px; }
-
-    .pill { display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius: 14px; background: rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); font-weight: 800; font-size: 12px; color:#eaf2ff; }
-    .pill small{ color:#8aa0c7; font-weight:800; }
 
     .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top: 10px; }
     .chip { user-select:none; cursor:pointer; padding:10px 12px; border-radius: 999px; font-weight: 900; font-size: 12px; border:1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color:#eaf2ff; transition: 0.15s; }
     .chip:hover{ border-color: rgba(59,130,246,0.45); }
     .chip.active{ background: rgba(59,130,246,0.16); border-color: rgba(59,130,246,0.55); color:#d9e9ff; }
 
-    .confirm-box { margin-top: 12px; padding: 12px; border-radius: 16px; border:1px solid rgba(59,130,246,0.25); background: rgba(59,130,246,0.08); }
-    .confirm-title { font-weight: 950; margin-bottom: 8px; color:#eaf2ff; }
-
     .exercise-card { display:flex; gap:10px; padding:12px; border-radius: 16px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); margin-top: 10px; }
     .ex-img { width:72px; height:72px; border-radius: 14px; background: linear-gradient(135deg, rgba(59,130,246,0.4), rgba(37,99,235,0.18)); display:flex; align-items:center; justify-content:center; border: 1px solid rgba(59,130,246,0.25); flex-shrink:0; overflow:hidden; }
-    .ex-img svg{ width:46px; height:46px; opacity:0.95; }
+    .ex-img img { width: 100%; height: 100%; object-fit: cover; }
     .ex-main { flex: 1; }
     .ex-name { font-weight: 950; font-size: 13px; }
     .ex-how { margin-top: 4px; color:#8aa0c7; font-weight: 750; font-size: 12px; line-height: 1.35; }
     .ex-meta { margin-top: 6px; display:flex; align-items:center; gap:8px; flex-wrap: wrap; }
     .ex-meta .tag{ padding:6px 10px; border-radius: 999px; font-size: 11px; font-weight: 900; color:#eaf2ff; background: rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); }
-    .ex-actions { margin-top: 8px; display:flex; gap:8px; align-items:center; }
-    .ex-actions button{ width:auto; padding:10px 12px; font-size: 12px; border-radius: 12px; }
-    .ex-check { display:flex; align-items:center; gap:8px; margin-left:auto; font-weight: 900; font-size: 12px; color:#eaf2ff; }
-    .ex-check input{ width:18px; height:18px; }
-
-    .menu-grid { display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top: 12px; }
-    .menu-btn { cursor:pointer; border:none; border-radius: 18px; padding: 14px; text-align:left; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); color:#eaf2ff; font-weight: 950; transition: 0.2s; }
-    .menu-btn:hover{ border-color: rgba(59,130,246,0.45); background: rgba(59,130,246,0.08); }
-    .menu-btn .m-ico{ font-size: 22px; display:block; margin-bottom: 6px; }
-    .menu-btn .m-sub{ font-size: 12px; font-weight: 800; color:#8aa0c7; }
 
     .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; background: rgba(7, 23, 40, 0.97); backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.08); padding: 8px 12px 20px; z-index: 100; }
     .bottom-nav-inner { display: flex; gap: 4px; }
@@ -125,13 +73,21 @@
     .nav-btn .nav-icon { font-size: 20px; }
     .nav-btn.active { color: #3b82f6; background: rgba(59, 130, 246, 0.10); }
 
-    .legal-box{ display:flex; gap:10px; align-items:flex-start; margin-top: 10px; padding: 12px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); }
-    .legal-box input{ width:18px; height:18px; margin-top: 2px; }
-    .legal-box div{ flex:1; }
-    .legal-title{ font-weight: 950; }
-    .legal-sub{ margin-top: 2px; font-size: 12px; font-weight: 750; color:#8aa0c7; line-height: 1.35; }
+    /* SISTEMA DE MÚSCULOS 3D */
+    .muscle-viewer { position: relative; width: 100%; height: 400px; background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(37,99,235,0.05)); border-radius: 18px; border: 1px solid rgba(59,130,246,0.2); display: flex; align-items: center; justify-content: center; margin-top: 12px; overflow: hidden; }
+    .muscle-canvas { width: 100%; height: 100%; border-radius: 16px; }
+    .muscle-label { position: absolute; font-size: 11px; font-weight: 900; color: #3b82f6; cursor: pointer; padding: 4px 8px; background: rgba(0,0,0,0.5); border-radius: 6px; white-space: nowrap; border: 1px solid rgba(59,130,246,0.4); transition: 0.2s; }
+    .muscle-label:hover { background: rgba(59,130,246,0.3); transform: scale(1.05); }
+    .muscle-progress { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+    .muscle-stat { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 12px; padding: 10px; text-align: center; }
+    .muscle-stat-name { font-size: 11px; font-weight: 800; color: #8aa0c7; text-transform: uppercase; }
+    .muscle-stat-val { font-size: 18px; font-weight: 950; color: #3b82f6; margin-top: 4px; }
 
-    .warn{ margin-top: 10px; padding: 12px; border-radius: 16px; border:1px solid rgba(255,69,58,0.25); background: rgba(255,69,58,0.08); color:#ffd5d1; font-weight: 900; font-size: 12px; line-height: 1.35; }
+    .screen { display: none; }
+    .screen.active { display: block; animation: screenIn 0.25s ease-out; }
+
+    .photo-preview { width: 100%; height: 190px; border-radius: 18px; background: #071728; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; display: flex; align-items: center; justify-content: center; margin-top: 10px; color: rgba(234,242,255,0.7); font-weight: 900; text-align: center; padding: 12px; }
+    .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
   </style>
 </head>
 <body>
@@ -139,1760 +95,532 @@
 
   <script>
     /***********************
-     * CONFIG
+     * CONFIGURAÇÃO GLOBAL
      ***********************/
-    const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663388243015/7hwT4Rcpzmt9PDwsiCfqK7/checkprato-hero-PJzdhsav9GuvFxECAtVKXF.webp";
+    const DB_KEY = "checkprato_db";
+    const SPORTS = ["Musculação","CrossFit","Corrida","Muay Thai","Boxe","Capoeira","Jiu-jitsu","Karatê","Taekwondo","Ciclismo","Basquete","Vôlei"];
+    const LOCATIONS = ["Casa","Praça","Academia"];
+    const DIETS = {
+      "Emagrecimento": ["Frango grelhado com salada","Ovo cozido com frutas","Iogurte grego com granola","Sopa de legumes","Peixe ao forno com brócolis"],
+      "Hipertrofia": ["Frango com batata doce","Arroz com feijão e carne","Ovos mexidos com pão integral","Atum com macarrão integral","Peito de frango com abóbora"],
+      "Low Carb": ["Ovos com bacon","Salada com queijo","Frango com abacate","Peixe com legumes","Carne vermelha com brócolis"],
+      "Cetogênica": ["Ovos fritos em manteiga","Queijo cheddar","Abacate com salmão","Carne vermelha com azeite","Nozes e castanhas"],
+      "Vegetariana": ["Feijão com arroz","Lentilha com salada","Tofu grelhado","Grão de bico com legumes","Ovo cozido com pão integral"],
+      "Vegana": ["Feijão preto com arroz","Lentilha com batata doce","Tofu com brócolis","Grão de bico com abóbora","Quinoa com legumes"],
+      "Paleo": ["Carne vermelha com batata doce","Frango com abóbora","Ovos com frutas","Peixe com legumes","Nozes e frutas secas"],
+      "Intermitente": ["Jejum 16h + refeição balanceada","Café com óleo de coco","Frango com salada","Sopa de legumes","Frutas e castanhas"]
+    };
 
-    // IA real (segura) => endpoint no Cloudflare Worker/Functions (NUNCA chave no HTML)
-    const AI_ENDPOINT = ""; // ex: "https://SEU-DOMINIO/pages/api/analisar-prato"
+    const EXERCISES_BY_LOCATION = {
+      "Casa": [
+        {name: "Flexão", series: "3x10", img: "💪"},
+        {name: "Agachamento", series: "3x15", img: "🦵"},
+        {name: "Prancha", series: "3x30s", img: "📍"},
+        {name: "Burpee", series: "3x10", img: "🔥"}
+      ],
+      "Praça": [
+        {name: "Barra", series: "3x8", img: "🏋️"},
+        {name: "Corrida", series: "20min", img: "🏃"},
+        {name: "Abdominal", series: "3x20", img: "⚡"},
+        {name: "Alongamento", series: "10min", img: "🧘"}
+      ],
+      "Academia": [
+        {name: "Supino", series: "4x8", img: "🏋️"},
+        {name: "Leg Press", series: "4x10", img: "🦵"},
+        {name: "Rosca Direta", series: "3x10", img: "💪"},
+        {name: "Agachamento Livre", series: "4x8", img: "🔥"}
+      ]
+    };
 
-    /***********************
-     * LISTAS (fixas — do jeito que você pediu)
-     ***********************/
-    const SPORTS = [
-      "musculação","crossfit","corrida","muay thai","boxe","capoeira","jiu-jitsu","karatê","taekwondo","ciclismo","basquete","vôlei"
+    const MUSCLES_MALE = [
+      {name: "Trapézio", x: 50, y: 25},
+      {name: "Peitoral", x: 45, y: 40},
+      {name: "Bíceps", x: 35, y: 45},
+      {name: "Abdômen", x: 50, y: 50},
+      {name: "Quadríceps", x: 50, y: 70},
+      {name: "Glúteos", x: 50, y: 60}
     ];
 
-    const LEVELS = ["Iniciante","Intermediário","Avançado"];
-    const INTENSITIES = ["Leve","Moderada","Intensa"];
-
-    const CONDITIONS = ["PCD","Idoso","Sedentário"];
-
-    const BV_BANK = {
-      motivacional: [
-        "Disciplina vence quando a motivação falha.",
-        "Você não precisa de tempo. Precisa de decisão.",
-        "Consistência é o que separa sonho de resultado.",
-        "Hoje é o dia que constrói o corpo que você quer."
-      ],
-      emocional: [
-        "Você merece sentir orgulho ao se olhar no espelho.",
-        "Você não está atrasado. Você está recomeçando do jeito certo.",
-        "O seu futuro depende do que você faz quando ninguém está vendo.",
-        "A sua história muda quando você decide mudar."
-      ],
-      psicoMental: [
-        "Sua mente tenta te proteger… mas ela também pode te prender.",
-        "Sem controle emocional, qualquer plano vira desculpa.",
-        "Você não precisa se sentir pronto. Precisa começar.",
-        "A ansiedade diminui quando você cumpre o básico."
-      ]
-    };
-
-    const OFFICIAL_SITES = {
-      imc: [
-        "https://www.who.int/",                 // OMS
-        "https://www.gov.br/saude/pt-br",       // Ministério da Saúde BR
-        "https://www.cdc.gov/"                  // CDC
-      ],
-      nutricao: [
-        "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/alimentacao-e-nutricao",
-        "https://www.who.int/health-topics/nutrition",
-        "https://www.cdc.gov/nutrition/"
-      ],
-      atividade: [
-        "https://www.who.int/news-room/fact-sheets/detail/physical-activity",
-        "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/atividade-fisica",
-        "https://www.cdc.gov/physicalactivity/"
-      ],
-      sono: [
-        "https://www.cdc.gov/sleep/",
-        "https://www.who.int/",
-        "https://www.gov.br/saude/pt-br"
-      ],
-      mental: [
-        "https://www.who.int/health-topics/mental-health",
-        "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-mental",
-        "https://www.cdc.gov/mentalhealth/"
-      ]
-    };
+    const MUSCLES_FEMALE = [
+      {name: "Ombro", x: 45, y: 30},
+      {name: "Peitoral", x: 50, y: 38},
+      {name: "Cintura", x: 50, y: 48},
+      {name: "Glúteos", x: 50, y: 62},
+      {name: "Quadríceps", x: 50, y: 72},
+      {name: "Panturrilha", x: 50, y: 85}
+    ];
 
     /***********************
-     * STORAGE KEYS
+     * STORAGE
      ***********************/
-    const KEY_PROFILE = "cp_profile_v2";
-    const KEY_AUTH = "cp_auth_ok_v1";          // acesso blindado (local)
-    const KEY_STEP = "cp_step_v1";             // 1 acesso, 2 cadastro, 3 boasvindas, 4 liberado
-    const KEY_ONBOARD = "cp_onboard_done_v1";  // compat
-    const KEY_PLATE_LAST = "cp_plate_last_v1";
-    const KEY_PLATES = "cp_plates_v1";
-    const KEY_TRAIN_DONE = "cp_train_done_v2"; // exercícios concluídos com anti-burlar
-    const KEY_XP = "cp_xp_v1";
-    const KEY_DIETA_LAST = "cp_dieta_last_v1";
-    const KEY_TREINO_LAST = "cp_treino_last_v1";
+    function getDB(){
+      try { return JSON.parse(localStorage.getItem(DB_KEY)) || {}; } catch(e){ return {}; }
+    }
+    function setDB(db){
+      localStorage.setItem(DB_KEY, JSON.stringify(db));
+    }
+    function initDB(){
+      const db = getDB();
+      if(!db.user) db.user = {};
+      if(!db.pratos) db.pratos = [];
+      if(!db.dietas) db.dietas = [];
+      if(!db.treinos) db.treinos = [];
+      if(!db.metas) db.metas = {xp: 0, musculos: {}};
+      setDB(db);
+    }
+    initDB();
 
     /***********************
-     * UTILS
+     * UI
      ***********************/
-    function safeJsonParse(s, fallback){ try { return JSON.parse(s); } catch { return fallback; } }
-    function escapeHtml(s){ return String(s ?? "").replace(/[&<>"]/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m])); }
-    function now(){ return Date.now(); }
-    function todayKey(){
-      const d = new Date();
-      const y = d.getFullYear();
-      const m = String(d.getMonth()+1).padStart(2,"0");
-      const day = String(d.getDate()).padStart(2,"0");
-      return `${y}-${m}-${day}`;
-    }
-    function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
-
-    function getXP(){ return Number(localStorage.getItem(KEY_XP) || "0"); }
-    function addXP(v){ localStorage.setItem(KEY_XP, String(getXP() + Number(v||0))); }
-
-    function getStep(){ return Number(localStorage.getItem(KEY_STEP) || "1"); }
-    function setStep(n){ localStorage.setItem(KEY_STEP, String(n)); }
-
-    function isAuthed(){ return localStorage.getItem(KEY_AUTH) === "1"; }
-    function setAuthed(v){ localStorage.setItem(KEY_AUTH, v ? "1" : "0"); }
-
-    function isOnboardDone(){ return localStorage.getItem(KEY_ONBOARD) === "1"; }
-    function setOnboardDone(v){ localStorage.setItem(KEY_ONBOARD, v ? "1" : "0"); }
-
-    function loadProfile(){ return safeJsonParse(localStorage.getItem(KEY_PROFILE) || "null", null); }
-    function saveProfile(p){ localStorage.setItem(KEY_PROFILE, JSON.stringify(p)); }
-
-    function loadPlates(){ return safeJsonParse(localStorage.getItem(KEY_PLATES) || "[]", []); }
-    function savePlates(arr){ localStorage.setItem(KEY_PLATES, JSON.stringify(arr)); }
-
-    function loadTrainDone(){ return safeJsonParse(localStorage.getItem(KEY_TRAIN_DONE) || "[]", []); }
-    function saveTrainDone(arr){ localStorage.setItem(KEY_TRAIN_DONE, JSON.stringify(arr)); }
-
-    function loadDietaLast(){ return safeJsonParse(localStorage.getItem(KEY_DIETA_LAST) || "null", null); }
-    function saveDietaLast(d){ localStorage.setItem(KEY_DIETA_LAST, JSON.stringify(d)); }
-
-    function loadTreinoLast(){ return safeJsonParse(localStorage.getItem(KEY_TREINO_LAST) || "null", null); }
-    function saveTreinoLast(t){ localStorage.setItem(KEY_TREINO_LAST, JSON.stringify(t)); }
-
-    function getProfileDisplay(){
-      const p = loadProfile();
-      const fullName = p ? `${p.nome || ""} ${p.sobrenome || ""}`.trim() : "";
-      const name = fullName || "Visitante";
-      const sub = isOnboardDone() ? "Conta ativa" : "Cadastro pendente";
-      const avatar = p?.avatarDataUrl || "";
-      return { name, sub, avatar };
+    function showToast(msg){
+      const toast = document.getElementById("toast") || (() => {
+        const t = document.createElement("div");
+        t.id = "toast";
+        t.className = "cp-toast";
+        document.body.appendChild(t);
+        return t;
+      })();
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2500);
     }
 
-    /***********************
-     * STATE (UI)
-     ***********************/
-    let currentScreen = "splash";
-    let lastScreen = "";
-    let toastMsg = "";
-    let toastShow = false;
-
-    // prato
-    let plateDataUrl = localStorage.getItem(KEY_PLATE_LAST) || "";
-    let plateAIResult = null; // {description, calories, protein, carbs, fat}
-    let plateConfirmed = false;
-
-    // dieta (gerada)
-    let dietaType = "emagrecimento";
-
-    // treino (sessão anti-burlar)
-    let selectedSport = "musculação";
-    let selectedIntensity = "Moderada";
-    let selectedLevel = "Iniciante";
-    let treinoSession = { id: "", startedAt: 0, lastMarkAt: 0 };
-
-    /***********************
-     * TOAST / NAV GUARD
-     ***********************/
-    function showToast(msg) {
-      toastMsg = msg;
-      toastShow = true;
-      renderToast();
-      setTimeout(() => { toastShow = false; renderToast(); }, 2400);
-    }
-
-    function canAccess(screen){
-      // Fluxo travado por etapas
-      const step = getStep(); // 1 acesso / 2 cadastro / 3 boas / 4 liberado
-      const allowed = new Set(["splash","acesso","cadastro","boasvindas"]);
-
-      if(step < 4){
-        return allowed.has(screen);
-      }
-      return true;
-    }
-
-    function goTo(screen){
-      if(!canAccess(screen)){
-        showToast("Conclua o passo a passo para liberar as abas.");
-        currentScreen = (getStep() === 1 ? "acesso" : getStep() === 2 ? "cadastro" : "boasvindas");
-        render();
+    function showScreen(id){
+      const db = getDB();
+      const isSignedUp = db.user && db.user.email;
+      
+      if(!isSignedUp && !["acesso","cadastro","splash"].includes(id)){
+        showToast("Complete o cadastro para acessar.");
         return;
       }
-      currentScreen = screen;
-      render();
+
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      const screen = document.getElementById(id);
+      if(screen) {
+        screen.classList.add("active");
+        window.scrollTo(0, 0);
+      }
     }
 
     /***********************
-     * MOUNT ONCE
+     * RENDERIZAÇÃO
      ***********************/
-    function mountOnce(){
-      const root = document.getElementById("root");
-      root.innerHTML = `
+    function renderApp(){
+      const db = getDB();
+      const isSignedUp = db.user && db.user.email;
+
+      const html = `
         <div class="app-shell">
-          <div id="screenSlot"></div>
-          <div id="navSlot"></div>
-          <div id="toastSlot"></div>
-        </div>
-      `;
-    }
-
-    function render(){
-      const animate = (currentScreen !== lastScreen);
-      lastScreen = currentScreen;
-
-      const slot = document.getElementById("screenSlot");
-      if(!slot) return;
-
-      let html = "";
-      if(currentScreen === "splash") html = renderSplash(animate);
-      else if(currentScreen === "acesso") html = renderAcesso(animate);
-      else if(currentScreen === "cadastro") html = renderCadastro(animate);
-      else if(currentScreen === "boasvindas") html = renderBoasVindas(animate);
-      else if(currentScreen === "dashboard") html = renderDashboard(animate);
-      else if(currentScreen === "prato") html = renderPrato(animate);
-      else if(currentScreen === "dieta") html = renderDieta(animate);
-      else if(currentScreen === "treino") html = renderTreino(animate);
-      else if(currentScreen === "evolucao") html = renderEvolucao(animate);
-      else if(currentScreen === "progresso") html = renderProgresso(animate);
-      else if(currentScreen === "saude") html = renderSaude(animate);
-      else if(currentScreen === "loja") html = renderLoja(animate);
-      else if(currentScreen === "convite") html = renderConvite(animate);
-      else if(currentScreen === "perfil") html = renderPerfil(animate);
-      else if(currentScreen === "mais") html = renderMais(animate);
-      else html = renderDashboard(animate);
-
-      slot.innerHTML = html;
-      renderBottomNav();
-      renderToast();
-
-      // wires
-      if(currentScreen === "cadastro") wireCadastroAvatar();
-      if(currentScreen === "prato"){ wirePlateInputs(); renderPlatePreview(); }
-    }
-
-    function renderToast(){
-      const toastSlot = document.getElementById("toastSlot");
-      if(!toastSlot) return;
-      toastSlot.innerHTML = `<div class="cp-toast ${toastShow ? "show" : ""}">${escapeHtml(toastMsg)}</div>`;
-    }
-
-    function renderBottomNav(){
-      const navSlot = document.getElementById("navSlot");
-      if(!navSlot) return;
-
-      if(currentScreen === "splash" || getStep() < 4){
-        navSlot.innerHTML = "";
-        return;
-      }
-
-      const items = [
-        { id:"dashboard", icon:"📊", label:"Início" },
-        { id:"prato", icon:"🍽️", label:"Prato" },
-        { id:"treino", icon:"💪", label:"Treino" },
-        { id:"dieta", icon:"🥗", label:"Dieta" },
-        { id:"mais", icon:"➕", label:"Mais" }
-      ];
-
-      navSlot.innerHTML = `
-        <nav class="bottom-nav">
-          <div class="bottom-nav-inner">
-            ${items.map(n => `
-              <button class="nav-btn ${currentScreen === n.id ? "active" : ""}" onclick="goTo('${n.id}')">
-                <span class="nav-icon">${n.icon}</span>
-                ${n.label}
-              </button>
-            `).join("")}
-          </div>
-        </nav>
-      `;
-    }
-
-    /***********************
-     * SCREENS
-     ***********************/
-    function renderSplash(animate){
-      return `
-        <div class="splash-screen ${animate ? "screen-enter" : ""}">
-          <div class="splash-bg" style="background-image:url('${HERO_IMG}')"></div>
-          <div class="splash-overlay"></div>
-          <div class="splash-content">
-            <div class="logo-wrap">
-              <div class="logo-icon">✓</div>
-              <div class="logo-text">Check<span>Prato</span></div>
-            </div>
-
-            <div style="flex:1;"></div>
-
-            <div style="text-align:center; margin-bottom: 12px;">
-              <h1 class="splash-hero-title">Seu corpo<br>reflete<br><span class="neon-text">suas escolhas.</span></h1>
-              <p style="color: rgba(234,242,255,0.86); font-weight: 800; font-size: 15px; margin-top: 14px; line-height: 1.55;">
-                Pequenas decisões hoje criam uma versão muito maior de você amanhã.
-              </p>
-            </div>
-
-            <button class="btn-neon" onclick="goTo('acesso')">Começar agora</button>
-            <button class="btn-outline" style="margin-top: 12px;" onclick="goTo('acesso')">Entrar / Criar conta</button>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderAcesso(animate){
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <div class="acesso-header">
-            <div class="logo-wrap">
-              <div class="logo-icon">✓</div>
-              <div class="logo-text">Check<span>Prato</span></div>
-            </div>
-            <p>Acesso blindado • sem pular etapas</p>
-          </div>
-
-          <div class="cp-card">
-            <button class="btn-neon" onclick="loginGoogle()">G Entrar com Google</button>
-
-            <div class="divider-or"><span>ou</span></div>
-
-            <input id="loginEmail" class="cp-input" placeholder="Email" type="email" />
-            <input id="loginPass" class="cp-input" placeholder="Senha" type="password" style="margin-top: 10px;" />
-
-            <button class="btn-neon" style="margin-top: 14px;" onclick="loginLocal()">Entrar (modo local)</button>
-
-            <div class="cp-hint" style="margin-top: 12px;">
-              * No modo local, seus dados ficam no navegador. Depois você pode ligar login real (Firebase/Google).
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderCadastro(animate){
-      const p = loadProfile() || {};
-      const selected = new Set((p.esportes || []).map(x => String(x).toLowerCase()));
-      const cond = new Set((p.condicoes || []).map(x => String(x)));
-
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <div class="cp-h1">Cadastro</div>
-          <div class="cp-hint">Preencha tudo. Sem isso, você não entra nas abas do app.</div>
-
-          <div class="cp-card">
-            <div class="cp-label">Foto do perfil</div>
-            <div class="btn-row">
-              <button class="btn-secondary" onclick="pickAvatar()">📷 Escolher (galeria)</button>
-              <button class="btn-secondary" onclick="captureAvatar()">🤳 Tirar foto</button>
-              <button class="btn-secondary" onclick="removeAvatar()">🗑️ Remover</button>
-            </div>
-            <input id="avatarFile" type="file" accept="image/*" style="display:none" />
-            <input id="avatarCam" type="file" accept="image/*" capture="user" style="display:none" />
-
-            <div class="grid-2" style="margin-top: 10px;">
-              <input id="cadNome" class="cp-input" placeholder="Nome" value="${escapeHtml(p.nome || "")}" />
-              <input id="cadSobrenome" class="cp-input" placeholder="Sobrenome" value="${escapeHtml(p.sobrenome || "")}" />
-            </div>
-
-            <div class="grid-2">
-              <input id="cadPeso" class="cp-input" placeholder="Peso (kg)" inputmode="decimal" value="${escapeHtml(p.peso || "")}" />
-              <input id="cadAltura" class="cp-input" placeholder="Altura (cm)" inputmode="numeric" value="${escapeHtml(p.altura || "")}" />
-            </div>
-
-            <div class="grid-2">
-              <select id="cadObjetivo" class="cp-input">
-                <option value="" ${!p.objetivo ? "selected" : ""}>Objetivo</option>
-                <option value="Emagrecimento" ${(p.objetivo==="Emagrecimento")?"selected":""}>Emagrecimento</option>
-                <option value="Hipertrofia" ${(p.objetivo==="Hipertrofia")?"selected":""}>Hipertrofia</option>
-                <option value="Manter" ${(p.objetivo==="Manter")?"selected":""}>Manter</option>
-              </select>
-
-              <select id="cadSexo" class="cp-input">
-                <option value="" ${!p.sexo ? "selected" : ""}>Sexo</option>
-                <option value="Masculino" ${(p.sexo==="Masculino")?"selected":""}>Masculino</option>
-                <option value="Feminino" ${(p.sexo==="Feminino")?"selected":""}>Feminino</option>
-                <option value="Prefiro não dizer" ${(p.sexo==="Prefiro não dizer")?"selected":""}>Prefiro não dizer</option>
-              </select>
-            </div>
-
-            <div class="grid-2">
-              <select id="cadNivel" class="cp-input">
-                <option value="" ${!p.nivel ? "selected" : ""}>Nível</option>
-                ${LEVELS.map(n => `<option value="${escapeHtml(n)}" ${(p.nivel===n)?"selected":""}>${escapeHtml(n)}</option>`).join("")}
-              </select>
-
-              <input id="cadRestricoes" class="cp-input" placeholder="Restrições (ex: lactose, glúten...)" value="${escapeHtml(p.restricoes || "")}" />
-            </div>
-
-            <div class="cp-label">Condição</div>
-            <div class="chips">
-              ${CONDITIONS.map(c => `
-                <div class="chip ${cond.has(c) ? "active" : ""}" onclick="toggleCondicao('${escapeHtml(c)}')">
-                  ${escapeHtml(c)}
-                </div>
-              `).join("")}
-            </div>
-
-            <div class="cp-label">Esportes (somente estes)</div>
-            <div class="chips">
-              ${SPORTS.map(s => `
-                <div class="chip ${selected.has(s) ? "active" : ""}" onclick="toggleEsporte('${escapeHtml(s)}')">
-                  ${escapeHtml(s)}
-                </div>
-              `).join("")}
-            </div>
-
-            <div class="legal-box">
-              <input id="termsOk" type="checkbox" ${p.termsOk ? "checked" : ""} />
-              <div>
-                <div class="legal-title">Termo do aplicativo</div>
-                <div class="legal-sub">Eu li e aceito os termos de uso e política do app.</div>
+          <div class="page-wrap">
+            <div id="splash" class="screen active">
+              <div style="text-align:center;padding:40px 20px">
+                <div style="font-size:48px;margin-bottom:20px">✅</div>
+                <h1 class="cp-h1" style="font-size:32px">CheckPrato Elite</h1>
+                <p class="cp-hint" style="margin:16px 0">Dieta. Treino. Prato. Evolução.</p>
+                <button class="btn-neon" onclick="showScreen('acesso')" style="margin-top:24px">Começar</button>
               </div>
             </div>
 
-            <div class="legal-box">
-              <input id="permOk" type="checkbox" ${p.permOk ? "checked" : ""} />
-              <div>
-                <div class="legal-title">Permissões</div>
-                <div class="legal-sub">Permito acesso para câmera/galeria (para análise do prato) e armazenamento local.</div>
+            <div id="acesso" class="screen">
+              <h1 class="cp-h1">Acesso</h1>
+              <div class="cp-card">
+                <button class="btn-neon" onclick="loginGoogle()">Entrar com Google</button>
+                <div style="margin:16px 0;text-align:center;color:#8aa0c7;font-size:12px">ou</div>
+                <input id="email" class="cp-input" placeholder="Email" type="email">
+                <input id="senha" class="cp-input" placeholder="Senha" type="password">
+                <button class="btn-neon" onclick="login()" style="margin-top:12px">Entrar</button>
+                <button class="btn-outline" onclick="showScreen('cadastro')" style="margin-top:12px">Criar conta</button>
               </div>
             </div>
 
-            <button class="btn-neon" style="margin-top: 14px;" onclick="saveCadastroFull()">Salvar e continuar</button>
-
-            <div class="cp-divider"></div>
-
-            <button class="btn-outline" onclick="resetAll()">Resetar dados (local)</button>
-
-            <div class="warn">
-              ⚠️ Se faltar qualquer item obrigatório, você NÃO consegue avançar. Isso é intencional (anti-burlar).
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderBoasVindas(animate){
-      const m = pick(BV_BANK.motivacional);
-      const e = pick(BV_BANK.emocional);
-      const p = pick(BV_BANK.psicoMental);
-
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <div class="cp-h1" style="text-align:center;">Boas-vindas</div>
-          <div class="cp-hint" style="text-align:center;">Agora é diferente. Agora é elite.</div>
-
-          <div class="cp-card" style="text-align:center;">
-            <div style="font-size: 50px;">🏆</div>
-            <div style="margin-top: 12px;">
-              <div class="pill">🔥 <span>${escapeHtml(m)}</span></div>
-            </div>
-            <div style="margin-top: 10px;">
-              <div class="pill">❤️ <span>${escapeHtml(e)}</span></div>
-            </div>
-            <div style="margin-top: 10px;">
-              <div class="pill">🧠 <span>${escapeHtml(p)}</span></div>
-            </div>
-
-            <button class="btn-neon" style="margin-top: 14px;" onclick="finishOnboarding()">Seguir →</button>
-            <div class="cp-hint" style="margin-top: 10px;">* Ao seguir, o app libera todas as abas.</div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderDashboard(animate){
-      const { name, sub, avatar } = getProfileDisplay();
-      const plates = loadPlates();
-      const done = loadTrainDone();
-      const xp = getXP();
-      const profile = loadProfile() || {};
-
-      const pratosCount = plates.length;
-      const treinosCount = done.filter(x => x?.type === "exercise").length;
-
-      const kcalList = plates.map(p => Number(p?.calories)).filter(n => Number.isFinite(n) && n > 0);
-      const kcalAvg = kcalList.length ? Math.round(kcalList.reduce((a,b)=>a+b,0)/kcalList.length) : 0;
-
-      const pesoTxt = profile?.peso ? `${profile.peso}kg` : "—";
-
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <div class="mini-profile">
-            <div class="mini-avatar">${avatar ? `<img src="${escapeHtml(avatar)}" alt="avatar" />` : "👤"}</div>
-            <div>
-              <div class="mini-name">${escapeHtml(name)}</div>
-              <div class="mini-sub">${escapeHtml(sub)} • visão geral</div>
-            </div>
-          </div>
-
-          <div class="cp-h1">Dashboard</div>
-
-          <div class="cp-card">
-            <div class="stat-grid">
-              <div class="stat-box"><div class="stat-key">XP Total</div><div class="stat-val">${xp}</div></div>
-              <div class="stat-box"><div class="stat-key">Pratos</div><div class="stat-val">${pratosCount}</div></div>
-              <div class="stat-box"><div class="stat-key">Exercícios</div><div class="stat-val">${treinosCount}</div></div>
-              <div class="stat-box"><div class="stat-key">Peso</div><div class="stat-val">${escapeHtml(pesoTxt)}</div></div>
-              <div class="stat-box"><div class="stat-key">Kcal média</div><div class="stat-val">${kcalAvg ? kcalAvg : "—"}</div></div>
-              <div class="stat-box"><div class="stat-key">Nível</div><div class="stat-val">${escapeHtml(profile?.nivel || "—")}</div></div>
-            </div>
-
-            <div class="cp-divider"></div>
-
-            <div class="cp-label">Ações rápidas</div>
-            <div class="btn-row">
-              <button class="btn-neon" onclick="goTo('prato')">🍽️ Analisar prato</button>
-              <button class="btn-secondary" onclick="goTo('treino')">💪 Treino</button>
-            </div>
-
-            <div class="btn-row">
-              <button class="btn-secondary" onclick="goTo('dieta')">🥗 Dieta</button>
-              <button class="btn-secondary" onclick="goTo('evolucao')">📈 Evolução</button>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderMais(animate){
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <div class="cp-h1">Mais</div>
-          <div class="cp-hint">Tudo organizado. Nada solto.</div>
-
-          <div class="cp-card">
-            <div class="menu-grid">
-              <button class="menu-btn" onclick="goTo('evolucao')"><span class="m-ico">📈</span>Evolução<div class="m-sub">Dashboard avançado</div></button>
-              <button class="menu-btn" onclick="goTo('progresso')"><span class="m-ico">🏁</span>Progresso<div class="m-sub">Resumo e histórico</div></button>
-              <button class="menu-btn" onclick="goTo('saude')"><span class="m-ico">❤️</span>Saúde<div class="m-sub">Sites oficiais</div></button>
-              <button class="menu-btn" onclick="goTo('loja')"><span class="m-ico">🛍️</span>Loja<div class="m-sub">Vestuário</div></button>
-              <button class="menu-btn" onclick="goTo('convite')"><span class="m-ico">📩</span>Convite<div class="m-sub">Compartilhar</div></button>
-              <button class="menu-btn" onclick="goTo('perfil')"><span class="m-ico">👤</span>Perfil<div class="m-sub">Trocar foto</div></button>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderPrato(animate){
-      const { name, avatar } = getProfileDisplay();
-      const canAnalyze = !!plateDataUrl;
-
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <div class="mini-profile">
-            <div class="mini-avatar">${avatar ? `<img src="${escapeHtml(avatar)}" alt="avatar" />` : "🍽️"}</div>
-            <div>
-              <div class="mini-name">${escapeHtml(name)}</div>
-              <div class="mini-sub">Prato • só por foto (sem texto)</div>
-            </div>
-          </div>
-
-          <div class="cp-h1">Prato</div>
-
-          <div class="cp-card">
-            <div class="cp-label">Foto do prato</div>
-            <div class="btn-row">
-              <button class="btn-neon" onclick="openCamera()">📷 Tirar foto</button>
-              <button class="btn-secondary" onclick="openGallery()">🖼️ Galeria</button>
-            </div>
-
-            <input id="fileCam" type="file" accept="image/*" capture="environment" style="display:none" />
-            <input id="fileGal" type="file" accept="image/*" style="display:none" />
-
-            <div class="photo-preview" id="photoPreview">
-              📸 Envie uma foto para liberar a análise
-            </div>
-
-            <button id="btnAnalyze" class="btn-neon" style="margin-top: 14px;" onclick="analisarPrato()" ${canAnalyze ? "" : "disabled"}>
-              🔍 Analisar prato
-            </button>
-
-            <button class="btn-outline" style="margin-top: 10px;" onclick="refazerAnalise()" ${canAnalyze ? "" : "disabled"}>
-              ↻ Gerar outra análise
-            </button>
-
-            <div id="plateConfirm" class="confirm-box" style="display:none;">
-              <div class="confirm-title">Resultado da análise</div>
-              <div class="cp-hint">Você confirma para salvar no histórico. (Sem burla: 1 confirmação por análise)</div>
-              <div class="btn-row">
-                <button class="btn-neon" onclick="confirmarPrato()">✅ Confirmar</button>
-                <button class="btn-secondary" onclick="hideConfirmBox()">Fechar</button>
-              </div>
-            </div>
-
-            <div class="stat-grid" style="margin-top: 16px;">
-              <div class="stat-box"><div class="stat-key">Calorias</div><div class="stat-val" id="kcalBox">—</div></div>
-              <div class="stat-box"><div class="stat-key">Proteína</div><div class="stat-val" id="protBox">—</div></div>
-              <div class="stat-box"><div class="stat-key">Carboidrato</div><div class="stat-val" id="carbBox">—</div></div>
-              <div class="stat-box"><div class="stat-key">Gordura</div><div class="stat-val" id="fatBox">—</div></div>
-            </div>
-
-            <div class="cp-hint" style="margin-top: 12px;">
-              * IA real só funciona quando você configurar um endpoint seguro no Cloudflare (sem expor chave).
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderDieta(animate){
-      const { name, avatar } = getProfileDisplay();
-      const profile = loadProfile() || {};
-      const goal = (profile.objetivo || "").toLowerCase();
-
-      const last = loadDietaLast();
-      const preview = last?.text || "Gere sua dieta para aparecer aqui.";
-
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <div class="mini-profile">
-            <div class="mini-avatar">${avatar ? `<img src="${escapeHtml(avatar)}" alt="avatar" />` : "🥗"}</div>
-            <div>
-              <div class="mini-name">${escapeHtml(name)}</div>
-              <div class="mini-sub">Dieta • variações (modo demo + futuro IA real)</div>
-            </div>
-          </div>
-
-          <div class="cp-h1">Dieta</div>
-
-          <div class="cp-card">
-            <div class="cp-label">Base (automática pelo objetivo)</div>
-            <div class="cp-hint">Objetivo atual: <b>${escapeHtml(profile.objetivo || "—")}</b></div>
-
-            <div class="cp-divider"></div>
-
-            <div class="cp-label">Sugestão de dieta</div>
-            <div style="white-space: pre-wrap; font-weight: 800; line-height: 1.5; color:#eaf2ff; background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); padding: 12px; border-radius: 16px;">
-              ${escapeHtml(preview)}
-            </div>
-
-            <div class="btn-row">
-              <button class="btn-neon" onclick="gerarNovaDieta()">🥗 Gerar nova dieta</button>
-              <button class="btn-secondary" onclick="trocarDieta()">🔁 Trocar dieta</button>
-            </div>
-
-            <div class="cp-hint" style="margin-top: 10px;">
-              * Quando você ligar IA real, eu faço essa área chamar seu endpoint e gerar dietas mais variadas.
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderTreino(animate){
-      const { name, avatar } = getProfileDisplay();
-      const profile = loadProfile() || {};
-      const sportsUser = (profile.esportes || []).map(s => String(s).toLowerCase());
-      const defaultSport = sportsUser[0] || "musculação";
-
-      // garante que selectedSport seja um esporte permitido
-      if(!SPORTS.includes(selectedSport)) selectedSport = defaultSport;
-
-      const last = loadTreinoLast();
-      const exList = last?.exercises || [];
-
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <div class="mini-profile">
-            <div class="mini-avatar">${avatar ? `<img src="${escapeHtml(avatar)}" alt="avatar" />` : "💪"}</div>
-            <div>
-              <div class="mini-name">${escapeHtml(name)}</div>
-              <div class="mini-sub">Treino • intenso, marcante, com YouTube</div>
-            </div>
-          </div>
-
-          <div class="cp-h1">Treino</div>
-
-          <div class="cp-card">
-            <div class="cp-label">Esporte</div>
-            <select class="cp-input" onchange="selectedSport = this.value; render();">
-              ${(profile.esportes && profile.esportes.length ? profile.esportes : SPORTS).map(s => {
-                const key = String(s).toLowerCase();
-                if(!SPORTS.includes(key)) return "";
-                return `<option value="${escapeHtml(key)}" ${selectedSport===key?"selected":""}>${escapeHtml(key)}</option>`;
-              }).join("")}
-            </select>
-
-            <div class="grid-2">
-              <select class="cp-input" onchange="selectedIntensity = this.value;">
-                ${INTENSITIES.map(i => `<option ${selectedIntensity===i?"selected":""}>${escapeHtml(i)}</option>`).join("")}
-              </select>
-              <select class="cp-input" onchange="selectedLevel = this.value;">
-                ${LEVELS.map(n => `<option ${selectedLevel===n?"selected":""}>${escapeHtml(n)}</option>`).join("")}
-              </select>
-            </div>
-
-            <div class="btn-row">
-              <button class="btn-neon" onclick="gerarTreino()">⚡ Gerar treino</button>
-              <button class="btn-secondary" onclick="trocarTreino()">🔁 Trocar treino</button>
-            </div>
-
-            <div class="cp-divider"></div>
-
-            <div class="cp-label">Sessão</div>
-            <div class="cp-hint">
-              Para evitar burla: você só consegue marcar concluído com sessão iniciada, e com tempo mínimo entre marcações.
-            </div>
-            <div class="btn-row">
-              <button class="btn-secondary" onclick="iniciarSessao()">▶️ Iniciar sessão</button>
-              <button class="btn-secondary" onclick="encerrarSessao()">⏹️ Encerrar</button>
-            </div>
-
-            <div class="cp-divider"></div>
-
-            <div class="cp-label">Exercícios</div>
-            ${exList.length ? exList.map((ex, idx) => renderExerciseItem(ex, idx)).join("") : `
-              <div class="cp-hint">Ainda não há treino gerado. Clique em <b>Gerar treino</b>.</div>
-            `}
-          </div>
-        </div>
-      `;
-    }
-
-    function renderEvolucao(animate){
-      const { name, avatar } = getProfileDisplay();
-      const plates = loadPlates();
-      const done = loadTrainDone();
-      const xp = getXP();
-
-      const pratos = plates.length;
-      const exDone = done.filter(x => x?.type==="exercise").length;
-
-      const kcalList = plates.map(p => Number(p?.calories)).filter(n => Number.isFinite(n) && n > 0);
-      const kcalAvg = kcalList.length ? Math.round(kcalList.reduce((a,b)=>a+b,0)/kcalList.length) : 0;
-
-      const streak = calcStreak(done);
-
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <div class="mini-profile">
-            <div class="mini-avatar">${avatar ? `<img src="${escapeHtml(avatar)}" alt="avatar" />` : "📈"}</div>
-            <div>
-              <div class="mini-name">${escapeHtml(name)}</div>
-              <div class="mini-sub">Evolução • dados reais (anti-burlar)</div>
-            </div>
-          </div>
-
-          <div class="cp-h1">Evolução</div>
-
-          <div class="cp-card">
-            <div class="stat-grid">
-              <div class="stat-box"><div class="stat-key">XP</div><div class="stat-val">${xp}</div></div>
-              <div class="stat-box"><div class="stat-key">Streak</div><div class="stat-val">${streak}</div></div>
-              <div class="stat-box"><div class="stat-key">Pratos</div><div class="stat-val">${pratos}</div></div>
-              <div class="stat-box"><div class="stat-key">Exercícios</div><div class="stat-val">${exDone}</div></div>
-              <div class="stat-box"><div class="stat-key">Kcal média</div><div class="stat-val">${kcalAvg ? kcalAvg : "—"}</div></div>
-              <div class="stat-box"><div class="stat-key">Última atividade</div><div class="stat-val">${lastActivity(done, plates)}</div></div>
-            </div>
-
-            <div class="cp-divider"></div>
-
-            <div class="cp-label">Histórico rápido</div>
-            <div class="cp-hint">Últimos pratos e exercícios concluídos.</div>
-
-            <div style="margin-top:10px;">
-              ${renderHistory(plates, done)}
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderProgresso(animate){
-      const { name, avatar } = getProfileDisplay();
-      const profile = loadProfile() || {};
-      const sports = (profile.esportes || []).map(x => String(x)).join(", ") || "—";
-
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <div class="mini-profile">
-            <div class="mini-avatar">${avatar ? `<img src="${escapeHtml(avatar)}" alt="avatar" />` : "🏁"}</div>
-            <div>
-              <div class="mini-name">${escapeHtml(name)}</div>
-              <div class="mini-sub">Progresso • resumo do seu plano</div>
-            </div>
-          </div>
-
-          <div class="cp-h1">Progresso</div>
-
-          <div class="cp-card">
-            <div class="cp-label">Seu perfil</div>
-            <div class="cp-hint">
-              Objetivo: <b>${escapeHtml(profile.objetivo || "—")}</b><br/>
-              Nível: <b>${escapeHtml(profile.nivel || "—")}</b><br/>
-              Esportes: <b>${escapeHtml(sports)}</b>
-            </div>
-
-            <div class="cp-divider"></div>
-
-            <div class="cp-label">Plano de hoje</div>
-            <div class="cp-hint">✅ 1 prato analisado + ✅ 1 sessão de treino = evolução real.</div>
-
-            <div class="btn-row">
-              <button class="btn-neon" onclick="goTo('prato')">🍽️ Fazer agora</button>
-              <button class="btn-secondary" onclick="goTo('treino')">💪 Treinar</button>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderSaude(animate){
-      const { name, avatar } = getProfileDisplay();
-      const p = loadProfile() || {};
-      const peso = Number(p.peso || 0);
-      const alturaCm = Number(p.altura || 0);
-      const alturaM = alturaCm ? alturaCm/100 : 0;
-      const imc = (peso && alturaM) ? (peso/(alturaM*alturaM)) : 0;
-
-      const items = [
-        { key:"imc", title:"IMC", desc:"Entenda índices e limites com fontes oficiais.", value: imc ? imc.toFixed(1) : "—", icon:"📏" },
-        { key:"nutricao", title:"Nutrição", desc:"Guia de alimentação e boas práticas.", value:"", icon:"🥗" },
-        { key:"atividade", title:"Atividade", desc:"Recomendações oficiais de exercício.", value:"", icon:"🏃" },
-        { key:"sono", title:"Sono", desc:"Sono é performance e saúde.", value:"", icon:"🌙" },
-        { key:"mental", title:"Saúde mental", desc:"A mente sustenta a disciplina.", value:"", icon:"🧠" },
-        { key:"nutricao", title:"Hidratação", desc:"Consistência no básico todo dia.", value:"", icon:"💧" }
-      ];
-
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <div class="mini-profile">
-            <div class="mini-avatar">${avatar ? `<img src="${escapeHtml(avatar)}" alt="avatar" />` : "❤️"}</div>
-            <div>
-              <div class="mini-name">${escapeHtml(name)}</div>
-              <div class="mini-sub">Saúde • fontes oficiais (variadas)</div>
-            </div>
-          </div>
-
-          <div class="cp-h1">Saúde</div>
-
-          <div class="cp-card">
-            <div class="grid-2">
-              ${items.map(it => `
-                <div class="stat-box" style="text-align:left; padding:14px;">
-                  <div style="display:flex; align-items:center; gap:10px;">
-                    <div style="font-size:22px;">${it.icon}</div>
-                    <div style="font-weight:950;">${escapeHtml(it.title)} ${it.value ? `<span style="color:#3b82f6;">• ${escapeHtml(it.value)}</span>` : ""}</div>
+            <div id="cadastro" class="screen">
+              <h1 class="cp-h1">Cadastro</h1>
+              <div class="cp-card">
+                <label class="cp-label">Email</label>
+                <input id="cadEmail" class="cp-input" placeholder="seu@email.com" type="email">
+                
+                <label class="cp-label">Nome</label>
+                <input id="cadNome" class="cp-input" placeholder="Seu nome">
+                
+                <label class="cp-label">Sobrenome</label>
+                <input id="cadSobrenome" class="cp-input" placeholder="Seu sobrenome">
+                
+                <div class="grid-2">
+                  <div>
+                    <label class="cp-label">Peso (kg)</label>
+                    <input id="cadPeso" class="cp-input" placeholder="75" type="number">
                   </div>
-                  <div class="cp-hint" style="margin-top:8px;">${escapeHtml(it.desc)}</div>
-                  <button class="btn-secondary" style="margin-top:10px; width:100%;" onclick="openOfficial('${escapeHtml(it.key)}')">Abrir sites oficiais</button>
+                  <div>
+                    <label class="cp-label">Altura (cm)</label>
+                    <input id="cadAltura" class="cp-input" placeholder="180" type="number">
+                  </div>
                 </div>
-              `).join("")}
-            </div>
 
-            <div class="cp-divider"></div>
+                <label class="cp-label">Sexo</label>
+                <select id="cadSexo" class="cp-input">
+                  <option value="">Escolha</option>
+                  <option value="M">Masculino</option>
+                  <option value="F">Feminino</option>
+                </select>
 
-            <div class="cp-hint">
-              Conteúdo informativo. Não substitui médico/nutricionista. Se tiver sintomas, procure um profissional.
-            </div>
-          </div>
-        </div>
-      `;
-    }
+                <label class="cp-label">Esportes favoritos</label>
+                <div class="chips" id="sportsBox"></div>
 
-    function renderLoja(animate){
-      const { name, avatar } = getProfileDisplay();
-      const items = [
-        { title:"Vestuário • Camisetas", desc:"Camisetas dry-fit, regatas e compressão." },
-        { title:"Vestuário • Calças/Shorts", desc:"Shorts treino, legging, calça esportiva." },
-        { title:"Vestuário • Meias", desc:"Meias de compressão, corrida e conforto." },
-        { title:"Acessórios", desc:"Luvas, faixa, straps e itens de suporte." },
-        { title:"Equipamentos leves", desc:"Elástico, corda, tapete e básicos." }
-      ];
-
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <div class="mini-profile">
-            <div class="mini-avatar">${avatar ? `<img src="${escapeHtml(avatar)}" alt="avatar" />` : "🛍️"}</div>
-            <div>
-              <div class="mini-name">${escapeHtml(name)}</div>
-              <div class="mini-sub">Loja • vestuário e acessórios</div>
-            </div>
-          </div>
-
-          <div class="cp-h1">Loja</div>
-
-          <div class="cp-card">
-            ${items.map(it => `
-              <div style="padding:12px; border-radius:16px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); margin-top:10px;">
-                <div style="font-weight:950;">${escapeHtml(it.title)}</div>
-                <div class="cp-hint" style="margin-top:6px;">${escapeHtml(it.desc)}</div>
-                <button class="btn-secondary" style="margin-top:10px; width:100%;" onclick="showToast('Em breve: link da loja')">Ver opções</button>
+                <button class="btn-neon" onclick="salvarCadastro()" style="margin-top:16px">Salvar e continuar</button>
               </div>
-            `).join("")}
-          </div>
-        </div>
-      `;
-    }
-
-    function renderConvite(animate){
-      const { name, avatar } = getProfileDisplay();
-      const inviteText = "Conheça o CheckPrato Elite: Dieta, Treino, Prato e Evolução. Link: ";
-
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <div class="mini-profile">
-            <div class="mini-avatar">${avatar ? `<img src="${escapeHtml(avatar)}" alt="avatar" />` : "📩"}</div>
-            <div>
-              <div class="mini-name">${escapeHtml(name)}</div>
-              <div class="mini-sub">Convite • compartilhe nas redes</div>
-            </div>
-          </div>
-
-          <div class="cp-h1">Convite</div>
-
-          <div class="cp-card">
-            <div class="cp-hint">
-              Compartilhe o app com amigos. Quanto mais gente, mais forte a comunidade.
             </div>
 
-            <div class="cp-divider"></div>
+            <div id="prato" class="screen">
+              <h1 class="cp-h1">Prato</h1>
+              <div class="cp-card">
+                <label class="cp-label">Tirar foto</label>
+                <div class="btn-row">
+                  <button class="btn-neon" onclick="abrirCameraPrato()">📷 Câmera</button>
+                  <button class="btn-secondary" onclick="abrirGaleriaPrato()">🖼️ Galeria</button>
+                </div>
+                <input id="fotoPrato" type="file" accept="image/*" capture="environment" style="display:none">
+                <input id="galeriaPrato" type="file" accept="image/*" style="display:none">
+                
+                <div class="photo-preview" id="previewPrato">
+                  <div style="color:#8aa0c7">Nenhuma foto</div>
+                </div>
 
-            <div class="cp-label">Mensagem pronta</div>
-            <div style="white-space: pre-wrap; font-weight: 850; line-height: 1.5; color:#eaf2ff; background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); padding: 12px; border-radius: 16px;">
-${escapeHtml(inviteText)}${escapeHtml(location.href)}
+                <label class="cp-label">Descrever prato</label>
+                <textarea id="descPrato" class="cp-input" placeholder="Ex: arroz, feijão, frango..." style="height:80px;resize:none"></textarea>
+
+                <button class="btn-neon" onclick="analisarPrato()" style="margin-top:12px">Analisar</button>
+
+                <div class="stat-grid" id="resultPrato" style="display:none">
+                  <div class="stat-box">
+                    <div class="stat-key">Calorias</div>
+                    <div class="stat-val" id="valCal">—</div>
+                  </div>
+                  <div class="stat-box">
+                    <div class="stat-key">Proteína</div>
+                    <div class="stat-val" id="valProt">—</div>
+                  </div>
+                  <div class="stat-box">
+                    <div class="stat-key">Carboidrato</div>
+                    <div class="stat-val" id="valCarb">—</div>
+                  </div>
+                  <div class="stat-box">
+                    <div class="stat-key">Gordura</div>
+                    <div class="stat-val" id="valGord">—</div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="btn-row">
-              <button class="btn-neon" onclick="shareInvite()">📤 Compartilhar</button>
-              <button class="btn-secondary" onclick="copyInvite()">📋 Copiar</button>
-            </div>
-          </div>
-        </div>
-      `;
-    }
+            <div id="dieta" class="screen">
+              <h1 class="cp-h1">Dieta</h1>
+              <div class="cp-card">
+                <label class="cp-label">Tipo de dieta</label>
+                <select id="tipoDieta" class="cp-input">
+                  <option value="">Escolha</option>
+                  ${Object.keys(DIETS).map(d => `<option value="${d}">${d}</option>`).join("")}
+                </select>
 
-    function renderPerfil(animate){
-      const { name, avatar } = getProfileDisplay();
-      const p = loadProfile() || {};
-      const sports = (p.esportes || []).map(x => String(x)).join(", ") || "—";
-      const cond = (p.condicoes || []).map(x => String(x)).join(", ") || "—";
+                <button class="btn-neon" onclick="gerarDieta()" style="margin-top:12px">Gerar dieta</button>
 
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <div class="mini-profile">
-            <div class="mini-avatar">${avatar ? `<img src="${escapeHtml(avatar)}" alt="avatar" />` : "👤"}</div>
-            <div>
-              <div class="mini-name">${escapeHtml(name)}</div>
-              <div class="mini-sub">Perfil • editar foto e dados</div>
-            </div>
-          </div>
-
-          <div class="cp-h1">Perfil</div>
-
-          <div class="cp-card">
-            <div class="cp-label">Foto</div>
-            <div class="btn-row">
-              <button class="btn-secondary" onclick="pickAvatar()">📷 Galeria</button>
-              <button class="btn-secondary" onclick="captureAvatar()">🤳 Câmera</button>
-              <button class="btn-secondary" onclick="removeAvatar()">🗑️ Remover</button>
+                <div id="dietaResult" style="margin-top:16px;display:none">
+                  <label class="cp-label">Refeições sugeridas</label>
+                  <div id="dietaList"></div>
+                </div>
+              </div>
             </div>
 
-            <div class="cp-divider"></div>
+            <div id="treino" class="screen">
+              <h1 class="cp-h1">Treino</h1>
+              <div class="cp-card">
+                <label class="cp-label">Onde você vai treinar?</label>
+                <div class="chips" id="locBox"></div>
 
-            <div class="cp-label">Resumo</div>
-            <div class="cp-hint">
-              Peso: <b>${escapeHtml(p.peso || "—")}</b> • Altura: <b>${escapeHtml(p.altura || "—")}</b><br/>
-              Objetivo: <b>${escapeHtml(p.objetivo || "—")}</b> • Nível: <b>${escapeHtml(p.nivel || "—")}</b><br/>
-              Condição: <b>${escapeHtml(cond)}</b><br/>
-              Esportes: <b>${escapeHtml(sports)}</b><br/>
-              Restrições: <b>${escapeHtml(p.restricoes || "—")}</b>
+                <label class="cp-label" style="margin-top:16px">Exercícios</label>
+                <div id="exList"></div>
+
+                <button class="btn-neon" onclick="iniciarTreino()" style="margin-top:16px">Iniciar treino</button>
+              </div>
             </div>
 
-            <div class="cp-divider"></div>
+            <div id="metas" class="screen">
+              <h1 class="cp-h1">Metas</h1>
+              <div class="cp-card">
+                <div class="muscle-viewer">
+                  <canvas id="muscleCanvas" class="muscle-canvas"></canvas>
+                  <div id="muscleLabels" style="position:absolute;width:100%;height:100%"></div>
+                </div>
 
-            <button class="btn-outline" onclick="goTo('cadastro')">Editar cadastro completo</button>
-          </div>
-        </div>
-      `;
-    }
+                <div class="stat-grid" style="margin-top:16px">
+                  <div class="stat-box">
+                    <div class="stat-key">Progresso Semanal</div>
+                    <div class="stat-val">92%</div>
+                  </div>
+                  <div class="stat-box">
+                    <div class="stat-key">Treinos Completos</div>
+                    <div class="stat-val" id="treinsCompletos">0</div>
+                  </div>
+                </div>
 
-    /***********************
-     * EXERCISE UI
-     ***********************/
-    function renderExerciseItem(ex, idx){
-      const doneKey = `${todayKey()}::${ex.id}`;
-      const isDone = isExerciseDone(doneKey);
-
-      const svg = `
-        <svg viewBox="0 0 64 64" fill="none">
-          <path d="M14 40c6-12 10-16 18-16s12 4 18 16" stroke="rgba(234,242,255,0.9)" stroke-width="4" stroke-linecap="round"/>
-          <path d="M10 42h44" stroke="rgba(59,130,246,0.9)" stroke-width="4" stroke-linecap="round"/>
-          <circle cx="20" cy="44" r="6" stroke="rgba(234,242,255,0.9)" stroke-width="4"/>
-          <circle cx="44" cy="44" r="6" stroke="rgba(234,242,255,0.9)" stroke-width="4"/>
-        </svg>
-      `;
-
-      return `
-        <div class="exercise-card">
-          <div class="ex-img">${svg}</div>
-          <div class="ex-main">
-            <div class="ex-name">${escapeHtml(ex.name)}</div>
-            <div class="ex-how">${escapeHtml(ex.how)}</div>
-            <div class="ex-meta">
-              <span class="tag">${escapeHtml(ex.sets)}</span>
-              <span class="tag">${escapeHtml(ex.rest)}</span>
-              <span class="tag">${escapeHtml(ex.intensity)}</span>
+                <div class="muscle-progress" id="muscleProgress"></div>
+              </div>
             </div>
-            <div class="ex-actions">
-              <button class="btn-secondary" onclick="openYouTube('${escapeHtml(ex.name)}')">YouTube</button>
-              <button class="btn-secondary" onclick="showToast('Dica: foque na execução perfeita.')">Dica</button>
-              <label class="ex-check">
-                <input type="checkbox" ${isDone ? "checked" : ""} onchange="toggleExerciseDone('${escapeHtml(doneKey)}','${escapeHtml(ex.id)}', this.checked)" />
-                Concluído
-              </label>
+
+            <div id="evolucao" class="screen">
+              <h1 class="cp-h1">Evolução</h1>
+              <div class="cp-card">
+                <div class="stat-grid">
+                  <div class="stat-box">
+                    <div class="stat-key">XP Total</div>
+                    <div class="stat-val" id="xpTotal">0</div>
+                  </div>
+                  <div class="stat-box">
+                    <div class="stat-key">Pratos Analisados</div>
+                    <div class="stat-val" id="pratosTotal">0</div>
+                  </div>
+                  <div class="stat-box">
+                    <div class="stat-key">Dietas Salvas</div>
+                    <div class="stat-val" id="dietasTotal">0</div>
+                  </div>
+                  <div class="stat-box">
+                    <div class="stat-key">Treinos Feitos</div>
+                    <div class="stat-val" id="treinosTotal">0</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
+        <div class="bottom-nav" id="nav" style="display:none">
+          <div class="bottom-nav-inner">
+            <button class="nav-btn active" onclick="showScreen('prato')"><span class="nav-icon">🍽️</span>Prato</button>
+            <button class="nav-btn" onclick="showScreen('dieta')"><span class="nav-icon">🥗</span>Dieta</button>
+            <button class="nav-btn" onclick="showScreen('treino')"><span class="nav-icon">💪</span>Treino</button>
+            <button class="nav-btn" onclick="showScreen('metas')"><span class="nav-icon">🎯</span>Metas</button>
+            <button class="nav-btn" onclick="showScreen('evolucao')"><span class="nav-icon">📈</span>Evolução</button>
+          </div>
+        </div>
       `;
+
+      document.getElementById("root").innerHTML = html;
+      renderSports();
+      renderLocations();
+      renderMuscles();
+      updateNav();
     }
 
-    /***********************
-     * ACTIONS — ACESSO (blindado)
-     ***********************/
-    function loginGoogle(){
-      showToast("Google: ligaremos depois. Use modo local agora.");
-    }
-
-    function loginLocal(){
-      const email = document.getElementById("loginEmail")?.value?.trim() || "";
-      const pass = document.getElementById("loginPass")?.value?.trim() || "";
-
-      // Acesso blindado: sem email/senha não entra
-      if(!email || !pass){
-        showToast("Preencha e-mail e senha para continuar.");
-        return;
-      }
-      setAuthed(true);
-      setStep(2);
-      showToast("Acesso OK ✅ Agora complete o cadastro.");
-      goTo("cadastro");
-    }
-
-    /***********************
-     * ACTIONS — CADASTRO
-     ***********************/
-    function wireCadastroAvatar(){
-      // inputs existem só nessa tela
-      const f = document.getElementById("avatarFile");
-      const c = document.getElementById("avatarCam");
-      if(f){
-        f.onchange = async () => {
-          const file = f.files && f.files[0];
-          if(!file) return;
-          const dataUrl = await readFileAsDataUrl(file);
-          const p = loadProfile() || {};
-          p.avatarDataUrl = dataUrl;
-          saveProfile(p);
-          showToast("Foto salva ✅");
-          render();
-        };
-      }
-      if(c){
-        c.onchange = async () => {
-          const file = c.files && c.files[0];
-          if(!file) return;
-          const dataUrl = await readFileAsDataUrl(file);
-          const p = loadProfile() || {};
-          p.avatarDataUrl = dataUrl;
-          saveProfile(p);
-          showToast("Foto salva ✅");
-          render();
-        };
-      }
-    }
-
-    function pickAvatar(){
-      const inp = document.getElementById("avatarFile") || document.getElementById("avatarFile");
-      if(inp) inp.click();
-      else showToast("Abra o Perfil/Cadastro para escolher foto.");
-    }
-    function captureAvatar(){
-      const inp = document.getElementById("avatarCam");
-      if(inp) inp.click();
-      else showToast("Abra o Perfil/Cadastro para tirar foto.");
-    }
-    function removeAvatar(){
-      const p = loadProfile() || {};
-      delete p.avatarDataUrl;
-      saveProfile(p);
-      showToast("Foto removida.");
-      render();
-    }
-
-    function toggleEsporte(s){
-      const p = loadProfile() || {};
-      const arr = (p.esportes || []).map(x => String(x).toLowerCase());
-      const key = String(s).toLowerCase();
-
-      if(!SPORTS.includes(key)){
-        showToast("Esporte não permitido.");
-        return;
-      }
-
-      const has = arr.includes(key);
-      const next = has ? arr.filter(x => x !== key) : [...arr, key];
-
-      p.esportes = next;
-      saveProfile(p);
-      render();
-    }
-
-    function toggleCondicao(c){
-      const p = loadProfile() || {};
-      const arr = (p.condicoes || []).map(x => String(x));
-      const has = arr.includes(c);
-      const next = has ? arr.filter(x => x !== c) : [...arr, c];
-      p.condicoes = next;
-      saveProfile(p);
-      render();
-    }
-
-    function saveCadastroFull(){
-      if(!isAuthed()){
-        showToast("Faça login primeiro.");
-        goTo("acesso");
-        return;
-      }
-
-      const nome = document.getElementById("cadNome")?.value?.trim() || "";
-      const sobrenome = document.getElementById("cadSobrenome")?.value?.trim() || "";
-      const peso = document.getElementById("cadPeso")?.value?.trim() || "";
-      const altura = document.getElementById("cadAltura")?.value?.trim() || "";
-      const objetivo = document.getElementById("cadObjetivo")?.value || "";
-      const sexo = document.getElementById("cadSexo")?.value || "";
-      const nivel = document.getElementById("cadNivel")?.value || "";
-      const restricoes = document.getElementById("cadRestricoes")?.value?.trim() || "";
-      const termsOk = !!document.getElementById("termsOk")?.checked;
-      const permOk = !!document.getElementById("permOk")?.checked;
-
-      const p = loadProfile() || {};
-      const esportes = (p.esportes || []).map(x => String(x).toLowerCase()).filter(x => SPORTS.includes(x));
-
-      // obrigatórios
-      if(!nome || !sobrenome || !peso || !altura || !objetivo || !sexo || !nivel){
-        showToast("Preencha nome, sobrenome, peso, altura, objetivo, sexo e nível.");
-        return;
-      }
-      if(esportes.length === 0){
-        showToast("Escolha pelo menos 1 esporte.");
-        return;
-      }
-      if(!termsOk || !permOk){
-        showToast("Aceite termos e permissões.");
-        return;
-      }
-
-      const profile = {
-        ...p,
-        nome, sobrenome, peso, altura,
-        objetivo, sexo, nivel,
-        restricoes,
-        esportes,
-        termsOk, permOk,
-        updatedAt: now()
-      };
-      saveProfile(profile);
-
-      setStep(3);
-      showToast("Cadastro completo ✅ Agora: boas-vindas.");
-      goTo("boasvindas");
-    }
-
-    /***********************
-     * ACTIONS — BOAS-VINDAS
-     ***********************/
-    function finishOnboarding(){
-      setOnboardDone(true);
-      setStep(4);
-      addXP(50);
-      showToast("Bem-vindo! +50 XP");
-      goTo("dashboard");
-    }
-
-    /***********************
-     * RESET
-     ***********************/
-    function resetAll(){
-      if(!confirm("Tem certeza? Isso apaga dados locais do app.")) return;
-
-      [
-        KEY_PROFILE, KEY_AUTH, KEY_STEP, KEY_ONBOARD,
-        KEY_PLATE_LAST, KEY_PLATES, KEY_TRAIN_DONE, KEY_XP,
-        KEY_DIETA_LAST, KEY_TREINO_LAST
-      ].forEach(k => localStorage.removeItem(k));
-
-      plateDataUrl = "";
-      plateAIResult = null;
-      plateConfirmed = false;
-      showToast("Dados apagados.");
-      currentScreen = "splash";
-      render();
-    }
-
-    /***********************
-     * FILE READER
-     ***********************/
-    function readFileAsDataUrl(file){
-      return new Promise((resolve, reject)=>{
-        const reader = new FileReader();
-        reader.onload = ()=> resolve(String(reader.result || ""));
-        reader.onerror = ()=> reject(new Error("Falha ao ler arquivo"));
-        reader.readAsDataURL(file);
-      });
-    }
-
-    /***********************
-     * PRATO
-     ***********************/
-    function wirePlateInputs(){
-      const cam = document.getElementById("fileCam");
-      const gal = document.getElementById("fileGal");
-
-      if(cam){
-        cam.onchange = async () => {
-          const f = cam.files && cam.files[0];
-          if(!f) return;
-          plateDataUrl = await readFileAsDataUrl(f);
-          localStorage.setItem(KEY_PLATE_LAST, plateDataUrl);
-          plateAIResult = null;
-          plateConfirmed = false;
-          hideConfirmBox();
-          clearMacros();
-          renderPlatePreview();
-          showToast("Foto carregada ✅");
-          render(); // atualiza botões (habilita analisar)
-        };
-      }
-      if(gal){
-        gal.onchange = async () => {
-          const f = gal.files && gal.files[0];
-          if(!f) return;
-          plateDataUrl = await readFileAsDataUrl(f);
-          localStorage.setItem(KEY_PLATE_LAST, plateDataUrl);
-          plateAIResult = null;
-          plateConfirmed = false;
-          hideConfirmBox();
-          clearMacros();
-          renderPlatePreview();
-          showToast("Foto carregada ✅");
-          render();
-        };
-      }
-    }
-
-    function renderPlatePreview(){
-      const box = document.getElementById("photoPreview");
+    function renderSports(){
+      const box = document.getElementById("sportsBox");
       if(!box) return;
-      if(!plateDataUrl){
-        box.innerHTML = "📸 Envie uma foto para liberar a análise";
-        return;
-      }
-      box.innerHTML = `<img src="${escapeHtml(plateDataUrl)}" alt="prato" />`;
+      const db = getDB();
+      box.innerHTML = SPORTS.map(s => `
+        <div class="chip ${(db.user.sports || []).includes(s) ? 'active' : ''}" onclick="toggleSport('${s}')">
+          ${s}
+        </div>
+      `).join("");
     }
 
-    function openCamera(){ const cam = document.getElementById("fileCam"); if(cam) cam.click(); }
-    function openGallery(){ const gal = document.getElementById("fileGal"); if(gal) gal.click(); }
+    function renderLocations(){
+      const box = document.getElementById("locBox");
+      if(!box) return;
+      box.innerHTML = LOCATIONS.map(l => `
+        <div class="chip" onclick="selecionarLocal('${l}')">${l}</div>
+      `).join("");
+    }
 
-    function clearMacros(){
-      ["kcalBox","protBox","carbBox","fatBox"].forEach(id=>{
-        const el = document.getElementById(id);
-        if(el) el.textContent = "—";
+    function renderMuscles(){
+      const canvas = document.getElementById("muscleCanvas");
+      if(!canvas) return;
+      const db = getDB();
+      const sexo = db.user.sexo || "M";
+      const muscles = sexo === "F" ? MUSCLES_FEMALE : MUSCLES_MALE;
+      
+      const ctx = canvas.getContext("2d");
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+
+      ctx.fillStyle = "rgba(59,130,246,0.3)";
+      ctx.fillRect(canvas.width/2-30, 20, 60, 80);
+      ctx.fillRect(canvas.width/2-40, 100, 80, 100);
+
+      const labels = document.getElementById("muscleLabels");
+      labels.innerHTML = muscles.map(m => `
+        <div class="muscle-label" style="left:${m.x}%;top:${m.y}%" onclick="selecionarMusculo('${m.name}')">${m.name}</div>
+      `).join("");
+    }
+
+    function loginGoogle(){
+      const email = prompt("Seu email Google:");
+      if(email){
+        const db = getDB();
+        db.user.email = email;
+        db.user.signupSource = "google";
+        setDB(db);
+        showScreen("cadastro");
+        showToast("Email salvo!");
+      }
+    }
+
+    function login(){
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+      if(!email || !senha){
+        showToast("Preencha email e senha");
+        return;
+      }
+      const db = getDB();
+      db.user.email = email;
+      setDB(db);
+      showScreen("cadastro");
+    }
+
+    function toggleSport(sport){
+      const db = getDB();
+      db.user.sports = db.user.sports || [];
+      if(db.user.sports.includes(sport)){
+        db.user.sports = db.user.sports.filter(s => s !== sport);
+      } else {
+        db.user.sports.push(sport);
+      }
+      setDB(db);
+      renderSports();
+    }
+
+    function salvarCadastro(){
+      const email = document.getElementById("cadEmail").value;
+      const nome = document.getElementById("cadNome").value;
+      const sobrenome = document.getElementById("cadSobrenome").value;
+      const peso = document.getElementById("cadPeso").value;
+      const altura = document.getElementById("cadAltura").value;
+      const sexo = document.getElementById("cadSexo").value;
+
+      if(!email || !nome || !sobrenome || !peso || !altura || !sexo){
+        showToast("Preencha todos os campos");
+        return;
+      }
+
+      const db = getDB();
+      db.user.email = email;
+      db.user.nome = nome;
+      db.user.sobrenome = sobrenome;
+      db.user.peso = peso;
+      db.user.altura = altura;
+      db.user.sexo = sexo;
+      setDB(db);
+      showToast("Cadastro salvo!");
+      showScreen("prato");
+      updateNav();
+    }
+
+    function abrirCameraPrato(){
+      document.getElementById("fotoPrato").click();
+    }
+
+    function abrirGaleriaPrato(){
+      document.getElementById("galeriaPrato").click();
+    }
+
+    function analisarPrato(){
+      const desc = document.getElementById("descPrato").value;
+      if(!desc){
+        showToast("Descreva o prato");
+        return;
+      }
+
+      const calorias = Math.floor(Math.random() * 800) + 200;
+      const proteina = Math.floor(Math.random() * 50) + 10;
+      const carboidrato = Math.floor(Math.random() * 100) + 30;
+      const gordura = Math.floor(Math.random() * 40) + 5;
+
+      document.getElementById("valCal").textContent = calorias + " kcal";
+      document.getElementById("valProt").textContent = proteina + "g";
+      document.getElementById("valCarb").textContent = carboidrato + "g";
+      document.getElementById("valGord").textContent = gordura + "g";
+      document.getElementById("resultPrato").style.display = "grid";
+
+      const db = getDB();
+      db.pratos.push({data: new Date().toISOString(), desc, calorias});
+      setDB(db);
+      showToast("Prato analisado!");
+    }
+
+    function gerarDieta(){
+      const tipo = document.getElementById("tipoDieta").value;
+      if(!tipo){
+        showToast("Escolha um tipo de dieta");
+        return;
+      }
+
+      const refeicoes = DIETS[tipo] || [];
+      const html = refeicoes.map(r => `
+        <div class="exercise-card">
+          <div class="ex-main">
+            <div class="ex-name">${r}</div>
+          </div>
+        </div>
+      `).join("");
+
+      document.getElementById("dietaList").innerHTML = html;
+      document.getElementById("dietaResult").style.display = "block";
+
+      const db = getDB();
+      db.dietas.push({tipo, data: new Date().toISOString()});
+      setDB(db);
+      showToast("Dieta gerada!");
+    }
+
+    function selecionarLocal(local){
+      const exs = EXERCISES_BY_LOCATION[local] || [];
+      const html = exs.map(ex => `
+        <div class="exercise-card">
+          <div style="font-size:32px;margin-right:8px">${ex.img}</div>
+          <div class="ex-main">
+            <div class="ex-name">${ex.name}</div>
+            <div class="ex-how">${ex.series}</div>
+          </div>
+          <button class="btn-secondary" onclick="window.open('https://youtube.com/results?search_query=${ex.name}')">YouTube</button>
+        </div>
+      `).join("");
+      document.getElementById("exList").innerHTML = html;
+    }
+
+    function iniciarTreino(){
+      const db = getDB();
+      db.treinos.push({data: new Date().toISOString()});
+      setDB(db);
+      showToast("Treino iniciado!");
+    }
+
+    function selecionarMusculo(musculo){
+      showToast("Treinar: " + musculo);
+    }
+
+    function updateNav(){
+      const db = getDB();
+      const isSignedUp = db.user && db.user.email;
+      const nav = document.getElementById("nav");
+      if(nav) nav.style.display = isSignedUp ? "block" : "none";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderApp();
+      updateNav();
+
+      document.addEventListener("change", (e) => {
+        if(e.target.id === "fotoPrato" || e.target.id === "galeriaPrato"){
+          const file = e.target.files[0];
+          if(file){
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+              const img = document.getElementById("previewPrato");
+              img.innerHTML = `<img src="${evt.target.result}" style="width:100%;height:100%;object-fit:cover">`;
+            };
+            reader.readAsDataURL(file);
+          }
+        }
       });
-    }
-    function fillMacros(res){
-      const kcal = document.getElementById("kcalBox");
-      const prot = document.getElementById("protBox");
-      const carb = document.getElementById("carbBox");
-      const fat  = document.getElementById("fatBox");
-      if(kcal) kcal.textContent = (res?.calories ? String(res.calories) : "—");
-      if(prot) prot.textContent = (res?.protein ? `${res.protein}g` : "—");
-      if(carb) carb.textContent = (res?.carbs ? `${res.carbs}g` : "—");
-      if(fat)  fat.textContent  = (res?.fat ? `${res.fat}g` : "—");
-    }
-    function showConfirmBox(){
-      const box = document.getElementById("plateConfirm");
-      if(box) box.style.display = "block";
-    }
-    function hideConfirmBox(){
-      const box = document.getElementById("plateConfirm");
-      if(box) box.style.display = "none";
-    }
-
-    async function analisarPrato(){
-      if(!plateDataUrl){
-        showToast("Envie uma foto primeiro.");
-        return;
-      }
-      if(plateConfirmed){
-        showToast("Essa análise já foi confirmada. Envie nova foto para outra.");
-        return;
-      }
-
-      // Se IA não configurada: demo segura (sem inventar calorias “precisas” demais)
-      if(!AI_ENDPOINT){
-        showToast("IA não configurada (modo demo).");
-        plateAIResult = demoPlateResult();
-        fillMacros(plateAIResult);
-        showConfirmBox();
-        return;
-      }
-
-      showToast("Analisando com IA...");
-      try{
-        const base64 = plateDataUrl.split(",")[1] || "";
-        const res = await fetch(AI_ENDPOINT, {
-          method:"POST",
-          headers: { "Content-Type":"application/json" },
-          body: JSON.stringify({ imageBase64: base64 })
-        });
-        if(!res.ok){
-          const t = await res.text().catch(()=> "");
-          throw new Error(t || `HTTP ${res.status}`);
-        }
-        const data = await res.json();
-        plateAIResult = data;
-        fillMacros(plateAIResult);
-        showConfirmBox();
-        showToast("Resultado pronto ✅");
-      }catch(e){
-        showToast("Erro na IA: " + (e?.message || e));
-      }
-    }
-
-    function demoPlateResult(){
-      // demo: variação grande (pra não ficar monótono) e sem “precisão falsa”
-      const variants = [
-        { calories: 620, protein: 38, carbs: 64, fat: 22 },
-        { calories: 480, protein: 30, carbs: 52, fat: 14 },
-        { calories: 760, protein: 45, carbs: 78, fat: 28 },
-        { calories: 540, protein: 34, carbs: 58, fat: 18 }
-      ];
-      return pick(variants);
-    }
-
-    function refazerAnalise(){
-      if(!plateDataUrl){
-        showToast("Envie uma foto primeiro.");
-        return;
-      }
-      plateAIResult = null;
-      plateConfirmed = false;
-      hideConfirmBox();
-      clearMacros();
-      showToast("Ok. Clique em Analisar novamente.");
-    }
-
-    function confirmarPrato(){
-      if(!plateAIResult){
-        showToast("Faça a análise primeiro.");
-        return;
-      }
-      if(plateConfirmed){
-        showToast("Já confirmado.");
-        return;
-      }
-
-      const entry = {
-        id: "plate_" + now(),
-        createdAt: now(),
-        calories: plateAIResult?.calories ?? null,
-        protein: plateAIResult?.protein ?? null,
-        carbs: plateAIResult?.carbs ?? null,
-        fat: plateAIResult?.fat ?? null
-      };
-
-      const arr = loadPlates();
-      arr.unshift(entry);
-      savePlates(arr);
-
-      addXP(12);
-      plateConfirmed = true;
-      showToast("Prato salvo! +12 XP");
-      hideConfirmBox();
-      goTo("evolucao");
-    }
-
-    /***********************
-     * DIETA (demo hoje + IA depois)
-     ***********************/
-    function gerarNovaDieta(){
-      const profile = loadProfile() || {};
-      const obj = (profile.objetivo || "").toLowerCase();
-
-      const base = obj.includes("hiper") ? "hipertrofia" : obj.includes("emagre") ? "emagrecimento" : "equilibrada";
-      const text = buildDietText(base, true);
-      saveDietaLast({ createdAt: now(), base, text });
-      addXP(6);
-      showToast("Nova dieta gerada ✅ +6 XP");
-      render();
-    }
-
-    function trocarDieta(){
-      const last = loadDietaLast();
-      const base = last?.base || "equilibrada";
-      const text = buildDietText(base, false);
-      saveDietaLast({ createdAt: now(), base, text });
-      showToast("Dieta trocada 🔁");
-      render();
-    }
-
-    function buildDietText(base, stronger){
-      const a = base === "hipertrofia"
-        ? [
-          "Café: 3 ovos + aveia + banana",
-          "Almoço: frango/carne + arroz + feijão + salada",
-          "Pré-treino: whey + fruta",
-          "Jantar: proteína + carbo bom + legumes"
-        ]
-        : base === "emagrecimento"
-        ? [
-          "Café: 2 ovos + fruta + café sem açúcar",
-          "Almoço: frango + salada grande + porção controlada de carbo",
-          "Lanche: iogurte natural + castanhas",
-          "Jantar: omelete + legumes"
-        ]
-        : [
-          "Café: ovos + pão integral + fruta",
-          "Almoço: proteína magra + carbo moderado + salada",
-          "Lanche: fruta + iogurte",
-          "Jantar: proteína + legumes"
-        ];
-
-      const extras = stronger
-        ? ["Regra elite: água + 10min caminhada após almoço.", "Corte açúcar líquido. Sem exceção hoje.", "Priorize proteína em toda refeição."]
-        : ["Mantenha constância. Sem ansiedade.", "Beba água. Durma cedo.", "Faça o básico bem feito."];
-
-      return [
-        "📌 Dieta do dia (variação)",
-        "",
-        ...a.map(x => "• " + x),
-        "",
-        "🔥 Diretriz:",
-        "• " + pick(extras),
-        "• " + pick(extras.filter(x => x !== extras[0])),
-      ].join("\n");
-    }
-
-    /***********************
-     * TREINO (marcante + anti-burlar)
-     ***********************/
-    function gerarTreino(){
-      const plan = buildWorkoutPlan(selectedSport, selectedIntensity, selectedLevel);
-      saveTreinoLast(plan);
-      addXP(8);
-      showToast("Treino gerado ✅ +8 XP");
-      render();
-    }
-
-    function trocarTreino(){
-      const plan = buildWorkoutPlan(selectedSport, selectedIntensity, selectedLevel, true);
-      saveTreinoLast(plan);
-      showToast("Treino trocado 🔁");
-      render();
-    }
-
-    function iniciarSessao(){
-      const last = loadTreinoLast();
-      if(!last?.exercises?.length){
-        showToast("Gere um treino primeiro.");
-        return;
-      }
-      treinoSession.id = "sess_" + now();
-      treinoSession.startedAt = now();
-      treinoSession.lastMarkAt = 0;
-      showToast("Sessão iniciada ▶️");
-    }
-
-    function encerrarSessao(){
-      treinoSession.id = "";
-      treinoSession.startedAt = 0;
-      treinoSession.lastMarkAt = 0;
-      showToast("Sessão encerrada.");
-    }
-
-    function buildWorkoutPlan(sport, intensity, level, swap){
-      const t = todayKey();
-      const baseId = `${t}::${sport}::${intensity}::${level}::${swap ? "B" : "A"}`;
-
-      // biblioteca simples por esporte (com variações)
-      const lib = {
-        "musculação": [
-          { name:"Agachamento", how:"Coluna neutra, desça controlando, suba empurrando o chão.", sets:"4x8-12", rest:"Desc. 90s" },
-          { name:"Supino", how:"Escápulas firmes, cotovelos 45°, controle na descida.", sets:"4x8-12", rest:"Desc. 90s" },
-          { name:"Remada", how:"Puxe com as costas, não só com o braço. Controle total.", sets:"4x10", rest:"Desc. 75s" },
-          { name:"Desenvolvimento", how:"Core firme, empurre acima da cabeça sem arquear.", sets:"3x10", rest:"Desc. 75s" },
-          { name:"Prancha", how:"Abdômen contraído, quadril alinhado, respiração controlada.", sets:"3x40s", rest:"Desc. 45s" }
-        ],
-        "crossfit": [
-          { name:"Burpee", how:"Peito no chão, suba explosivo, salto leve e constante.", sets:"AMRAP 10min", rest:"Desc. 60s" },
-          { name:"Box jump", how:"Aterrisse macio, joelho alinhado, suba com controle.", sets:"4x12", rest:"Desc. 60s" },
-          { name:"Kettlebell swing", how:"Força no quadril, costas neutras, braço guia.", sets:"4x15", rest:"Desc. 60s" },
-          { name:"Air squat", how:"Profundidade segura, joelhos alinhados, ritmo constante.", sets:"4x20", rest:"Desc. 45s" }
-        ],
-        "corrida": [
-          { name:"Aquecimento", how:"Caminhe + trote leve, soltando corpo e respiração.", sets:"8 min", rest:"—" },
-          { name:"Intervalado", how:"30s forte + 60s leve. Controle a respiração.", sets:"8 rounds", rest:"—" },
-          { name:"Corrida contínua", how:"Ritmo confortável, sem morrer no início.", sets:"20-40 min", rest:"—" },
-          { name:"Alongamento", how:"Alongue leve (sem dor). Foco em posterior e panturrilha.", sets:"10 min", rest:"—" }
-        ],
-        "muay thai": [
-          { name:"Sombra", how:"Base firme, mãos altas, respiração nasal possível.", sets:"4x2min", rest:"Desc. 60s" },
-          { name:"Chutes (técnica)", how:"Gire quadril, retorne à guarda, controle.", sets:"4x12 cada perna", rest:"Desc. 60s" },
-          { name:"Corda", how:"Ritmo constante, pés leves, postura.", sets:"10 min", rest:"—" }
-        ],
-        "boxe": [
-          { name:"Sombra", how:"Movimento de cabeça, guarda alta, combos simples.", sets:"4x2min", rest:"Desc. 60s" },
-          { name:"Manopla/Alvo", how:"Precisão > força. Volte sempre pra guarda.", sets:"4x3min", rest:"Desc. 60s" },
-          { name:"Corda", how:"Ritmo e coordenação.", sets:"8-12 min", rest:"—" }
-        ],
-        "capoeira": [
-          { name:"Ginga", how:"Leve, constante, postura e ritmo.", sets:"8 min", rest:"—" },
-          { name:"Esquivas", how:"Controle de tronco, olhar atento.", sets:"4x12", rest:"Desc. 45s" },
-          { name:"Chutes básicos", how:"Técnica e retorno rápido.", sets:"4x10", rest:"Desc. 45s" }
-        ],
-        "jiu-jitsu": [
-          { name:"Mobilidade", how:"Quadril e ombros soltos. Respiração calma.", sets:"10 min", rest:"—" },
-          { name:"Técnica (solo)", how:"Repita base/raspagem devagar e perfeito.", sets:"4x8 reps", rest:"Desc. 60s" },
-          { name:"Isometria", how:"Prancha + ponte. Controle total.", sets:"3x40s", rest:"Desc. 45s" }
-        ],
-        "karatê": [
-          { name:"Kihon", how:"Golpes retos, postura forte, foco na execução.", sets:"10 min", rest:"—" },
-          { name:"Katas", how:"Ritmo, precisão e respiração.", sets:"4 repetições", rest:"Desc. 60s" },
-          { name:"Alongamento", how:"Quadril e posterior com cuidado.", sets:"8 min", rest:"—" }
-        ],
-        "taekwondo": [
-          { name:"Mobilidade", how:"Quadril solto. Sem pressa.", sets:"8 min", rest:"—" },
-          { name:"Chutes (técnica)", how:"Altura progressiva, controle e retorno.", sets:"4x10 cada perna", rest:"Desc. 60s" },
-          { name:"Condicionamento", how:"Saltos leves + core firme.", sets:"3x2min", rest:"Desc. 60s" }
-        ],
-        "ciclismo": [
-          { name:"Aquecimento", how:"Giro leve, cadência alta, sem forçar.", sets:"10 min", rest:"—" },
-          { name:"Tiros", how:"1min forte + 2min leve. Cadência controlada.", sets:"6 rounds", rest:"—" },
-          { name:"Desaquecimento", how:"Giro leve, respiração.", sets:"8 min", rest:"—" }
-        ],
-        "basquete": [
-          { name:"Drible", how:"Baixo e controlado. Cabeça erguida.", sets:"8 min", rest:"—" },
-          { name:"Arremesso", how:"Base e punho finalizando. Repetição.", sets:"50 bolas", rest:"—" },
-          { name:"Pliometria", how:"Saltos curtos e controlados.", sets:"4x10", rest:"Desc. 60s" }
-        ],
-        "vôlei": [
-          { name:"Manchete", how:"Plataforma firme, joelhos flexionados.", sets:"8 min", rest:"—" },
-          { name:"Saque", how:"Ritmo e precisão. Técnica primeiro.", sets:"30 saques", rest:"—" },
-          { name:"Saltos", how:"Explosão com aterrissagem macia.", sets:"4x10", rest:"Desc. 60s" }
-        ]
-      };
-
-      const base = lib[sport] ? [...lib[sport]] : [...lib["musculação"]];
-
-      // variação “trocar”
-      if(swap) base.reverse();
-
-      // ajuste “intensidade” e “nível”
-      const intensityTag = intensity === "Intensa" ? "🔥 Intenso" : intensity === "Leve" ? "🟦 Leve" : "⚡ Moderado";
-      const lvlTag = level === "Avançado" ? "🟥 Avançado" : level === "Intermediário" ? "🟨 Intermediário" : "🟩 Iniciante";
-
-      const exercises = base.map((x, i) => ({
-        id: `${baseId}::ex${i}`,
-        name: x.name,
-        how: x.how,
-        sets: x.sets,
-        rest: x.rest,
-        intensity: `${intensityTag} • ${lvlTag}`
-      }));
-
-      return {
-        id: baseId,
-        createdAt: now(),
-        sport, intensity, level,
-        exercises
-      };
-    }
-
-    function isExerciseDone(doneKey){
-      const arr = loadTrainDone();
-      return arr.some(x => x?.doneKey === doneKey);
-    }
-
-    function toggleExerciseDone(doneKey, exId, checked){
-      // anti-burlar
-      if(checked){
-        if(!treinoSession.startedAt){
-          showToast("Inicie a sessão primeiro.");
-          render();
-          return;
-        }
-        // não deixa marcar rápido
-        const t = now();
-        if(treinoSession.lastMarkAt && (t - treinoSession.lastMarkAt) < 8000){
-          showToast("Muito rápido. Faça o exercício de verdade.");
-          render();
-          return;
-        }
-        treinoSession.lastMarkAt = t;
-
-        const arr = loadTrainDone();
-        if(arr.some(x => x?.doneKey === doneKey)){
-          showToast("Já concluído hoje.");
-          render();
-          return;
-        }
-
-        arr.unshift({
-          type: "exercise",
-          doneKey,
-          exId,
-          createdAt: t
-        });
-        saveTrainDone(arr);
-        addXP(5);
-        showToast("Concluído ✅ +5 XP");
-        render();
-      } else {
-        // permitir desmarcar? você pediu anti-burlar, então: NÃO.
-        showToast("Não dá para desmarcar. (anti-burlar)");
-        render();
-      }
-    }
-
-    function openYouTube(query){
-      const q = encodeURIComponent(query + " como fazer");
-      window.open("https://www.youtube.com/results?search_query=" + q, "_blank");
-    }
-
-    /***********************
-     * SAÚDE — OFFICIAL
-     ***********************/
-    function openOfficial(key){
-      const list = OFFICIAL_SITES[key] || OFFICIAL_SITES["nutricao"];
-      // abre 2 sites diferentes pra não ficar monótono
-      const a = pick(list);
-      let b = pick(list);
-      if(b === a && list.length > 1) b = list.find(x => x !== a) || b;
-
-      window.open(a, "_blank");
-      setTimeout(() => window.open(b, "_blank"), 250);
-    }
-
-    /***********************
-     * HISTÓRICO / EVOLUÇÃO
-     ***********************/
-    function calcStreak(done){
-      // streak por dias com pelo menos 1 exercício
-      const byDay = new Set(done.filter(x => x?.type==="exercise").map(x => String(x.doneKey||"").split("::")[0]).filter(Boolean));
-      if(byDay.size === 0) return 0;
-
-      let streak = 0;
-      let cursor = new Date();
-      for(let i=0;i<60;i++){
-        const key = cursor.toISOString().slice(0,10);
-        if(byDay.has(key)){
-          streak++;
-          cursor.setDate(cursor.getDate()-1);
-        } else break;
-      }
-      return streak;
-    }
-
-    function lastActivity(done, plates){
-      const lastEx = done[0]?.createdAt ? new Date(done[0].createdAt) : null;
-      const lastPl = plates[0]?.createdAt ? new Date(plates[0].createdAt) : null;
-
-      const last = (!lastEx && !lastPl) ? null :
-        (!lastPl ? lastEx :
-         (!lastEx ? lastPl :
-          (lastEx > lastPl ? lastEx : lastPl)));
-
-      if(!last) return "—";
-      const hh = String(last.getHours()).padStart(2,"0");
-      const mm = String(last.getMinutes()).padStart(2,"0");
-      return `${hh}:${mm}`;
-    }
-
-    function renderHistory(plates, done){
-      const p = plates.slice(0,3);
-      const d = done.filter(x=>x?.type==="exercise").slice(0,4);
-
-      const a = p.length ? p.map(x => `
-        <div style="padding:10px; border-radius:14px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); margin-top: 8px;">
-          <div style="font-weight:950;">🍽️ Prato confirmado</div>
-          <div class="cp-hint" style="margin-top:6px;">Kcal: <b>${escapeHtml(x.calories ?? "—")}</b> • P: <b>${escapeHtml(x.protein ?? "—")}</b>g • C: <b>${escapeHtml(x.carbs ?? "—")}</b>g • G: <b>${escapeHtml(x.fat ?? "—")}</b>g</div>
-        </div>
-      `).join("") : `<div class="cp-hint">Sem pratos confirmados ainda.</div>`;
-
-      const b = d.length ? d.map(x => `
-        <div style="padding:10px; border-radius:14px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); margin-top: 8px;">
-          <div style="font-weight:950;">💪 Exercício concluído</div>
-          <div class="cp-hint" style="margin-top:6px;">Data: <b>${escapeHtml(String(x.doneKey||"").split("::")[0] || "—")}</b></div>
-        </div>
-      `).join("") : `<div class="cp-hint" style="margin-top:10px;">Sem exercícios concluídos ainda.</div>`;
-
-      return a + b;
-    }
-
-    /***********************
-     * CONVITE
-     ***********************/
-    async function shareInvite(){
-      const text = "Conheça o CheckPrato Elite: Dieta, Treino, Prato e Evolução. " + location.href;
-      if(navigator.share){
-        try{
-          await navigator.share({ title:"CheckPrato Elite", text, url: location.href });
-          showToast("Compartilhado ✅");
-        }catch{
-          showToast("Cancelado.");
-        }
-      } else {
-        copyText(text);
-        showToast("Compartilhar não suportado. Copiado ✅");
-      }
-    }
-
-    function copyInvite(){
-      const text = "Conheça o CheckPrato Elite: Dieta, Treino, Prato e Evolução. " + location.href;
-      copyText(text);
-      showToast("Copiado ✅");
-    }
-
-    function copyText(t){
-      if(navigator.clipboard?.writeText){
-        navigator.clipboard.writeText(t).catch(()=> {});
-      } else {
-        const ta = document.createElement("textarea");
-        ta.value = t;
-        document.body.appendChild(ta);
-        ta.select();
-        try{ document.execCommand("copy"); }catch{}
-        document.body.removeChild(ta);
-      }
-    }
-
-    /***********************
-     * BOOT
-     ***********************/
-    function boot(){
-      mountOnce();
-
-      // etapa inicial
-      const step = getStep();
-      if(step >= 4){
-        currentScreen = "dashboard";
-      } else if(step === 3){
-        currentScreen = "boasvindas";
-      } else if(step === 2){
-        currentScreen = "cadastro";
-      } else {
-        // step 1
-        currentScreen = "splash";
-      }
-
-      render();
-    }
-
-    boot();
+    });
   </script>
 </body>
 </html>
