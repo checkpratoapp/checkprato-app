@@ -5,89 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>CheckPrato Elite — Dieta. Treino. Prato. Evolução.</title>
 
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BS7KTD7E7X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BS7KTD7E7X');
+  </script>
+
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; background: #02050b; color: #eaf2ff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; overflow-x: hidden; }
-    body { background: radial-gradient(circle at 20% 0%, #0a1f38, #000) fixed; min-height: 100vh; }
+    body { background: radial-gradient(circle at 20% 0%, #0a1f38, #000) fixed; min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
-    .app-shell { width: 100%; min-height: 100vh; position: relative; overflow: hidden; background: radial-gradient(circle at 20% 0%, #0a1f38, #000); display: flex; align-items: center; justify-content: center; }
-    .screen-enter { animation: screenIn 0.25s ease-out forwards; }
-    @keyframes screenIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .app-shell { width: 100%; min-height: 100vh; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .page-wrap { width: 100%; max-width: 430px; padding: 18px 18px 140px; overflow-y: auto; height: 100vh; }
 
-    .page-wrap { width: 100%; max-width: 430px; padding: 18px 18px 140px; overflow-y: auto; }
+    /* UI Components */
+    .cp-card { background: linear-gradient(180deg, #0b1a2d, #07111f); border-radius: 22px; padding: 20px; margin-top: 14px; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+    .btn-neon { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; font-weight: 900; border: none; border-radius: 50px; padding: 16px 24px; width: 100%; font-size: 16px; cursor: pointer; transition: 0.2s; box-shadow: 0 0 20px rgba(59,130,246,0.4); }
+    .btn-outline { background: transparent; color: #eaf2ff; font-weight: 800; border: 1.5px solid rgba(234,242,255,0.3); border-radius: 50px; padding: 13px 24px; width: 100%; font-size: 15px; cursor: pointer; margin-top: 12px; }
+    .cp-input { width: 100%; padding: 14px; margin-top: 10px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); background: #071728; color: #eaf2ff; outline: none; font-size: 16px; }
+    
+    .cp-label { font-size: 11px; font-weight: 900; letter-spacing: 0.8px; text-transform: uppercase; color: #8aa0c7; margin-top: 14px; display: block; }
+    .cp-h1 { font-size: 28px; font-weight: 900; margin: 8px 0; }
+    .cp-hint { color: #8aa0c7; font-size: 14px; line-height: 1.5; }
 
-    .btn-neon { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; font-weight: 900; border: none; border-radius: 50px; padding: 14px 24px; width: 100%; font-size: 16px; box-shadow: 0 0 20px rgba(59,130,246,0.4), 0 4px 16px rgba(0,0,0,0.4); transition: all 0.2s ease; cursor: pointer; }
-    .btn-neon:hover { box-shadow: 0 0 30px rgba(59,130,246,0.6), 0 6px 20px rgba(0,0,0,0.5); transform: translateY(-1px); }
-    .btn-neon:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+    /* 3D Viewer */
+    .muscle-viewer { width: 100%; height: 380px; background: #071728; border-radius: 18px; border: 1px solid rgba(59,130,246,0.2); margin-top: 12px; overflow: hidden; position: relative; }
+    model-viewer { width: 100%; height: 100%; }
 
-    .btn-outline { background: transparent; color: #eaf2ff; font-weight: 800; border: 1.5px solid rgba(234,242,255,0.3); border-radius: 50px; padding: 13px 24px; width: 100%; font-size: 15px; transition: all 0.2s ease; cursor: pointer; }
-    .btn-outline:hover { border-color: #3b82f6; color: #3b82f6; }
-
-    .btn-secondary { background: rgba(255,255,255,0.06); color: #eaf2ff; font-weight: 800; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 12px 14px; font-size: 13px; transition: all 0.2s ease; flex: 1; cursor: pointer; }
-    .btn-secondary:hover { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.3); }
-
-    .cp-card { background: linear-gradient(180deg, #0b1a2d, #07111f); border-radius: 22px; padding: 18px; margin-top: 14px; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
-    .cp-input { width: 100%; padding: 12px 14px; margin-top: 10px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); background: #071728; color: #eaf2ff; font-size: 14px; outline: none; }
-    .cp-input:focus { border-color: rgba(59,130,246,0.55); }
-
-    .cp-label { font-size: 11px; font-weight: 900; letter-spacing: 0.8px; text-transform: uppercase; color: #8aa0c7; margin-top: 14px; margin-bottom: 4px; }
-    .cp-h1 { font-size: 30px; font-weight: 900; color: #eaf2ff; margin: 8px 0 4px; }
-    .cp-hint { font-size: 13px; color: #8aa0c7; font-weight: 650; margin-bottom: 4px; line-height: 1.45; }
-
-    .cp-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); margin: 16px 0; }
-
-    .mini-profile { display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 14px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.06); }
-    .mini-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #2563eb); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; flex-shrink: 0; font-size: 18px; overflow: hidden; }
-    .mini-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .mini-name { font-weight: 900; font-size: 14px; color: #eaf2ff; }
-    .mini-sub { font-size: 12px; color: #8aa0c7; font-weight: 700; }
-
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .btn-row { display: flex; gap: 10px; margin-top: 12px; }
-
-    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-    .stat-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 12px; text-align: center; }
-    .stat-val { font-size: 22px; font-weight: 950; color: #3b82f6; line-height: 1.1; margin: 4px 0 2px; }
-    .stat-key { font-size: 11px; font-weight: 800; color: #8aa0c7; text-transform: uppercase; }
-
-    .cp-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-80px); background: #0b1a2d; border: 1px solid rgba(59,130,246,0.4); color: #eaf2ff; padding: 12px 18px; border-radius: 50px; font-weight: 800; font-size: 13px; z-index: 9999; transition: transform 0.3s ease; white-space: nowrap; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
-    .cp-toast.show { transform: translateX(-50%) translateY(0); }
-
-    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top: 10px; }
-    .chip { user-select:none; cursor:pointer; padding:10px 12px; border-radius: 999px; font-weight: 900; font-size: 12px; border:1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color:#eaf2ff; transition: 0.15s; }
-    .chip:hover{ border-color: rgba(59,130,246,0.45); }
-    .chip.active{ background: rgba(59,130,246,0.16); border-color: rgba(59,130,246,0.55); color:#d9e9ff; }
-
-    .exercise-card { display:flex; gap:10px; padding:12px; border-radius: 16px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); margin-top: 10px; }
-    .ex-img { width:72px; height:72px; border-radius: 14px; background: linear-gradient(135deg, rgba(59,130,246,0.4), rgba(37,99,235,0.18)); display:flex; align-items:center; justify-content:center; border: 1px solid rgba(59,130,246,0.25); flex-shrink:0; overflow:hidden; }
-    .ex-img img { width: 100%; height: 100%; object-fit: cover; }
-    .ex-main { flex: 1; }
-    .ex-name { font-weight: 950; font-size: 13px; }
-    .ex-how { margin-top: 4px; color:#8aa0c7; font-weight: 750; font-size: 12px; line-height: 1.35; }
-    .ex-meta { margin-top: 6px; display:flex; align-items:center; gap:8px; flex-wrap: wrap; }
-    .ex-meta .tag{ padding:6px 10px; border-radius: 999px; font-size: 11px; font-weight: 900; color:#eaf2ff; background: rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); }
-
-    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; background: rgba(7, 23, 40, 0.97); backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.08); padding: 8px 12px 20px; z-index: 100; }
-    .bottom-nav-inner { display: flex; gap: 4px; }
-    .nav-btn { flex: 1; border: none; padding: 8px 4px; border-radius: 14px; background: transparent; color: #8aa0c7; font-weight: 900; font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: all 0.2s; cursor: pointer; }
-    .nav-btn .nav-icon { font-size: 20px; }
-    .nav-btn.active { color: #3b82f6; background: rgba(59, 130, 246, 0.10); }
-
-    /* SISTEMA DE MÚSCULOS 3D */
-    .muscle-viewer { position: relative; width: 100%; height: 400px; background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(37,99,235,0.05)); border-radius: 18px; border: 1px solid rgba(59,130,246,0.2); display: flex; align-items: center; justify-content: center; margin-top: 12px; overflow: hidden; }
-    .muscle-canvas { width: 100%; height: 100%; border-radius: 16px; }
-    .muscle-label { position: absolute; font-size: 11px; font-weight: 900; color: #3b82f6; cursor: pointer; padding: 4px 8px; background: rgba(0,0,0,0.5); border-radius: 6px; white-space: nowrap; border: 1px solid rgba(59,130,246,0.4); transition: 0.2s; }
-    .muscle-label:hover { background: rgba(59,130,246,0.3); transform: scale(1.05); }
-    .muscle-progress { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-    .muscle-stat { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 12px; padding: 10px; text-align: center; }
-    .muscle-stat-name { font-size: 11px; font-weight: 800; color: #8aa0c7; text-transform: uppercase; }
-    .muscle-stat-val { font-size: 18px; font-weight: 950; color: #3b82f6; margin-top: 4px; }
+    /* Navigation */
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; background: rgba(7, 23, 40, 0.95); backdrop-filter: blur(15px); border-top: 1px solid rgba(255,255,255,0.08); padding: 10px 10px 25px; z-index: 100; display: none; }
+    .bottom-nav-inner { display: flex; justify-content: space-around; }
+    .nav-btn { background: none; border: none; color: #8aa0c7; font-weight: 800; font-size: 11px; display: flex; flex-direction: column; align-items: center; cursor: pointer; gap: 4px; }
+    .nav-btn.active { color: #3b82f6; }
 
     .screen { display: none; }
-    .screen.active { display: block; animation: screenIn 0.25s ease-out; }
+    .screen.active { display: block; animation: screenIn 0.3s ease-out; }
+    @keyframes screenIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-    .photo-preview { width: 100%; height: 190px; border-radius: 18px; background: #071728; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; display: flex; align-items: center; justify-content: center; margin-top: 10px; color: rgba(234,242,255,0.7); font-weight: 900; text-align: center; padding: 12px; }
-    .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .cp-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #3b82f6; color: white; padding: 12px 24px; border-radius: 50px; font-weight: 800; z-index: 1000; transition: transform 0.3s; }
+    .cp-toast.show { transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
@@ -95,532 +56,161 @@
 
   <script>
     /***********************
-     * CONFIGURAÇÃO GLOBAL
+     * DATA & PERSISTENCE
      ***********************/
     const DB_KEY = "checkprato_db";
-    const SPORTS = ["Musculação","CrossFit","Corrida","Muay Thai","Boxe","Capoeira","Jiu-jitsu","Karatê","Taekwondo","Ciclismo","Basquete","Vôlei"];
-    const LOCATIONS = ["Casa","Praça","Academia"];
-    const DIETS = {
-      "Emagrecimento": ["Frango grelhado com salada","Ovo cozido com frutas","Iogurte grego com granola","Sopa de legumes","Peixe ao forno com brócolis"],
-      "Hipertrofia": ["Frango com batata doce","Arroz com feijão e carne","Ovos mexidos com pão integral","Atum com macarrão integral","Peito de frango com abóbora"],
-      "Low Carb": ["Ovos com bacon","Salada com queijo","Frango com abacate","Peixe com legumes","Carne vermelha com brócolis"],
-      "Cetogênica": ["Ovos fritos em manteiga","Queijo cheddar","Abacate com salmão","Carne vermelha com azeite","Nozes e castanhas"],
-      "Vegetariana": ["Feijão com arroz","Lentilha com salada","Tofu grelhado","Grão de bico com legumes","Ovo cozido com pão integral"],
-      "Vegana": ["Feijão preto com arroz","Lentilha com batata doce","Tofu com brócolis","Grão de bico com abóbora","Quinoa com legumes"],
-      "Paleo": ["Carne vermelha com batata doce","Frango com abóbora","Ovos com frutas","Peixe com legumes","Nozes e frutas secas"],
-      "Intermitente": ["Jejum 16h + refeição balanceada","Café com óleo de coco","Frango com salada","Sopa de legumes","Frutas e castanhas"]
+    let db = JSON.parse(localStorage.getItem(DB_KEY)) || {
+      user: { step: 1, email: "", nome: "" },
+      stats: { xp: 150, pratos: 0, treinos: 0 }
     };
 
-    const EXERCISES_BY_LOCATION = {
-      "Casa": [
-        {name: "Flexão", series: "3x10", img: "💪"},
-        {name: "Agachamento", series: "3x15", img: "🦵"},
-        {name: "Prancha", series: "3x30s", img: "📍"},
-        {name: "Burpee", series: "3x10", img: "🔥"}
-      ],
-      "Praça": [
-        {name: "Barra", series: "3x8", img: "🏋️"},
-        {name: "Corrida", series: "20min", img: "🏃"},
-        {name: "Abdominal", series: "3x20", img: "⚡"},
-        {name: "Alongamento", series: "10min", img: "🧘"}
-      ],
-      "Academia": [
-        {name: "Supino", series: "4x8", img: "🏋️"},
-        {name: "Leg Press", series: "4x10", img: "🦵"},
-        {name: "Rosca Direta", series: "3x10", img: "💪"},
-        {name: "Agachamento Livre", series: "4x8", img: "🔥"}
-      ]
-    };
+    function save() { localStorage.setItem(DB_KEY, JSON.stringify(db)); }
 
-    const MUSCLES_MALE = [
-      {name: "Trapézio", x: 50, y: 25},
-      {name: "Peitoral", x: 45, y: 40},
-      {name: "Bíceps", x: 35, y: 45},
-      {name: "Abdômen", x: 50, y: 50},
-      {name: "Quadríceps", x: 50, y: 70},
-      {name: "Glúteos", x: 50, y: 60}
-    ];
-
-    const MUSCLES_FEMALE = [
-      {name: "Ombro", x: 45, y: 30},
-      {name: "Peitoral", x: 50, y: 38},
-      {name: "Cintura", x: 50, y: 48},
-      {name: "Glúteos", x: 50, y: 62},
-      {name: "Quadríceps", x: 50, y: 72},
-      {name: "Panturrilha", x: 50, y: 85}
-    ];
+    function showToast(m) {
+      const t = document.createElement("div"); t.className = "cp-toast show"; t.innerText = m;
+      document.body.appendChild(t);
+      setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2500);
+    }
 
     /***********************
-     * STORAGE
+     * NAVEGAÇÃO E FLUXO
      ***********************/
-    function getDB(){
-      try { return JSON.parse(localStorage.getItem(DB_KEY)) || {}; } catch(e){ return {}; }
-    }
-    function setDB(db){
-      localStorage.setItem(DB_KEY, JSON.stringify(db));
-    }
-    function initDB(){
-      const db = getDB();
-      if(!db.user) db.user = {};
-      if(!db.pratos) db.pratos = [];
-      if(!db.dietas) db.dietas = [];
-      if(!db.treinos) db.treinos = [];
-      if(!db.metas) db.metas = {xp: 0, musculos: {}};
-      setDB(db);
-    }
-    initDB();
-
-    /***********************
-     * UI
-     ***********************/
-    function showToast(msg){
-      const toast = document.getElementById("toast") || (() => {
-        const t = document.createElement("div");
-        t.id = "toast";
-        t.className = "cp-toast";
-        document.body.appendChild(t);
-        return t;
-      })();
-      toast.textContent = msg;
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 2500);
-    }
-
-    function showScreen(id){
-      const db = getDB();
-      const isSignedUp = db.user && db.user.email;
+    function goTo(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(id);
+      if(target) target.classList.add('active');
       
-      if(!isSignedUp && !["acesso","cadastro","splash"].includes(id)){
-        showToast("Complete o cadastro para acessar.");
-        return;
-      }
+      const nav = document.getElementById('nav');
+      if(nav) nav.style.display = (db.user.step >= 4) ? "block" : "none";
+      
+      document.querySelectorAll('.nav-btn').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('onclick')?.includes(id));
+      });
+      window.scrollTo(0,0);
+    }
 
-      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-      const screen = document.getElementById(id);
-      if(screen) {
-        screen.classList.add("active");
-        window.scrollTo(0, 0);
+    function login() {
+      const email = document.getElementById('inEmail').value;
+      if(!email) return showToast("Insira seu e-mail");
+      db.user.email = email;
+      db.user.step = 2;
+      save(); goTo('step2');
+    }
+
+    function saveProfile() {
+      const nome = document.getElementById('inNome').value;
+      if(!nome) return showToast("Diga-nos seu nome");
+      db.user.nome = nome;
+      db.user.step = 3;
+      save(); goTo('step3');
+    }
+
+    function finishOnboarding() {
+      db.user.step = 4;
+      save(); goTo('dashboard');
+    }
+
+    /***********************
+     * COMPARTILHAMENTO
+     ***********************/
+    async function shareInvite() {
+      const text = `Boas! Estou usando o CheckPrato Elite para transformar meu corpo. Dá uma olhada:`;
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: 'CheckPrato Elite', text, url: window.location.href });
+        } catch (e) {}
+      } else {
+        navigator.clipboard.writeText(text + " " + window.location.href);
+        showToast("Link de convite copiado!");
       }
     }
 
     /***********************
-     * RENDERIZAÇÃO
+     * RENDERIZAÇÃO INTERNA
      ***********************/
-    function renderApp(){
-      const db = getDB();
-      const isSignedUp = db.user && db.user.email;
-
-      const html = `
+    function boot() {
+      const root = document.getElementById('root');
+      root.innerHTML = `
         <div class="app-shell">
           <div class="page-wrap">
-            <div id="splash" class="screen active">
-              <div style="text-align:center;padding:40px 20px">
-                <div style="font-size:48px;margin-bottom:20px">✅</div>
-                <h1 class="cp-h1" style="font-size:32px">CheckPrato Elite</h1>
-                <p class="cp-hint" style="margin:16px 0">Dieta. Treino. Prato. Evolução.</p>
-                <button class="btn-neon" onclick="showScreen('acesso')" style="margin-top:24px">Começar</button>
+            
+            <div id="step1" class="screen ${db.user.step === 1 ? 'active' : ''}">
+              <div style="text-align:center; padding-top:60px">
+                <div style="font-size:60px">✅</div>
+                <h1 class="cp-h1">CheckPrato Elite</h1>
+                <p class="cp-hint">Dieta. Treino. Prato. Evolução.</p>
+                <div class="cp-card">
+                  <input id="inEmail" class="cp-input" placeholder="Seu melhor e-mail">
+                  <button class="btn-neon" onclick="login()" style="width:100%; margin-top:15px">Começar Jornada</button>
+                </div>
               </div>
             </div>
 
-            <div id="acesso" class="screen">
-              <h1 class="cp-h1">Acesso</h1>
+            <div id="step2" class="screen ${db.user.step === 2 ? 'active' : ''}">
+              <h1 class="cp-h1">Personalizar</h1>
+              <p class="cp-hint">Como devemos te chamar?</p>
               <div class="cp-card">
-                <button class="btn-neon" onclick="loginGoogle()">Entrar com Google</button>
-                <div style="margin:16px 0;text-align:center;color:#8aa0c7;font-size:12px">ou</div>
-                <input id="email" class="cp-input" placeholder="Email" type="email">
-                <input id="senha" class="cp-input" placeholder="Senha" type="password">
-                <button class="btn-neon" onclick="login()" style="margin-top:12px">Entrar</button>
-                <button class="btn-outline" onclick="showScreen('cadastro')" style="margin-top:12px">Criar conta</button>
+                <input id="inNome" class="cp-input" placeholder="Nome ou Apelido">
+                <button class="btn-neon" onclick="saveProfile()" style="width:100%; margin-top:15px">Próximo</button>
               </div>
             </div>
 
-            <div id="cadastro" class="screen">
-              <h1 class="cp-h1">Cadastro</h1>
+            <div id="step3" class="screen ${db.user.step === 3 ? 'active' : ''}">
+              <h1 class="cp-h1">Bem-vindo, ${db.user.nome}!</h1>
               <div class="cp-card">
-                <label class="cp-label">Email</label>
-                <input id="cadEmail" class="cp-input" placeholder="seu@email.com" type="email">
-                
-                <label class="cp-label">Nome</label>
-                <input id="cadNome" class="cp-input" placeholder="Seu nome">
-                
-                <label class="cp-label">Sobrenome</label>
-                <input id="cadSobrenome" class="cp-input" placeholder="Seu sobrenome">
-                
-                <div class="grid-2">
-                  <div>
-                    <label class="cp-label">Peso (kg)</label>
-                    <input id="cadPeso" class="cp-input" placeholder="75" type="number">
+                <p class="cp-hint">Seu perfil elite foi configurado. Agora você tem acesso ao controle total do seu corpo e dieta.</p>
+                <button class="btn-neon" onclick="finishOnboarding()" style="width:100%; margin-top:20px">Acessar Painel</button>
+              </div>
+            </div>
+
+            <div id="dashboard" class="screen ${db.user.step >= 4 ? 'active' : ''}">
+              <h1 class="cp-h1">Sua Evolução</h1>
+              <div class="cp-card">
+                <label class="cp-label">Modelo Interativo 3D</label>
+                <div class="muscle-viewer">
+                  <model-viewer 
+                    src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" 
+                    alt="Corpo Humano 3D" 
+                    auto-rotate camera-controls shadow-intensity="1">
+                  </model-viewer>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:15px">
+                  <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px; text-align:center">
+                    <small style="color:#8aa0c7">XP</small><br><strong style="font-size:20px">${db.stats.xp}</strong>
                   </div>
-                  <div>
-                    <label class="cp-label">Altura (cm)</label>
-                    <input id="cadAltura" class="cp-input" placeholder="180" type="number">
+                  <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px; text-align:center">
+                    <small style="color:#8aa0c7">RANK</small><br><strong style="font-size:20px">Elite</strong>
                   </div>
                 </div>
-
-                <label class="cp-label">Sexo</label>
-                <select id="cadSexo" class="cp-input">
-                  <option value="">Escolha</option>
-                  <option value="M">Masculino</option>
-                  <option value="F">Feminino</option>
-                </select>
-
-                <label class="cp-label">Esportes favoritos</label>
-                <div class="chips" id="sportsBox"></div>
-
-                <button class="btn-neon" onclick="salvarCadastro()" style="margin-top:16px">Salvar e continuar</button>
               </div>
+              <button class="btn-outline" onclick="shareInvite()" style="width:100%">📤 Convidar para a Elite</button>
             </div>
 
             <div id="prato" class="screen">
-              <h1 class="cp-h1">Prato</h1>
+              <h1 class="cp-h1">Analisar Prato</h1>
               <div class="cp-card">
-                <label class="cp-label">Tirar foto</label>
-                <div class="btn-row">
-                  <button class="btn-neon" onclick="abrirCameraPrato()">📷 Câmera</button>
-                  <button class="btn-secondary" onclick="abrirGaleriaPrato()">🖼️ Galeria</button>
+                <div style="width:100%; height:200px; background:#071728; border-radius:15px; display:flex; align-items:center; justify-content:center; border: 1px dashed rgba(255,255,255,0.2)">
+                  <span style="color:#8aa0c7">Prévia da Foto</span>
                 </div>
-                <input id="fotoPrato" type="file" accept="image/*" capture="environment" style="display:none">
-                <input id="galeriaPrato" type="file" accept="image/*" style="display:none">
-                
-                <div class="photo-preview" id="previewPrato">
-                  <div style="color:#8aa0c7">Nenhuma foto</div>
-                </div>
-
-                <label class="cp-label">Descrever prato</label>
-                <textarea id="descPrato" class="cp-input" placeholder="Ex: arroz, feijão, frango..." style="height:80px;resize:none"></textarea>
-
-                <button class="btn-neon" onclick="analisarPrato()" style="margin-top:12px">Analisar</button>
-
-                <div class="stat-grid" id="resultPrato" style="display:none">
-                  <div class="stat-box">
-                    <div class="stat-key">Calorias</div>
-                    <div class="stat-val" id="valCal">—</div>
-                  </div>
-                  <div class="stat-box">
-                    <div class="stat-key">Proteína</div>
-                    <div class="stat-val" id="valProt">—</div>
-                  </div>
-                  <div class="stat-box">
-                    <div class="stat-key">Carboidrato</div>
-                    <div class="stat-val" id="valCarb">—</div>
-                  </div>
-                  <div class="stat-box">
-                    <div class="stat-key">Gordura</div>
-                    <div class="stat-val" id="valGord">—</div>
-                  </div>
-                </div>
+                <button class="btn-neon" onclick="showToast('Câmera em manutenção')" style="width:100%; margin-top:15px">📷 Tirar Foto</button>
               </div>
             </div>
 
-            <div id="dieta" class="screen">
-              <h1 class="cp-h1">Dieta</h1>
-              <div class="cp-card">
-                <label class="cp-label">Tipo de dieta</label>
-                <select id="tipoDieta" class="cp-input">
-                  <option value="">Escolha</option>
-                  ${Object.keys(DIETS).map(d => `<option value="${d}">${d}</option>`).join("")}
-                </select>
-
-                <button class="btn-neon" onclick="gerarDieta()" style="margin-top:12px">Gerar dieta</button>
-
-                <div id="dietaResult" style="margin-top:16px;display:none">
-                  <label class="cp-label">Refeições sugeridas</label>
-                  <div id="dietaList"></div>
-                </div>
-              </div>
-            </div>
-
-            <div id="treino" class="screen">
-              <h1 class="cp-h1">Treino</h1>
-              <div class="cp-card">
-                <label class="cp-label">Onde você vai treinar?</label>
-                <div class="chips" id="locBox"></div>
-
-                <label class="cp-label" style="margin-top:16px">Exercícios</label>
-                <div id="exList"></div>
-
-                <button class="btn-neon" onclick="iniciarTreino()" style="margin-top:16px">Iniciar treino</button>
-              </div>
-            </div>
-
-            <div id="metas" class="screen">
-              <h1 class="cp-h1">Metas</h1>
-              <div class="cp-card">
-                <div class="muscle-viewer">
-                  <canvas id="muscleCanvas" class="muscle-canvas"></canvas>
-                  <div id="muscleLabels" style="position:absolute;width:100%;height:100%"></div>
-                </div>
-
-                <div class="stat-grid" style="margin-top:16px">
-                  <div class="stat-box">
-                    <div class="stat-key">Progresso Semanal</div>
-                    <div class="stat-val">92%</div>
-                  </div>
-                  <div class="stat-box">
-                    <div class="stat-key">Treinos Completos</div>
-                    <div class="stat-val" id="treinsCompletos">0</div>
-                  </div>
-                </div>
-
-                <div class="muscle-progress" id="muscleProgress"></div>
-              </div>
-            </div>
-
-            <div id="evolucao" class="screen">
-              <h1 class="cp-h1">Evolução</h1>
-              <div class="cp-card">
-                <div class="stat-grid">
-                  <div class="stat-box">
-                    <div class="stat-key">XP Total</div>
-                    <div class="stat-val" id="xpTotal">0</div>
-                  </div>
-                  <div class="stat-box">
-                    <div class="stat-key">Pratos Analisados</div>
-                    <div class="stat-val" id="pratosTotal">0</div>
-                  </div>
-                  <div class="stat-box">
-                    <div class="stat-key">Dietas Salvas</div>
-                    <div class="stat-val" id="dietasTotal">0</div>
-                  </div>
-                  <div class="stat-box">
-                    <div class="stat-key">Treinos Feitos</div>
-                    <div class="stat-val" id="treinosTotal">0</div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
-        <div class="bottom-nav" id="nav" style="display:none">
+        <nav class="bottom-nav" id="nav" style="${db.user.step >= 4 ? 'display:block' : 'display:none'}">
           <div class="bottom-nav-inner">
-            <button class="nav-btn active" onclick="showScreen('prato')"><span class="nav-icon">🍽️</span>Prato</button>
-            <button class="nav-btn" onclick="showScreen('dieta')"><span class="nav-icon">🥗</span>Dieta</button>
-            <button class="nav-btn" onclick="showScreen('treino')"><span class="nav-icon">💪</span>Treino</button>
-            <button class="nav-btn" onclick="showScreen('metas')"><span class="nav-icon">🎯</span>Metas</button>
-            <button class="nav-btn" onclick="showScreen('evolucao')"><span class="nav-icon">📈</span>Evolução</button>
+            <button class="nav-btn active" onclick="goTo('dashboard')"><span>🎯</span>Metas</button>
+            <button class="nav-btn" onclick="goTo('prato')"><span>🍽️</span>Prato</button>
+            <button class="nav-btn" onclick="showToast('Em breve...')"><span>🥗</span>Dieta</button>
+            <button class="nav-btn" onclick="showToast('Em breve...')"><span>💪</span>Treino</button>
           </div>
-        </div>
+        </nav>
       `;
-
-      document.getElementById("root").innerHTML = html;
-      renderSports();
-      renderLocations();
-      renderMuscles();
-      updateNav();
     }
 
-    function renderSports(){
-      const box = document.getElementById("sportsBox");
-      if(!box) return;
-      const db = getDB();
-      box.innerHTML = SPORTS.map(s => `
-        <div class="chip ${(db.user.sports || []).includes(s) ? 'active' : ''}" onclick="toggleSport('${s}')">
-          ${s}
-        </div>
-      `).join("");
-    }
-
-    function renderLocations(){
-      const box = document.getElementById("locBox");
-      if(!box) return;
-      box.innerHTML = LOCATIONS.map(l => `
-        <div class="chip" onclick="selecionarLocal('${l}')">${l}</div>
-      `).join("");
-    }
-
-    function renderMuscles(){
-      const canvas = document.getElementById("muscleCanvas");
-      if(!canvas) return;
-      const db = getDB();
-      const sexo = db.user.sexo || "M";
-      const muscles = sexo === "F" ? MUSCLES_FEMALE : MUSCLES_MALE;
-      
-      const ctx = canvas.getContext("2d");
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-
-      ctx.fillStyle = "rgba(59,130,246,0.3)";
-      ctx.fillRect(canvas.width/2-30, 20, 60, 80);
-      ctx.fillRect(canvas.width/2-40, 100, 80, 100);
-
-      const labels = document.getElementById("muscleLabels");
-      labels.innerHTML = muscles.map(m => `
-        <div class="muscle-label" style="left:${m.x}%;top:${m.y}%" onclick="selecionarMusculo('${m.name}')">${m.name}</div>
-      `).join("");
-    }
-
-    function loginGoogle(){
-      const email = prompt("Seu email Google:");
-      if(email){
-        const db = getDB();
-        db.user.email = email;
-        db.user.signupSource = "google";
-        setDB(db);
-        showScreen("cadastro");
-        showToast("Email salvo!");
-      }
-    }
-
-    function login(){
-      const email = document.getElementById("email").value;
-      const senha = document.getElementById("senha").value;
-      if(!email || !senha){
-        showToast("Preencha email e senha");
-        return;
-      }
-      const db = getDB();
-      db.user.email = email;
-      setDB(db);
-      showScreen("cadastro");
-    }
-
-    function toggleSport(sport){
-      const db = getDB();
-      db.user.sports = db.user.sports || [];
-      if(db.user.sports.includes(sport)){
-        db.user.sports = db.user.sports.filter(s => s !== sport);
-      } else {
-        db.user.sports.push(sport);
-      }
-      setDB(db);
-      renderSports();
-    }
-
-    function salvarCadastro(){
-      const email = document.getElementById("cadEmail").value;
-      const nome = document.getElementById("cadNome").value;
-      const sobrenome = document.getElementById("cadSobrenome").value;
-      const peso = document.getElementById("cadPeso").value;
-      const altura = document.getElementById("cadAltura").value;
-      const sexo = document.getElementById("cadSexo").value;
-
-      if(!email || !nome || !sobrenome || !peso || !altura || !sexo){
-        showToast("Preencha todos os campos");
-        return;
-      }
-
-      const db = getDB();
-      db.user.email = email;
-      db.user.nome = nome;
-      db.user.sobrenome = sobrenome;
-      db.user.peso = peso;
-      db.user.altura = altura;
-      db.user.sexo = sexo;
-      setDB(db);
-      showToast("Cadastro salvo!");
-      showScreen("prato");
-      updateNav();
-    }
-
-    function abrirCameraPrato(){
-      document.getElementById("fotoPrato").click();
-    }
-
-    function abrirGaleriaPrato(){
-      document.getElementById("galeriaPrato").click();
-    }
-
-    function analisarPrato(){
-      const desc = document.getElementById("descPrato").value;
-      if(!desc){
-        showToast("Descreva o prato");
-        return;
-      }
-
-      const calorias = Math.floor(Math.random() * 800) + 200;
-      const proteina = Math.floor(Math.random() * 50) + 10;
-      const carboidrato = Math.floor(Math.random() * 100) + 30;
-      const gordura = Math.floor(Math.random() * 40) + 5;
-
-      document.getElementById("valCal").textContent = calorias + " kcal";
-      document.getElementById("valProt").textContent = proteina + "g";
-      document.getElementById("valCarb").textContent = carboidrato + "g";
-      document.getElementById("valGord").textContent = gordura + "g";
-      document.getElementById("resultPrato").style.display = "grid";
-
-      const db = getDB();
-      db.pratos.push({data: new Date().toISOString(), desc, calorias});
-      setDB(db);
-      showToast("Prato analisado!");
-    }
-
-    function gerarDieta(){
-      const tipo = document.getElementById("tipoDieta").value;
-      if(!tipo){
-        showToast("Escolha um tipo de dieta");
-        return;
-      }
-
-      const refeicoes = DIETS[tipo] || [];
-      const html = refeicoes.map(r => `
-        <div class="exercise-card">
-          <div class="ex-main">
-            <div class="ex-name">${r}</div>
-          </div>
-        </div>
-      `).join("");
-
-      document.getElementById("dietaList").innerHTML = html;
-      document.getElementById("dietaResult").style.display = "block";
-
-      const db = getDB();
-      db.dietas.push({tipo, data: new Date().toISOString()});
-      setDB(db);
-      showToast("Dieta gerada!");
-    }
-
-    function selecionarLocal(local){
-      const exs = EXERCISES_BY_LOCATION[local] || [];
-      const html = exs.map(ex => `
-        <div class="exercise-card">
-          <div style="font-size:32px;margin-right:8px">${ex.img}</div>
-          <div class="ex-main">
-            <div class="ex-name">${ex.name}</div>
-            <div class="ex-how">${ex.series}</div>
-          </div>
-          <button class="btn-secondary" onclick="window.open('https://youtube.com/results?search_query=${ex.name}')">YouTube</button>
-        </div>
-      `).join("");
-      document.getElementById("exList").innerHTML = html;
-    }
-
-    function iniciarTreino(){
-      const db = getDB();
-      db.treinos.push({data: new Date().toISOString()});
-      setDB(db);
-      showToast("Treino iniciado!");
-    }
-
-    function selecionarMusculo(musculo){
-      showToast("Treinar: " + musculo);
-    }
-
-    function updateNav(){
-      const db = getDB();
-      const isSignedUp = db.user && db.user.email;
-      const nav = document.getElementById("nav");
-      if(nav) nav.style.display = isSignedUp ? "block" : "none";
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      renderApp();
-      updateNav();
-
-      document.addEventListener("change", (e) => {
-        if(e.target.id === "fotoPrato" || e.target.id === "galeriaPrato"){
-          const file = e.target.files[0];
-          if(file){
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-              const img = document.getElementById("previewPrato");
-              img.innerHTML = `<img src="${evt.target.result}" style="width:100%;height:100%;object-fit:cover">`;
-            };
-            reader.readAsDataURL(file);
-          }
-        }
-      });
-    });
+    window.onload = boot;
   </script>
 </body>
 </html>
