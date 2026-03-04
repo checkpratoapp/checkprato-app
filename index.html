@@ -9,8 +9,6 @@
     *{ box-sizing:border-box; margin:0; padding:0; }
     html, body{ width:100%; height:100%; background:#02050b; color:#eaf2ff; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; overflow-x:hidden; }
     body{ background: radial-gradient(circle at 20% 0%, #0a1f38, #000) fixed; min-height:100vh; }
-
-    /* anti-flicker / suaviza troca de tela */
     body, .app-shell, .page-wrap { -webkit-font-smoothing: antialiased; transform: translateZ(0); }
 
     :root{
@@ -34,7 +32,6 @@
       background: radial-gradient(circle at 20% 0%, #0a1f38, #000);
     }
 
-    /* ===== FUNDO POR ABA (imagem + overlay) ===== */
     #bgSlot{ position:absolute; inset:0; z-index:0; }
     .bg-layer{
       position:absolute; inset:0;
@@ -55,7 +52,6 @@
       pointer-events:none;
     }
 
-    /* animação de entrada (leve) */
     .screen-enter{ animation: screenIn .18s ease-out forwards; }
     @keyframes screenIn{ from{ opacity:0; transform: translateY(10px);} to{ opacity:1; transform: translateY(0);} }
 
@@ -83,8 +79,6 @@
     .cp-h1{ font-size:30px; font-weight:900; color:#eaf2ff; margin:8px 0 4px; }
     .cp-hint{ font-size:13px; color: var(--muted); font-weight:650; line-height:1.45; }
     .cp-label{ font-size:11px; font-weight:850; letter-spacing:.8px; text-transform:uppercase; color: var(--muted); margin-top:14px; margin-bottom:4px; }
-
-    /* helper centralizado */
     .tcenter{ text-align:center; }
 
     .cp-card{
@@ -251,7 +245,6 @@
     .mini-name{ font-weight:900; font-size:14px; color:#eaf2ff; }
     .mini-sub{ font-size:12px; color: var(--muted); font-weight:700; }
 
-    /* chips esportes */
     .chips{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
     .chip{
       padding:10px 12px;
@@ -270,7 +263,6 @@
       box-shadow: 0 0 0 6px rgba(59,130,246,0.10);
     }
 
-    /* prato */
     .photo-preview{
       width:100%;
       height:190px;
@@ -309,7 +301,6 @@
     .confirm-title{ font-weight:1000; margin-bottom:8px; color:#eaf2ff; }
     .confirm-actions{ display:flex; gap:10px; margin-top:10px; }
 
-    /* treino cards */
     .day-card{
       background: rgba(255,255,255,0.03);
       border:1px solid rgba(255,255,255,0.06);
@@ -344,7 +335,6 @@
     .ex-name{ font-weight:900; font-size:13px; color:#eaf2ff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 170px; }
     .ex-detail{ font-size:12px; color: var(--muted); font-weight:700; }
 
-    /* modal */
     .modal-back{
       position:fixed; inset:0;
       background: rgba(0,0,0,0.60);
@@ -375,7 +365,6 @@
       cursor:pointer;
     }
 
-    /* “progresso 3D” fake/visual */
     .orb{
       width:100%;
       height:190px;
@@ -423,15 +412,11 @@
 
   <script>
     /***********************
-     * CONFIG (SEM VERDE)
+     * CONFIG
      ***********************/
     const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663388243015/7hwT4Rcpzmt9PDwsiCfqK7/checkprato-hero-PJzdhsav9GuvFxECAtVKXF.webp";
-
-    // ✅ IA real (SEGURA): endpoint (Cloudflare Worker / Firebase Function / Cloud Run)
-    // (sem expor chave no HTML)
     const AI_ENDPOINT = ""; // ex: "https://seu-worker.seudominio.workers.dev/analyze"
 
-    // Fundos por aba (troque pelos seus links quando quiser)
     const BG_BY_SCREEN = {
       welcome:   "",
       acesso:    "",
@@ -459,7 +444,7 @@
      * STORAGE
      ***********************/
     const KEY_PROFILE = "cp_profile_v2";
-    const KEY_STEP = "cp_step_v2"; // 0..3 (0 welcome, 1 acesso, 2 cadastro, 3 ok)
+    const KEY_STEP = "cp_step_v2"; // 0..3
     const KEY_XP = "cp_xp_v2";
     const KEY_PLATES = "cp_plates_v2";
     const KEY_TRAIN_DONE = "cp_train_done_v2";
@@ -491,11 +476,9 @@
     let toastMsg = "";
     let toastShow = false;
 
-    // acesso (fluxo local; integra depois)
     let stateAccessEmail = "";
     let stateAccessPass = "";
 
-    // cadastro state (não some ao clicar em chips/select)
     let stateCad = {
       avatarDataUrl: "",
       nome: "",
@@ -517,18 +500,14 @@
       localTreino: "Casa",
     };
 
-    // prato
     let plateDataUrl = localStorage.getItem(KEY_LAST_PHOTO) || "";
-    let plateAI = null; // {description, calories, protein, carbs, fat}
+    let plateAI = null;
     let plateConfirmText = "";
 
-    // dieta/treino variáveis
     let dietaMode = "emagrecimento";
     let treinoMode = "Musculação";
 
-    // controle “anti-burla” treino
     let activeTimer = null;
-    let nowTick = Date.now();
 /***********************
      * DADOS (VARIEDADE)
      ***********************/
@@ -554,7 +533,6 @@
       ["Você não é seus impulsos.", "Você é suas decisões."]
     ];
 
-    // Dietas: pools para randomizar
     const DIETA_POOL = {
       emagrecimento: {
         cafe: [
@@ -636,7 +614,6 @@
       }
     };
 
-    // Treino com imagens (você pode trocar por links reais depois)
     const EX_IMG = {
       "Supino reto": "",
       "Crucifixo": "",
@@ -697,9 +674,7 @@
       document.getElementById("modalBody").innerHTML = html || "";
       document.getElementById("modalBack").style.display = "block";
     }
-    function closeModal(){
-      document.getElementById("modalBack").style.display = "none";
-    }
+    function closeModal(){ document.getElementById("modalBack").style.display = "none"; }
 
     function readFileAsDataUrl(file){
       return new Promise((resolve,reject)=>{
@@ -748,7 +723,6 @@
             <div class="bg-layer" id="bgLayer"></div>
             <div class="bg-overlay"></div>
           </div>
-
           <div id="screenSlot"></div>
           <div id="navSlot"></div>
           <div id="toastSlot"></div>
@@ -841,7 +815,7 @@
             <div style="font-size:46px">🚀</div>
             <div class="cp-h1" style="margin-top:8px">Olá! Seja muito bem-vindo.</div>
             <div class="cp-hint" style="margin-top:8px">
-              Prazer em ter você aqui no time. Vamos montar seu perfil e liberar o app completo:
+              Vamos montar seu perfil e liberar o app completo:
               <b>Prato</b>, <b>Dieta</b>, <b>Treino</b> e <b>Progresso</b>.
             </div>
 
@@ -868,7 +842,7 @@
 
           <div class="cp-h1 tcenter">Acesso</div>
           <div class="cp-hint tcenter" style="margin-top:6px">
-            Entre e continue. Seus dados ficam salvos automaticamente no celular.
+            Seus dados ficam salvos automaticamente no celular.
           </div>
 
           <div class="cp-card">
@@ -880,10 +854,7 @@
             <input id="loginEmail" class="cp-input" type="email" placeholder="Email" value="${esc(stateAccessEmail)}" />
             <input id="loginPass" class="cp-input" type="password" placeholder="Senha" value="${esc(stateAccessPass)}" />
 
-            <button class="btn-neon" style="margin-top:14px" onclick="continueToCadastroFromAcesso()">
-              Continuar
-            </button>
-
+            <button class="btn-neon" style="margin-top:14px" onclick="continueToCadastroFromAcesso()">Continuar</button>
             <button class="btn-outline" style="margin-top:10px" onclick="goTo('cadastro')">Ir para Cadastro</button>
           </div>
         </div>
@@ -1099,7 +1070,307 @@
         </div>
       `;
     }
-function renderDieta(animate){
+/***********************
+     * DRAFT SAVE
+     ***********************/
+    function saveDraft(){
+      const p = loadProfile() || {};
+      saveProfile({ ...p, ...stateCad });
+    }
+
+    /***********************
+     * FLOW
+     ***********************/
+    function startFlow(){ setStep(1); currentScreen="acesso"; render(); }
+    function googleLoginInfo(){
+      openModal("Entrar com Google", "Login real com Google entra depois. Por enquanto, use email/senha.");
+    }
+    function continueToCadastroFromAcesso(){
+      stateAccessEmail = document.getElementById("loginEmail")?.value || "";
+      stateAccessPass  = document.getElementById("loginPass")?.value || "";
+      setStep(2);
+      currentScreen="cadastro";
+      render();
+    }
+    function finishOnboarding(){ setStep(3); currentScreen="prato"; render(); }
+
+    function resetAll(){
+      if(!confirm("Tem certeza? Isso apaga dados locais do app nesse celular.")) return;
+      localStorage.removeItem(KEY_PROFILE);
+      localStorage.removeItem(KEY_STEP);
+      localStorage.removeItem(KEY_XP);
+      localStorage.removeItem(KEY_PLATES);
+      localStorage.removeItem(KEY_TRAIN_DONE);
+      localStorage.removeItem(KEY_LAST_PHOTO);
+      localStorage.removeItem(KEY_DIETA_LAST);
+      localStorage.removeItem(KEY_TREINO_LAST);
+      localStorage.removeItem("cp_treino_custom_v1");
+
+      stateCad = {
+        avatarDataUrl: "",
+        nome: "",
+        sobrenome: "",
+        peso: "",
+        altura: "",
+        sexo: "",
+        objetivo: "",
+        nivel: "Iniciante",
+        condicao: "",
+        restricoes: "",
+        mobilidade: "",
+        idadeGrupo: "",
+        pcd: false,
+        idoso: false,
+        sedentario: false,
+        esportes: [],
+        termo: false,
+        localTreino: "Casa",
+      };
+      plateDataUrl = "";
+      plateAI = null;
+      plateConfirmText = "";
+      dietaMode = "emagrecimento";
+      treinoMode = "Musculação";
+      activeTimer = null;
+
+      currentScreen = "welcome";
+      render();
+    }
+
+    /***********************
+     * AVATAR
+     ***********************/
+    async function pickAvatar(){
+      const input = document.getElementById("avatarFile");
+      if(!input) return;
+      input.click();
+      input.onchange = async ()=>{
+        const f = input.files && input.files[0];
+        if(!f) return;
+        try{
+          const url = await readFileAsDataUrl(f);
+          stateCad.avatarDataUrl = url;
+          saveDraft();
+          render();
+        }catch(e){
+          showToast("Falha ao carregar foto.");
+        }
+      };
+    }
+    function removeAvatar(){
+      stateCad.avatarDataUrl = "";
+      saveDraft();
+      render();
+    }
+
+    /***********************
+     * CADASTRO SAVE
+     ***********************/
+    function saveCadastroAndContinue(){
+      const pickVal = (id)=> document.getElementById(id)?.value || "";
+
+      stateCad.nome = pickVal("cadNome");
+      stateCad.sobrenome = pickVal("cadSobrenome");
+      stateCad.peso = pickVal("cadPeso");
+      stateCad.altura = pickVal("cadAltura");
+      stateCad.sexo = pickVal("cadSexo");
+      stateCad.nivel = pickVal("cadNivel") || stateCad.nivel;
+      stateCad.objetivo = pickVal("cadObjetivo");
+      stateCad.condicao = pickVal("cadCondicao");
+      stateCad.idadeGrupo = pickVal("cadIdadeGrupo");
+      stateCad.mobilidade = pickVal("cadMobilidade");
+      stateCad.restricoes = pickVal("cadRestricoes");
+      stateCad.localTreino = pickVal("cadLocalTreino") || stateCad.localTreino;
+
+      const termo = document.getElementById("cadTermo");
+      stateCad.termo = !!(termo && termo.checked);
+
+      if(!stateCad.nome || !stateCad.sobrenome) return showToast("Preencha nome e sobrenome.");
+      if(!stateCad.peso || !stateCad.altura) return showToast("Preencha peso e altura.");
+      if(!stateCad.sexo) return showToast("Selecione o sexo.");
+      if(!stateCad.objetivo) return showToast("Selecione o objetivo.");
+      if(!stateCad.termo) return showToast("Aceite o termo para continuar.");
+      if(!Array.isArray(stateCad.esportes) || stateCad.esportes.length === 0) return showToast("Selecione pelo menos 1 esporte.");
+
+      saveProfile({ ...stateCad });
+      setStep(3);
+      addXP(10);
+
+      currentScreen = "impacto";
+      render();
+    }
+
+    /***********************
+     * CADASTRO WIRE (FIX CHIPS MOBILE)
+     ***********************/
+    function wireCadastro(){
+      const bind = (id, key) => {
+        const el = document.getElementById(id);
+        if(!el) return;
+        const save = () => { stateCad[key] = el.value; saveDraft(); };
+        el.addEventListener("input", save);
+        el.addEventListener("change", save);
+      };
+
+      bind("cadNome","nome");
+      bind("cadSobrenome","sobrenome");
+      bind("cadPeso","peso");
+      bind("cadAltura","altura");
+      bind("cadSexo","sexo");
+      bind("cadNivel","nivel");
+      bind("cadObjetivo","objetivo");
+      bind("cadCondicao","condicao");
+      bind("cadRestricoes","restricoes");
+      bind("cadMobilidade","mobilidade");
+      bind("cadIdadeGrupo","idadeGrupo");
+      bind("cadLocalTreino","localTreino");
+
+      const termo = document.getElementById("cadTermo");
+      if(termo){
+        termo.onchange = ()=>{ stateCad.termo = !!termo.checked; saveDraft(); };
+      }
+
+      const btnPcd = document.getElementById("btnPcd");
+      const btnIdoso = document.getElementById("btnIdoso");
+      const btnSed = document.getElementById("btnSed");
+
+      const refresh = ()=>{
+        if(btnPcd) btnPcd.textContent = stateCad.pcd ? "✅ PCD" : "PCD";
+        if(btnIdoso) btnIdoso.textContent = stateCad.idoso ? "✅ Idoso" : "Idoso";
+        if(btnSed) btnSed.textContent = stateCad.sedentario ? "✅ Sedentário" : "Sedentário";
+      };
+
+      if(btnPcd) btnPcd.onclick = ()=>{ stateCad.pcd=!stateCad.pcd; saveDraft(); refresh(); };
+      if(btnIdoso) btnIdoso.onclick = ()=>{ stateCad.idoso=!stateCad.idoso; saveDraft(); refresh(); };
+      if(btnSed) btnSed.onclick = ()=>{ stateCad.sedentario=!stateCad.sedentario; saveDraft(); refresh(); };
+      refresh();
+
+      const chips = document.getElementById("chipsEsportes");
+      if(chips){
+        chips.onclick = (ev)=>{
+          const chipEl = ev.target?.closest ? ev.target.closest(".chip") : null;
+          if(!chipEl || !chips.contains(chipEl)) return;
+          const sport = chipEl.getAttribute("data-sport");
+          if(!sport) return;
+
+          const set = new Set(stateCad.esportes || []);
+          set.has(sport) ? set.delete(sport) : set.add(sport);
+          stateCad.esportes = Array.from(set);
+          saveDraft();
+          chipEl.classList.toggle("on");
+        };
+      }
+    }
+
+    /***********************
+     * PRATO (wire)
+     ***********************/
+    function openCamera(){ document.getElementById("fileCam")?.click(); }
+    function openGallery(){ document.getElementById("fileGal")?.click(); }
+
+    function wirePrato(){
+      const cam = document.getElementById("fileCam");
+      const gal = document.getElementById("fileGal");
+
+      const handle = async (file)=>{
+        if(!file) return;
+        try{
+          const url = await readFileAsDataUrl(file);
+          plateDataUrl = url;
+          localStorage.setItem(KEY_LAST_PHOTO, url);
+          plateAI = null;
+          plateConfirmText = "";
+          render();
+        }catch(e){
+          showToast("Falha ao carregar foto.");
+        }
+      };
+
+      if(cam) cam.onchange = ()=> handle(cam.files && cam.files[0]);
+      if(gal) gal.onchange = ()=> handle(gal.files && gal.files[0]);
+
+      if(plateAI) fillMacros(plateAI);
+    }
+
+    function showConfirmBox(text){
+      document.getElementById("plateConfirm").style.display = "block";
+      document.getElementById("plateConfirmText").value = text || "";
+    }
+
+    function refazerAnalise(){
+      plateAI = null;
+      plateConfirmText = "";
+      const box = document.getElementById("plateConfirm");
+      if(box) box.style.display = "none";
+      showToast("Ok. Envie/analise outra foto.");
+    }
+
+    function fillMacros(data){
+      document.getElementById("kcalBox").textContent = (data?.calories ?? "—");
+      document.getElementById("protBox").textContent = (data?.protein ?? "—");
+      document.getElementById("carbBox").textContent = (data?.carbs ?? "—");
+      document.getElementById("fatBox").textContent  = (data?.fat ?? "—");
+    }
+
+    function confirmarPrato(){
+      const txt = document.getElementById("plateConfirmText")?.value || "";
+      const arr = loadPlates();
+      arr.unshift({ t: Date.now(), text: txt, macros: plateAI || null, img: plateDataUrl || "" });
+      savePlates(arr.slice(0, 20));
+      addXP(2);
+      showToast("Salvo no histórico ✅");
+      document.getElementById("plateConfirm").style.display = "none";
+    }
+
+    /***********************
+     * DIETA
+     ***********************/
+    function pickFrom(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+    function makeDiet(mode){
+      const m = DIETA_POOL[mode] || DIETA_POOL.emagrecimento;
+      return { mode, cafe:pickFrom(m.cafe), almoco:pickFrom(m.almoco), lanche:pickFrom(m.lanche), jantar:pickFrom(m.jantar), createdAt:Date.now() };
+    }
+    function renderMeal(title, items){
+      return `
+        <div class="day-card" style="margin-top:10px">
+          <div class="day-head">
+            <div class="day-title">${esc(title)}</div>
+            <div class="cp-hint" style="margin:0">Sugestão</div>
+          </div>
+          <div class="cp-hint" style="line-height:1.65">• ${items.map(i=>esc(i)).join("<br>• ")}</div>
+        </div>
+      `;
+    }
+    function renderDietBlocks(d){
+      if(!d) return `<div class="cp-hint">Sem dieta ainda. Toque em <b>Gerar nova dieta</b>.</div>`;
+      return `
+        ${renderMeal("Café da manhã", d.cafe || [])}
+        ${renderMeal("Almoço", d.almoco || [])}
+        ${renderMeal("Lanche", d.lanche || [])}
+        ${renderMeal("Jantar", d.jantar || [])}
+        <div class="cp-hint" style="margin-top:10px; opacity:.9">Atualizado em: <b>${new Date(d.createdAt || Date.now()).toLocaleString()}</b></div>
+      `;
+    }
+    function gerarDietaNova(){
+      localStorage.setItem(KEY_DIETA_LAST, JSON.stringify(makeDiet(dietaMode)));
+      addXP(2);
+      showToast("Dieta nova gerada ✅");
+      render();
+    }
+    function trocarDieta(){
+      const last = safeParse(localStorage.getItem(KEY_DIETA_LAST) || "null", null) || makeDiet(dietaMode);
+      const m = DIETA_POOL[dietaMode] || DIETA_POOL.emagrecimento;
+      const parts = ["cafe","almoco","lanche","jantar"];
+      const pick = parts[Math.floor(Math.random()*parts.length)];
+      last[pick] = pickFrom(m[pick]);
+      last.createdAt = Date.now();
+      localStorage.setItem(KEY_DIETA_LAST, JSON.stringify(last));
+      addXP(1);
+      showToast("Alimentos trocados ✅");
+      render();
+    }
+
+    function renderDieta(animate){
       const {name, avatar} = getProfileDisplay();
       const last = safeParse(localStorage.getItem(KEY_DIETA_LAST) || "null", null);
       const dietTxt = last ? last : makeDiet(dietaMode);
@@ -1140,13 +1411,88 @@ function renderDieta(animate){
       `;
     }
 
+    /***********************
+     * TREINO (anti-burla)
+     ***********************/
+    function buildWorkout(mode){ return TREINO_BASE[mode] || TREINO_BASE["Musculação"]; }
+    function openYouTube(query){
+      const q = encodeURIComponent(String(query||"exercício"));
+      window.open(`https://www.youtube.com/results?search_query=${q}`, "_blank");
+    }
+    function startExercise(exId, min){
+      activeTimer = { id: exId, startedAt: Date.now(), min: Number(min||3) };
+      showToast("Timer iniciado ▶");
+      render();
+    }
+    function getTimerLeft(t){
+      const total = (t.min * 60 * 1000);
+      const spent = Date.now() - t.startedAt;
+      const left = Math.max(0, total - spent);
+      const mm = Math.floor(left / 60000);
+      const ss = Math.floor((left % 60000) / 1000);
+      return `${String(mm).padStart(2,"0")}:${String(ss).padStart(2,"0")}`;
+    }
+    function tryFinishExercise(){
+      if(!activeTimer) return;
+      const total = (activeTimer.min * 60 * 1000);
+      const spent = Date.now() - activeTimer.startedAt;
+      if(spent < total) return showToast("Ainda não. Espere o tempo mínimo.");
+
+      const done = loadTrainDone();
+      if(!done.includes(activeTimer.id)) done.push(activeTimer.id);
+      saveTrainDone(done);
+      addXP(2);
+      showToast("Concluído ✅");
+      activeTimer = null;
+      render();
+    }
+    function limparTreinoConcluidos(){
+      if(!confirm("Limpar exercícios concluídos?")) return;
+      saveTrainDone([]);
+      showToast("Concluídos limpos.");
+      render();
+    }
+    function gerarTreinoNovo(){
+      const base = TREINO_BASE[treinoMode] || [];
+      const shuffled = [...base].map(d=>({ ...d, ex:[...d.ex].sort(()=>Math.random()-0.5) }))
+                               .sort(()=>Math.random()-0.5);
+      localStorage.setItem("cp_treino_custom_v1", JSON.stringify({ mode: treinoMode, data: shuffled }));
+      addXP(2);
+      showToast("Treino trocado ✅");
+      render();
+    }
+    function showTipForDay(day){
+      const tips = {
+        "Segunda — Peito + Tríceps":"Concentre em amplitude e controle. Não corra a repetição.",
+        "Terça — Costas + Bíceps":"Pense em puxar com as costas, não com o braço.",
+        "Quarta — Pernas":"Respire bem e mantenha joelho alinhado com o pé.",
+        "Quinta — Ombros":"Faça leve e perfeito. Ombro responde a consistência.",
+        "Sexta — Full body":"Controle a postura e mantenha o core firme.",
+        "Segunda — Leve":"Ritmo confortável. Você deve conseguir conversar.",
+        "Quarta — Intervalado":"Intenso no sprint, relaxa na caminhada.",
+        "Sexta — Longa":"Pace constante. Melhor terminar inteiro do que quebrar.",
+        "Segunda — Força":"Poucas reps, foco em técnica.",
+        "Quarta — WOD":"Respiração manda. Quebre em blocos se precisar.",
+        "Sexta — Metcon":"Ritmo sustentável vence explosão."
+      };
+      openModal("Dica do dia", esc(tips[day] || "Hidrate-se, aqueça e faça com segurança."));
+    }
+
+    setInterval(()=>{
+      if(activeTimer){
+        const el = document.getElementById("timerLeft");
+        if(el) el.textContent = getTimerLeft(activeTimer);
+      }
+    }, 1000);
+
     function renderTreino(animate){
       const {name, avatar} = getProfileDisplay();
       const profile = loadProfile() || {};
       const nivel = (profile.nivel || stateCad.nivel || "Iniciante");
       const min = (nivel==="Iniciante") ? 3 : (nivel==="Médio" ? 5 : 8);
 
-      const treino = buildWorkout(treinoMode);
+      const treinoCustom = safeParse(localStorage.getItem("cp_treino_custom_v1") || "null", null);
+      const treino = (treinoCustom && treinoCustom.mode === treinoMode) ? treinoCustom.data : buildWorkout(treinoMode);
 
       const done = loadTrainDone();
       const timerInfo = activeTimer ? getTimerLeft(activeTimer) : null;
@@ -1165,7 +1511,7 @@ function renderDieta(animate){
 
           <div class="cp-card">
             <div class="cp-label tcenter">Esporte</div>
-            <select class="cp-input" onchange="treinoMode=this.value; saveDraft(); render();">
+            <select class="cp-input" onchange="treinoMode=this.value; localStorage.setItem(KEY_TREINO_LAST, treinoMode); saveDraft(); render();">
               <option value="Musculação" ${treinoMode==="Musculação"?"selected":""}>Musculação</option>
               <option value="Corrida" ${treinoMode==="Corrida"?"selected":""}>Corrida</option>
               <option value="CrossFit" ${treinoMode==="CrossFit"?"selected":""}>CrossFit</option>
@@ -1239,29 +1585,200 @@ function renderDieta(animate){
       `;
     }
 
-    /* ======= (restante do seu código original, SEM MUDAR) =======
-       A PARTIR DAQUI eu mantive tudo igual, só ajustei:
-       - analisarPrato() (mensagem neutra)
-       - removi textos que só você precisava
-       Se você quiser, eu também posso compactar e te entregar
-       o arquivo final 100% fechado numa única colagem depois.
-    */
+    /***********************
+     * OUTRAS ABAS
+     ***********************/
+    function renderProgresso(animate){
+      const xp = getXP();
+      const plates = loadPlates();
+      const last = plates[0];
 
-    async function analisarPrato(){
-      if(!plateDataUrl){
-        showToast("Envie uma foto primeiro.");
-        return;
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="cp-h1 tcenter">Progresso</div>
+          <div class="cp-hint tcenter">Seu histórico básico (local).</div>
+
+          <div class="cp-card">
+            <div class="orb">
+              <div class="orb-label">
+                <div>
+                  <b>XP: ${esc(xp)}</b><br>
+                  <span>consistência acumulada</span>
+                </div>
+                <div style="text-align:right">
+                  <b>${esc(plates.length)}</b><br>
+                  <span>pratos salvos</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cp-divider"></div>
+
+            <div class="cp-label tcenter">Último prato</div>
+            ${
+              last ? `
+                <div class="mini-profile" style="margin-top:10px">
+                  <div class="mini-avatar">${last.img ? `<img src="${esc(last.img)}" alt="img">` : "🍽️"}</div>
+                  <div style="min-width:0">
+                    <div class="mini-name">${new Date(last.t).toLocaleString()}</div>
+                    <div class="mini-sub" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:280px">
+                      ${esc(String(last.text||"").replace(/\n/g," • ")).slice(0,140)}
+                    </div>
+                  </div>
+                </div>
+              ` : `<div class="cp-hint tcenter" style="margin-top:10px">Ainda sem registros. Salve um prato na aba Prato.</div>`
+            }
+
+            <div class="btn-row">
+              <button class="btn-secondary" onclick="resetAll()">Resetar</button>
+              <button class="btn-neon" onclick="showHistory()">Ver histórico</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function showHistory(){
+      const plates = loadPlates();
+      if(!plates.length){ openModal("Histórico", "Você ainda não salvou nenhum prato."); return; }
+      const html = plates.slice(0,10).map(p=>`
+        <div class="day-card">
+          <div class="day-head">
+            <div class="day-title">${esc(new Date(p.t).toLocaleString())}</div>
+            <div class="cp-hint">Registro</div>
+          </div>
+          <div class="cp-hint" style="line-height:1.6">${esc(String(p.text||"")).replace(/\n/g,"<br>")}</div>
+        </div>
+      `).join("");
+      openModal("Histórico (últimos 10)", html);
+    }
+
+    function renderSaude(animate){
+      const p = loadProfile() || stateCad || {};
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="cp-h1 tcenter">Saúde</div>
+          <div class="cp-card">
+            <div class="cp-hint">
+              <b>Condição:</b> ${esc(p.condicao || "—")}<br>
+              <b>Mobilidade:</b> ${esc(p.mobilidade || "—")}<br>
+              <b>Restrições:</b> ${esc(p.restricoes || "—")}
+            </div>
+
+            <div class="cp-divider"></div>
+
+            <div class="day-card">
+              <div class="day-head">
+                <div class="day-title">Dica prática</div>
+                <div class="cp-hint">hoje</div>
+              </div>
+              <div class="cp-hint" style="line-height:1.6">
+                • 2L de água/dia (ajuste ao seu peso).<br>
+                • 7–8h de sono.<br>
+                • 10 min de caminhada já contam.
+              </div>
+            </div>
+
+            <div class="cp-hint" style="margin-top:10px">
+              Conteúdo informativo. Em caso de risco/condição, procure profissional.
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderLoja(animate){
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="cp-h1 tcenter">Loja</div>
+          <div class="cp-card">
+            <div class="cp-hint tcenter">Área reservada para planos premium e recursos futuros.</div>
+            <div class="cp-divider"></div>
+            <button class="btn-neon" onclick="openModal('Em breve', 'Aqui entra plano premium, upgrades e etc.')">Ver planos</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderConvite(animate){
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="cp-h1 tcenter">Convite</div>
+          <div class="cp-card">
+            <div class="cp-hint">Compartilhe com um amigo:</div>
+            <div class="cp-divider"></div>
+            <button class="btn-neon" onclick="shareApp()">Compartilhar</button>
+            <button class="btn-secondary" onclick="copyInvite()" style="margin-top:10px;width:100%">Copiar mensagem</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function shareApp(){
+      const msg = "Estou usando o CheckPrato Elite. Top pra dieta, treino e progresso! 🔥";
+      if(navigator.share){
+        navigator.share({ text: msg }).catch(()=>{});
+      }else{
+        openModal("Compartilhar", "Seu celular não suportou compartilhamento automático. Use copiar mensagem.");
       }
+    }
 
-      // ✅ Mensagem neutra (sem falar de configuração/endpoint)
+    function copyInvite(){
+      const msg = "Estou usando o CheckPrato Elite. Top pra dieta, treino e progresso! 🔥";
+      navigator.clipboard?.writeText(msg).then(()=> showToast("Mensagem copiada ✅"))
+      .catch(()=> openModal("Copiar", esc(msg)));
+    }
+
+    function renderPerfil(animate){
+      const p = loadProfile() || stateCad || {};
+      const full = `${p.nome||""} ${p.sobrenome||""}`.trim() || "Visitante";
+      const avatar = p.avatarDataUrl || "";
+
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="cp-h1 tcenter">Perfil</div>
+
+          <div class="cp-card">
+            <div class="mini-profile">
+              <div class="mini-avatar">${avatar ? `<img src="${esc(avatar)}" alt="avatar">` : "👤"}</div>
+              <div>
+                <div class="mini-name">${esc(full)}</div>
+                <div class="mini-sub">${esc(p.objetivo || "—")} • ${esc(p.nivel || "—")}</div>
+              </div>
+            </div>
+
+            <div class="cp-divider"></div>
+
+            <div class="cp-hint" style="line-height:1.7">
+              <b>Sexo:</b> ${esc(p.sexo||"—")}<br>
+              <b>Peso:</b> ${esc(p.peso||"—")} kg<br>
+              <b>Altura:</b> ${esc(p.altura||"—")} cm<br>
+              <b>Esportes:</b> ${esc((p.esportes||[]).join(", ") || "—")}<br>
+              <b>Treinar:</b> ${esc(p.localTreino||"—")}
+            </div>
+
+            <div class="btn-row" style="margin-top:14px">
+              <button class="btn-secondary" onclick="goTo('cadastro')">Editar</button>
+              <button class="btn-neon" onclick="resetAll()">Resetar</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /***********************
+     * ANALISAR PRATO (neutro)
+     ***********************/
+    async function analisarPrato(){
+      if(!plateDataUrl) return showToast("Envie uma foto primeiro.");
+
       if(!AI_ENDPOINT){
         openModal("Análise indisponível", `
           No momento, a análise automática não está disponível.
           <br><br>
           Você pode continuar usando o app normalmente: dieta, treino e progresso.
         `);
-        showToast("Análise indisponível.");
-        return;
+        return showToast("Análise indisponível.");
       }
 
       showToast("Analisando...");
@@ -1272,10 +1789,7 @@ function renderDieta(animate){
           headers:{ "Content-Type":"application/json" },
           body: JSON.stringify({ imageBase64: base64 })
         });
-        if(!res.ok){
-          const t = await res.text().catch(()=> "");
-          throw new Error(t || `HTTP ${res.status}`);
-        }
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         plateAI = data;
 
@@ -1297,19 +1811,12 @@ function renderDieta(animate){
     }
 
     /***********************
-     * (COLA AQUI O RESTANTE DO SEU CÓDIGO ORIGINAL)
-     * Para não estourar limite, eu mantive a base.
-     * Se você quiser, eu te mando AGORA a versão final
-     * completa em 4 partes sem esse comentário.
+     * BOOT
      ***********************/
-
     function boot(){
       mountOnce();
-
       const p = loadProfile();
-      if(p){
-        stateCad = { ...stateCad, ...p };
-      }
+      if(p) stateCad = { ...stateCad, ...p };
 
       const tLast = localStorage.getItem(KEY_TREINO_LAST);
       if(tLast) treinoMode = tLast;
