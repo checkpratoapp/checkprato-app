@@ -9,8 +9,7 @@
     *{ box-sizing:border-box; margin:0; padding:0; }
     html, body{ width:100%; height:100%; background:#02050b; color:#eaf2ff; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; overflow-x:hidden; }
     body{ background: radial-gradient(circle at 20% 0%, #0a1f38, #000) fixed; min-height:100vh; }
-    body, .app-shell, .page-wrap { -webkit-font-smoothing: antialiased; transform: translateZ(0); }
-
+    
     :root{
       --blue:#3b82f6;
       --blue2:#2563eb;
@@ -22,32 +21,19 @@
     }
 
     .app-shell{
-      width:100%;
-      min-height:100vh;
-      position:relative;
-      overflow:hidden;
-      display:flex;
-      align-items:flex-start;
-      justify-content:center;
+      width:100%; min-height:100vh; position:relative; overflow:hidden;
+      display:flex; align-items:flex-start; justify-content:center;
     }
 
     #bgSlot{ position:absolute; inset:0; z-index:0; }
     .bg-layer{
-      position:absolute; inset:0;
-      background-size:cover;
-      background-position:center;
-      background-repeat:no-repeat;
-      filter:saturate(1.05) contrast(1.05);
-      opacity:.3;
-      transform: translateZ(0);
-      transition: background-image 0.5s ease-in-out;
+      position:absolute; inset:0; background-size:cover; background-position:center;
+      opacity:.3; transition: background-image 0.5s ease;
     }
     .bg-overlay{
       position:absolute; inset:0;
-      background:
-        radial-gradient(circle at 30% 10%, rgba(59,130,246,.22), transparent 55%),
-        radial-gradient(circle at 70% 30%, rgba(37,99,235,.18), transparent 60%),
-        linear-gradient(180deg, rgba(2,5,11,.58), rgba(2,5,11,.90));
+      background: radial-gradient(circle at 30% 10%, rgba(59,130,246,.22), transparent 55%),
+                  linear-gradient(180deg, rgba(2,5,11,.58), rgba(2,5,11,.95));
       pointer-events:none;
     }
 
@@ -55,169 +41,92 @@
     @keyframes screenIn{ from{ opacity:0; transform: translateY(15px);} to{ opacity:1; transform: translateY(0);} }
 
     .page-wrap{
-      width:100%;
-      max-width: var(--max);
-      padding:18px 18px 140px;
-      position:relative;
-      z-index:5;
+      width:100%; max-width: var(--max); padding:18px 18px 140px; position:relative; z-index:5;
     }
 
-    .logo-wrap{ display:flex; align-items:center; gap:8px; justify-content:center; margin-bottom:8px; }
+    .logo-wrap{ display:flex; align-items:center; gap:8px; justify-content:center; margin-bottom:15px; }
     .logo-icon{
-      width:32px; height:32px;
-      background: linear-gradient(135deg, var(--blue), var(--blue2));
-      border-radius: 8px;
-      display:flex; align-items:center; justify-content:center;
-      box-shadow: 0 0 20px rgba(59,130,246,0.35);
-      font-weight:900;
+      width:32px; height:32px; background: linear-gradient(135deg, var(--blue), var(--blue2));
+      border-radius: 8px; display:flex; align-items:center; justify-content:center;
+      box-shadow: 0 0 20px rgba(59,130,246,0.3); font-weight:900;
     }
     .logo-text{ font-size:20px; font-weight:900; color:#eaf2ff; }
     .logo-text span{ color: var(--blue); }
 
-    .cp-h1{ font-size:28px; font-weight:900; color:#eaf2ff; margin:8px 0 4px; line-height:1.2; }
-    .cp-hint{ font-size:13px; color: var(--muted); font-weight:600; line-height:1.45; }
-    .cp-label{ font-size:11px; font-weight:850; letter-spacing:.8px; text-transform:uppercase; color: var(--muted); margin-top:14px; margin-bottom:4px; }
+    .cp-h1{ font-size:28px; font-weight:900; color:#eaf2ff; margin:10px 0; line-height:1.2; }
+    .cp-hint{ font-size:13px; color: var(--muted); font-weight:500; line-height:1.5; }
+    .cp-label{ font-size:11px; font-weight:800; letter-spacing:.8px; text-transform:uppercase; color: var(--muted); margin-top:15px; }
     .tcenter{ text-align:center; }
 
     .cp-card{
       background: linear-gradient(180deg, var(--bgCard1), var(--bgCard2));
-      border-radius:22px;
-      padding:18px;
-      margin-top:14px;
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      border-radius:22px; padding:20px; margin-top:15px;
+      border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     }
 
     .cp-input{
-      width:100%;
-      padding:12px 14px;
-      margin-top:10px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.08);
-      background:#071728;
-      color:#eaf2ff;
-      font-size:14px;
-      outline:none;
+      width:100%; padding:12px; margin-top:10px; border-radius:14px;
+      border:1px solid rgba(255,255,255,0.1); background:#071728; color:#fff; outline:none;
     }
-    .cp-input:focus{ border-color: var(--blue); }
-
-    .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-    .btn-row{ display:flex; gap:10px; margin-top:12px; }
 
     .btn-neon{
       background: linear-gradient(135deg, var(--blue), var(--blue2));
-      color:#fff;
-      font-weight:900;
-      border:none;
-      border-radius:50px;
-      padding:14px 24px;
-      width:100%;
-      font-size:16px;
-      box-shadow: 0 0 20px rgba(59,130,246,0.3);
-      cursor:pointer;
-      transition: 0.2s;
+      color:#fff; font-weight:900; border:none; border-radius:50px;
+      padding:15px; width:100%; margin-top:15px; cursor:pointer;
+      box-shadow: 0 5px 15px rgba(59,130,246,0.3); transition: 0.2s;
     }
-    .btn-neon:active{ transform: scale(0.98); opacity: 0.9; }
-
-    .btn-outline{
-      background: transparent;
-      color:#eaf2ff;
-      font-weight:800;
-      border:1.5px solid rgba(234,242,255,0.28);
-      border-radius:50px;
-      padding:13px 24px;
-      width:100%;
-      font-size:15px;
-      cursor:pointer;
-    }
+    .btn-neon:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
 
     .btn-secondary{
-      background: rgba(255,255,255,0.06);
-      color:#eaf2ff;
-      font-weight:800;
-      border:1px solid rgba(255,255,255,0.10);
-      border-radius:14px;
-      padding:12px 18px;
-      font-size:13px;
-      flex:1;
-      cursor:pointer;
+      background: rgba(255,255,255,0.05); color:#fff; border-radius:12px;
+      padding:10px; border:1px solid rgba(255,255,255,0.1); cursor:pointer;
     }
 
-    .cp-divider{ height:1px; background: rgba(255,255,255,0.08); margin:16px 0; }
+    .bottom-nav{
+      position:fixed; bottom:0; left:50%; transform: translateX(-50%);
+      width:100%; max-width: var(--max); background: rgba(7, 20, 35, 0.95);
+      backdrop-filter: blur(15px); border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 10px 10px 25px; z-index:1000;
+    }
+    .bottom-nav-inner{ display:flex; justify-content: space-between; }
+    .nav-btn{
+      background:none; border:none; color: var(--muted); font-size:10px;
+      display:flex; flex-direction:column; align-items:center; flex:1;
+    }
+    .nav-btn.active{ color: var(--blue); font-weight: 900; }
+    .nav-btn span { font-size: 20px; margin-bottom: 4px; }
+
+    .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    .chip{
+      padding:8px 15px; border-radius:20px; background: rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.1); font-size:12px; cursor:pointer;
+    }
+    .chip.on{ background: var(--blue); border-color: var(--blue); color:#fff; }
+
+    .photo-preview{
+      width:100%; height:200px; border-radius:18px; background:#05101c;
+      margin-top:15px; border:1px dashed var(--stroke); display:flex; align-items:center; justify-content:center;
+      overflow:hidden;
+    }
+    .photo-preview img{ width:100%; height:100%; object-fit:cover; }
+
+    .orb{
+      width:100%; height:180px; border-radius:22px;
+      background: radial-gradient(circle at center, var(--blue2), #02050b);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      position:relative; margin-bottom:20px;
+    }
+    .orb h2 { font-size: 48px; font-weight: 900; }
+    
+    .confirm-box { background: rgba(59, 130, 246, 0.1); border-radius: 15px; padding: 15px; margin-top: 15px; display: none; }
 
     .cp-toast{
       position:fixed; top:20px; left:50%; transform: translateX(-50%) translateY(-100px);
       background:#0b1a2d; border:1px solid var(--blue); color:#fff;
-      padding:12px 24px; border-radius:50px; font-weight:800; z-index:10000;
-      transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      padding:12px 25px; border-radius:50px; font-weight:800; z-index:10000;
+      transition: transform .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
     }
     .cp-toast.show{ transform: translateX(-50%) translateY(0); }
-
-    .bottom-nav{
-      position:fixed; bottom:0; left:50%; transform: translateX(-50%);
-      width:100%; max-width: var(--max);
-      background: rgba(7, 23, 40, 0.95); backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(255,255,255,0.08);
-      padding: 8px 8px calc(12px + env(safe-area-inset-bottom));
-      z-index:1000;
-    }
-    .bottom-nav-inner{ display:flex; justify-content: space-around; }
-    .nav-btn{
-      background:none; border:none; color: var(--muted); font-size:10px; font-weight:800;
-      display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; padding:8px 0;
-    }
-    .nav-btn .nav-icon{ font-size:20px; }
-    .nav-btn.active{ color: var(--blue); }
-
-    .mini-profile{
-      display:flex; align-items:center; gap:12px; padding:12px;
-      background: rgba(255,255,255,0.03); border-radius:14px; border: 1px solid rgba(255,255,255,0.05);
-    }
-    .mini-avatar{
-      width:44px; height:44px; border-radius:50%; background: var(--blue);
-      display:flex; align-items:center; justify-content:center; overflow:hidden;
-    }
-    .mini-avatar img{ width:100%; height:100%; object-fit:cover; }
-    .mini-name{ font-weight:900; font-size:14px; }
-    .mini-sub{ font-size:11px; color: var(--muted); }
-
-    .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
-    .chip{
-      padding:8px 12px; border-radius:99px; border:1px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.04); font-size:12px; font-weight:800; cursor:pointer;
-    }
-    .chip.on{ border-color: var(--blue); background: rgba(59,130,246,0.2); color: #fff; }
-
-    .photo-preview{
-      width:100%; height:180px; border-radius:18px; background:#071728;
-      border:1px dashed rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center;
-      margin-top:12px; overflow:hidden;
-    }
-    .photo-preview img{ width:100%; height:100%; object-fit:cover; }
-
-    .stat-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-    .stat-box{ background: rgba(255,255,255,0.04); border-radius:14px; padding:12px; text-align:center; }
-    .stat-val{ font-size:20px; font-weight:900; color: var(--blue); }
-    .stat-key{ font-size:10px; color: var(--muted); text-transform:uppercase; }
-
-    .confirm-box{ margin-top:12px; padding:12px; border-radius:16px; background: rgba(59,130,246,0.1); display:none; }
-
-    .day-card{ background: rgba(255,255,255,0.03); border-radius:14px; padding:12px; margin-bottom:12px; border:1px solid rgba(255,255,255,0.05); }
-    .day-title{ font-weight:900; color: var(--blue); font-size:14px; margin-bottom:8px; }
-    .exercise{ display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
-    .ex-name{ font-weight:800; font-size:13px; }
-    .ex-detail{ font-size:11px; color: var(--muted); }
-
-    .modal-back{ position:fixed; inset:0; background: rgba(0,0,0,0.8); display:none; z-index:5000; padding:20px; }
-    .modal{ background:#0b1a2d; border-radius:20px; padding:20px; max-width:400px; margin: 100px auto; border:1px solid var(--stroke); }
-
-    .orb{
-      width:100%; height:160px; border-radius:20px;
-      background: radial-gradient(circle at 50% 50%, var(--blue2), #000);
-      position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;
-    }
-    .orb-label{ position:absolute; bottom:15px; width:90%; display:flex; justify-content:space-between; font-weight:900; }
   </style>
 </head>
 
@@ -225,119 +134,60 @@
   <div id="root"></div>
   <div id="toastSlot"></div>
 
-  <div id="modalBack" class="modal-back">
-    <div class="modal">
-      <h3 id="modalTitle" style="margin-bottom:10px">Dica</h3>
-      <div id="modalBody" class="cp-hint" style="margin-bottom:20px"></div>
-      <button class="btn-neon" onclick="closeModal()">Entendi</button>
+  <div id="modalBack" class="modal-back" onclick="closeModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <h3 id="modalTitle">Info</h3>
+      <div id="modalBody" class="cp-hint" style="margin: 15px 0"></div>
+      <button class="btn-neon" onclick="closeModal()">Fechar</button>
     </div>
   </div>
 
   <script>
     /***********************
-     * CONFIG & STATE
+     * STATE & STORAGE
      ***********************/
-    const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663388243015/7hwT4Rcpzmt9PDwsiCfqK7/checkprato-hero-PJzdhsav9GuvFxECAtVKXF.webp";
-    
-    // Storage Keys
-    const KEY_PROFILE = "cp_profile_v2";
-    const KEY_STEP = "cp_step_v2";
-    const KEY_XP = "cp_xp_v2";
-    const KEY_PLATES = "cp_plates_v2";
-    const KEY_TRAIN_DONE = "cp_train_done_v2";
+    const KEY_PROFILE = "cp_profile_elite";
+    const KEY_STEP = "cp_step_elite";
+    const KEY_XP = "cp_xp_elite";
+    const KEY_PLATES = "cp_plates_elite";
 
-    let currentScreen = "welcome";
-    let lastScreen = "";
-    let activeTimer = null;
-    let timerInterval = null;
-
-    // Default Profile State
-    let stateCad = JSON.parse(localStorage.getItem(KEY_PROFILE)) || {
-      avatarDataUrl: "", nome: "", sobrenome: "", peso: "", altura: "",
-      sexo: "", objetivo: "", nivel: "Iniciante", condicao: "", restricoes: "",
-      mobilidade: "", idadeGrupo: "", pcd: false, idoso: false, sedentario: false,
-      esportes: [], termo: false, localTreino: "Casa"
+    let state = JSON.parse(localStorage.getItem(KEY_PROFILE)) || {
+      nome: "", peso: "", objetivo: "Emagrecimento", nivel: "Iniciante", esportes: [], termo: false, avatar: ""
     };
 
-    let plateDataUrl = localStorage.getItem("cp_last_plate") || "";
-    let plateAI = null;
-    let dietaMode = "emagrecimento";
-    let treinoMode = "Musculação";
+    let currentScreen = "welcome";
+    let activeTimer = null;
+    let timerClock = null;
+    let plateTemp = null;
 
     /***********************
-     * HELPERS
+     * UTILS
      ***********************/
-    const esc = (s) => String(s || "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-    const getStep = () => Number(localStorage.getItem(KEY_STEP) || "0");
-    const setStep = (n) => localStorage.setItem(KEY_STEP, String(n));
+    const showToast = (m) => {
+      const s = document.getElementById("toastSlot");
+      s.innerHTML = `<div class="cp-toast show">${m}</div>`;
+      setTimeout(() => s.firstChild?.classList.remove("show"), 2000);
+    };
+
+    const save = () => localStorage.setItem(KEY_PROFILE, JSON.stringify(state));
     const getXP = () => Number(localStorage.getItem(KEY_XP) || "0");
     const addXP = (v) => localStorage.setItem(KEY_XP, String(getXP() + v));
+    const setStep = (n) => localStorage.setItem(KEY_STEP, n);
+    const getStep = () => Number(localStorage.getItem(KEY_STEP) || "0");
 
-    function showToast(msg) {
-      const slot = document.getElementById("toastSlot");
-      slot.innerHTML = `<div class="cp-toast show">${msg}</div>`;
-      setTimeout(() => slot.firstChild?.classList.remove("show"), 2500);
-    }
-
-    function openModal(title, body) {
-      document.getElementById("modalTitle").innerText = title;
-      document.getElementById("modalBody").innerHTML = body;
-      document.getElementById("modalBack").style.display = "block";
-    }
     function closeModal() { document.getElementById("modalBack").style.display = "none"; }
-
-    function saveProfile() {
-      localStorage.setItem(KEY_PROFILE, JSON.stringify(stateCad));
+    function openModal(t, b) { 
+      document.getElementById("modalTitle").innerText = t;
+      document.getElementById("modalBody").innerHTML = b;
+      document.getElementById("modalBack").style.display = "block";
     }
 
     /***********************
-     * RENDERING ENGINE
+     * NAVIGATION
      ***********************/
-    function render() {
-      const animate = currentScreen !== lastScreen;
-      lastScreen = currentScreen;
-      const root = document.getElementById("root");
-      
-      let navHtml = "";
-      if (getStep() >= 3) {
-        const tabs = [
-          {id:"prato", i:"🍽️", l:"Prato"},
-          {id:"dieta", i:"🥗", l:"Dieta"},
-          {id:"treino", i:"💪", l:"Treino"},
-          {id:"progresso", i:"📈", l:"Progresso"},
-          {id:"perfil", i:"👤", l:"Perfil"}
-        ];
-        navHtml = `
-          <nav class="bottom-nav">
-            <div class="bottom-nav-inner">
-              ${tabs.map(t => `<button class="nav-btn ${currentScreen===t.id?'active':''}" onclick="goTo('${t.id}')"><span class="nav-icon">${t.i}</span>${t.l}</button>`).join('')}
-            </div>
-          </nav>`;
-      }
-
-      root.innerHTML = `
-        <div class="app-shell">
-          <div id="bgSlot"><div class="bg-layer" style="background-image:url('${HERO_IMG}')"></div><div class="bg-overlay"></div></div>
-          <div class="page-wrap ${animate?'screen-enter':''}" id="screenContent"></div>
-          ${navHtml}
-        </div>
-      `;
-
-      const content = document.getElementById("screenContent");
-      if(currentScreen === "welcome") content.innerHTML = renderWelcome();
-      else if(currentScreen === "acesso") content.innerHTML = renderAcesso();
-      else if(currentScreen === "cadastro") { content.innerHTML = renderCadastro(); wireCadastro(); }
-      else if(currentScreen === "impacto") content.innerHTML = renderImpacto();
-      else if(currentScreen === "prato") { content.innerHTML = renderPrato(); wirePrato(); }
-      else if(currentScreen === "dieta") content.innerHTML = renderDieta();
-      else if(currentScreen === "treino") content.innerHTML = renderTreino();
-      else if(currentScreen === "progresso") content.innerHTML = renderProgresso();
-      else if(currentScreen === "perfil") content.innerHTML = renderPerfil();
-    }
-
     function goTo(scr) {
-      if (getStep() < 3 && !["welcome","acesso","cadastro","impacto"].includes(scr)) {
-        showToast("Finalize o cadastro primeiro!");
+      if (getStep() < 3 && !["welcome", "acesso", "cadastro", "impacto"].includes(scr)) {
+        showToast("Conclua seu cadastro!");
         return;
       }
       currentScreen = scr;
@@ -345,296 +195,263 @@
     }
 
     /***********************
-     * SCREENS HTML
+     * RENDERING
      ***********************/
-    function renderWelcome() {
-      return `
-        <div class="logo-wrap" style="margin-top:40px"><div class="logo-icon">✓</div><div class="logo-text">Check<span>Prato</span></div></div>
-        <div class="cp-card tcenter">
-          <div style="font-size:50px">🚀</div>
-          <h1 class="cp-h1">Seja bem-vindo!</h1>
-          <p class="cp-hint">Vamos transformar sua rotina com IA.</p>
-          <div class="cp-divider"></div>
-          <button class="btn-neon" onclick="setStep(1); goTo('acesso')">Começar Agora</button>
+    function render() {
+      const root = document.getElementById("root");
+      const step = getStep();
+      
+      let nav = "";
+      if(step >= 3) {
+        const items = [
+          {id:"prato", i:"🍽️", l:"Prato"},
+          {id:"dieta", i:"🥗", l:"Dieta"},
+          {id:"treino", i:"💪", l:"Treino"},
+          {id:"progresso", i:"📈", l:"Progresso"},
+          {id:"perfil", i:"👤", l:"Perfil"}
+        ];
+        nav = `<nav class="bottom-nav"><div class="bottom-nav-inner">
+          ${items.map(t => `<button class="nav-btn ${currentScreen===t.id?'active':''}" onclick="goTo('${t.id}')"><span>${t.i}</span>${t.l}</button>`).join('')}
+        </div></nav>`;
+      }
+
+      root.innerHTML = `
+        <div class="app-shell">
+          <div id="bgSlot"><div class="bg-layer" style="background-image:url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1000')"></div><div class="bg-overlay"></div></div>
+          <div class="page-wrap screen-enter" id="content"></div>
+          ${nav}
         </div>
       `;
-    }
 
-    function renderAcesso() {
-      return `
+      const box = document.getElementById("content");
+      if(currentScreen === "welcome") box.innerHTML = `
+        <div class="logo-wrap" style="margin-top:60px"><div class="logo-icon">✓</div><div class="logo-text">Check<span>Prato</span></div></div>
+        <div class="cp-card tcenter">
+          <h1 class="cp-h1">Seu corpo, sua elite.</h1>
+          <p class="cp-hint">Análise de pratos com IA e treinos personalizados em um só lugar.</p>
+          <button class="btn-neon" onclick="setStep(1); goTo('acesso')">Começar Jornada</button>
+        </div>`;
+      
+      else if(currentScreen === "acesso") box.innerHTML = `
         <h1 class="cp-h1 tcenter">Acesso</h1>
         <div class="cp-card">
-          <button class="btn-outline" style="margin-bottom:15px">G Entrar com Google</button>
-          <input type="email" class="cp-input" placeholder="Seu melhor e-mail">
+          <input type="email" class="cp-input" placeholder="E-mail">
           <input type="password" class="cp-input" placeholder="Senha">
-          <button class="btn-neon" style="margin-top:20px" onclick="setStep(2); goTo('cadastro')">Continuar</button>
-        </div>
-      `;
-    }
+          <button class="btn-neon" onclick="setStep(2); goTo('cadastro')">Entrar</button>
+          <p class="cp-hint tcenter" style="margin-top:15px">Ou use login social</p>
+          <button class="btn-secondary" style="width:100%; margin-top:10px">G Entrar com Google</button>
+        </div>`;
 
-    function renderCadastro() {
-      const sports = ["Musculação","Corrida","CrossFit","Ciclismo","Natação","Yoga","Lutas"];
-      return `
-        <h1 class="cp-h1">Perfil</h1>
-        <div class="cp-card">
-          <div class="mini-profile">
-            <div class="mini-avatar" onclick="document.getElementById('avatarIn').click()">
-              ${stateCad.avatarDataUrl ? `<img src="${stateCad.avatarDataUrl}">` : "👤"}
-            </div>
-            <div class="mini-sub">Toque para mudar a foto</div>
-            <input type="file" id="avatarIn" hidden accept="image/*">
-          </div>
-          <div class="grid-2">
-            <input id="inNome" class="cp-input" placeholder="Nome" value="${esc(stateCad.nome)}">
-            <input id="inPeso" class="cp-input" placeholder="Peso (kg)" value="${esc(stateCad.peso)}">
-          </div>
-          <select id="inObj" class="cp-input">
-            <option value="">Objetivo</option>
-            <option value="Emagrecimento" ${stateCad.objetivo==='Emagrecimento'?'selected':''}>Emagrecimento</option>
-            <option value="Hipertrofia" ${stateCad.objetivo==='Hipertrofia'?'selected':''}>Hipertrofia</option>
-          </select>
-          <select id="inNivel" class="cp-input">
-            <option value="Iniciante" ${stateCad.nivel==='Iniciante'?'selected':''}>Iniciante</option>
-            <option value="Médio" ${stateCad.nivel==='Médio'?'selected':''}>Médio</option>
-            <option value="Avançado" ${stateCad.nivel==='Avançado'?'selected':''}>Avançado</option>
-          </select>
-          <div class="cp-label">Esportes</div>
-          <div class="chips">
-            ${sports.map(s => `<div class="chip ${stateCad.esportes.includes(s)?'on':''}" onclick="toggleSport('${s}', this)">${s}</div>`).join('')}
-          </div>
-          <label style="display:flex; gap:10px; margin-top:20px; font-size:12px">
-            <input type="checkbox" id="inTermo" ${stateCad.termo?'checked':''}> Aceito os termos de uso
-          </label>
-          <button class="btn-neon" style="margin-top:20px" onclick="finalizarCad()">Salvar e Abrir App</button>
-        </div>
-      `;
-    }
-
-    function renderPrato() {
-      return `
-        <h1 class="cp-h1">Analisar Prato</h1>
-        <div class="cp-card">
-          <div class="photo-preview" id="previewPrato">
-            ${plateDataUrl ? `<img src="${plateDataUrl}">` : "📸 Sem foto"}
-          </div>
-          <div class="btn-row">
-            <button class="btn-secondary" onclick="document.getElementById('plateIn').click()">📷 Foto</button>
-            <input type="file" id="plateIn" hidden accept="image/*" capture="environment">
-          </div>
-          <button class="btn-neon" style="margin-top:15px" onclick="simularAnalise()">🔍 Analisar com IA</button>
-          
-          <div class="stat-grid" style="margin-top:20px">
-            <div class="stat-box"><div class="stat-val" id="vKcal">—</div><div class="stat-key">Kcal</div></div>
-            <div class="stat-box"><div class="stat-val" id="vProt">—</div><div class="stat-key">Prot</div></div>
-          </div>
-          <div id="confirmBox" class="confirm-box">
-            <p class="cp-hint" id="iaDesc"></p>
-            <button class="btn-neon" style="margin-top:10px" onclick="confirmarPrato()">Confirmar e Salvar</button>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderTreino() {
-      const treinos = {
-        "Musculação": [
-          {n: "Supino Reto", d: "4 séries x 10 reps"},
-          {n: "Agachamento", d: "3 séries x 12 reps"}
-        ],
-        "Corrida": [{n: "Trote Leve", d: "20 minutos"}]
-      };
-      const t = treinos[treinoMode] || treinos["Musculação"];
-      const nivelMin = stateCad.nivel === "Iniciante" ? 1 : (stateCad.nivel === "Médio" ? 3 : 5);
-
-      return `
-        <h1 class="cp-h1">Seu Treino</h1>
-        <div class="cp-card">
-          <select class="cp-input" onchange="treinoMode=this.value; render()">
-            <option value="Musculação" ${treinoMode==="Musculação"?'selected':''}>Musculação</option>
-            <option value="Corrida" ${treinoMode==="Corrida"?'selected':''}>Corrida</option>
-          </select>
-          <div class="cp-divider"></div>
-          ${activeTimer ? `
-            <div class="stat-box" style="margin-bottom:15px; border:1px solid var(--blue)">
-              <div class="stat-key">Executando: ${activeTimer.name}</div>
-              <div class="stat-val" id="timerDisplay">00:00</div>
-              <button class="btn-neon" id="finishExBtn" style="margin-top:10px; font-size:12px" disabled onclick="finalizarExercicio()">Finalizar (Mín ${nivelMin}m)</button>
-            </div>
-          ` : ""}
-          ${t.map(ex => `
-            <div class="exercise">
-              <div><div class="ex-name">${ex.n}</div><div class="ex-detail">${ex.d}</div></div>
-              <button class="btn-secondary" style="flex:0; padding:8px 15px" onclick="iniciarTreino('${ex.n}', ${nivelMin})">▶</button>
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
-
-    function renderProgresso() {
-      const xp = getXP();
-      const plates = JSON.parse(localStorage.getItem(KEY_PLATES) || "[]");
-      return `
-        <h1 class="cp-h1">Evolução</h1>
-        <div class="cp-card">
-          <div class="orb">
-            <div style="text-align:center">
-              <div style="font-size:40px; font-weight:900">${xp}</div>
-              <div class="stat-key">Total XP</div>
-            </div>
-            <div class="orb-label"><span>Nível Bronze</span><span>Prox: 500 XP</span></div>
-          </div>
-          <div class="cp-label">Histórico Recente</div>
-          ${plates.length === 0 ? '<p class="cp-hint">Nenhum prato salvo ainda.</p>' : 
-            plates.slice(0,3).map(p => `<div class="mini-profile" style="margin-bottom:8px"><span>🍽️</span><div><div class="mini-name">${p.desc}</div><div class="mini-sub">${p.kcal} kcal</div></div></div>`).join('')
-          }
-        </div>
-      `;
-    }
-
-    function renderPerfil() {
-      return `
-        <h1 class="cp-h1">Configurações</h1>
-        <div class="cp-card">
-           <div class="mini-profile">
-            <div class="mini-avatar">${stateCad.avatarDataUrl ? `<img src="${stateCad.avatarDataUrl}">` : "👤"}</div>
-            <div><div class="mini-name">${stateCad.nome || "Usuário"}</div><div class="mini-sub">${stateCad.objetivo}</div></div>
-          </div>
-          <button class="btn-outline" style="margin-top:20px" onclick="goTo('cadastro')">Editar Perfil</button>
-          <button class="btn-secondary" style="margin-top:10px; width:100%" onclick="localStorage.clear(); location.reload()">Sair / Resetar Dados</button>
-        </div>
-      `;
-    }
-
-    function renderDieta() {
-        return `
-            <h1 class="cp-h1">Sua Dieta</h1>
-            <div class="cp-card">
-                <div class="day-card">
-                    <div class="day-title">Café da Manhã</div>
-                    <div class="cp-hint">• 2 Ovos Mexidos<br>• 1 fatia de Pão Integral<br>• Café sem açúcar</div>
-                </div>
-                <div class="day-card">
-                    <div class="day-title">Almoço</div>
-                    <div class="cp-hint">• 150g de Frango Grelhado<br>• 100g de Arroz<br>• Salada à vontade</div>
-                </div>
-                <button class="btn-neon" onclick="showToast('Dieta atualizada!')">Gerar Novas Opções</button>
-            </div>
-        `;
+      else if(currentScreen === "cadastro") renderCadastro(box);
+      else if(currentScreen === "impacto") box.innerHTML = `
+        <div class="cp-card tcenter" style="margin-top:80px">
+          <div style="font-size:60px">🏆</div>
+          <h1 class="cp-h1">Você está dentro!</h1>
+          <p class="cp-hint">Seu plano de Elite foi gerado. Vamos começar?</p>
+          <button class="btn-neon" onclick="goTo('prato')">Bora!</button>
+        </div>`;
+      
+      else if(currentScreen === "prato") renderPrato(box);
+      else if(currentScreen === "dieta") renderDieta(box);
+      else if(currentScreen === "treino") renderTreino(box);
+      else if(currentScreen === "progresso") renderProgresso(box);
+      else if(currentScreen === "perfil") renderPerfil(box);
     }
 
     /***********************
-     * LOGIC FUNCTIONS
+     * SCREEN RENDERERS
      ***********************/
-    function wireCadastro() {
-      const inputs = ['inNome', 'inPeso', 'inObj', 'inNivel', 'inTermo'];
-      inputs.forEach(id => {
-        const el = document.getElementById(id);
-        el.onchange = () => {
-          if(id === 'inTermo') stateCad.termo = el.checked;
-          else stateCad[id.replace('in','').toLowerCase()] = el.value;
-          saveProfile();
-        };
-      });
+    function renderCadastro(box) {
+      const sports = ["Musculação", "Corrida", "CrossFit", "Yoga", "Futebol"];
+      box.innerHTML = `
+        <h1 class="cp-h1">Meu Perfil</h1>
+        <div class="cp-card">
+          <div class="tcenter">
+            <div id="avatarCircle" style="width:80px; height:80px; border-radius:50%; background:#333; margin:0 auto; overflow:hidden; border:2px solid var(--blue)">
+              ${state.avatar ? `<img src="${state.avatar}" style="width:100%;height:100%;object-fit:cover">` : ''}
+            </div>
+            <button class="btn-secondary" style="margin-top:10px; font-size:11px" onclick="document.getElementById('fileAv').click()">Mudar Foto</button>
+            <input type="file" id="fileAv" hidden accept="image/*">
+          </div>
+          <input id="inNome" class="cp-input" placeholder="Nome Completo" value="${state.nome}">
+          <input id="inPeso" class="cp-input" placeholder="Peso Atual (kg)" value="${state.peso}">
+          <div class="cp-label">Objetivo</div>
+          <select id="inObj" class="cp-input">
+            <option ${state.objetivo=='Emagrecimento'?'selected':''}>Emagrecimento</option>
+            <option ${state.objetivo=='Hipertrofia'?'selected':''}>Hipertrofia</option>
+          </select>
+          <div class="cp-label">Nível de Experiência</div>
+          <select id="inNivel" class="cp-input">
+            <option ${state.nivel=='Iniciante'?'selected':''}>Iniciante</option>
+            <option ${state.nivel=='Médio'?'selected':''}>Médio</option>
+            <option ${state.nivel=='Avançado'?'selected':''}>Avançado</option>
+          </select>
+          <div class="cp-label">Esportes Favoritos</div>
+          <div class="chips">
+            ${sports.map(s => `<div class="chip ${state.esportes.includes(s)?'on':''}" onclick="this.classList.toggle('on')">${s}</div>`).join('')}
+          </div>
+          <label style="display:flex; align-items:center; gap:10px; margin-top:20px; font-size:12px">
+            <input type="checkbox" id="inTermo" ${state.termo?'checked':''}> Aceito os termos CheckPrato
+          </label>
+          <button class="btn-neon" onclick="finalizarCad()">Salvar Configurações</button>
+        </div>`;
 
-      document.getElementById("avatarIn").onchange = (e) => {
-        const reader = new FileReader();
-        reader.onload = () => { stateCad.avatarDataUrl = reader.result; saveProfile(); render(); };
-        reader.readAsDataURL(e.target.files[0]);
+      document.getElementById("fileAv").onchange = (e) => {
+        const r = new FileReader();
+        r.onload = () => { state.avatar = r.result; save(); render(); };
+        r.readAsDataURL(e.target.files[0]);
       };
     }
 
-    function toggleSport(s, el) {
-      const idx = stateCad.esportes.indexOf(s);
-      if(idx > -1) stateCad.esportes.splice(idx, 1);
-      else stateCad.esportes.push(s);
-      el.classList.toggle("on");
-      saveProfile();
-    }
-
     function finalizarCad() {
-      if(!stateCad.nome || !stateCad.termo) return showToast("Preencha o nome e aceite os termos!");
+      state.nome = document.getElementById("inNome").value;
+      state.peso = document.getElementById("inPeso").value;
+      state.termo = document.getElementById("inTermo").checked;
+      state.esportes = Array.from(document.querySelectorAll(".chip.on")).map(c => c.innerText);
+      if(!state.nome || !state.termo) return showToast("Preencha os dados obrigatórios!");
+      save();
       setStep(3);
       goTo('impacto');
     }
 
-    function renderImpacto() {
-      return `
-        <div class="cp-card tcenter" style="margin-top:100px">
-          <div style="font-size:60px">🏆</div>
-          <h1 class="cp-h1">Perfil Criado!</h1>
-          <p class="cp-hint">Você está pronto para o CheckPrato Elite.</p>
-          <button class="btn-neon" style="margin-top:30px" onclick="goTo('prato')">Acessar App</button>
-        </div>
-      `;
-    }
-
-    function wirePrato() {
-      document.getElementById("plateIn").onchange = (e) => {
-        const reader = new FileReader();
-        reader.onload = () => { 
-            plateDataUrl = reader.result; 
-            localStorage.setItem("cp_last_plate", plateDataUrl);
-            render(); 
-        };
-        reader.readAsDataURL(e.target.files[0]);
+    function renderPrato(box) {
+      box.innerHTML = `
+        <h1 class="cp-h1">Check Prato</h1>
+        <div class="cp-card">
+          <div class="photo-preview" id="pPlate">${plateTemp ? `<img src="${plateTemp}">` : '📸 Foto do Prato'}</div>
+          <button class="btn-neon" onclick="document.getElementById('fPlate').click()">Tirar Foto</button>
+          <input type="file" id="fPlate" hidden accept="image/*" capture="environment">
+          <button class="btn-secondary" style="width:100%; margin-top:10px" onclick="analisarPrato()">Analisar com IA</button>
+          
+          <div id="plateInfo" class="confirm-box">
+             <div style="display:flex; justify-content:space-between">
+                <div><b style="color:var(--blue)">420 kcal</b><br><small>Calorias</small></div>
+                <div><b>30g</b><br><small>Proteína</small></div>
+                <div><b>45g</b><br><small>Carbos</small></div>
+             </div>
+             <button class="btn-neon" style="font-size:12px" onclick="confirmarPrato()">Confirmar e Salvar no Histórico</button>
+          </div>
+        </div>`;
+      
+      document.getElementById("fPlate").onchange = (e) => {
+        const r = new FileReader();
+        r.onload = () => { plateTemp = r.result; render(); };
+        r.readAsDataURL(e.target.files[0]);
       };
     }
 
-    function simularAnalise() {
-      if(!plateDataUrl) return showToast("Tire uma foto primeiro!");
-      showToast("IA Analisando...");
-      setTimeout(() => {
-        plateAI = { kcal: 450, prot: 32, desc: "Frango, arroz integral e brócolis." };
-        document.getElementById("vKcal").innerText = plateAI.kcal;
-        document.getElementById("vProt").innerText = plateAI.prot + "g";
-        document.getElementById("iaDesc").innerText = "Detectamos: " + plateAI.desc;
-        document.getElementById("confirmBox").style.display = "block";
-      }, 1500);
+    function analisarPrato() {
+      if(!plateTemp) return showToast("Adicione uma foto!");
+      showToast("IA Processando...");
+      setTimeout(() => document.getElementById("plateInfo").style.display = "block", 1500);
     }
 
     function confirmarPrato() {
       const plates = JSON.parse(localStorage.getItem(KEY_PLATES) || "[]");
-      plates.unshift({ desc: plateAI.desc, kcal: plateAI.kcal, date: new Date().toISOString() });
+      plates.unshift({ kcal: 420, date: new Date().toLocaleDateString() });
       localStorage.setItem(KEY_PLATES, JSON.stringify(plates));
-      addXP(10);
-      showToast("Salvo! +10 XP");
+      addXP(20);
+      plateTemp = null;
+      showToast("Prato salvo! +20 XP");
       goTo('progresso');
     }
 
-    function iniciarTreino(name, min) {
-      if(activeTimer) return showToast("Termine o exercício atual!");
-      activeTimer = { name, min, start: Date.now() };
-      render();
-      startClock();
+    function renderDieta(box) {
+      box.innerHTML = `
+        <h1 class="cp-h1">Dieta Elite</h1>
+        <div class="cp-card">
+          <div class="cp-label">Sugestão de Hoje</div>
+          <div style="margin-top:10px">
+            <div class="day-card"><div class="day-title">Almoço</div><div class="cp-hint">150g Frango + 100g Arroz + Mix de Folhas</div></div>
+            <div class="day-card"><div class="day-title">Lanche</div><div class="cp-hint">1 Iogurte Natural + 10g de Nozes</div></div>
+          </div>
+          <button class="btn-neon" onclick="openModal('Substituições', 'Você pode trocar o Frango por Peixe ou Omelete de 3 ovos.')">Ver Substituições</button>
+        </div>`;
     }
 
-    function startClock() {
-      timerInterval = setInterval(() => {
-        const el = document.getElementById("timerDisplay");
-        if(!el) return clearInterval(timerInterval);
-        
-        const diff = Math.floor((Date.now() - activeTimer.start) / 1000);
-        const m = Math.floor(diff / 60);
-        const s = diff % 60;
-        el.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    function renderTreino(box) {
+      const minReq = state.nivel === "Iniciante" ? 1 : (state.nivel === "Médio" ? 3 : 5);
+      box.innerHTML = `
+        <h1 class="cp-h1">Treino</h1>
+        <div class="cp-card">
+          ${activeTimer ? `
+            <div class="stat-box" style="border:2px solid var(--blue); margin-bottom:20px">
+              <div class="stat-val" id="clock">00:00</div>
+              <div class="stat-key">Tempo de Execução</div>
+              <button class="btn-neon" id="btnFinish" disabled onclick="finalizarTreino()">Finalizar Exercício</button>
+            </div>
+          ` : ''}
+          <div class="exercise">
+            <div><div class="ex-name">Agachamento Livre</div><div class="ex-detail">Foco em amplitude • Mín ${minReq} min</div></div>
+            <button class="btn-secondary" onclick="iniciarClock('Agachamento')">▶</button>
+          </div>
+          <div class="exercise">
+            <div><div class="ex-name">Flexão de Braço</div><div class="ex-detail">3 séries até a falha</div></div>
+            <button class="btn-secondary" onclick="iniciarClock('Flexão')">▶</button>
+          </div>
+        </div>`;
+    }
 
-        if (m >= activeTimer.min) {
-            const btn = document.getElementById("finishExBtn");
-            if(btn) btn.disabled = false;
-        }
+    function iniciarClock(n) {
+      if(activeTimer) return showToast("Termine o atual!");
+      activeTimer = { name: n, start: Date.now() };
+      render();
+      const minReq = state.nivel === "Iniciante" ? 1 : (state.nivel === "Médio" ? 3 : 5);
+      timerClock = setInterval(() => {
+        const el = document.getElementById("clock");
+        if(!el) return clearInterval(timerClock);
+        const sec = Math.floor((Date.now() - activeTimer.start)/1000);
+        const m = Math.floor(sec/60);
+        const s = sec%60;
+        el.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        if(m >= minReq) document.getElementById("btnFinish").disabled = false;
       }, 1000);
     }
 
-    function finalizarExercicio() {
-      clearInterval(timerInterval);
-      addXP(15);
-      showToast("Excelente! +15 XP");
+    function finalizarTreino() {
+      clearInterval(timerClock);
       activeTimer = null;
+      addXP(30);
+      showToast("Treino Concluído! +30 XP");
       render();
     }
 
-    // Inicialização
+    function renderProgresso(box) {
+      const xp = getXP();
+      const plates = JSON.parse(localStorage.getItem(KEY_PLATES) || "[]");
+      box.innerHTML = `
+        <h1 class="cp-h1">Progresso</h1>
+        <div class="cp-card">
+          <div class="orb">
+            <h2 id="xpDisplay">${xp}</h2>
+            <div class="stat-key">XP Total</div>
+          </div>
+          <div class="cp-label">Últimos Registros</div>
+          <div style="margin-top:10px">
+            ${plates.length ? plates.map(p => `
+              <div class="mini-profile" style="margin-bottom:8px">
+                <div class="mini-avatar">🍽️</div>
+                <div><div class="mini-name">Prato de ${p.kcal} kcal</div><div class="mini-sub">Salvo em ${p.date}</div></div>
+              </div>
+            `).join('') : '<p class="cp-hint">Nenhum registro encontrado.</p>'}
+          </div>
+        </div>`;
+    }
+
+    function renderPerfil(box) {
+      box.innerHTML = `
+        <h1 class="cp-h1">Perfil</h1>
+        <div class="cp-card">
+          <div class="mini-profile">
+            <div class="mini-avatar">${state.avatar ? `<img src="${state.avatar}">` : '👤'}</div>
+            <div><div class="mini-name">${state.nome}</div><div class="mini-sub">${state.objetivo} • ${state.nivel}</div></div>
+          </div>
+          <button class="btn-neon" onclick="goTo('cadastro')">Editar Dados</button>
+          <button class="btn-secondary" style="width:100%; margin-top:10px" onclick="localStorage.clear(); location.reload()">Resetar Aplicativo</button>
+        </div>`;
+    }
+
+    // BOOT
     render();
   </script>
 </body>
