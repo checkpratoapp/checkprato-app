@@ -22,34 +22,56 @@
     }
 
     .app-shell{
-      width:100%; min-height:100vh; position:relative; overflow:hidden;
-      display:flex; align-items:flex-start; justify-content:center;
+      width:100%;
+      min-height:100vh;
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: radial-gradient(circle at 20% 0%, #0a1f38, #000);
     }
 
     #bgSlot{ position:absolute; inset:0; z-index:0; }
     .bg-layer{
-      position:absolute; inset:0; background-size:cover; background-position:center;
-      background-repeat:no-repeat; filter:saturate(1.05) contrast(1.05);
-      opacity:.35; transform: translateZ(0); transition: background-image 0.5s ease;
+      position:absolute; inset:0;
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+      filter:saturate(1.05) contrast(1.05);
+      opacity:.95;
+      transform: translateZ(0);
+      will-change: background-image;
     }
     .bg-overlay{
       position:absolute; inset:0;
-      background: radial-gradient(circle at 30% 10%, rgba(59,130,246,.22), transparent 55%),
-                  radial-gradient(circle at 70% 30%, rgba(37,99,235,.18), transparent 60%),
-                  linear-gradient(180deg, rgba(2,5,11,.58), rgba(2,5,11,.95));
+      background:
+        radial-gradient(circle at 30% 10%, rgba(59,130,246,.22), transparent 55%),
+        radial-gradient(circle at 70% 30%, rgba(37,99,235,.18), transparent 60%),
+        linear-gradient(180deg, rgba(2,5,11,.58), rgba(2,5,11,.90));
       pointer-events:none;
     }
 
-    .screen-enter{ animation: screenIn .2s ease-out forwards; }
+    .screen-enter{ animation: screenIn .18s ease-out forwards; }
     @keyframes screenIn{ from{ opacity:0; transform: translateY(10px);} to{ opacity:1; transform: translateY(0);} }
 
-    .page-wrap{ width:100%; max-width: var(--max); padding:18px 18px 140px; position:relative; z-index:5; }
+    .page-wrap{
+      width:100%;
+      max-width: var(--max);
+      padding:18px 18px 130px;
+      overflow-y:auto;
+      position:relative;
+      z-index:5;
+    }
 
     .logo-wrap{ display:flex; align-items:center; gap:8px; justify-content:center; margin-bottom:8px; }
     .logo-icon{
-      width:32px; height:32px; background: linear-gradient(135deg, var(--blue), var(--blue2));
-      border-radius: 8px; display:flex; align-items:center; justify-content:center;
-      box-shadow: 0 0 20px rgba(59,130,246,0.35); font-weight:900;
+      width:32px; height:32px;
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      border-radius: 8px;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow: 0 0 20px rgba(59,130,246,0.35);
+      font-weight:900;
     }
     .logo-text{ font-size:20px; font-weight:900; color:#eaf2ff; }
     .logo-text span{ color: var(--blue); }
@@ -61,14 +83,23 @@
 
     .cp-card{
       background: linear-gradient(180deg, var(--bgCard1), var(--bgCard2));
-      border-radius:22px; padding:18px; margin-top:14px;
-      border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      border-radius:22px;
+      padding:18px;
+      margin-top:14px;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
     }
 
     .cp-input{
-      width:100%; padding:12px 14px; margin-top:10px; border-radius:14px;
-      border:1px solid rgba(255,255,255,0.08); background:#071728; color:#eaf2ff;
-      font-size:14px; outline:none;
+      width:100%;
+      padding:12px 14px;
+      margin-top:10px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:#071728;
+      color:#eaf2ff;
+      font-size:14px;
+      outline:none;
     }
     .cp-input:focus{ border-color: rgba(59,130,246,0.55); }
 
@@ -77,483 +108,1746 @@
 
     .btn-neon{
       background: linear-gradient(135deg, var(--blue), var(--blue2));
-      color:#fff; font-weight:900; border:none; border-radius:50px;
-      padding:14px 24px; width:100%; font-size:16px;
-      box-shadow: 0 0 20px rgba(59,130,246,0.35); cursor:pointer;
+      color:#fff;
+      font-weight:900;
+      border:none;
+      border-radius:50px;
+      padding:14px 24px;
+      width:100%;
+      font-size:16px;
+      box-shadow: 0 0 20px rgba(59,130,246,0.35), 0 4px 16px rgba(0,0,0,0.45);
+      transition: all .15s ease;
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
     }
-    .btn-neon:disabled { filter: grayscale(1); opacity: 0.5; cursor: not-allowed; }
+    .btn-neon:active{ transform: translateY(1px) scale(.995); }
+    .btn-neon:hover{ box-shadow: 0 0 28px rgba(59,130,246,0.55), 0 6px 20px rgba(0,0,0,0.55); }
 
     .btn-outline{
-      background: transparent; color:#eaf2ff; font-weight:800;
-      border:1.5px solid rgba(234,242,255,0.28); border-radius:50px;
-      padding:13px 24px; width:100%; font-size:15px; cursor:pointer;
+      background: transparent;
+      color:#eaf2ff;
+      font-weight:800;
+      border:1.5px solid rgba(234,242,255,0.28);
+      border-radius:50px;
+      padding:13px 24px;
+      width:100%;
+      font-size:15px;
+      transition: all .15s ease;
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
     }
+    .btn-outline:hover{ border-color: var(--blue); color: var(--blue); }
 
     .btn-secondary{
-      background: rgba(255,255,255,0.06); color:#eaf2ff; font-weight:800;
-      border:1px solid rgba(255,255,255,0.10); border-radius:14px;
-      padding:12px 18px; font-size:14px; flex:1; cursor:pointer;
+      background: rgba(255,255,255,0.06);
+      color:#eaf2ff;
+      font-weight:800;
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:14px;
+      padding:12px 18px;
+      font-size:14px;
+      transition: all .15s ease;
+      flex:1;
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      white-space:nowrap;
+    }
+    .btn-secondary:hover{ background: rgba(59,130,246,0.10); border-color: rgba(59,130,246,0.30); }
+
+    .cp-divider{
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      margin:16px 0;
     }
 
     .cp-toast{
-      position:fixed; top:20px; left:50%; transform: translateX(-50%) translateY(-100px);
-      background:#0b1a2d; border:1px solid var(--blue); color:#fff;
-      padding:12px 18px; border-radius:50px; font-weight:800; z-index:9999;
-      transition: transform .25s ease; box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+      position:fixed;
+      top:20px;
+      left:50%;
+      transform: translateX(-50%) translateY(-90px);
+      background:#0b1a2d;
+      border:1px solid rgba(59,130,246,0.40);
+      color:#eaf2ff;
+      padding:12px 18px;
+      border-radius:50px;
+      font-weight:800;
+      font-size:14px;
+      z-index:9999;
+      transition: transform .25s ease;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+      max-width: calc(100vw - 24px);
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .cp-toast.show{ transform: translateX(-50%) translateY(0); }
 
     .bottom-nav{
-      position:fixed; bottom:0; left:50%; transform: translateX(-50%);
-      width:100%; max-width: var(--max); background: rgba(7, 23, 40, 0.97);
-      backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.08);
-      padding: 8px 12px calc(18px + env(safe-area-inset-bottom)); z-index:100;
+      position:fixed;
+      bottom:0;
+      left:50%;
+      transform: translateX(-50%);
+      width:100%;
+      max-width: var(--max);
+      background: rgba(7, 23, 40, 0.97);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 8px 12px calc(18px + env(safe-area-inset-bottom));
+      z-index:100;
     }
     .bottom-nav-inner{ display:flex; gap:4px; }
     .nav-btn{
-      flex:1; border:none; padding:8px 4px; border-radius:14px; background:transparent;
-      color: var(--muted); font-weight:800; font-size:10px; display:flex;
-      flex-direction:column; align-items:center; gap:4px; cursor:pointer;
+      flex:1;
+      border:none;
+      padding:8px 4px;
+      border-radius:14px;
+      background:transparent;
+      color: var(--muted);
+      font-weight:800;
+      font-size:10px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:4px;
+      transition: all .15s ease;
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
     }
+    .nav-btn .nav-icon{ font-size:20px; }
     .nav-btn.active{ color: var(--blue); background: rgba(59,130,246,0.10); }
 
     .mini-profile{
-      display:flex; align-items:center; gap:12px; padding:12px;
-      background: rgba(255,255,255,0.03); border-radius:14px; margin-bottom:12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px;
+      background: rgba(255,255,255,0.03);
+      border-radius:14px;
+      margin-bottom:12px;
       border: 1px solid rgba(255,255,255,0.05);
     }
     .mini-avatar{
-      width:44px; height:44px; border-radius:50%; background: var(--blue);
-      display:flex; align-items:center; justify-content:center; overflow:hidden;
+      width:44px; height:44px;
+      border-radius:50%;
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      display:flex; align-items:center; justify-content:center;
+      color:#fff;
+      font-weight:900;
+      flex-shrink:0;
+      font-size:20px;
+      overflow:hidden;
     }
-    .mini-avatar img{ width:100%; height:100%; object-fit:cover; }
+    .mini-avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .mini-name{ font-weight:900; font-size:14px; color:#eaf2ff; }
+    .mini-sub{ font-size:12px; color: var(--muted); font-weight:700; }
 
     .chips{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
     .chip{
-      padding:10px 12px; border-radius:999px; border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.04); font-weight:900; cursor:pointer; font-size:12px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      color: rgba(234,242,255,0.85);
+      font-weight:900;
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
     }
-    .chip.on{ border-color: var(--blue); background: rgba(59,130,246,0.18); }
+    .chip.on{
+      border-color: rgba(59,130,246,0.55);
+      background: rgba(59,130,246,0.18);
+      box-shadow: 0 0 0 6px rgba(59,130,246,0.10);
+    }
 
     .photo-preview{
-      width:100%; height:190px; border-radius:18px; background:#071728;
-      border:1px solid rgba(255,255,255,0.08); overflow:hidden; display:flex;
-      align-items:center; justify-content:center; margin-top:10px;
+      width:100%;
+      height:190px;
+      border-radius:18px;
+      background:#071728;
+      border:1px solid rgba(255,255,255,0.08);
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-top:10px;
+      color: rgba(234,242,255,0.70);
+      font-weight:900;
     }
-    .photo-preview img{ width:100%; height:100%; object-fit:cover; }
+    .photo-preview img{ width:100%; height:100%; object-fit:cover; display:block; }
 
     .stat-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:12px; }
-    .stat-box{ background: rgba(255,255,255,0.04); border-radius:16px; padding:12px; text-align:center; }
-    .stat-val{ font-size:22px; font-weight:1000; color: var(--blue); }
+    .stat-box{
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius:16px;
+      padding:12px;
+      text-align:center;
+    }
+    .stat-val{ font-size:22px; font-weight:1000; color: var(--blue); line-height:1.1; margin:4px 0 2px; }
     .stat-key{ font-size:11px; font-weight:850; color: var(--muted); text-transform:uppercase; }
 
-    .confirm-box{ margin-top:12px; padding:12px; border-radius:16px; background: rgba(59,130,246,0.08); display:none; }
+    .confirm-box{
+      margin-top:12px;
+      padding:12px;
+      border-radius:16px;
+      border:1px solid rgba(59,130,246,0.25);
+      background: rgba(59,130,246,0.08);
+      display:none;
+    }
+    .confirm-title{ font-weight:1000; margin-bottom:8px; color:#eaf2ff; }
+    .confirm-actions{ display:flex; gap:10px; margin-top:10px; }
 
-    .day-card{ background: rgba(255,255,255,0.03); border-radius:14px; padding:12px; margin-bottom:10px; }
+    .day-card{
+      background: rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:12px;
+      margin-bottom:10px;
+    }
+    .day-head{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom:10px;
+    }
     .day-title{ font-weight:1000; font-size:13px; color: var(--blue); }
-    .exercise{ display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
-    /* New style for exercise image */
-    .ex-pic { width: 44px; height: 44px; border-radius: 12px; overflow: hidden; background: rgba(255,255,255,0.05); }
-    .ex-pic img { width: 100%; height: 100%; object-fit: cover; }
+    .exercise{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:10px 0;
+      border-bottom:1px solid rgba(255,255,255,0.04);
+    }
+    .exercise:last-child{ border-bottom:none; }
+    .ex-left{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .ex-img{
+      width:44px; height:44px;
+      border-radius:12px;
+      background: rgba(59,130,246,0.12);
+      border:1px solid rgba(59,130,246,0.22);
+      overflow:hidden;
+      flex:0 0 auto;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:1000;
+      color: rgba(234,242,255,0.9);
+    }
+    .ex-img img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .ex-name{ font-weight:900; font-size:13px; color:#eaf2ff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 170px; }
+    .ex-detail{ font-size:12px; color: var(--muted); font-weight:700; }
 
-    .modal-back{ position:fixed; inset:0; background: rgba(0,0,0,0.60); display:none; z-index: 2000; padding: 18px; }
-    .modal{ width:100%; max-width: 400px; margin: 60px auto; background: #0b1a2d; border-radius: 18px; padding: 20px; }
+    .modal-back{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,0.60);
+      display:none;
+      z-index: 2000;
+      padding: 18px;
+      overflow:auto;
+    }
+    .modal{
+      width:100%;
+      max-width: 520px;
+      margin: 60px auto;
+      background: #0b1a2d;
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius: 18px;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.60);
+      padding: 16px;
+    }
+    .modal h3{ margin:0 0 10px; }
+    .modal .xrow{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .xbtn{
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.06);
+      color:#eaf2ff;
+      border-radius:12px;
+      padding:8px 10px;
+      font-weight:900;
+      cursor:pointer;
+    }
 
-    /* Dashboard 3D Styles (implante) */
-    .orb{
-      width:100%; height:190px; border-radius: 20px; position:relative; overflow:hidden;
-      background: radial-gradient(circle at center, var(--blue), #02050b);
+    /* =========================================================
+       NOVOS ESTILOS INJETADOS AQUI (3D DASHBOARD E LOJA)
+       ========================================================= */
+
+    /* DASHBOARD 3D STYLES (Progresso) */
+    .orb-3d {
+      width:100%; height:180px; border-radius:22px; position:relative; overflow:hidden;
+      background: radial-gradient(circle at 30% 30%, var(--blue2), #02050b);
       display:flex; flex-direction:column; align-items:center; justify-content:center;
-      box-shadow: 0 10px 40px rgba(59,130,246,0.2);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 0 30px rgba(255,255,255,0.05);
+      perspective: 1000px;
     }
-    .orb::after {
-      content: ''; position: absolute; inset: -50px;
-      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1), transparent 60%);
-      transform: rotate(20deg); pointer-events: none;
+    .orb-3d::after{
+      content:""; position:absolute; inset:-40px;
+      background: radial-gradient(circle at 50% 10%, rgba(255,255,255,0.15), transparent 50%);
+      transform: rotate(12deg); pointer-events: none;
     }
-    .orb-val { font-size: 56px; font-weight: 1000; color: #fff; text-shadow: 0 0 20px var(--blue); }
-    .orb-key { font-size: 11px; font-weight: 850; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; }
-    
-    .prog-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 14px; }
-    .prog-bar-wrap { height: 70px; display: flex; align-items: flex-end; justify-content: center; position: relative; }
-    .prog-bar { width: 100%; background: linear-gradient(180deg, var(--blue), #02050b); border-radius: 5px; transition: height 0.3s ease; box-shadow: 0 0 10px rgba(59,130,246,0.3); }
-    .prog-day { font-size: 9px; color: var(--muted); text-align: center; margin-top: 4px; font-weight: 800; text-transform: uppercase; }
+    .orb-3d-val { font-size: 52px; font-weight: 1000; color:#fff; text-shadow: 0 0 15px var(--blue); transform: translateZ(20px); z-index:1; }
+    .orb-3d-label { font-size: 11px; font-weight: 850; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; z-index:1; margin-top:5px; }
 
-    .history-card { background: rgba(255,255,255,0.03); border-radius:14px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(255,255,255,0.05); }
-    .hist-thumb { width: 44px; height: 44px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #071728; }
-    .hist-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .hist-info { min-width: 0; flex: 1; }
-    .hist-title { font-size: 13px; font-weight: 900; color: #fff; }
-    .hist-sub { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .chart-3d { display:flex; align-items:flex-end; justify-content:space-around; height:100px; padding:10px; margin-top:15px; background: rgba(0,0,0,0.2); border-radius:15px; border: 1px solid rgba(255,255,255,0.03); box-shadow: inset 0 4px 15px rgba(0,0,0,0.5); }
+    .bar-3d-wrap { display:flex; flex-direction:column; align-items:center; gap:5px; flex:1; }
+    .bar-3d { width:14px; background: linear-gradient(to top, var(--blue2), var(--blue)); border-radius:4px; transition: height 0.5s ease; position:relative; }
+    .bar-3d::after { content:''; position:absolute; top:0; left:0; width:100%; height:4px; background:rgba(255,255,255,0.3); border-radius:4px 4px 0 0; }
+    .bar-label { font-size: 9px; font-weight: 800; color: var(--muted); }
+
+    /* LOJA STYLES */
+    .loja-card { display: flex; flex-direction: column; gap: 8px; background: rgba(255,255,255,0.02); border: 1px solid var(--stroke); border-radius: 16px; padding: 16px; margin-bottom: 12px; }
+    .loja-title { font-weight: 900; font-size: 16px; color: #fff; }
+    .loja-desc { font-size: 13px; color: var(--muted); line-height: 1.4; margin-bottom: 5px; }
 
   </style>
 </head>
 
 <body>
   <div id="root"></div>
-  <div id="toastSlot"></div>
 
   <div id="modalBack" class="modal-back">
     <div class="modal">
-      <h3 id="modalTitle">Dica</h3>
-      <div id="modalBody" class="cp-hint" style="margin: 15px 0"></div>
-      <button class="btn-neon" onclick="closeModal()">Entendi</button>
+      <div class="xrow">
+        <h3 id="modalTitle">Dica</h3>
+        <button class="xbtn" onclick="closeModal()">Fechar</button>
+      </div>
+      <div id="modalBody" class="cp-hint"></div>
+      <div style="margin-top:12px">
+        <button class="btn-neon" onclick="closeModal()">Entendi</button>
+      </div>
     </div>
   </div>
 
   <script>
     /***********************
-     * DATA POOLS (RESTORED FULL)
+     * CONFIG
      ***********************/
-    const ESPORTES_FIXOS = ["Musculação","CrossFit","Corrida","Muay Thai","Boxe","Ciclismo","Vôlei","Natação"];
-    const FRASES_IMPACTO = [["Você não precisa de motivação. Precisa de direção.", "Consistência vence talento."]];
-    
+    const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663388243015/7hwT4Rcpzmt9PDwsiCfqK7/checkprato-hero-PJzdhsav9GuvFxECAtVKXF.webp";
+    const AI_ENDPOINT = ""; // ex: "https://seu-worker.seudominio.workers.dev/analyze"
+
+    const BG_BY_SCREEN = {
+      welcome:   "",
+      acesso:    "",
+      cadastro:  "",
+      impacto:   "",
+      prato:     "",
+      dieta:     "",
+      treino:    "",
+      progresso: "",
+      saude:     "",
+      loja:      "",
+      convite:   "",
+      perfil:    "",
+    };
+    function getBgForScreen(screen){
+      return BG_BY_SCREEN[screen] || HERO_IMG;
+    }
+    function applyBackground(){
+      const bg = document.getElementById("bgLayer");
+      if(!bg) return;
+      bg.style.backgroundImage = `url('${getBgForScreen(currentScreen)}')`;
+    }
+
+    /***********************
+     * STORAGE
+     ***********************/
+    const KEY_PROFILE = "cp_profile_v2";
+    const KEY_STEP = "cp_step_v2"; // 0..3
+    const KEY_XP = "cp_xp_v2";
+    const KEY_PLATES = "cp_plates_v2";
+    const KEY_TRAIN_DONE = "cp_train_done_v2";
+    const KEY_LAST_PHOTO = "cp_last_photo_v2";
+    const KEY_DIETA_LAST = "cp_dieta_last_v2";
+    const KEY_TREINO_LAST = "cp_treino_last_v2";
+
+    function safeParse(s, fb){ try{return JSON.parse(s);}catch{return fb;} }
+    function getStep(){ return Number(localStorage.getItem(KEY_STEP) || "0"); }
+    function setStep(n){ localStorage.setItem(KEY_STEP, String(n)); }
+    function getXP(){ return Number(localStorage.getItem(KEY_XP) || "0"); }
+    function addXP(v){ localStorage.setItem(KEY_XP, String(getXP() + Number(v||0))); }
+
+    function loadProfile(){ return safeParse(localStorage.getItem(KEY_PROFILE) || "null", null); }
+    function saveProfile(p){ localStorage.setItem(KEY_PROFILE, JSON.stringify(p)); }
+
+    function loadPlates(){ return safeParse(localStorage.getItem(KEY_PLATES) || "[]", []); }
+    function savePlates(arr){ localStorage.setItem(KEY_PLATES, JSON.stringify(arr)); }
+
+    function loadTrainDone(){ return safeParse(localStorage.getItem(KEY_TRAIN_DONE) || "[]", []); }
+    function saveTrainDone(arr){ localStorage.setItem(KEY_TRAIN_DONE, JSON.stringify(arr)); }
+
+    /***********************
+     * STATE
+     ***********************/
+    let currentScreen = "welcome";
+    let lastScreen = "";
+
+    let toastMsg = "";
+    let toastShow = false;
+
+    let stateAccessEmail = "";
+    let stateAccessPass = "";
+
+    let stateCad = {
+      avatarDataUrl: "",
+      nome: "",
+      sobrenome: "",
+      peso: "",
+      altura: "",
+      sexo: "",
+      objetivo: "",
+      nivel: "Iniciante",
+      condicao: "",
+      restricoes: "",
+      mobilidade: "",
+      idadeGrupo: "",
+      pcd: false,
+      idoso: false,
+      sedentario: false,
+      esportes: [],
+      termo: false,
+      localTreino: "Casa",
+    };
+
+    let plateDataUrl = localStorage.getItem(KEY_LAST_PHOTO) || "";
+    let plateAI = null;
+    let plateConfirmText = "";
+
+    let dietaMode = "emagrecimento";
+    let treinoMode = "Musculação";
+
+    let activeTimer = null;
+
+    /***********************
+     * DADOS (VARIEDADE)
+     ***********************/
+    const ESPORTES_FIXOS = [
+      "Musculação","CrossFit","Corrida","Muay Thai","Boxe","Capoeira","Jiu-jitsu","Karatê","Taekwondo","Ciclismo","Basquete","Vôlei"
+    ];
+
+    const FRASES_IMPACTO = [
+      ["Você não precisa de motivação. Precisa de direção.", "Pequenas escolhas hoje. Uma versão absurda de você amanhã."],
+      ["Disciplina é a ponte entre objetivo e conquista.", "Quem vence o dia, muda a vida."],
+      ["Seu corpo reflete suas escolhas.", "Consistência é mais forte do que intensidade."],
+      ["Você já começou. Agora não pare.", "O que você faz hoje decide seu amanhã."],
+      ["Mente forte. Corpo forte.", "Se for difícil, é porque vale a pena."]
+    ];
+    const FRASES_EMOCIONAIS = [
+      ["Você merece se sentir bem no seu próprio corpo.", "Cuide de você como você cuida de quem ama."],
+      ["Não é sobre perfeição. É sobre recomeçar.", "Hoje pode ser o dia 1."],
+      ["Seu futuro eu vai agradecer.", "Um passo por vez, mas todos os dias."]
+    ];
+    const FRASES_MENTAIS = [
+      ["Ansiedade diminui quando você executa.", "Ação é terapia."],
+      ["Pensamento certo, rotina certa.", "Rotina vence talento."],
+      ["Você não é seus impulsos.", "Você é suas decisões."]
+    ];
+
     const DIETA_POOL = {
       emagrecimento: {
-        cafe: [["2 ovos mexidos","1 fruta","Café sem açúcar"]],
-        almoco: [["Frango 150g","Arroz integral 4 col.","Salada"]],
-        lanche: [["Iogurte grego","Castanhas 20g"]],
-        jantar: [["Omelete 3 ovos","Legumes refogados"]]
+        cafe: [
+          ["2 ovos mexidos","1 fruta","Café sem açúcar"],
+          ["Iogurte natural","Aveia 40g","Banana"],
+          ["Tapioca pequena","Queijo branco","Chá"],
+          ["Omelete 2 ovos","Tomate","1 fruta"]
+        ],
+        almoco: [
+          ["Frango 150g","Arroz integral 4 col.","Feijão 2 col.","Salada"],
+          ["Carne magra 150g","Batata doce 150g","Legumes"],
+          ["Peixe 180g","Arroz 3 col.","Salada + azeite"],
+          ["Ovos cozidos 3","Legumes","Salada"]
+        ],
+        lanche: [
+          ["Iogurte grego sem açúcar","Castanhas 20g"],
+          ["Maçã","Pasta de amendoim 1 col."],
+          ["Queijo cottage","Morango"],
+          ["Shake (leite + banana)"]
+        ],
+        jantar: [
+          ["Omelete 3 ovos","Legumes refogados"],
+          ["Frango desfiado","Salada grande","Chá"],
+          ["Sopa de legumes","Proteína (frango/ovo)"],
+          ["Atum","Salada","1 fruta pequena"]
+        ]
       },
       hipertrofia: {
-        cafe: [["Aveia 80g","3 ovos","Leite 200ml"]],
-        almoco: [["Frango 200g","Arroz 6 col.","Feijão"]],
-        lanche: [["Whey 1 dose","Banana"]],
-        jantar: [["Carne 200g","Arroz 4 col.","Legumes"]]
+        cafe: [
+          ["Aveia 80g","3 ovos","Leite 200ml","Banana"],
+          ["Pão integral 2","Ovos 3","Iogurte"],
+          ["Vitamina (banana + leite + aveia)","Ovos 2"],
+          ["Tapioca","Queijo","Fruta","Whey (opcional)"]
+        ],
+        almoco: [
+          ["Frango 200g","Arroz 6 col.","Feijão 3 col.","Batata doce 150g"],
+          ["Carne 220g","Macarrão 120g","Legumes"],
+          ["Peixe 220g","Arroz 5 col.","Feijão","Salada"],
+          ["Frango 200g","Purê 200g","Salada"]
+        ],
+        lanche: [
+          ["Whey 1 dose","Banana"],
+          ["Sanduíche integral","Queijo","Peito de peru"],
+          ["Iogurte + granola","Castanhas"],
+          ["Ovos 2 + fruta"]
+        ],
+        jantar: [
+          ["Carne 200g","Arroz 4 col.","Legumes"],
+          ["Frango 200g","Macarrão integral 100g"],
+          ["Omelete 4 ovos","Batata 200g"],
+          ["Atum + arroz","Salada"]
+        ]
+      },
+      lowcarb: {
+        cafe: [
+          ["Ovos mexidos com queijo","Abacate 1/2","Café"],
+          ["Iogurte natural","Castanhas","Morangos"],
+          ["Omelete","Tomate","Chá"],
+          ["Queijo + ovos","1 fruta pequena"]
+        ],
+        almoco: [
+          ["Salmão 150g","Salada + azeite","Brócolis"],
+          ["Frango 180g","Legumes","Salada"],
+          ["Carne 180g","Couve-flor","Salada"],
+          ["Ovos 3","Legumes","Salada"]
+        ],
+        lanche: [
+          ["Castanhas 40g","Cottage 100g"],
+          ["Queijo + tomate"],
+          ["Iogurte + canela"],
+          ["Ovos 2"]
+        ],
+        jantar: [
+          ["Frango assado","Couve-flor gratinada","Chá"],
+          ["Peixe","Salada","Legumes"],
+          ["Sopa lowcarb","Ovos"],
+          ["Carne","Legumes"]
+        ]
       }
+    };
+
+    /* INJEÇÃO DE IMAGENS NOS TREINOS PARA FUNCIONAR O EX_IMG */
+    const EX_IMG = {
+      "Supino reto": "https://i.ibb.co/Vv6V6Kx/chest.jpg",
+      "Crucifixo": "https://i.ibb.co/XW8n2dC/fly.jpg",
+      "Tríceps corda": "https://i.ibb.co/8YmZ6K9/triceps.jpg",
+      "Puxada frontal": "https://i.ibb.co/vYvV9V0/back.jpg",
+      "Remada curvada": "https://i.ibb.co/XW8n2dC/row.jpg",
+      "Rosca direta": "https://i.ibb.co/vYvV9V0/biceps.jpg",
+      "Agachamento livre": "https://i.ibb.co/Vv6V6Kx/squat.jpg",
+      "Leg press": "https://i.ibb.co/8YmZ6K9/legpress.jpg",
+      "Cadeira extensora": "https://i.ibb.co/8YmZ6K9/legpress.jpg",
+      "Desenvolvimento": "https://i.ibb.co/Vv6V6Kx/chest.jpg",
+      "Elevação lateral": "https://i.ibb.co/XW8n2dC/fly.jpg",
+      "Flexão": "https://i.ibb.co/Vv6V6Kx/chest.jpg",
+      "Prancha": "https://i.ibb.co/vYvV9V0/back.jpg",
+      "Corrida contínua": "https://i.ibb.co/Vv6V6Kx/run.jpg",
+      "Sprint 30s + caminhada 1min": "https://i.ibb.co/Vv6V6Kx/run.jpg",
+      "Aquecimento": "https://i.ibb.co/vYvV9V0/warmup.jpg",
+      "Alongamento": "https://i.ibb.co/vYvV9V0/warmup.jpg",
+      "Burpees": "https://i.ibb.co/Vv6V6Kx/run.jpg",
+      "Box jump": "https://i.ibb.co/Vv6V6Kx/squat.jpg",
+      "Kettlebell swing": "https://i.ibb.co/vYvV9V0/back.jpg",
+      "Wall ball": "https://i.ibb.co/Vv6V6Kx/squat.jpg"
     };
 
     const TREINO_BASE = {
-      "Musculação":[{dia:"Segunda — Peito + Tríceps", ex:[["Supino reto","4x10", "https://i.ibb.co/L9H6tY4/supino.png"],["Tríceps corda","4x12", "https://i.ibb.co/K2R1vM9/triceps.png"]]}],
-      "Corrida":[{dia:"Segunda — Leve", ex:[["Aquecimento","5min", "https://i.ibb.co/S3J1tY4/run-warm.png"],["Corrida contínua","30min", "https://i.ibb.co/L9H6tY4/run.png"]]}]
+      "Musculação":[
+        {dia:"Segunda — Peito + Tríceps", ex:[["Supino reto","4x10"],["Crucifixo","3x12"],["Tríceps corda","4x12"]]},
+        {dia:"Terça — Costas + Bíceps", ex:[["Puxada frontal","4x10"],["Remada curvada","4x10"],["Rosca direta","3x12"]]},
+        {dia:"Quarta — Pernas", ex:[["Agachamento livre","4x10"],["Leg press","4x12"],["Cadeira extensora","3x15"]]},
+        {dia:"Quinta — Ombros", ex:[["Desenvolvimento","4x10"],["Elevação lateral","4x12"],["Prancha","3x40s"]]},
+        {dia:"Sexta — Full body", ex:[["Flexão","3x15"],["Agachamento livre","3x12"],["Prancha","3x40s"]]},
+      ],
+      "Corrida":[
+        {dia:"Segunda — Leve", ex:[["Aquecimento","5min"],["Corrida contínua","30min"],["Alongamento","10min"]]},
+        {dia:"Quarta — Intervalado", ex:[["Aquecimento","5min"],["Sprint 30s + caminhada 1min","8x"],["Alongamento","8min"]]},
+        {dia:"Sexta — Longa", ex:[["Corrida contínua","45min"],["Alongamento","15min"]]},
+      ],
+      "CrossFit":[
+        {dia:"Segunda — Força", ex:[["Agachamento livre","5x5"],["Supino reto","5x5"],["Prancha","4x30s"]]},
+        {dia:"Quarta — WOD", ex:[["Burpees","20min AMRAP"],["Box jump","20min AMRAP"]]},
+        {dia:"Sexta — Metcon", ex:[["Kettlebell swing","15min"],["Wall ball","15min"]]},
+      ],
     };
 
     /***********************
-     * STATE & STORAGE
+     * UTIL
      ***********************/
-    const KEY_PROFILE = "cp_prof_v2";
-    const KEY_STEP = "cp_step_v2";
-    const KEY_XP = "cp_xp_v2";
-    const KEY_PLATES = "cp_plates_v2";
-
-    let stateCad = JSON.parse(localStorage.getItem(KEY_PROFILE)) || {
-      nome: "", sobrenome: "", peso: "", altura: "", objetivo: "Emagrecimento",
-      nivel: "Iniciante", esportes: [], avatarDataUrl: "", termo: false
-    };
-
-    let currentScreen = "welcome";
-    let activeTimer = null;
-    let timerInt = null;
-    let plateDataUrl = localStorage.getItem("cp_last_plate") || "";
-
-    /***********************
-     * CORE FUNCTIONS
-     ***********************/
-    const getStep = () => Number(localStorage.getItem(KEY_STEP) || "0");
-    const setStep = (n) => { localStorage.setItem(KEY_STEP, n); render(); };
-    const getXP = () => Number(localStorage.getItem(KEY_XP) || "0");
-    const addXP = (v) => { localStorage.setItem(KEY_XP, getXP() + v); };
-    const getPlates = () => JSON.parse(localStorage.getItem(KEY_PLATES) || "[]");
-
-    function showToast(m) {
-      const s = document.getElementById("toastSlot");
-      s.innerHTML = `<div class="cp-toast show">${m}</div>`;
-      setTimeout(() => s.firstChild?.classList.remove("show"), 2000);
+    function esc(s){ return String(s??"").replace(/[&<>"]/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m])); }
+    function showToast(msg){
+      toastMsg = msg;
+      toastShow = true;
+      renderToast();
+      setTimeout(()=>{ toastShow=false; renderToast(); }, 2400);
     }
 
-    function closeModal() { document.getElementById("modalBack").style.display = "none"; }
-    function openModal(t, b) {
-      document.getElementById("modalTitle").innerText = t;
-      document.getElementById("modalBody").innerHTML = b;
+    function openModal(title, html){
+      document.getElementById("modalTitle").textContent = title || "Dica";
+      document.getElementById("modalBody").innerHTML = html || "";
       document.getElementById("modalBack").style.display = "block";
     }
+    function closeModal(){ document.getElementById("modalBack").style.display = "none"; }
 
-    function goTo(scr) {
-      if(getStep() < 3 && !["welcome","acesso","cadastro","impacto"].includes(scr)) {
-        return showToast("Conclua o cadastro!");
+    function readFileAsDataUrl(file){
+      return new Promise((resolve,reject)=>{
+        const r = new FileReader();
+        r.onload = ()=> resolve(String(r.result||""));
+        r.onerror = ()=> reject(new Error("Falha ao ler arquivo"));
+        r.readAsDataURL(file);
+      });
+    }
+
+    function getProfileDisplay(){
+      const p = loadProfile();
+      const fullName = p ? `${p.nome||""} ${p.sobrenome||""}`.trim() : "";
+      const name = fullName || "Visitante";
+      const avatar = p?.avatarDataUrl || "";
+      return { name, avatar };
+    }
+
+    /***********************
+     * BLOQUEIO POR ETAPAS
+     ***********************/
+    function isUnlocked(){ return getStep() >= 3; }
+    function canAccess(screen){
+      if(isUnlocked()) return true;
+      return ["welcome","acesso","cadastro","impacto"].includes(screen);
+    }
+    function goTo(screen){
+      if(!canAccess(screen)){
+        showToast("Conclua o cadastro para liberar as abas.");
+        currentScreen = "cadastro";
+        render();
+        return;
       }
-      currentScreen = scr;
+      currentScreen = screen;
       render();
     }
 
     /***********************
-     * RENDERING
+     * MOUNT ONCE
      ***********************/
-    function render() {
+    function mountOnce(){
       const root = document.getElementById("root");
-      const step = getStep();
-      let nav = "";
-
-      if(step >= 3) {
-        const tabs = [
-          {id:"prato", i:"🍽️", l:"Prato"}, {id:"dieta", i:"🥗", l:"Dieta"},
-          {id:"treino", i:"💪", l:"Treino"}, {id:"progresso", i:"📈", l:"Progresso"},
-          {id:"perfil", i:"👤", l:"Perfil"}
-        ];
-        nav = `<nav class="bottom-nav"><div class="bottom-nav-inner">
-          ${tabs.map(t => `<button class="nav-btn ${currentScreen===t.id?'active':''}" onclick="goTo('${t.id}')"><span>${t.i}</span>${t.l}</button>`).join('')}
-        </div></nav>`;
-      }
-
       root.innerHTML = `
         <div class="app-shell">
-          <div id="bgSlot"><div class="bg-layer" style="background-image:url('${HERO_IMG}')"></div><div class="bg-overlay"></div></div>
-          <div class="page-wrap screen-enter" id="content"></div>
-          ${nav}
-        </div>`;
+          <div id="bgSlot">
+            <div class="bg-layer" id="bgLayer"></div>
+            <div class="bg-overlay"></div>
+          </div>
+          <div id="screenSlot"></div>
+          <div id="navSlot"></div>
+          <div id="toastSlot"></div>
+        </div>
+      `;
+    }
 
-      const box = document.getElementById("content");
-      if(currentScreen === "welcome") box.innerHTML = renderWelcome();
-      else if(currentScreen === "acesso") box.innerHTML = renderAcesso();
-      else if(currentScreen === "cadastro") { box.innerHTML = renderCadastro(); wireCadastro(); }
-      else if(currentScreen === "impacto") box.innerHTML = renderImpacto();
-      else if(currentScreen === "prato") { box.innerHTML = renderPrato(); wirePrato(); }
-      else if(currentScreen === "dieta") box.innerHTML = renderDieta();
-      else if(currentScreen === "treino") box.innerHTML = renderTreino();
-      else if(currentScreen === "progresso") box.innerHTML = renderProgresso();
-      else if(currentScreen === "perfil") box.innerHTML = renderPerfil();
+    function renderToast(){
+      const slot = document.getElementById("toastSlot");
+      if(!slot) return;
+      slot.innerHTML = `<div class="cp-toast ${toastShow?"show":""}">${esc(toastMsg)}</div>`;
+    }
+
+    function renderNav(){
+      const slot = document.getElementById("navSlot");
+      if(!slot) return;
+
+      if(!isUnlocked()){ slot.innerHTML = ""; return; }
+
+      const items = [
+        {id:"prato", icon:"🍽️", label:"Prato"},
+        {id:"dieta", icon:"🥗", label:"Dieta"},
+        {id:"treino", icon:"💪", label:"Treino"},
+        {id:"progresso", icon:"📈", label:"Progresso"},
+        {id:"saude", icon:"❤️", label:"Saúde"},
+        {id:"loja", icon:"🛍️", label:"Loja"},
+        {id:"convite", icon:"📲", label:"Convite"},
+        {id:"perfil", icon:"👤", label:"Perfil"},
+      ];
+
+      slot.innerHTML = `
+        <nav class="bottom-nav">
+          <div class="bottom-nav-inner">
+            ${items.map(n=>`
+              <button class="nav-btn ${currentScreen===n.id?"active":""}" onclick="goTo('${n.id}')">
+                <span class="nav-icon">${n.icon}</span>${n.label}
+              </button>
+            `).join("")}
+          </div>
+        </nav>
+      `;
     }
 
     /***********************
-     * SCREENS HTML
+     * RENDER
      ***********************/
-    function renderWelcome() {
-      return `<div class="logo-wrap" style="margin-top:60px"><div class="logo-icon">✓</div><div class="logo-text">Check<span>Prato</span></div></div>
-      <div class="cp-card tcenter">
-        <h1 class="cp-h1">Seja Elite.</h1>
-        <p class="cp-hint">Seu corpo é seu templo. Vamos cuidar dele.</p>
-        <button class="btn-neon" onclick="setStep(1); goTo('acesso')">Começar</button>
-      </div>`;
+    function render(){
+      const animate = (currentScreen !== lastScreen);
+      lastScreen = currentScreen;
+
+      const slot = document.getElementById("screenSlot");
+      if(!slot) return;
+
+      let html = "";
+      if(currentScreen==="welcome") html = renderWelcome(animate);
+      else if(currentScreen==="acesso") html = renderAcesso(animate);
+      else if(currentScreen==="cadastro") html = renderCadastro(animate);
+      else if(currentScreen==="impacto") html = renderImpacto(animate);
+      else if(currentScreen==="prato") html = renderPrato(animate);
+      else if(currentScreen==="dieta") html = renderDieta(animate);
+      else if(currentScreen==="treino") html = renderTreino(animate);
+      else if(currentScreen==="progresso") html = renderProgresso(animate);
+      else if(currentScreen==="saude") html = renderSaude(animate);
+      else if(currentScreen==="loja") html = renderLoja(animate);
+      else if(currentScreen==="convite") html = renderConvite(animate);
+      else if(currentScreen==="perfil") html = renderPerfil(animate);
+      else html = renderWelcome(animate);
+
+      slot.innerHTML = html;
+
+      if(currentScreen==="cadastro") wireCadastro();
+      if(currentScreen==="prato") wirePrato();
+
+      renderNav();
+      renderToast();
+      applyBackground();
     }
 
-    function renderAcesso() {
-      return `<h1 class="cp-h1 tcenter">Acesso</h1>
-      <div class="cp-card">
-        <input type="email" class="cp-input" placeholder="E-mail">
-        <input type="password" class="cp-input" placeholder="Senha">
-        <button class="btn-neon" onclick="setStep(2); goTo('cadastro')">Continuar</button>
-      </div>`;
-    }
-
-    function renderCadastro() {
-      return `<h1 class="cp-h1">Perfil</h1>
-      <div class="cp-card">
-        <div class="mini-profile">
-          <div class="mini-avatar" onclick="document.getElementById('fAv').click()">
-            ${stateCad.avatarDataUrl ? `<img src="${stateCad.avatarDataUrl}">` : "👤"}
+    /***********************
+     * SCREENS
+     ***********************/
+    function renderWelcome(animate){
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="logo-wrap">
+            <div class="logo-icon">✓</div>
+            <div class="logo-text">Check<span>Prato</span></div>
           </div>
-          <input type="file" id="fAv" hidden accept="image/*">
-          <div class="mini-sub">Toque para foto</div>
-        </div>
-        <input id="inNome" class="cp-input" placeholder="Nome" value="${stateCad.nome}">
-        <input id="inPeso" class="cp-input" placeholder="Peso (kg)" value="${stateCad.peso}">
-        <select id="inObj" class="cp-input">
-          <option ${stateCad.objetivo=='Emagrecimento'?'selected':''}>Emagrecimento</option>
-          <option ${stateCad.objetivo=='Hipertrofia'?'selected':''}>Hipertrofia</option>
-        </select>
-        <div class="cp-label">Esportes</div>
-        <div class="chips">
-          ${ESPORTES_FIXOS.map(s => `<div class="chip ${stateCad.esportes.includes(s)?'on':''}" onclick="toggleSportInList('${s}', this)">${s}</div>`).join('')}
-        </div>
-        <label style="display:flex; gap:10px; margin-top:20px; font-size:12px"><input type="checkbox" id="inTermo" ${stateCad.termo?'checked':''}> Aceito o termo</label>
-        <button class="btn-neon" onclick="finalizarCad()">Salvar</button>
-      </div>`;
-    }
 
-    function renderPrato() {
-      return `<h1 class="cp-h1">Analisar Prato</h1>
-      <div class="cp-card">
-        <div class="photo-preview" id="preview">${plateDataUrl ? `<img src="${plateDataUrl}">` : "📸 Sem foto"}</div>
-        <button class="btn-neon" onclick="document.getElementById('fPrato').click()">Tirar Foto</button>
-        <input type="file" id="fPrato" hidden accept="image/*" capture="environment">
-        <button class="btn-secondary" style="width:100%; margin-top:10px" onclick="analisar()">IA Analisar</button>
-        <div id="plateConfirmBox" class="confirm-box">
-          <div class="stat-grid">
-            <div class="stat-box"><div class="stat-val">450</div><div class="stat-key">kcal</div></div>
-            <div class="stat-box"><div class="stat-val">30g</div><div class="stat-key">prot</div></div>
-          </div>
-          <button class="btn-neon" onclick="confirmarPrato()">Confirmar</button>
-        </div>
-      </div>`;
-    }
-
-    function renderDieta() {
-      const d = DIETA_POOL[stateCad.objetivo.toLowerCase()] || DIETA_POOL.emagrecimento;
-      return `<h1 class="cp-h1">Dieta</h1>
-      <div class="cp-card">
-        <div class="day-card"><div class="day-title">Almoço Sugerido</div><div class="cp-hint">${d.almoco[0].join('<br>')}</div></div>
-        <button class="btn-neon" onclick="showToast('Dieta Atualizada!')">Gerar Nova</button>
-      </div>`;
-    }
-
-    function renderTreino() {
-      const min = stateCad.nivel === "Iniciante" ? 1 : 3;
-      // Use "Musculação" as default if none selected or key not found
-      const t = TREINO_BASE["Musculação"];
-      return `<h1 class="cp-h1">Treino</h1>
-      <div class="cp-card">
-        ${activeTimer ? `<div class="stat-box" style="border:1px solid var(--blue); margin-bottom:15px">
-          <div class="stat-val" id="clock">00:00</div>
-          <button class="btn-neon" id="btnF" disabled onclick="fimEx()">Finalizar</button>
-        </div>` : ''}
-        ${t[0].ex.map(ex => `
-          <div class="exercise">
-            <div style="display:flex; align-items:center; gap:10px">
-              <div class="ex-pic"><img src="${ex[2] || 'https://via.placeholder.com/44x44.png?text=Ex'}" alt="Pic"></div>
-              <div><div class="ex-name">${ex[0]}</div><div class="ex-detail">${ex[1]} • Mín ${min}m</div></div>
+          <div class="cp-card" style="text-align:center">
+            <div style="font-size:46px">🚀</div>
+            <div class="cp-h1" style="margin-top:8px">Olá! Seja muito bem-vindo.</div>
+            <div class="cp-hint" style="margin-top:8px">
+              Vamos montar seu perfil e liberar o app completo:
+              <b>Prato</b>, <b>Dieta</b>, <b>Treino</b> e <b>Progresso</b>.
             </div>
-            <button class="btn-secondary" style="flex:0; padding:8px 15px" onclick="startEx('${ex[0]}')">▶</button>
+
+            <div class="cp-divider"></div>
+
+            <button class="btn-neon" onclick="startFlow()">Começar agora</button>
+            <button class="btn-outline" style="margin-top:12px" onclick="goTo('acesso')">Entrar / Criar acesso</button>
+
+            <div class="cp-hint" style="margin-top:12px">
+              * Você não acessa as abas sem concluir o cadastro (etapas).
+            </div>
           </div>
-        `).join('')}
-      </div>`;
+        </div>
+      `;
     }
 
-    function renderProgresso() {
-      const xp = getXP();
-      const hist = getPlates();
-      
-      // Calculate week progress (last 7 analyses - simulated for this neutral version)
-      const weekCounts = [20, 40, 60, 45, 80, 70, 95]; // Simulated KCAL progress per day
-      const days = ['D','S','T','Q','Q','S','S'];
+    function renderAcesso(animate){
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="logo-wrap">
+            <div class="logo-icon">✓</div>
+            <div class="logo-text">Check<span>Prato</span></div>
+          </div>
 
-      return `<h1 class="cp-h1">Progresso</h1>
-      <div class="cp-card">
-        <div class="orb">
-          <div class="orb-val">${xp}</div>
-          <div class="orb-key">XP Total Acumulado</div>
-          <div class="cp-hint" style="font-size:11px; margin-top:5px; color:#fff">Nível 5 • Bronze</div>
+          <div class="cp-h1 tcenter">Acesso</div>
+          <div class="cp-hint tcenter" style="margin-top:6px">
+            Seus dados ficam salvos automaticamente no celular.
+          </div>
+
+          <div class="cp-card">
+            <button class="btn-neon" onclick="googleLoginInfo()">G Entrar com Google</button>
+
+            <div class="cp-divider"></div>
+
+            <div class="cp-label">Email e senha</div>
+            <input id="loginEmail" class="cp-input" type="email" placeholder="Email" value="${esc(stateAccessEmail)}" />
+            <input id="loginPass" class="cp-input" type="password" placeholder="Senha" value="${esc(stateAccessPass)}" />
+
+            <button class="btn-neon" style="margin-top:14px" onclick="continueToCadastroFromAcesso()">Continuar</button>
+            <button class="btn-outline" style="margin-top:10px" onclick="goTo('cadastro')">Ir para Cadastro</button>
+          </div>
         </div>
+      `;
+    }
 
-        <div class="cp-label tcenter">Registro Semanal (kcal analisadas)</div>
-        <div class="prog-grid">
-          ${weekCounts.map((val, i) => `
-            <div>
-              <div class="prog-bar-wrap"><div class="prog-bar" style="height:${val}px"></div></div>
-              <div class="prog-day">${days[i]}</div>
+    function renderCadastro(animate){
+      const p = loadProfile();
+      const avatar = stateCad.avatarDataUrl || p?.avatarDataUrl || "";
+      const selected = new Set(stateCad.esportes || []);
+
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="cp-h1">Cadastro</div>
+          <div class="cp-hint">
+            Preencha tudo. Ao tocar nos esportes, <b>nada do que você digitou vai sumir</b>.
+          </div>
+
+          <div class="cp-card">
+            <div class="cp-label">Foto do perfil</div>
+            <div class="btn-row">
+              <button class="btn-secondary" onclick="pickAvatar()">📷 Escolher / tirar foto</button>
+              <button class="btn-secondary" onclick="removeAvatar()">🗑️ Remover</button>
             </div>
-          `).join('')}
-        </div>
-
-        <div class="cp-divider"></div>
-
-        <div class="cp-label tcenter">Histórico de Pratos (Últimos 10)</div>
-        <div style="margin-top:10px">
-          ${hist.length ? hist.map(p => `
-            <div class="history-card">
-              <div class="hist-thumb">${p.img ? `<img src="${p.img}">` : '🍽️'}</div>
-              <div class="hist-info">
-                <div class="hist-title">Prato ${p.kcal} kcal</div>
-                <div class="hist-sub">Salvo em ${p.data} • Proteína: ${p.prot}g</div>
+            <input id="avatarFile" type="file" accept="image/*" capture="user" style="display:none" />
+            <div style="margin-top:10px" class="mini-profile">
+              <div class="mini-avatar">${avatar ? `<img src="${esc(avatar)}" alt="avatar">` : "👤"}</div>
+              <div>
+                <div class="mini-name">${esc((stateCad.nome||"") + (stateCad.sobrenome?(" "+stateCad.sobrenome):"")) || "Seu perfil"}</div>
+                <div class="mini-sub">Você pode trocar a foto depois (Perfil).</div>
               </div>
-              <span style="font-size:16px">✅</span>
             </div>
-          `).join('') : '<p class="cp-hint tcenter" style="margin: 20px 0">Nenhum prato ainda. Salve um na aba Prato.</p>'}
+
+            <div class="grid-2">
+              <input id="cadNome" class="cp-input" placeholder="Nome" value="${esc(stateCad.nome)}" />
+              <input id="cadSobrenome" class="cp-input" placeholder="Sobrenome" value="${esc(stateCad.sobrenome)}" />
+            </div>
+
+            <div class="grid-2">
+              <input id="cadPeso" class="cp-input" inputmode="decimal" placeholder="Peso (kg)" value="${esc(stateCad.peso)}" />
+              <input id="cadAltura" class="cp-input" inputmode="numeric" placeholder="Altura (cm)" value="${esc(stateCad.altura)}" />
+            </div>
+
+            <div class="grid-2">
+              <select id="cadSexo" class="cp-input">
+                <option value="">Sexo</option>
+                <option value="Masculino" ${stateCad.sexo==="Masculino"?"selected":""}>Masculino</option>
+                <option value="Feminino" ${stateCad.sexo==="Feminino"?"selected":""}>Feminino</option>
+              </select>
+
+              <select id="cadNivel" class="cp-input">
+                <option value="Iniciante" ${stateCad.nivel==="Iniciante"?"selected":""}>Nível: Iniciante</option>
+                <option value="Médio" ${stateCad.nivel==="Médio"?"selected":""}>Nível: Médio</option>
+                <option value="Avançado" ${stateCad.nivel==="Avançado"?"selected":""}>Nível: Avançado</option>
+              </select>
+            </div>
+
+            <div class="grid-2">
+              <select id="cadObjetivo" class="cp-input">
+                <option value="">Objetivo</option>
+                <option value="Emagrecimento" ${stateCad.objetivo==="Emagrecimento"?"selected":""}>Emagrecimento</option>
+                <option value="Hipertrofia" ${stateCad.objetivo==="Hipertrofia"?"selected":""}>Hipertrofia</option>
+                <option value="Saúde" ${stateCad.objetivo==="Saúde"?"selected":""}>Saúde</option>
+                <option value="Manter" ${stateCad.objetivo==="Manter"?"selected":""}>Manter</option>
+              </select>
+
+              <select id="cadCondicao" class="cp-input">
+                <option value="">Condição</option>
+                <option value="Saudável" ${stateCad.condicao==="Saudável"?"selected":""}>Saudável</option>
+                <option value="Hipertensão" ${stateCad.condicao==="Hipertensão"?"selected":""}>Hipertensão</option>
+                <option value="Diabetes" ${stateCad.condicao==="Diabetes"?"selected":""}>Diabetes</option>
+                <option value="Dor/Lesão" ${stateCad.condicao==="Dor/Lesão"?"selected":""}>Dor/Lesão</option>
+                <option value="Ansiedade/Estresse" ${stateCad.condicao==="Ansiedade/Estresse"?"selected":""}>Ansiedade/Estresse</option>
+              </select>
+            </div>
+
+            <div class="grid-2">
+              <select id="cadIdadeGrupo" class="cp-input">
+                <option value="">Faixa de idade</option>
+                <option value="Jovem" ${stateCad.idadeGrupo==="Jovem"?"selected":""}>Jovem</option>
+                <option value="Adulto" ${stateCad.idadeGrupo==="Adulto"?"selected":""}>Adulto</option>
+                <option value="Idoso" ${stateCad.idadeGrupo==="Idoso"?"selected":""}>Idoso</option>
+              </select>
+
+              <select id="cadMobilidade" class="cp-input">
+                <option value="">Mobilidade</option>
+                <option value="OK" ${stateCad.mobilidade==="OK"?"selected":""}>OK</option>
+                <option value="Leve" ${stateCad.mobilidade==="Leve"?"selected":""}>Dificuldade leve</option>
+                <option value="Moderada" ${stateCad.mobilidade==="Moderada"?"selected":""}>Dificuldade moderada</option>
+                <option value="Severa" ${stateCad.mobilidade==="Severa"?"selected":""}>Dificuldade severa</option>
+              </select>
+            </div>
+
+            <div class="grid-2">
+              <select id="cadRestricoes" class="cp-input">
+                <option value="">Restrições alimentares</option>
+                <option value="Nenhuma" ${stateCad.restricoes==="Nenhuma"?"selected":""}>Nenhuma</option>
+                <option value="Lactose" ${stateCad.restricoes==="Lactose"?"selected":""}>Lactose</option>
+                <option value="Glúten" ${stateCad.restricoes==="Glúten"?"selected":""}>Glúten</option>
+                <option value="Vegetariano" ${stateCad.restricoes==="Vegetariano"?"selected":""}>Vegetariano</option>
+                <option value="Vegano" ${stateCad.restricoes==="Vegano"?"selected":""}>Vegano</option>
+              </select>
+
+              <select id="cadLocalTreino" class="cp-input">
+                <option value="Casa" ${stateCad.localTreino==="Casa"?"selected":""}>Treinar onde? Casa</option>
+                <option value="Rua" ${stateCad.localTreino==="Rua"?"selected":""}>Treinar onde? Rua</option>
+                <option value="Academia" ${stateCad.localTreino==="Academia"?"selected":""}>Treinar onde? Academia</option>
+              </select>
+            </div>
+
+            <div class="cp-divider"></div>
+
+            <div class="cp-label">Condições (marque se for o caso)</div>
+            <div class="btn-row">
+              <button class="btn-secondary" id="btnPcd">${stateCad.pcd ? "✅ PCD" : "PCD"}</button>
+              <button class="btn-secondary" id="btnIdoso">${stateCad.idoso ? "✅ Idoso" : "Idoso"}</button>
+              <button class="btn-secondary" id="btnSed">${stateCad.sedentario ? "✅ Sedentário" : "Sedentário"}</button>
+            </div>
+
+            <div class="cp-label">Esportes (somente esses)</div>
+            <div class="chips" id="chipsEsportes">
+              ${ESPORTES_FIXOS.map(sp=>`
+                <div class="chip ${selected.has(sp)?"on":""}" data-sport="${esc(sp)}">${esc(sp)}</div>
+              `).join("")}
+            </div>
+
+            <div class="cp-divider"></div>
+
+            <label style="display:flex; gap:10px; align-items:center; font-weight:900; color: rgba(234,242,255,0.92); margin-top:8px;">
+              <input id="cadTermo" type="checkbox" style="width:22px;height:22px" ${stateCad.termo?"checked":""} />
+              Aceito o termo (conteúdo informativo)
+            </label>
+            <div class="cp-hint" style="margin-top:8px">
+              O app é informativo. Para qualquer condição ou risco, procure profissional.
+            </div>
+
+            <button class="btn-neon" style="margin-top:14px" onclick="saveCadastroAndContinue()">Salvar e continuar</button>
+            <button class="btn-outline" style="margin-top:10px" onclick="resetAll()">Resetar tudo (local)</button>
+          </div>
         </div>
-      </div>`;
+      `;
     }
 
-    function renderPerfil() {
-      return `<h1 class="cp-h1">Perfil</h1>
-      <div class="cp-card">
-        <div class="mini-profile">
-          <div class="mini-avatar">${stateCad.avatarDataUrl ? `<img src="${stateCad.avatarDataUrl}">` : "👤"}</div>
-          <div><div class="mini-name">${stateCad.nome}</div><div class="mini-sub">${stateCad.objetivo} • ${stateCad.nivel}</div></div>
+    function renderImpacto(animate){
+      const a = FRASES_IMPACTO[Math.floor(Math.random()*FRASES_IMPACTO.length)];
+      const b = FRASES_EMOCIONAIS[Math.floor(Math.random()*FRASES_EMOCIONAIS.length)];
+      const c = FRASES_MENTAIS[Math.floor(Math.random()*FRASES_MENTAIS.length)];
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="cp-card" style="text-align:center">
+            <div style="font-size:48px">🏆</div>
+            <div class="cp-h1" style="margin-top:8px">Você entrou no jogo.</div>
+            <div class="cp-hint" style="margin-top:10px">
+              <b>${esc(a[0])}</b><br>${esc(a[1])}
+            </div>
+            <div class="cp-divider"></div>
+            <div class="cp-hint"><b>${esc(b[0])}</b><br>${esc(b[1]||"")}</div>
+            <div class="cp-divider"></div>
+            <div class="cp-hint"><b>${esc(c[0])}</b><br>${esc(c[1]||"")}</div>
+
+            <button class="btn-neon" style="margin-top:14px" onclick="finishOnboarding()">Seguir →</button>
+          </div>
         </div>
-        <button class="btn-neon" onclick="goTo('cadastro')">Editar</button>
-        <button class="btn-secondary" style="width:100%; margin-top:10px" onclick="localStorage.clear(); location.reload();">Resetar App</button>
-      </div>`;
+      `;
+    }
+
+    function renderPrato(animate){
+      const {name, avatar} = getProfileDisplay();
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="mini-profile">
+            <div class="mini-avatar">${avatar ? `<img src="${esc(avatar)}" alt="avatar">` : "🍽️"}</div>
+            <div>
+              <div class="mini-name">${esc(name)}</div>
+              <div class="mini-sub">Prato • foto → analisar → confirmar</div>
+            </div>
+          </div>
+
+          <div class="cp-h1 tcenter">Prato</div>
+
+          <div class="cp-card">
+            <div class="cp-label tcenter">Foto do prato</div>
+            <div class="btn-row">
+              <button class="btn-neon" onclick="openCamera()">📷 Câmera</button>
+              <button class="btn-secondary" onclick="openGallery()">🖼️ Galeria</button>
+            </div>
+
+            <input id="fileCam" type="file" accept="image/*" capture="environment" style="display:none">
+            <input id="fileGal" type="file" accept="image/*" style="display:none">
+
+            <div class="photo-preview" id="photoPreview">${plateDataUrl ? `<img src="${esc(plateDataUrl)}" alt="prato">` : "📸 Envie uma foto para analisar"}</div>
+
+            <button class="btn-neon" style="margin-top:14px" onclick="analisarPrato()">🔍 Analisar prato</button>
+
+            <div id="plateConfirm" class="confirm-box">
+              <div class="confirm-title">A IA descreveu. É isso mesmo?</div>
+              <div class="cp-hint">Se quiser, edite antes de confirmar (isso salva no histórico).</div>
+              <textarea id="plateConfirmText" class="cp-input" style="height:100px;"></textarea>
+
+              <div class="confirm-actions">
+                <button class="btn-neon" onclick="confirmarPrato()">✅ Sim, confirmar</button>
+                <button class="btn-secondary" onclick="refazerAnalise()">↻ Não, refazer</button>
+              </div>
+            </div>
+
+            <div class="stat-grid" style="margin-top:16px">
+              <div class="stat-box"><div class="stat-key">Calorias</div><div class="stat-val" id="kcalBox">—</div></div>
+              <div class="stat-box"><div class="stat-key">Proteína</div><div class="stat-val" id="protBox">—</div></div>
+              <div class="stat-box"><div class="stat-key">Carboidrato</div><div class="stat-val" id="carbBox">—</div></div>
+              <div class="stat-box"><div class="stat-key">Gordura</div><div class="stat-val" id="fatBox">—</div></div>
+            </div>
+          </div>
+        </div>
+      `;
     }
 
     /***********************
-     * LOGIC
+     * INJEÇÃO: DASHBOARD 3D
      ***********************/
-    function wireCadastro() {
-      document.getElementById("fAv").onchange = (e) => {
-        const r = new FileReader();
-        r.onload = () => { stateCad.avatarDataUrl = r.result; localStorage.setItem(KEY_PROFILE, JSON.stringify(stateCad)); render(); };
-        r.readAsDataURL(e.target.files[0]);
-      };
-    }
-    
-    // Auxiliary toggle for the chip list in Cadastro
-    function toggleSportInList(s, el) {
-        el.classList.toggle("on");
+    function renderProgresso(animate){
+      const xp = getXP();
+      const plates = loadPlates();
+      const last = plates[0];
+
+      const week = ['D','S','T','Q','Q','S','S'];
+      const weekVals = [30, 65, 40, 85, 70, 95, 50]; // Valores para o gráfico 3D
+
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="cp-h1 tcenter">Progresso</div>
+          <div class="cp-hint tcenter">Seu histórico básico (local).</div>
+
+          <div class="cp-card">
+            
+            <div class="orb-3d">
+              <div class="orb-3d-val">${esc(xp)}</div>
+              <div class="orb-3d-label">XP TOTAL ACUMULADO</div>
+              <div class="cp-hint" style="color:rgba(255,255,255,0.5); font-size:10px; z-index:1; margin-top:2px">${esc(plates.length)} pratos salvos</div>
+            </div>
+
+            <div class="cp-label tcenter" style="margin-top:20px">Atividade Semanal (Kcal)</div>
+            <div class="chart-3d">
+              ${weekVals.map((v, i) => `<div class="bar-3d-wrap"><div class="bar-3d" style="height:${v}px"></div><div class="bar-label">${week[i]}</div></div>`).join('')}
+            </div>
+
+            <div class="cp-divider"></div>
+
+            <div class="cp-label tcenter">Último prato</div>
+            ${
+              last ? `
+                <div class="mini-profile" style="margin-top:10px">
+                  <div class="mini-avatar">${last.img ? `<img src="${esc(last.img)}" alt="img">` : "🍽️"}</div>
+                  <div style="min-width:0">
+                    <div class="mini-name">${new Date(last.t).toLocaleString()}</div>
+                    <div class="mini-sub" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:280px">
+                      ${esc(String(last.text||"").replace(/\n/g," • ")).slice(0,140)}
+                    </div>
+                  </div>
+                </div>
+              ` : `<div class="cp-hint tcenter" style="margin-top:10px">Ainda sem registros. Salve um prato na aba Prato.</div>`
+            }
+
+            <div class="btn-row">
+              <button class="btn-secondary" onclick="resetAll()">Resetar</button>
+              <button class="btn-neon" onclick="showHistory()">Ver histórico</button>
+            </div>
+          </div>
+        </div>
+      `;
     }
 
-    function finalizarCad() {
-      stateCad.nome = document.getElementById("inNome").value;
-      stateCad.peso = document.getElementById("inPeso").value;
-      stateCad.termo = document.getElementById("inTermo").checked;
-      stateCad.esportes = Array.from(document.querySelectorAll(".chip.on")).map(c => c.innerText);
-      if(!stateCad.nome || !stateCad.termo) return showToast("Preencha tudo!");
-      localStorage.setItem(KEY_PROFILE, JSON.stringify(stateCad));
-      setStep(3);
-      goTo('impacto');
+    /***********************
+     * INJEÇÃO: ABA LOJA
+     ***********************/
+    function renderLoja(animate){
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="cp-h1 tcenter" style="color: #4ade80;">Loja</div>
+          <div class="cp-hint tcenter" style="margin-bottom: 14px;">Equipamentos, Suplementos e Vestuário</div>
+
+          <div class="loja-card">
+            <div class="loja-title">Suplementos</div>
+            <div class="loja-desc">Whey, creatina, vitaminas e pré-treinos de alta qualidade.</div>
+            <div class="btn-row">
+               <button class="btn-secondary" onclick="window.open('https://www.gsuplementos.com.br/', '_blank')">Growth</button>
+               <button class="btn-secondary" onclick="window.open('https://www.maxtitanium.com.br/', '_blank')">Max Titanium</button>
+            </div>
+          </div>
+
+          <div class="loja-card">
+            <div class="loja-title">Roupas Fitness</div>
+            <div class="loja-desc">Tênis, camisetas de compressão e shorts confortáveis.</div>
+            <div class="btn-row">
+               <button class="btn-secondary" onclick="window.open('https://www.netshoes.com.br/', '_blank')">Netshoes</button>
+               <button class="btn-secondary" onclick="window.open('https://www.centauro.com.br/', '_blank')">Centauro</button>
+            </div>
+          </div>
+
+          <div class="loja-card">
+            <div class="loja-title">Acessórios</div>
+            <div class="loja-desc">Faixas de joelho, cordas, coqueteleiras e munhequeiras.</div>
+            <button class="btn-secondary" style="width:100%" onclick="window.open('https://www.amazon.com.br/b?node=16244607011', '_blank')">Ver na Amazon</button>
+          </div>
+
+          <div class="loja-card">
+            <div class="loja-title">Alimentação Saudável</div>
+            <div class="loja-desc">Barrinhas de proteína, pastas de amendoim e snacks.</div>
+            <button class="btn-secondary" style="width:100%" onclick="window.open('https://www.duxnutrition.com/', '_blank')">DUX Nutrition</button>
+          </div>
+
+          <div class="loja-card">
+            <div class="loja-title">Equipamentos Home Box</div>
+            <div class="loja-desc">Halteres, elásticos, kettlebells e tapetes de yoga.</div>
+            <button class="btn-secondary" style="width:100%" onclick="window.open('https://www.decathlon.com.br/', '_blank')">Decathlon</button>
+          </div>
+
+        </div>
+      `;
     }
 
-    function wirePrato() {
-      document.getElementById("fPrato").onchange = (e) => {
-        const r = new FileReader();
-        r.onload = () => { plateDataUrl = r.result; localStorage.setItem("cp_last_plate", plateDataUrl); render(); };
-        r.readAsDataURL(e.target.files[0]);
-      };
+    function saveDraft(){
+      const p = loadProfile() || {};
+      saveProfile({ ...p, ...stateCad });
     }
 
-    function analisar() {
-      if(!plateDataUrl) return showToast("Tire foto!");
-      showToast("Analisando...");
-      setTimeout(() => document.getElementById("plateConfirmBox").style.display = "block", 1500);
+    function startFlow(){ setStep(1); currentScreen="acesso"; render(); }
+    function googleLoginInfo(){
+      openModal("Entrar com Google", "Login real com Google entra depois. Por enquanto, use email/senha.");
     }
-
-    function confirmarPrato() {
-      const h = getPlates();
-      // Add more data to the history entry
-      h.unshift({ kcal: 450, prot: 30, data: new Date().toLocaleDateString(), img: plateDataUrl });
-      localStorage.setItem(KEY_PLATES, JSON.stringify(h.slice(0,10)));
-      addXP(20);
-      
-      // Keep picture persistent on Progresso tab, don't clear it here but remove from temporary analysis state if desired.
-      // For this version, let's keep it in Prato too for easier testing.
-      // plateDataUrl = ""; 
-      // localStorage.removeItem("cp_last_plate"); 
-      
-      showToast("Salvo! +20 XP");
-      goTo('progresso');
-    }
-
-    function startEx(n) {
-      if(activeTimer) return;
-      activeTimer = { n, s: Date.now() };
+    function continueToCadastroFromAcesso(){
+      stateAccessEmail = document.getElementById("loginEmail")?.value || "";
+      stateAccessPass  = document.getElementById("loginPass")?.value || "";
+      setStep(2);
+      currentScreen="cadastro";
       render();
-      const req = stateCad.nivel === "Iniciante" ? 1 : 3;
-      timerInt = setInterval(() => {
-        const el = document.getElementById("clock");
-        if(!el) return clearInterval(timerInt);
-        const sec = Math.floor((Date.now() - activeTimer.s)/1000);
-        const m = Math.floor(sec/60);
-        el.innerText = `${String(m).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
-        if(m >= req) document.getElementById("btnF").disabled = false;
-      }, 1000);
     }
+    function finishOnboarding(){ setStep(3); currentScreen="prato"; render(); }
 
-    function fimEx() {
-      clearInterval(timerInt);
+    function resetAll(){
+      if(!confirm("Tem certeza? Isso apaga dados locais do app nesse celular.")) return;
+      localStorage.removeItem(KEY_PROFILE);
+      localStorage.removeItem(KEY_STEP);
+      localStorage.removeItem(KEY_XP);
+      localStorage.removeItem(KEY_PLATES);
+      localStorage.removeItem(KEY_TRAIN_DONE);
+      localStorage.removeItem(KEY_LAST_PHOTO);
+      localStorage.removeItem(KEY_DIETA_LAST);
+      localStorage.removeItem(KEY_TREINO_LAST);
+      localStorage.removeItem("cp_treino_custom_v1");
+
+      stateCad = {
+        avatarDataUrl: "",
+        nome: "",
+        sobrenome: "",
+        peso: "",
+        altura: "",
+        sexo: "",
+        objetivo: "",
+        nivel: "Iniciante",
+        condicao: "",
+        restricoes: "",
+        mobilidade: "",
+        idadeGrupo: "",
+        pcd: false,
+        idoso: false,
+        sedentario: false,
+        esportes: [],
+        termo: false,
+        localTreino: "Casa",
+      };
+      plateDataUrl = "";
+      plateAI = null;
+      plateConfirmText = "";
+      dietaMode = "emagrecimento";
+      treinoMode = "Musculação";
       activeTimer = null;
-      addXP(30);
-      showToast("Feito! +30 XP");
+
+      currentScreen = "welcome";
       render();
     }
 
-    function renderImpacto() {
-      return `<div class="cp-card tcenter" style="margin-top:100px">
-        <h1 class="cp-h1">Elite Ativada.</h1>
-        <p class="cp-hint">Seu plano está pronto.</p>
-        <button class="btn-neon" onclick="goTo('prato')">Começar</button>
-      </div>`;
+    async function pickAvatar(){
+      const input = document.getElementById("avatarFile");
+      if(!input) return;
+      input.click();
+      input.onchange = async ()=>{
+        const f = input.files && input.files[0];
+        if(!f) return;
+        try{
+          const url = await readFileAsDataUrl(f);
+          stateCad.avatarDataUrl = url;
+          saveDraft();
+          render();
+        }catch(e){
+          showToast("Falha ao carregar foto.");
+        }
+      };
+    }
+    function removeAvatar(){
+      stateCad.avatarDataUrl = "";
+      saveDraft();
+      render();
     }
 
-    // BOOT
-    render();
+    function saveCadastroAndContinue(){
+      const pickVal = (id)=> document.getElementById(id)?.value || "";
+
+      stateCad.nome = pickVal("cadNome");
+      stateCad.sobrenome = pickVal("cadSobrenome");
+      stateCad.peso = pickVal("cadPeso");
+      stateCad.altura = pickVal("cadAltura");
+      stateCad.sexo = pickVal("cadSexo");
+      stateCad.nivel = pickVal("cadNivel") || stateCad.nivel;
+      stateCad.objetivo = pickVal("cadObjetivo");
+      stateCad.condicao = pickVal("cadCondicao");
+      stateCad.idadeGrupo = pickVal("cadIdadeGrupo");
+      stateCad.mobilidade = pickVal("cadMobilidade");
+      stateCad.restricoes = pickVal("cadRestricoes");
+      stateCad.localTreino = pickVal("cadLocalTreino") || stateCad.localTreino;
+
+      const termo = document.getElementById("cadTermo");
+      stateCad.termo = !!(termo && termo.checked);
+
+      if(!stateCad.nome || !stateCad.sobrenome) return showToast("Preencha nome e sobrenome.");
+      if(!stateCad.peso || !stateCad.altura) return showToast("Preencha peso e altura.");
+      if(!stateCad.sexo) return showToast("Selecione o sexo.");
+      if(!stateCad.objetivo) return showToast("Selecione o objetivo.");
+      if(!stateCad.termo) return showToast("Aceite o termo para continuar.");
+      if(!Array.isArray(stateCad.esportes) || stateCad.esportes.length === 0) return showToast("Selecione pelo menos 1 esporte.");
+
+      saveProfile({ ...stateCad });
+      setStep(3);
+      addXP(10);
+
+      currentScreen = "impacto";
+      render();
+    }
+
+    function wireCadastro(){
+      const bind = (id, key) => {
+        const el = document.getElementById(id);
+        if(!el) return;
+        const save = () => { stateCad[key] = el.value; saveDraft(); };
+        el.addEventListener("input", save);
+        el.addEventListener("change", save);
+      };
+
+      bind("cadNome","nome");
+      bind("cadSobrenome","sobrenome");
+      bind("cadPeso","peso");
+      bind("cadAltura","altura");
+      bind("cadSexo","sexo");
+      bind("cadNivel","nivel");
+      bind("cadObjetivo","objetivo");
+      bind("cadCondicao","condicao");
+      bind("cadRestricoes","restricoes");
+      bind("cadMobilidade","mobilidade");
+      bind("cadIdadeGrupo","idadeGrupo");
+      bind("cadLocalTreino","localTreino");
+
+      const termo = document.getElementById("cadTermo");
+      if(termo){
+        termo.onchange = ()=>{ stateCad.termo = !!termo.checked; saveDraft(); };
+      }
+
+      const btnPcd = document.getElementById("btnPcd");
+      const btnIdoso = document.getElementById("btnIdoso");
+      const btnSed = document.getElementById("btnSed");
+
+      const refresh = ()=>{
+        if(btnPcd) btnPcd.textContent = stateCad.pcd ? "✅ PCD" : "PCD";
+        if(btnIdoso) btnIdoso.textContent = stateCad.idoso ? "✅ Idoso" : "Idoso";
+        if(btnSed) btnSed.textContent = stateCad.sedentario ? "✅ Sedentário" : "Sedentário";
+      };
+
+      if(btnPcd) btnPcd.onclick = ()=>{ stateCad.pcd=!stateCad.pcd; saveDraft(); refresh(); };
+      if(btnIdoso) btnIdoso.onclick = ()=>{ stateCad.idoso=!stateCad.idoso; saveDraft(); refresh(); };
+      if(btnSed) btnSed.onclick = ()=>{ stateCad.sedentario=!stateCad.sedentario; saveDraft(); refresh(); };
+      refresh();
+
+      const chips = document.getElementById("chipsEsportes");
+      if(chips){
+        chips.onclick = (ev)=>{
+          const chipEl = ev.target?.closest ? ev.target.closest(".chip") : null;
+          if(!chipEl || !chips.contains(chipEl)) return;
+          const sport = chipEl.getAttribute("data-sport");
+          if(!sport) return;
+
+          const set = new Set(stateCad.esportes || []);
+          set.has(sport) ? set.delete(sport) : set.add(sport);
+          stateCad.esportes = Array.from(set);
+          saveDraft();
+          chipEl.classList.toggle("on");
+        };
+      }
+    }
+
+    function openCamera(){ document.getElementById("fileCam")?.click(); }
+    function openGallery(){ document.getElementById("fileGal")?.click(); }
+
+    function wirePrato(){
+      const cam = document.getElementById("fileCam");
+      const gal = document.getElementById("fileGal");
+
+      const handle = async (file)=>{
+        if(!file) return;
+        try{
+          const url = await readFileAsDataUrl(file);
+          plateDataUrl = url;
+          localStorage.setItem(KEY_LAST_PHOTO, url);
+          plateAI = null;
+          plateConfirmText = "";
+          render();
+        }catch(e){
+          showToast("Falha ao carregar foto.");
+        }
+      };
+
+      if(cam) cam.onchange = ()=> handle(cam.files && cam.files[0]);
+      if(gal) gal.onchange = ()=> handle(gal.files && gal.files[0]);
+
+      if(plateAI) fillMacros(plateAI);
+    }
+
+    function showConfirmBox(text){
+      document.getElementById("plateConfirm").style.display = "block";
+      document.getElementById("plateConfirmText").value = text || "";
+    }
+
+    function refazerAnalise(){
+      plateAI = null;
+      plateConfirmText = "";
+      const box = document.getElementById("plateConfirm");
+      if(box) box.style.display = "none";
+      showToast("Ok. Envie/analise outra foto.");
+    }
+
+    function fillMacros(data){
+      document.getElementById("kcalBox").textContent = (data?.calories ?? "—");
+      document.getElementById("protBox").textContent = (data?.protein ?? "—");
+      document.getElementById("carbBox").textContent = (data?.carbs ?? "—");
+      document.getElementById("fatBox").textContent  = (data?.fat ?? "—");
+    }
+
+    function confirmarPrato(){
+      const txt = document.getElementById("plateConfirmText")?.value || "";
+      const arr = loadPlates();
+      arr.unshift({ t: Date.now(), text: txt, macros: plateAI || null, img: plateDataUrl || "" });
+      savePlates(arr.slice(0, 20));
+      addXP(2);
+      showToast("Salvo no histórico ✅");
+      document.getElementById("plateConfirm").style.display = "none";
+    }
+
+    function pickFrom(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+    function makeDiet(mode){
+      const m = DIETA_POOL[mode] || DIETA_POOL.emagrecimento;
+      return { mode, cafe:pickFrom(m.cafe), almoco:pickFrom(m.almoco), lanche:pickFrom(m.lanche), jantar:pickFrom(m.jantar), createdAt:Date.now() };
+    }
+    function renderMeal(title, items){
+      return `
+        <div class="day-card" style="margin-top:10px">
+          <div class="day-head">
+            <div class="day-title">${esc(title)}</div>
+            <div class="cp-hint" style="margin:0">Sugestão</div>
+          </div>
+          <div class="cp-hint" style="line-height:1.65">• ${items.map(i=>esc(i)).join("<br>• ")}</div>
+        </div>
+      `;
+    }
+    function renderDietBlocks(d){
+      if(!d) return `<div class="cp-hint">Sem dieta ainda. Toque em <b>Gerar nova dieta</b>.</div>`;
+      return `
+        ${renderMeal("Café da manhã", d.cafe || [])}
+        ${renderMeal("Almoço", d.almoco || [])}
+        ${renderMeal("Lanche", d.lanche || [])}
+        ${renderMeal("Jantar", d.jantar || [])}
+        <div class="cp-hint" style="margin-top:10px; opacity:.9">Atualizado em: <b>${new Date(d.createdAt || Date.now()).toLocaleString()}</b></div>
+      `;
+    }
+    function gerarDietaNova(){
+      localStorage.setItem(KEY_DIETA_LAST, JSON.stringify(makeDiet(dietaMode)));
+      addXP(2);
+      showToast("Dieta nova gerada ✅");
+      render();
+    }
+    function trocarDieta(){
+      const last = safeParse(localStorage.getItem(KEY_DIETA_LAST) || "null", null) || makeDiet(dietaMode);
+      const m = DIETA_POOL[dietaMode] || DIETA_POOL.emagrecimento;
+      const parts = ["cafe","almoco","lanche","jantar"];
+      const pick = parts[Math.floor(Math.random()*parts.length)];
+      last[pick] = pickFrom(m[pick]);
+      last.createdAt = Date.now();
+      localStorage.setItem(KEY_DIETA_LAST, JSON.stringify(last));
+      addXP(1);
+      showToast("Alimentos trocados ✅");
+      render();
+    }
+
+    function renderDieta(animate){
+      const {name, avatar} = getProfileDisplay();
+      const last = safeParse(localStorage.getItem(KEY_DIETA_LAST) || "null", null);
+      const dietTxt = last ? last : makeDiet(dietaMode);
+
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="mini-profile">
+            <div class="mini-avatar">${avatar ? `<img src="${esc(avatar)}" alt="avatar">` : "🥗"}</div>
+            <div>
+              <div class="mini-name">${esc(name)}</div>
+              <div class="mini-sub">Dieta • sempre varia</div>
+            </div>
+          </div>
+
+          <div class="cp-h1 tcenter">Dieta</div>
+
+          <div class="cp-card">
+            <div class="cp-label tcenter">Tipo</div>
+            <select class="cp-input" onchange="dietaMode=this.value; saveDraft(); render();">
+              <option value="emagrecimento" ${dietaMode==="emagrecimento"?"selected":""}>Emagrecimento</option>
+              <option value="hipertrofia" ${dietaMode==="hipertrofia"?"selected":""}>Hipertrofia</option>
+              <option value="lowcarb" ${dietaMode==="lowcarb"?"selected":""}>Low Carb</option>
+            </select>
+
+            <div class="btn-row">
+              <button class="btn-neon" onclick="gerarDietaNova()">Gerar nova dieta</button>
+              <button class="btn-secondary" onclick="trocarDieta()">Trocar alimentos</button>
+            </div>
+
+            <div class="cp-divider"></div>
+            <div id="dietaBox">${renderDietBlocks(dietTxt)}</div>
+
+            <div class="cp-hint" style="margin-top:12px">
+              Se você não tiver algum alimento, toque em <b>Trocar alimentos</b>.
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function buildWorkout(mode){ return TREINO_BASE[mode] || TREINO_BASE["Musculação"]; }
+    function openYouTube(query){
+      const q = encodeURIComponent(String(query||"exercício"));
+      window.open(`https://www.youtube.com/results?search_query=${q}`, "_blank");
+    }
+    function startExercise(exId, min){
+      activeTimer = { id: exId, startedAt: Date.now(), min: Number(min||3) };
+      showToast("Timer iniciado ▶");
+      render();
+    }
+    function getTimerLeft(t){
+      const total = (t.min * 60 * 1000);
+      const spent = Date.now() - t.startedAt;
+      const left = Math.max(0, total - spent);
+      const mm = Math.floor(left / 60000);
+      const ss = Math.floor((left % 60000) / 1000);
+      return `${String(mm).padStart(2,"0")}:${String(ss).padStart(2,"0")}`;
+    }
+    function tryFinishExercise(){
+      if(!activeTimer) return;
+      const total = (activeTimer.min * 60 * 1000);
+      const spent = Date.now() - activeTimer.startedAt;
+      if(spent < total) return showToast("Ainda não. Espere o tempo mínimo.");
+
+      const done = loadTrainDone();
+      if(!done.includes(activeTimer.id)) done.push(activeTimer.id);
+      saveTrainDone(done);
+      addXP(2);
+      showToast("Concluído ✅");
+      activeTimer = null;
+      render();
+    }
+    function limparTreinoConcluidos(){
+      if(!confirm("Limpar exercícios concluídos?")) return;
+      saveTrainDone([]);
+      showToast("Concluídos limpos.");
+      render();
+    }
+    function gerarTreinoNovo(){
+      const base = TREINO_BASE[treinoMode] || [];
+      const shuffled = [...base].map(d=>({ ...d, ex:[...d.ex].sort(()=>Math.random()-0.5) }))
+                               .sort(()=>Math.random()-0.5);
+      localStorage.setItem("cp_treino_custom_v1", JSON.stringify({ mode: treinoMode, data: shuffled }));
+      addXP(2);
+      showToast("Treino trocado ✅");
+      render();
+    }
+    function showTipForDay(day){
+      const tips = {
+        "Segunda — Peito + Tríceps":"Concentre em amplitude e controle. Não corra a repetição.",
+        "Terça — Costas + Bíceps":"Pense em puxar com as costas, não com o braço.",
+        "Quarta — Pernas":"Respire bem e mantenha joelho alinhado com o pé.",
+        "Quinta — Ombros":"Faça leve e perfeito. Ombro responde a consistência.",
+        "Sexta — Full body":"Controle a postura e mantenha o core firme.",
+        "Segunda — Leve":"Ritmo confortável. Você deve conseguir conversar.",
+        "Quarta — Intervalado":"Intenso no sprint, relaxa na caminhada.",
+        "Sexta — Longa":"Pace constante. Melhor terminar inteiro do que quebrar.",
+        "Segunda — Força":"Poucas reps, foco em técnica.",
+        "Quarta — WOD":"Respiração manda. Quebre em blocos se precisar.",
+        "Sexta — Metcon":"Ritmo sustentável vence explosão."
+      };
+      openModal("Dica do dia", esc(tips[day] || "Hidrate-se, aqueça e faça com segurança."));
+    }
+
+    setInterval(()=>{
+      if(activeTimer){
+        const el = document.getElementById("timerLeft");
+        if(el) el.textContent = getTimerLeft(activeTimer);
+      }
+    }, 1000);
+
+    function renderTreino(animate){
+      const {name, avatar} = getProfileDisplay();
+      const profile = loadProfile() || {};
+      const nivel = (profile.nivel || stateCad.nivel || "Iniciante");
+      const min = (nivel==="Iniciante") ? 3 : (nivel==="Médio" ? 5 : 8);
+
+      const treinoCustom = safeParse(localStorage.getItem("cp_treino_custom_v1") || "null", null);
+      const treino = (treinoCustom && treinoCustom.mode === treinoMode) ? treinoCustom.data : buildWorkout(treinoMode);
+
+      const done = loadTrainDone();
+      const timerInfo = activeTimer ? getTimerLeft(activeTimer) : null;
+
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="mini-profile">
+            <div class="mini-avatar">${avatar ? `<img src="${esc(avatar)}" alt="avatar">` : "💪"}</div>
+            <div>
+              <div class="mini-name">${esc(name)}</div>
+              <div class="mini-sub">Treino • com tempo anti-burla • nível: ${esc(nivel)}</div>
+            </div>
+          </div>
+
+          <div class="cp-h1 tcenter">Treinos</div>
+
+          <div class="cp-card">
+            <div class="cp-label tcenter">Esporte</div>
+            <select class="cp-input" onchange="treinoMode=this.value; localStorage.setItem(KEY_TREINO_LAST, treinoMode); saveDraft(); render();">
+              <option value="Musculação" ${treinoMode==="Musculação"?"selected":""}>Musculação</option>
+              <option value="Corrida" ${treinoMode==="Corrida"?"selected":""}>Corrida</option>
+              <option value="CrossFit" ${treinoMode==="CrossFit"?"selected":""}>CrossFit</option>
+            </select>
+
+            <div class="cp-label tcenter">Tempo mínimo por exercício</div>
+            <div class="cp-hint tcenter">
+              Iniciante: <b>3 min</b> • Médio: <b>5 min</b> • Avançado: <b>8 min</b>.
+              <br>Isso evita a pessoa clicar em concluir sem executar.
+            </div>
+
+            ${activeTimer ? `
+              <div class="cp-divider"></div>
+              <div class="cp-card" style="margin-top:0">
+                <div class="cp-label tcenter">Exercício em andamento</div>
+                <div class="cp-h1 tcenter" style="font-size:20px;margin-top:6px">${esc(activeTimer.id)}</div>
+                <div class="cp-hint tcenter">Tempo restante: <b id="timerLeft">${esc(timerInfo)}</b></div>
+                <div class="btn-row">
+                  <button class="btn-secondary" onclick="openYouTube('${esc(activeTimer.id)}')">YouTube</button>
+                  <button class="btn-neon" onclick="tryFinishExercise()">Concluir exercício</button>
+                </div>
+                <div class="cp-hint tcenter" style="margin-top:10px">
+                  Você só conclui quando o tempo mínimo terminar.
+                </div>
+              </div>
+            ` : ``}
+
+            <div class="cp-divider"></div>
+            <div class="cp-label tcenter">Treino da semana</div>
+
+            ${treino.map(day => `
+              <div class="day-card">
+                <div class="day-head">
+                  <div class="day-title">${esc(day.dia)}</div>
+                  <button class="btn-secondary" style="width:auto" onclick="showTipForDay('${esc(day.dia)}')">Dica</button>
+                </div>
+
+                ${day.ex.map(ex => {
+                  const exName = ex[0];
+                  const exDetail = ex[1];
+                  const img = EX_IMG[exName] || "";
+                  const exId = `${treinoMode}::${day.dia}::${exName}`;
+                  const isDone = done.includes(exId);
+                  return `
+                    <div class="exercise">
+                      <div class="ex-left">
+                        <div class="ex-img">${img ? `<img src="${esc(img)}" alt="img">` : "📷"}</div>
+                        <div style="min-width:0">
+                          <div class="ex-name">${esc(exName)}</div>
+                          <div class="ex-detail">${esc(exDetail)} • mínimo ${min} min</div>
+                        </div>
+                      </div>
+                      <div style="display:flex; gap:8px; align-items:center">
+                        <button class="btn-secondary" style="width:auto" onclick="openYouTube('${esc(exName)}')">YouTube</button>
+                        <button class="btn-secondary" style="width:auto" onclick="startExercise('${esc(exId)}', ${min})">
+                          ${isDone ? "✅" : "▶"}
+                        </button>
+                      </div>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            `).join("")}
+
+            <div class="btn-row">
+              <button class="btn-neon" onclick="gerarTreinoNovo()">Trocar treino</button>
+              <button class="btn-secondary" onclick="limparTreinoConcluidos()">Limpar concluídos</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function showHistory(){
+      const plates = loadPlates();
+      if(!plates.length){ openModal("Histórico", "Você ainda não salvou nenhum prato."); return; }
+      const html = plates.slice(0,10).map(p=>`
+        <div class="day-card">
+          <div class="day-head">
+            <div class="day-title">${esc(new Date(p.t).toLocaleString())}</div>
+            <div class="cp-hint">Registro</div>
+          </div>
+          <div class="cp-hint" style="line-height:1.6">${esc(String(p.text||"")).replace(/\n/g,"<br>")}</div>
+        </div>
+      `).join("");
+      openModal("Histórico (últimos 10)", html);
+    }
+
+    function renderSaude(animate){
+      const p = loadProfile() || stateCad || {};
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="cp-h1 tcenter">Saúde</div>
+          <div class="cp-card">
+            <div class="cp-hint">
+              <b>Condição:</b> ${esc(p.condicao || "—")}<br>
+              <b>Mobilidade:</b> ${esc(p.mobilidade || "—")}<br>
+              <b>Restrições:</b> ${esc(p.restricoes || "—")}
+            </div>
+
+            <div class="cp-divider"></div>
+
+            <div class="day-card">
+              <div class="day-head">
+                <div class="day-title">Dica prática</div>
+                <div class="cp-hint">hoje</div>
+              </div>
+              <div class="cp-hint" style="line-height:1.6">
+                • 2L de água/dia (ajuste ao seu peso).<br>
+                • 7–8h de sono.<br>
+                • 10 min de caminhada já contam.
+              </div>
+            </div>
+
+            <div class="cp-hint" style="margin-top:10px">
+              Conteúdo informativo. Em caso de risco/condição, procure profissional.
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderConvite(animate){
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="cp-h1 tcenter">Convite</div>
+          <div class="cp-card">
+            <div class="cp-hint">Compartilhe com um amigo:</div>
+            <div class="cp-divider"></div>
+            <button class="btn-neon" onclick="shareApp()">Compartilhar</button>
+            <button class="btn-secondary" onclick="copyInvite()" style="margin-top:10px;width:100%">Copiar mensagem</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function shareApp(){
+      const msg = "Estou usando o CheckPrato Elite. Top pra dieta, treino e progresso! 🔥";
+      if(navigator.share){
+        navigator.share({ text: msg }).catch(()=>{});
+      }else{
+        openModal("Compartilhar", "Seu celular não suportou compartilhamento automático. Use copiar mensagem.");
+      }
+    }
+
+    function copyInvite(){
+      const msg = "Estou usando o CheckPrato Elite. Top pra dieta, treino e progresso! 🔥";
+      navigator.clipboard?.writeText(msg).then(()=> showToast("Mensagem copiada ✅"))
+      .catch(()=> openModal("Copiar", esc(msg)));
+    }
+
+    function renderPerfil(animate){
+      const p = loadProfile() || stateCad || {};
+      const full = `${p.nome||""} ${p.sobrenome||""}`.trim() || "Visitante";
+      const avatar = p.avatarDataUrl || "";
+
+      return `
+        <div class="page-wrap ${animate?"screen-enter":""}">
+          <div class="cp-h1 tcenter">Perfil</div>
+
+          <div class="cp-card">
+            <div class="mini-profile">
+              <div class="mini-avatar">${avatar ? `<img src="${esc(avatar)}" alt="avatar">` : "👤"}</div>
+              <div>
+                <div class="mini-name">${esc(full)}</div>
+                <div class="mini-sub">${esc(p.objetivo || "—")} • ${esc(p.nivel || "—")}</div>
+              </div>
+            </div>
+
+            <div class="cp-divider"></div>
+
+            <div class="cp-hint" style="line-height:1.7">
+              <b>Sexo:</b> ${esc(p.sexo||"—")}<br>
+              <b>Peso:</b> ${esc(p.peso||"—")} kg<br>
+              <b>Altura:</b> ${esc(p.altura||"—")} cm<br>
+              <b>Esportes:</b> ${esc((p.esportes||[]).join(", ") || "—")}<br>
+              <b>Treinar:</b> ${esc(p.localTreino||"—")}
+            </div>
+
+            <div class="btn-row" style="margin-top:14px">
+              <button class="btn-secondary" onclick="goTo('cadastro')">Editar</button>
+              <button class="btn-neon" onclick="resetAll()">Resetar</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function analisarPrato(){
+      if(!plateDataUrl) return showToast("Envie uma foto primeiro.");
+
+      if(!AI_ENDPOINT){
+        openModal("Análise indisponível", `
+          No momento, a análise automática não está disponível.
+          <br><br>
+          Você pode continuar usando o app normalmente: dieta, treino e progresso.
+        `);
+        return showToast("Análise indisponível.");
+      }
+
+      showToast("Analisando...");
+      try{
+        const base64 = plateDataUrl.split(",")[1] || "";
+        const res = await fetch(AI_ENDPOINT, {
+          method:"POST",
+          headers:{ "Content-Type":"application/json" },
+          body: JSON.stringify({ imageBase64: base64 })
+        });
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        plateAI = data;
+
+        fillMacros(plateAI);
+
+        const confirmText =
+          `IA sugeriu:\n${data.description || "Sem descrição"}\n\n`+
+          `Calorias: ${data.calories ?? "—"}\n`+
+          `Proteína: ${data.protein ?? "—"}g\n`+
+          `Carboidrato: ${data.carbs ?? "—"}g\n`+
+          `Gordura: ${data.fat ?? "—"}g\n`;
+
+        plateConfirmText = confirmText;
+        showConfirmBox(confirmText);
+        showToast("Confirme o resultado ✅");
+      }catch(e){
+        showToast("Erro na análise. Tente novamente.");
+      }
+    }
+
+    function boot(){
+      mountOnce();
+      const p = loadProfile();
+      if(p) stateCad = { ...stateCad, ...p };
+
+      const tLast = localStorage.getItem(KEY_TREINO_LAST);
+      if(tLast) treinoMode = tLast;
+
+      const step = getStep();
+      if(step <= 0) currentScreen = "welcome";
+      else if(step === 1) currentScreen = "acesso";
+      else if(step === 2) currentScreen = "cadastro";
+      else currentScreen = "prato";
+
+      render();
+    }
+
+    boot();
   </script>
 </body>
 </html>
