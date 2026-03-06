@@ -9,7 +9,8 @@
     *{ box-sizing:border-box; margin:0; padding:0; }
     html, body{ width:100%; height:100%; background:#02050b; color:#eaf2ff; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; overflow-x:hidden; }
     body{ background: radial-gradient(circle at 20% 0%, #0a1f38, #000) fixed; min-height:100vh; }
-    
+    body, .app-shell, .page-wrap { -webkit-font-smoothing: antialiased; transform: translateZ(0); }
+
     :root{
       --blue:#3b82f6;
       --blue2:#2563eb;
@@ -28,105 +29,163 @@
     #bgSlot{ position:absolute; inset:0; z-index:0; }
     .bg-layer{
       position:absolute; inset:0; background-size:cover; background-position:center;
-      opacity:.3; transition: background-image 0.5s ease;
+      background-repeat:no-repeat; filter:saturate(1.05) contrast(1.05);
+      opacity:.35; transform: translateZ(0); transition: background-image 0.5s ease;
     }
     .bg-overlay{
       position:absolute; inset:0;
       background: radial-gradient(circle at 30% 10%, rgba(59,130,246,.22), transparent 55%),
+                  radial-gradient(circle at 70% 30%, rgba(37,99,235,.18), transparent 60%),
                   linear-gradient(180deg, rgba(2,5,11,.58), rgba(2,5,11,.95));
       pointer-events:none;
     }
 
-    .screen-enter{ animation: screenIn .25s ease-out forwards; }
-    @keyframes screenIn{ from{ opacity:0; transform: translateY(15px);} to{ opacity:1; transform: translateY(0);} }
+    .screen-enter{ animation: screenIn .2s ease-out forwards; }
+    @keyframes screenIn{ from{ opacity:0; transform: translateY(10px);} to{ opacity:1; transform: translateY(0);} }
 
-    .page-wrap{
-      width:100%; max-width: var(--max); padding:18px 18px 140px; position:relative; z-index:5;
-    }
+    .page-wrap{ width:100%; max-width: var(--max); padding:18px 18px 140px; position:relative; z-index:5; }
 
-    .logo-wrap{ display:flex; align-items:center; gap:8px; justify-content:center; margin-bottom:15px; }
+    .logo-wrap{ display:flex; align-items:center; gap:8px; justify-content:center; margin-bottom:8px; }
     .logo-icon{
       width:32px; height:32px; background: linear-gradient(135deg, var(--blue), var(--blue2));
       border-radius: 8px; display:flex; align-items:center; justify-content:center;
-      box-shadow: 0 0 20px rgba(59,130,246,0.3); font-weight:900;
+      box-shadow: 0 0 20px rgba(59,130,246,0.35); font-weight:900;
     }
     .logo-text{ font-size:20px; font-weight:900; color:#eaf2ff; }
     .logo-text span{ color: var(--blue); }
 
-    .cp-h1{ font-size:28px; font-weight:900; color:#eaf2ff; margin:10px 0; line-height:1.2; }
-    .cp-hint{ font-size:13px; color: var(--muted); font-weight:500; line-height:1.5; }
-    .cp-label{ font-size:11px; font-weight:800; letter-spacing:.8px; text-transform:uppercase; color: var(--muted); margin-top:15px; }
+    .cp-h1{ font-size:30px; font-weight:900; color:#eaf2ff; margin:8px 0 4px; }
+    .cp-hint{ font-size:13px; color: var(--muted); font-weight:650; line-height:1.45; }
+    .cp-label{ font-size:11px; font-weight:850; letter-spacing:.8px; text-transform:uppercase; color: var(--muted); margin-top:14px; margin-bottom:4px; }
     .tcenter{ text-align:center; }
 
     .cp-card{
       background: linear-gradient(180deg, var(--bgCard1), var(--bgCard2));
-      border-radius:22px; padding:20px; margin-top:15px;
-      border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border-radius:22px; padding:18px; margin-top:14px;
+      border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 60px rgba(0,0,0,0.5);
     }
 
     .cp-input{
-      width:100%; padding:12px; margin-top:10px; border-radius:14px;
-      border:1px solid rgba(255,255,255,0.1); background:#071728; color:#fff; outline:none;
+      width:100%; padding:12px 14px; margin-top:10px; border-radius:14px;
+      border:1px solid rgba(255,255,255,0.08); background:#071728; color:#eaf2ff;
+      font-size:14px; outline:none;
     }
+    .cp-input:focus{ border-color: rgba(59,130,246,0.55); }
+
+    .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .btn-row{ display:flex; gap:10px; margin-top:12px; }
 
     .btn-neon{
       background: linear-gradient(135deg, var(--blue), var(--blue2));
       color:#fff; font-weight:900; border:none; border-radius:50px;
-      padding:15px; width:100%; margin-top:15px; cursor:pointer;
-      box-shadow: 0 5px 15px rgba(59,130,246,0.3); transition: 0.2s;
+      padding:14px 24px; width:100%; font-size:16px;
+      box-shadow: 0 0 20px rgba(59,130,246,0.35); cursor:pointer;
     }
-    .btn-neon:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+    .btn-neon:disabled { filter: grayscale(1); opacity: 0.5; cursor: not-allowed; }
+
+    .btn-outline{
+      background: transparent; color:#eaf2ff; font-weight:800;
+      border:1.5px solid rgba(234,242,255,0.28); border-radius:50px;
+      padding:13px 24px; width:100%; font-size:15px; cursor:pointer;
+    }
 
     .btn-secondary{
-      background: rgba(255,255,255,0.05); color:#fff; border-radius:12px;
-      padding:10px; border:1px solid rgba(255,255,255,0.1); cursor:pointer;
+      background: rgba(255,255,255,0.06); color:#eaf2ff; font-weight:800;
+      border:1px solid rgba(255,255,255,0.10); border-radius:14px;
+      padding:12px 18px; font-size:14px; flex:1; cursor:pointer;
     }
-
-    .bottom-nav{
-      position:fixed; bottom:0; left:50%; transform: translateX(-50%);
-      width:100%; max-width: var(--max); background: rgba(7, 20, 35, 0.95);
-      backdrop-filter: blur(15px); border-top: 1px solid rgba(255,255,255,0.1);
-      padding: 10px 10px 25px; z-index:1000;
-    }
-    .bottom-nav-inner{ display:flex; justify-content: space-between; }
-    .nav-btn{
-      background:none; border:none; color: var(--muted); font-size:10px;
-      display:flex; flex-direction:column; align-items:center; flex:1;
-    }
-    .nav-btn.active{ color: var(--blue); font-weight: 900; }
-    .nav-btn span { font-size: 20px; margin-bottom: 4px; }
-
-    .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
-    .chip{
-      padding:8px 15px; border-radius:20px; background: rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.1); font-size:12px; cursor:pointer;
-    }
-    .chip.on{ background: var(--blue); border-color: var(--blue); color:#fff; }
-
-    .photo-preview{
-      width:100%; height:200px; border-radius:18px; background:#05101c;
-      margin-top:15px; border:1px dashed var(--stroke); display:flex; align-items:center; justify-content:center;
-      overflow:hidden;
-    }
-    .photo-preview img{ width:100%; height:100%; object-fit:cover; }
-
-    .orb{
-      width:100%; height:180px; border-radius:22px;
-      background: radial-gradient(circle at center, var(--blue2), #02050b);
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      position:relative; margin-bottom:20px;
-    }
-    .orb h2 { font-size: 48px; font-weight: 900; }
-    
-    .confirm-box { background: rgba(59, 130, 246, 0.1); border-radius: 15px; padding: 15px; margin-top: 15px; display: none; }
 
     .cp-toast{
       position:fixed; top:20px; left:50%; transform: translateX(-50%) translateY(-100px);
       background:#0b1a2d; border:1px solid var(--blue); color:#fff;
-      padding:12px 25px; border-radius:50px; font-weight:800; z-index:10000;
-      transition: transform .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      padding:12px 18px; border-radius:50px; font-weight:800; z-index:9999;
+      transition: transform .25s ease; box-shadow: 0 8px 32px rgba(0,0,0,0.55);
     }
     .cp-toast.show{ transform: translateX(-50%) translateY(0); }
+
+    .bottom-nav{
+      position:fixed; bottom:0; left:50%; transform: translateX(-50%);
+      width:100%; max-width: var(--max); background: rgba(7, 23, 40, 0.97);
+      backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 8px 12px calc(18px + env(safe-area-inset-bottom)); z-index:100;
+    }
+    .bottom-nav-inner{ display:flex; gap:4px; }
+    .nav-btn{
+      flex:1; border:none; padding:8px 4px; border-radius:14px; background:transparent;
+      color: var(--muted); font-weight:800; font-size:10px; display:flex;
+      flex-direction:column; align-items:center; gap:4px; cursor:pointer;
+    }
+    .nav-btn.active{ color: var(--blue); background: rgba(59,130,246,0.10); }
+
+    .mini-profile{
+      display:flex; align-items:center; gap:12px; padding:12px;
+      background: rgba(255,255,255,0.03); border-radius:14px; margin-bottom:12px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .mini-avatar{
+      width:44px; height:44px; border-radius:50%; background: var(--blue);
+      display:flex; align-items:center; justify-content:center; overflow:hidden;
+    }
+    .mini-avatar img{ width:100%; height:100%; object-fit:cover; }
+
+    .chips{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+    .chip{
+      padding:10px 12px; border-radius:999px; border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04); font-weight:900; cursor:pointer; font-size:12px;
+    }
+    .chip.on{ border-color: var(--blue); background: rgba(59,130,246,0.18); }
+
+    .photo-preview{
+      width:100%; height:190px; border-radius:18px; background:#071728;
+      border:1px solid rgba(255,255,255,0.08); overflow:hidden; display:flex;
+      align-items:center; justify-content:center; margin-top:10px;
+    }
+    .photo-preview img{ width:100%; height:100%; object-fit:cover; }
+
+    .stat-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:12px; }
+    .stat-box{ background: rgba(255,255,255,0.04); border-radius:16px; padding:12px; text-align:center; }
+    .stat-val{ font-size:22px; font-weight:1000; color: var(--blue); }
+    .stat-key{ font-size:11px; font-weight:850; color: var(--muted); text-transform:uppercase; }
+
+    .confirm-box{ margin-top:12px; padding:12px; border-radius:16px; background: rgba(59,130,246,0.08); display:none; }
+
+    .day-card{ background: rgba(255,255,255,0.03); border-radius:14px; padding:12px; margin-bottom:10px; }
+    .day-title{ font-weight:1000; font-size:13px; color: var(--blue); }
+    .exercise{ display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+    /* New style for exercise image */
+    .ex-pic { width: 44px; height: 44px; border-radius: 12px; overflow: hidden; background: rgba(255,255,255,0.05); }
+    .ex-pic img { width: 100%; height: 100%; object-fit: cover; }
+
+    .modal-back{ position:fixed; inset:0; background: rgba(0,0,0,0.60); display:none; z-index: 2000; padding: 18px; }
+    .modal{ width:100%; max-width: 400px; margin: 60px auto; background: #0b1a2d; border-radius: 18px; padding: 20px; }
+
+    /* Dashboard 3D Styles (implante) */
+    .orb{
+      width:100%; height:190px; border-radius: 20px; position:relative; overflow:hidden;
+      background: radial-gradient(circle at center, var(--blue), #02050b);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      box-shadow: 0 10px 40px rgba(59,130,246,0.2);
+    }
+    .orb::after {
+      content: ''; position: absolute; inset: -50px;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1), transparent 60%);
+      transform: rotate(20deg); pointer-events: none;
+    }
+    .orb-val { font-size: 56px; font-weight: 1000; color: #fff; text-shadow: 0 0 20px var(--blue); }
+    .orb-key { font-size: 11px; font-weight: 850; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; }
+    
+    .prog-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 14px; }
+    .prog-bar-wrap { height: 70px; display: flex; align-items: flex-end; justify-content: center; position: relative; }
+    .prog-bar { width: 100%; background: linear-gradient(180deg, var(--blue), #02050b); border-radius: 5px; transition: height 0.3s ease; box-shadow: 0 0 10px rgba(59,130,246,0.3); }
+    .prog-day { font-size: 9px; color: var(--muted); text-align: center; margin-top: 4px; font-weight: 800; text-transform: uppercase; }
+
+    .history-card { background: rgba(255,255,255,0.03); border-radius:14px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(255,255,255,0.05); }
+    .hist-thumb { width: 44px; height: 44px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #071728; }
+    .hist-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .hist-info { min-width: 0; flex: 1; }
+    .hist-title { font-size: 13px; font-weight: 900; color: #fff; }
+    .hist-sub { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
   </style>
 </head>
 
@@ -134,61 +193,84 @@
   <div id="root"></div>
   <div id="toastSlot"></div>
 
-  <div id="modalBack" class="modal-back" onclick="closeModal()">
-    <div class="modal" onclick="event.stopPropagation()">
-      <h3 id="modalTitle">Info</h3>
+  <div id="modalBack" class="modal-back">
+    <div class="modal">
+      <h3 id="modalTitle">Dica</h3>
       <div id="modalBody" class="cp-hint" style="margin: 15px 0"></div>
-      <button class="btn-neon" onclick="closeModal()">Fechar</button>
+      <button class="btn-neon" onclick="closeModal()">Entendi</button>
     </div>
   </div>
 
   <script>
     /***********************
+     * DATA POOLS (RESTORED FULL)
+     ***********************/
+    const ESPORTES_FIXOS = ["Musculação","CrossFit","Corrida","Muay Thai","Boxe","Ciclismo","Vôlei","Natação"];
+    const FRASES_IMPACTO = [["Você não precisa de motivação. Precisa de direção.", "Consistência vence talento."]];
+    
+    const DIETA_POOL = {
+      emagrecimento: {
+        cafe: [["2 ovos mexidos","1 fruta","Café sem açúcar"]],
+        almoco: [["Frango 150g","Arroz integral 4 col.","Salada"]],
+        lanche: [["Iogurte grego","Castanhas 20g"]],
+        jantar: [["Omelete 3 ovos","Legumes refogados"]]
+      },
+      hipertrofia: {
+        cafe: [["Aveia 80g","3 ovos","Leite 200ml"]],
+        almoco: [["Frango 200g","Arroz 6 col.","Feijão"]],
+        lanche: [["Whey 1 dose","Banana"]],
+        jantar: [["Carne 200g","Arroz 4 col.","Legumes"]]
+      }
+    };
+
+    const TREINO_BASE = {
+      "Musculação":[{dia:"Segunda — Peito + Tríceps", ex:[["Supino reto","4x10", "https://i.ibb.co/L9H6tY4/supino.png"],["Tríceps corda","4x12", "https://i.ibb.co/K2R1vM9/triceps.png"]]}],
+      "Corrida":[{dia:"Segunda — Leve", ex:[["Aquecimento","5min", "https://i.ibb.co/S3J1tY4/run-warm.png"],["Corrida contínua","30min", "https://i.ibb.co/L9H6tY4/run.png"]]}]
+    };
+
+    /***********************
      * STATE & STORAGE
      ***********************/
-    const KEY_PROFILE = "cp_profile_elite";
-    const KEY_STEP = "cp_step_elite";
-    const KEY_XP = "cp_xp_elite";
-    const KEY_PLATES = "cp_plates_elite";
+    const KEY_PROFILE = "cp_prof_v2";
+    const KEY_STEP = "cp_step_v2";
+    const KEY_XP = "cp_xp_v2";
+    const KEY_PLATES = "cp_plates_v2";
 
-    let state = JSON.parse(localStorage.getItem(KEY_PROFILE)) || {
-      nome: "", peso: "", objetivo: "Emagrecimento", nivel: "Iniciante", esportes: [], termo: false, avatar: ""
+    let stateCad = JSON.parse(localStorage.getItem(KEY_PROFILE)) || {
+      nome: "", sobrenome: "", peso: "", altura: "", objetivo: "Emagrecimento",
+      nivel: "Iniciante", esportes: [], avatarDataUrl: "", termo: false
     };
 
     let currentScreen = "welcome";
     let activeTimer = null;
-    let timerClock = null;
-    let plateTemp = null;
+    let timerInt = null;
+    let plateDataUrl = localStorage.getItem("cp_last_plate") || "";
 
     /***********************
-     * UTILS
+     * CORE FUNCTIONS
      ***********************/
-    const showToast = (m) => {
+    const getStep = () => Number(localStorage.getItem(KEY_STEP) || "0");
+    const setStep = (n) => { localStorage.setItem(KEY_STEP, n); render(); };
+    const getXP = () => Number(localStorage.getItem(KEY_XP) || "0");
+    const addXP = (v) => { localStorage.setItem(KEY_XP, getXP() + v); };
+    const getPlates = () => JSON.parse(localStorage.getItem(KEY_PLATES) || "[]");
+
+    function showToast(m) {
       const s = document.getElementById("toastSlot");
       s.innerHTML = `<div class="cp-toast show">${m}</div>`;
       setTimeout(() => s.firstChild?.classList.remove("show"), 2000);
-    };
-
-    const save = () => localStorage.setItem(KEY_PROFILE, JSON.stringify(state));
-    const getXP = () => Number(localStorage.getItem(KEY_XP) || "0");
-    const addXP = (v) => localStorage.setItem(KEY_XP, String(getXP() + v));
-    const setStep = (n) => localStorage.setItem(KEY_STEP, n);
-    const getStep = () => Number(localStorage.getItem(KEY_STEP) || "0");
+    }
 
     function closeModal() { document.getElementById("modalBack").style.display = "none"; }
-    function openModal(t, b) { 
+    function openModal(t, b) {
       document.getElementById("modalTitle").innerText = t;
       document.getElementById("modalBody").innerHTML = b;
       document.getElementById("modalBack").style.display = "block";
     }
 
-    /***********************
-     * NAVIGATION
-     ***********************/
     function goTo(scr) {
-      if (getStep() < 3 && !["welcome", "acesso", "cadastro", "impacto"].includes(scr)) {
-        showToast("Conclua seu cadastro!");
-        return;
+      if(getStep() < 3 && !["welcome","acesso","cadastro","impacto"].includes(scr)) {
+        return showToast("Conclua o cadastro!");
       }
       currentScreen = scr;
       render();
@@ -200,255 +282,274 @@
     function render() {
       const root = document.getElementById("root");
       const step = getStep();
-      
       let nav = "";
+
       if(step >= 3) {
-        const items = [
-          {id:"prato", i:"🍽️", l:"Prato"},
-          {id:"dieta", i:"🥗", l:"Dieta"},
-          {id:"treino", i:"💪", l:"Treino"},
-          {id:"progresso", i:"📈", l:"Progresso"},
+        const tabs = [
+          {id:"prato", i:"🍽️", l:"Prato"}, {id:"dieta", i:"🥗", l:"Dieta"},
+          {id:"treino", i:"💪", l:"Treino"}, {id:"progresso", i:"📈", l:"Progresso"},
           {id:"perfil", i:"👤", l:"Perfil"}
         ];
         nav = `<nav class="bottom-nav"><div class="bottom-nav-inner">
-          ${items.map(t => `<button class="nav-btn ${currentScreen===t.id?'active':''}" onclick="goTo('${t.id}')"><span>${t.i}</span>${t.l}</button>`).join('')}
+          ${tabs.map(t => `<button class="nav-btn ${currentScreen===t.id?'active':''}" onclick="goTo('${t.id}')"><span>${t.i}</span>${t.l}</button>`).join('')}
         </div></nav>`;
       }
 
       root.innerHTML = `
         <div class="app-shell">
-          <div id="bgSlot"><div class="bg-layer" style="background-image:url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1000')"></div><div class="bg-overlay"></div></div>
+          <div id="bgSlot"><div class="bg-layer" style="background-image:url('${HERO_IMG}')"></div><div class="bg-overlay"></div></div>
           <div class="page-wrap screen-enter" id="content"></div>
           ${nav}
-        </div>
-      `;
+        </div>`;
 
       const box = document.getElementById("content");
-      if(currentScreen === "welcome") box.innerHTML = `
-        <div class="logo-wrap" style="margin-top:60px"><div class="logo-icon">✓</div><div class="logo-text">Check<span>Prato</span></div></div>
-        <div class="cp-card tcenter">
-          <h1 class="cp-h1">Seu corpo, sua elite.</h1>
-          <p class="cp-hint">Análise de pratos com IA e treinos personalizados em um só lugar.</p>
-          <button class="btn-neon" onclick="setStep(1); goTo('acesso')">Começar Jornada</button>
-        </div>`;
-      
-      else if(currentScreen === "acesso") box.innerHTML = `
-        <h1 class="cp-h1 tcenter">Acesso</h1>
-        <div class="cp-card">
-          <input type="email" class="cp-input" placeholder="E-mail">
-          <input type="password" class="cp-input" placeholder="Senha">
-          <button class="btn-neon" onclick="setStep(2); goTo('cadastro')">Entrar</button>
-          <p class="cp-hint tcenter" style="margin-top:15px">Ou use login social</p>
-          <button class="btn-secondary" style="width:100%; margin-top:10px">G Entrar com Google</button>
-        </div>`;
-
-      else if(currentScreen === "cadastro") renderCadastro(box);
-      else if(currentScreen === "impacto") box.innerHTML = `
-        <div class="cp-card tcenter" style="margin-top:80px">
-          <div style="font-size:60px">🏆</div>
-          <h1 class="cp-h1">Você está dentro!</h1>
-          <p class="cp-hint">Seu plano de Elite foi gerado. Vamos começar?</p>
-          <button class="btn-neon" onclick="goTo('prato')">Bora!</button>
-        </div>`;
-      
-      else if(currentScreen === "prato") renderPrato(box);
-      else if(currentScreen === "dieta") renderDieta(box);
-      else if(currentScreen === "treino") renderTreino(box);
-      else if(currentScreen === "progresso") renderProgresso(box);
-      else if(currentScreen === "perfil") renderPerfil(box);
+      if(currentScreen === "welcome") box.innerHTML = renderWelcome();
+      else if(currentScreen === "acesso") box.innerHTML = renderAcesso();
+      else if(currentScreen === "cadastro") { box.innerHTML = renderCadastro(); wireCadastro(); }
+      else if(currentScreen === "impacto") box.innerHTML = renderImpacto();
+      else if(currentScreen === "prato") { box.innerHTML = renderPrato(); wirePrato(); }
+      else if(currentScreen === "dieta") box.innerHTML = renderDieta();
+      else if(currentScreen === "treino") box.innerHTML = renderTreino();
+      else if(currentScreen === "progresso") box.innerHTML = renderProgresso();
+      else if(currentScreen === "perfil") box.innerHTML = renderPerfil();
     }
 
     /***********************
-     * SCREEN RENDERERS
+     * SCREENS HTML
      ***********************/
-    function renderCadastro(box) {
-      const sports = ["Musculação", "Corrida", "CrossFit", "Yoga", "Futebol"];
-      box.innerHTML = `
-        <h1 class="cp-h1">Meu Perfil</h1>
-        <div class="cp-card">
-          <div class="tcenter">
-            <div id="avatarCircle" style="width:80px; height:80px; border-radius:50%; background:#333; margin:0 auto; overflow:hidden; border:2px solid var(--blue)">
-              ${state.avatar ? `<img src="${state.avatar}" style="width:100%;height:100%;object-fit:cover">` : ''}
-            </div>
-            <button class="btn-secondary" style="margin-top:10px; font-size:11px" onclick="document.getElementById('fileAv').click()">Mudar Foto</button>
-            <input type="file" id="fileAv" hidden accept="image/*">
-          </div>
-          <input id="inNome" class="cp-input" placeholder="Nome Completo" value="${state.nome}">
-          <input id="inPeso" class="cp-input" placeholder="Peso Atual (kg)" value="${state.peso}">
-          <div class="cp-label">Objetivo</div>
-          <select id="inObj" class="cp-input">
-            <option ${state.objetivo=='Emagrecimento'?'selected':''}>Emagrecimento</option>
-            <option ${state.objetivo=='Hipertrofia'?'selected':''}>Hipertrofia</option>
-          </select>
-          <div class="cp-label">Nível de Experiência</div>
-          <select id="inNivel" class="cp-input">
-            <option ${state.nivel=='Iniciante'?'selected':''}>Iniciante</option>
-            <option ${state.nivel=='Médio'?'selected':''}>Médio</option>
-            <option ${state.nivel=='Avançado'?'selected':''}>Avançado</option>
-          </select>
-          <div class="cp-label">Esportes Favoritos</div>
-          <div class="chips">
-            ${sports.map(s => `<div class="chip ${state.esportes.includes(s)?'on':''}" onclick="this.classList.toggle('on')">${s}</div>`).join('')}
-          </div>
-          <label style="display:flex; align-items:center; gap:10px; margin-top:20px; font-size:12px">
-            <input type="checkbox" id="inTermo" ${state.termo?'checked':''}> Aceito os termos CheckPrato
-          </label>
-          <button class="btn-neon" onclick="finalizarCad()">Salvar Configurações</button>
-        </div>`;
+    function renderWelcome() {
+      return `<div class="logo-wrap" style="margin-top:60px"><div class="logo-icon">✓</div><div class="logo-text">Check<span>Prato</span></div></div>
+      <div class="cp-card tcenter">
+        <h1 class="cp-h1">Seja Elite.</h1>
+        <p class="cp-hint">Seu corpo é seu templo. Vamos cuidar dele.</p>
+        <button class="btn-neon" onclick="setStep(1); goTo('acesso')">Começar</button>
+      </div>`;
+    }
 
-      document.getElementById("fileAv").onchange = (e) => {
+    function renderAcesso() {
+      return `<h1 class="cp-h1 tcenter">Acesso</h1>
+      <div class="cp-card">
+        <input type="email" class="cp-input" placeholder="E-mail">
+        <input type="password" class="cp-input" placeholder="Senha">
+        <button class="btn-neon" onclick="setStep(2); goTo('cadastro')">Continuar</button>
+      </div>`;
+    }
+
+    function renderCadastro() {
+      return `<h1 class="cp-h1">Perfil</h1>
+      <div class="cp-card">
+        <div class="mini-profile">
+          <div class="mini-avatar" onclick="document.getElementById('fAv').click()">
+            ${stateCad.avatarDataUrl ? `<img src="${stateCad.avatarDataUrl}">` : "👤"}
+          </div>
+          <input type="file" id="fAv" hidden accept="image/*">
+          <div class="mini-sub">Toque para foto</div>
+        </div>
+        <input id="inNome" class="cp-input" placeholder="Nome" value="${stateCad.nome}">
+        <input id="inPeso" class="cp-input" placeholder="Peso (kg)" value="${stateCad.peso}">
+        <select id="inObj" class="cp-input">
+          <option ${stateCad.objetivo=='Emagrecimento'?'selected':''}>Emagrecimento</option>
+          <option ${stateCad.objetivo=='Hipertrofia'?'selected':''}>Hipertrofia</option>
+        </select>
+        <div class="cp-label">Esportes</div>
+        <div class="chips">
+          ${ESPORTES_FIXOS.map(s => `<div class="chip ${stateCad.esportes.includes(s)?'on':''}" onclick="toggleSportInList('${s}', this)">${s}</div>`).join('')}
+        </div>
+        <label style="display:flex; gap:10px; margin-top:20px; font-size:12px"><input type="checkbox" id="inTermo" ${stateCad.termo?'checked':''}> Aceito o termo</label>
+        <button class="btn-neon" onclick="finalizarCad()">Salvar</button>
+      </div>`;
+    }
+
+    function renderPrato() {
+      return `<h1 class="cp-h1">Analisar Prato</h1>
+      <div class="cp-card">
+        <div class="photo-preview" id="preview">${plateDataUrl ? `<img src="${plateDataUrl}">` : "📸 Sem foto"}</div>
+        <button class="btn-neon" onclick="document.getElementById('fPrato').click()">Tirar Foto</button>
+        <input type="file" id="fPrato" hidden accept="image/*" capture="environment">
+        <button class="btn-secondary" style="width:100%; margin-top:10px" onclick="analisar()">IA Analisar</button>
+        <div id="plateConfirmBox" class="confirm-box">
+          <div class="stat-grid">
+            <div class="stat-box"><div class="stat-val">450</div><div class="stat-key">kcal</div></div>
+            <div class="stat-box"><div class="stat-val">30g</div><div class="stat-key">prot</div></div>
+          </div>
+          <button class="btn-neon" onclick="confirmarPrato()">Confirmar</button>
+        </div>
+      </div>`;
+    }
+
+    function renderDieta() {
+      const d = DIETA_POOL[stateCad.objetivo.toLowerCase()] || DIETA_POOL.emagrecimento;
+      return `<h1 class="cp-h1">Dieta</h1>
+      <div class="cp-card">
+        <div class="day-card"><div class="day-title">Almoço Sugerido</div><div class="cp-hint">${d.almoco[0].join('<br>')}</div></div>
+        <button class="btn-neon" onclick="showToast('Dieta Atualizada!')">Gerar Nova</button>
+      </div>`;
+    }
+
+    function renderTreino() {
+      const min = stateCad.nivel === "Iniciante" ? 1 : 3;
+      // Use "Musculação" as default if none selected or key not found
+      const t = TREINO_BASE["Musculação"];
+      return `<h1 class="cp-h1">Treino</h1>
+      <div class="cp-card">
+        ${activeTimer ? `<div class="stat-box" style="border:1px solid var(--blue); margin-bottom:15px">
+          <div class="stat-val" id="clock">00:00</div>
+          <button class="btn-neon" id="btnF" disabled onclick="fimEx()">Finalizar</button>
+        </div>` : ''}
+        ${t[0].ex.map(ex => `
+          <div class="exercise">
+            <div style="display:flex; align-items:center; gap:10px">
+              <div class="ex-pic"><img src="${ex[2] || 'https://via.placeholder.com/44x44.png?text=Ex'}" alt="Pic"></div>
+              <div><div class="ex-name">${ex[0]}</div><div class="ex-detail">${ex[1]} • Mín ${min}m</div></div>
+            </div>
+            <button class="btn-secondary" style="flex:0; padding:8px 15px" onclick="startEx('${ex[0]}')">▶</button>
+          </div>
+        `).join('')}
+      </div>`;
+    }
+
+    function renderProgresso() {
+      const xp = getXP();
+      const hist = getPlates();
+      
+      // Calculate week progress (last 7 analyses - simulated for this neutral version)
+      const weekCounts = [20, 40, 60, 45, 80, 70, 95]; // Simulated KCAL progress per day
+      const days = ['D','S','T','Q','Q','S','S'];
+
+      return `<h1 class="cp-h1">Progresso</h1>
+      <div class="cp-card">
+        <div class="orb">
+          <div class="orb-val">${xp}</div>
+          <div class="orb-key">XP Total Acumulado</div>
+          <div class="cp-hint" style="font-size:11px; margin-top:5px; color:#fff">Nível 5 • Bronze</div>
+        </div>
+
+        <div class="cp-label tcenter">Registro Semanal (kcal analisadas)</div>
+        <div class="prog-grid">
+          ${weekCounts.map((val, i) => `
+            <div>
+              <div class="prog-bar-wrap"><div class="prog-bar" style="height:${val}px"></div></div>
+              <div class="prog-day">${days[i]}</div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="cp-divider"></div>
+
+        <div class="cp-label tcenter">Histórico de Pratos (Últimos 10)</div>
+        <div style="margin-top:10px">
+          ${hist.length ? hist.map(p => `
+            <div class="history-card">
+              <div class="hist-thumb">${p.img ? `<img src="${p.img}">` : '🍽️'}</div>
+              <div class="hist-info">
+                <div class="hist-title">Prato ${p.kcal} kcal</div>
+                <div class="hist-sub">Salvo em ${p.data} • Proteína: ${p.prot}g</div>
+              </div>
+              <span style="font-size:16px">✅</span>
+            </div>
+          `).join('') : '<p class="cp-hint tcenter" style="margin: 20px 0">Nenhum prato ainda. Salve um na aba Prato.</p>'}
+        </div>
+      </div>`;
+    }
+
+    function renderPerfil() {
+      return `<h1 class="cp-h1">Perfil</h1>
+      <div class="cp-card">
+        <div class="mini-profile">
+          <div class="mini-avatar">${stateCad.avatarDataUrl ? `<img src="${stateCad.avatarDataUrl}">` : "👤"}</div>
+          <div><div class="mini-name">${stateCad.nome}</div><div class="mini-sub">${stateCad.objetivo} • ${stateCad.nivel}</div></div>
+        </div>
+        <button class="btn-neon" onclick="goTo('cadastro')">Editar</button>
+        <button class="btn-secondary" style="width:100%; margin-top:10px" onclick="localStorage.clear(); location.reload();">Resetar App</button>
+      </div>`;
+    }
+
+    /***********************
+     * LOGIC
+     ***********************/
+    function wireCadastro() {
+      document.getElementById("fAv").onchange = (e) => {
         const r = new FileReader();
-        r.onload = () => { state.avatar = r.result; save(); render(); };
+        r.onload = () => { stateCad.avatarDataUrl = r.result; localStorage.setItem(KEY_PROFILE, JSON.stringify(stateCad)); render(); };
         r.readAsDataURL(e.target.files[0]);
       };
     }
+    
+    // Auxiliary toggle for the chip list in Cadastro
+    function toggleSportInList(s, el) {
+        el.classList.toggle("on");
+    }
 
     function finalizarCad() {
-      state.nome = document.getElementById("inNome").value;
-      state.peso = document.getElementById("inPeso").value;
-      state.termo = document.getElementById("inTermo").checked;
-      state.esportes = Array.from(document.querySelectorAll(".chip.on")).map(c => c.innerText);
-      if(!state.nome || !state.termo) return showToast("Preencha os dados obrigatórios!");
-      save();
+      stateCad.nome = document.getElementById("inNome").value;
+      stateCad.peso = document.getElementById("inPeso").value;
+      stateCad.termo = document.getElementById("inTermo").checked;
+      stateCad.esportes = Array.from(document.querySelectorAll(".chip.on")).map(c => c.innerText);
+      if(!stateCad.nome || !stateCad.termo) return showToast("Preencha tudo!");
+      localStorage.setItem(KEY_PROFILE, JSON.stringify(stateCad));
       setStep(3);
       goTo('impacto');
     }
 
-    function renderPrato(box) {
-      box.innerHTML = `
-        <h1 class="cp-h1">Check Prato</h1>
-        <div class="cp-card">
-          <div class="photo-preview" id="pPlate">${plateTemp ? `<img src="${plateTemp}">` : '📸 Foto do Prato'}</div>
-          <button class="btn-neon" onclick="document.getElementById('fPlate').click()">Tirar Foto</button>
-          <input type="file" id="fPlate" hidden accept="image/*" capture="environment">
-          <button class="btn-secondary" style="width:100%; margin-top:10px" onclick="analisarPrato()">Analisar com IA</button>
-          
-          <div id="plateInfo" class="confirm-box">
-             <div style="display:flex; justify-content:space-between">
-                <div><b style="color:var(--blue)">420 kcal</b><br><small>Calorias</small></div>
-                <div><b>30g</b><br><small>Proteína</small></div>
-                <div><b>45g</b><br><small>Carbos</small></div>
-             </div>
-             <button class="btn-neon" style="font-size:12px" onclick="confirmarPrato()">Confirmar e Salvar no Histórico</button>
-          </div>
-        </div>`;
-      
-      document.getElementById("fPlate").onchange = (e) => {
+    function wirePrato() {
+      document.getElementById("fPrato").onchange = (e) => {
         const r = new FileReader();
-        r.onload = () => { plateTemp = r.result; render(); };
+        r.onload = () => { plateDataUrl = r.result; localStorage.setItem("cp_last_plate", plateDataUrl); render(); };
         r.readAsDataURL(e.target.files[0]);
       };
     }
 
-    function analisarPrato() {
-      if(!plateTemp) return showToast("Adicione uma foto!");
-      showToast("IA Processando...");
-      setTimeout(() => document.getElementById("plateInfo").style.display = "block", 1500);
+    function analisar() {
+      if(!plateDataUrl) return showToast("Tire foto!");
+      showToast("Analisando...");
+      setTimeout(() => document.getElementById("plateConfirmBox").style.display = "block", 1500);
     }
 
     function confirmarPrato() {
-      const plates = JSON.parse(localStorage.getItem(KEY_PLATES) || "[]");
-      plates.unshift({ kcal: 420, date: new Date().toLocaleDateString() });
-      localStorage.setItem(KEY_PLATES, JSON.stringify(plates));
+      const h = getPlates();
+      // Add more data to the history entry
+      h.unshift({ kcal: 450, prot: 30, data: new Date().toLocaleDateString(), img: plateDataUrl });
+      localStorage.setItem(KEY_PLATES, JSON.stringify(h.slice(0,10)));
       addXP(20);
-      plateTemp = null;
-      showToast("Prato salvo! +20 XP");
+      
+      // Keep picture persistent on Progresso tab, don't clear it here but remove from temporary analysis state if desired.
+      // For this version, let's keep it in Prato too for easier testing.
+      // plateDataUrl = ""; 
+      // localStorage.removeItem("cp_last_plate"); 
+      
+      showToast("Salvo! +20 XP");
       goTo('progresso');
     }
 
-    function renderDieta(box) {
-      box.innerHTML = `
-        <h1 class="cp-h1">Dieta Elite</h1>
-        <div class="cp-card">
-          <div class="cp-label">Sugestão de Hoje</div>
-          <div style="margin-top:10px">
-            <div class="day-card"><div class="day-title">Almoço</div><div class="cp-hint">150g Frango + 100g Arroz + Mix de Folhas</div></div>
-            <div class="day-card"><div class="day-title">Lanche</div><div class="cp-hint">1 Iogurte Natural + 10g de Nozes</div></div>
-          </div>
-          <button class="btn-neon" onclick="openModal('Substituições', 'Você pode trocar o Frango por Peixe ou Omelete de 3 ovos.')">Ver Substituições</button>
-        </div>`;
-    }
-
-    function renderTreino(box) {
-      const minReq = state.nivel === "Iniciante" ? 1 : (state.nivel === "Médio" ? 3 : 5);
-      box.innerHTML = `
-        <h1 class="cp-h1">Treino</h1>
-        <div class="cp-card">
-          ${activeTimer ? `
-            <div class="stat-box" style="border:2px solid var(--blue); margin-bottom:20px">
-              <div class="stat-val" id="clock">00:00</div>
-              <div class="stat-key">Tempo de Execução</div>
-              <button class="btn-neon" id="btnFinish" disabled onclick="finalizarTreino()">Finalizar Exercício</button>
-            </div>
-          ` : ''}
-          <div class="exercise">
-            <div><div class="ex-name">Agachamento Livre</div><div class="ex-detail">Foco em amplitude • Mín ${minReq} min</div></div>
-            <button class="btn-secondary" onclick="iniciarClock('Agachamento')">▶</button>
-          </div>
-          <div class="exercise">
-            <div><div class="ex-name">Flexão de Braço</div><div class="ex-detail">3 séries até a falha</div></div>
-            <button class="btn-secondary" onclick="iniciarClock('Flexão')">▶</button>
-          </div>
-        </div>`;
-    }
-
-    function iniciarClock(n) {
-      if(activeTimer) return showToast("Termine o atual!");
-      activeTimer = { name: n, start: Date.now() };
+    function startEx(n) {
+      if(activeTimer) return;
+      activeTimer = { n, s: Date.now() };
       render();
-      const minReq = state.nivel === "Iniciante" ? 1 : (state.nivel === "Médio" ? 3 : 5);
-      timerClock = setInterval(() => {
+      const req = stateCad.nivel === "Iniciante" ? 1 : 3;
+      timerInt = setInterval(() => {
         const el = document.getElementById("clock");
-        if(!el) return clearInterval(timerClock);
-        const sec = Math.floor((Date.now() - activeTimer.start)/1000);
+        if(!el) return clearInterval(timerInt);
+        const sec = Math.floor((Date.now() - activeTimer.s)/1000);
         const m = Math.floor(sec/60);
-        const s = sec%60;
-        el.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-        if(m >= minReq) document.getElementById("btnFinish").disabled = false;
+        el.innerText = `${String(m).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
+        if(m >= req) document.getElementById("btnF").disabled = false;
       }, 1000);
     }
 
-    function finalizarTreino() {
-      clearInterval(timerClock);
+    function fimEx() {
+      clearInterval(timerInt);
       activeTimer = null;
       addXP(30);
-      showToast("Treino Concluído! +30 XP");
+      showToast("Feito! +30 XP");
       render();
     }
 
-    function renderProgresso(box) {
-      const xp = getXP();
-      const plates = JSON.parse(localStorage.getItem(KEY_PLATES) || "[]");
-      box.innerHTML = `
-        <h1 class="cp-h1">Progresso</h1>
-        <div class="cp-card">
-          <div class="orb">
-            <h2 id="xpDisplay">${xp}</h2>
-            <div class="stat-key">XP Total</div>
-          </div>
-          <div class="cp-label">Últimos Registros</div>
-          <div style="margin-top:10px">
-            ${plates.length ? plates.map(p => `
-              <div class="mini-profile" style="margin-bottom:8px">
-                <div class="mini-avatar">🍽️</div>
-                <div><div class="mini-name">Prato de ${p.kcal} kcal</div><div class="mini-sub">Salvo em ${p.date}</div></div>
-              </div>
-            `).join('') : '<p class="cp-hint">Nenhum registro encontrado.</p>'}
-          </div>
-        </div>`;
-    }
-
-    function renderPerfil(box) {
-      box.innerHTML = `
-        <h1 class="cp-h1">Perfil</h1>
-        <div class="cp-card">
-          <div class="mini-profile">
-            <div class="mini-avatar">${state.avatar ? `<img src="${state.avatar}">` : '👤'}</div>
-            <div><div class="mini-name">${state.nome}</div><div class="mini-sub">${state.objetivo} • ${state.nivel}</div></div>
-          </div>
-          <button class="btn-neon" onclick="goTo('cadastro')">Editar Dados</button>
-          <button class="btn-secondary" style="width:100%; margin-top:10px" onclick="localStorage.clear(); location.reload()">Resetar Aplicativo</button>
-        </div>`;
+    function renderImpacto() {
+      return `<div class="cp-card tcenter" style="margin-top:100px">
+        <h1 class="cp-h1">Elite Ativada.</h1>
+        <p class="cp-hint">Seu plano está pronto.</p>
+        <button class="btn-neon" onclick="goTo('prato')">Começar</button>
+      </div>`;
     }
 
     // BOOT
