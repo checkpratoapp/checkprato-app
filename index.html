@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
   <title>CheckPrato Elite — Dieta • Treino • Prato • Progresso</title>
 
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K0EDRW9FRS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-K0EDRW9FRS', { send_page_view: false });
+  </script>
+
   <style>
     *{ box-sizing:border-box; margin:0; padding:0; }
     html, body{ width:100%; height:100%; background:#02050b; color:#eaf2ff; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; overflow-x:hidden; }
@@ -456,21 +465,30 @@
     const KEY_LAST_PHOTO = "cp_last_photo_v2";
     const KEY_DIETA_LAST = "cp_dieta_last_v2";
     const KEY_TREINO_LAST = "cp_treino_last_v2";
+    const KEY_ACCESS = "cp_access_v2";
+    const KEY_CAD_DRAFT = "cp_cadastro_draft_v2";
+    const KEY_TIMER = "cp_active_timer_v2";
+    const KEY_TREINO_CUSTOM = "cp_treino_custom_v1";
+    const KEY_LAST_SCREEN = "cp_last_screen_v2";
 
     function safeParse(s, fb){ try{return JSON.parse(s);}catch{return fb;} }
+    function storageSet(key, value){
+      try{ localStorage.setItem(key, typeof value === "string" ? value : JSON.stringify(value)); return true; }
+      catch(e){ console.warn("Falha ao salvar em localStorage:", key, e); showToast("Armazenamento cheio ou indisponível."); return false; }
+    }
     function getStep(){ return Number(localStorage.getItem(KEY_STEP) || "0"); }
-    function setStep(n){ localStorage.setItem(KEY_STEP, String(n)); }
+    function setStep(n){ storageSet(KEY_STEP, String(n)); }
     function getXP(){ return Number(localStorage.getItem(KEY_XP) || "0"); }
-    function addXP(v){ localStorage.setItem(KEY_XP, String(getXP() + Number(v||0))); }
+    function addXP(v){ storageSet(KEY_XP, String(getXP() + Number(v||0))); }
 
     function loadProfile(){ return safeParse(localStorage.getItem(KEY_PROFILE) || "null", null); }
-    function saveProfile(p){ localStorage.setItem(KEY_PROFILE, JSON.stringify(p)); }
+    function saveProfile(p){ return storageSet(KEY_PROFILE, p); }
 
     function loadPlates(){ return safeParse(localStorage.getItem(KEY_PLATES) || "[]", []); }
-    function savePlates(arr){ localStorage.setItem(KEY_PLATES, JSON.stringify(arr)); }
+    function savePlates(arr){ return storageSet(KEY_PLATES, arr); }
 
     function loadTrainDone(){ return safeParse(localStorage.getItem(KEY_TRAIN_DONE) || "[]", []); }
-    function saveTrainDone(arr){ localStorage.setItem(KEY_TRAIN_DONE, JSON.stringify(arr)); }
+    function saveTrainDone(arr){ return storageSet(KEY_TRAIN_DONE, arr); }
 
     /***********************
      * STATE
@@ -512,7 +530,25 @@
     let dietaMode = "emagrecimento";
     let treinoMode = "Musculação";
 
-    let activeTimer = null;
+    let activeTimer = safeParse(localStorage.getItem(KEY_TIMER) || "null", null);
+    let analyticsReady = typeof window.gtag === "function";
+
+    function persistAccess(){ storageSet(KEY_ACCESS, { email: stateAccessEmail, pass: stateAccessPass }); }
+    function persistCadastroDraft(){ storageSet(KEY_CAD_DRAFT, stateCad); }
+    function persistTimer(){
+      if(activeTimer) storageSet(KEY_TIMER, activeTimer);
+      else localStorage.removeItem(KEY_TIMER);
+    }
+    function track(eventName, params){
+      try{
+        if(typeof window.gtag === "function") gtag('event', eventName, params || {});
+      }catch(e){ console.warn('Analytics erro', e); }
+    }
+    function trackScreen(screen){
+      try{
+        if(typeof window.gtag === "function") gtag('event', 'screen_view', { app_name:'CheckPrato Elite', screen_name: screen });
+      }catch(e){ console.warn('Analytics screen erro', e); }
+    }
 
     /***********************
      * DADOS (VARIEDADE)
@@ -663,7 +699,58 @@
         {dia:"Quarta — WOD", ex:[["Burpees","20min AMRAP"],["Box jump","20min AMRAP"]]},
         {dia:"Sexta — Metcon", ex:[["Kettlebell swing","15min"],["Wall ball","15min"]]},
       ],
+      "Muay Thai":[
+        {dia:"Segunda — Técnica", ex:[["Aquecimento","8min"],["Sombra","4x3min"],["Chutes médios","4x20"]]},
+        {dia:"Quarta — Condicionamento", ex:[["Pular corda","10min"],["Joelhadas","4x30"],["Prancha","4x40s"]]},
+        {dia:"Sexta — Combinações", ex:[["Sombra","5x3min"],["Burpees","4x12"],["Alongamento","10min"]]},
+      ],
+      "Boxe":[
+        {dia:"Segunda — Jab e direto", ex:[["Aquecimento","8min"],["Sombra","5x2min"],["Flexão","3x15"]]},
+        {dia:"Quarta — Esquiva", ex:[["Pular corda","10min"],["Deslocamento lateral","4x2min"],["Prancha","4x40s"]]},
+        {dia:"Sexta — Resistência", ex:[["Sombra","6x2min"],["Agachamento livre","3x15"],["Alongamento","8min"]]},
+      ],
+      "Capoeira":[
+        {dia:"Segunda — Ginga", ex:[["Aquecimento","8min"],["Ginga","6x2min"],["Cocorinha","4x12"]]},
+        {dia:"Quarta — Mobilidade", ex:[["Alongamento","12min"],["Negativa","4x8"],["Prancha","3x40s"]]},
+        {dia:"Sexta — Sequências", ex:[["Ginga + meia lua","5x2min"],["Agachamento livre","3x15"],["Alongamento","10min"]]},
+      ],
+      "Jiu-jitsu":[
+        {dia:"Segunda — Base", ex:[["Aquecimento","8min"],["Ponte","4x12"],["Shrimp","4x12"]]},
+        {dia:"Quarta — Pegada", ex:[["Prancha","4x40s"],["Flexão","3x12"],["Alongamento","8min"]]},
+        {dia:"Sexta — Mobilidade", ex:[["Quadril móvel","4x10"],["Agachamento livre","3x15"],["Shrimp","4x12"]]},
+      ],
+      "Karatê":[
+        {dia:"Segunda — Kihon", ex:[["Aquecimento","8min"],["Mae geri","4x12"],["Gyaku zuki","4x15"]]},
+        {dia:"Quarta — Base", ex:[["Zenkutsu dachi","4x1min"],["Flexão","3x12"],["Alongamento","8min"]]},
+        {dia:"Sexta — Combos", ex:[["Sombra","5x2min"],["Agachamento livre","3x15"],["Prancha","3x40s"]]},
+      ],
+      "Taekwondo":[
+        {dia:"Segunda — Chutes", ex:[["Aquecimento","8min"],["Ap chagi","4x15"],["Dollyo chagi","4x12"]]},
+        {dia:"Quarta — Flexibilidade", ex:[["Alongamento","12min"],["Prancha","3x40s"],["Agachamento livre","3x15"]]},
+        {dia:"Sexta — Sequências", ex:[["Chutes alternados","5x2min"],["Pular corda","8min"],["Alongamento","8min"]]},
+      ],
+      "Ciclismo":[
+        {dia:"Segunda — Giro leve", ex:[["Pedalada leve","30min"],["Alongamento","8min"]]},
+        {dia:"Quarta — Tiros", ex:[["Aquecimento","8min"],["Sprint 30s + caminhada 1min","8x"],["Alongamento","8min"]]},
+        {dia:"Sexta — Longo", ex:[["Pedalada contínua","50min"],["Alongamento","10min"]]},
+      ],
+      "Basquete":[
+        {dia:"Segunda — Fundamentos", ex:[["Aquecimento","8min"],["Drible parado","5x1min"],["Agachamento livre","3x15"]]},
+        {dia:"Quarta — Agilidade", ex:[["Deslocamento lateral","5x30s"],["Sprint 30s + caminhada 1min","6x"],["Prancha","3x40s"]]},
+        {dia:"Sexta — Finalização", ex:[["Arremesso curto","10min"],["Flexão","3x12"],["Alongamento","8min"]]},
+      ],
+      "Vôlei":[
+        {dia:"Segunda — Manchete", ex:[["Aquecimento","8min"],["Agachamento livre","3x15"],["Prancha","3x40s"]]},
+        {dia:"Quarta — Salto", ex:[["Box jump","4x10"],["Flexão","3x12"],["Alongamento","8min"]]},
+        {dia:"Sexta — Toque e saque", ex:[["Sombra","5x2min"],["Desenvolvimento","3x12"],["Alongamento","8min"]]},
+      ]
     };
+
+    function getWorkoutModes(){
+      const selected = Array.isArray(stateCad.esportes) && stateCad.esportes.length ? stateCad.esportes : (loadProfile()?.esportes || []);
+      const base = Array.from(new Set([...(selected||[]), "Musculação", "Corrida", "CrossFit"]));
+      return base.filter(mode => TREINO_BASE[mode]);
+    }
 
     /***********************
      * UTIL
@@ -799,6 +886,8 @@
       else html = renderWelcome(animate);
 
       slot.innerHTML = html;
+      storageSet(KEY_LAST_SCREEN, currentScreen);
+      trackScreen(currentScreen);
 
       if(currentScreen==="cadastro") wireCadastro();
       if(currentScreen==="prato") wirePrato();
@@ -1185,21 +1274,38 @@
 
     function saveDraft(){
       const p = loadProfile() || {};
+      persistCadastroDraft();
       saveProfile({ ...p, ...stateCad });
     }
 
-    function startFlow(){ setStep(1); currentScreen="acesso"; render(); }
+    function startFlow(){
+      setStep(1);
+      currentScreen="acesso";
+      storageSet(KEY_LAST_SCREEN, currentScreen);
+      track('inicio_fluxo', { etapa: 'acesso' });
+      render();
+    }
     function googleLoginInfo(){
+      track('clique_google_login_info', { tela: currentScreen });
       openModal("Entrar com Google", "Login real com Google entra depois. Por enquanto, use email/senha.");
     }
     function continueToCadastroFromAcesso(){
       stateAccessEmail = document.getElementById("loginEmail")?.value || "";
       stateAccessPass  = document.getElementById("loginPass")?.value || "";
+      persistAccess();
       setStep(2);
       currentScreen="cadastro";
+      storageSet(KEY_LAST_SCREEN, currentScreen);
+      track('acesso_continuar', { has_email: stateAccessEmail ? 'sim' : 'nao' });
       render();
     }
-    function finishOnboarding(){ setStep(3); currentScreen="prato"; render(); }
+    function finishOnboarding(){
+      setStep(3);
+      currentScreen="prato";
+      storageSet(KEY_LAST_SCREEN, currentScreen);
+      track('onboarding_finalizado', { esportes: (stateCad.esportes || []).join(', ') });
+      render();
+    }
 
     function resetAll(){
       if(!confirm("Tem certeza? Isso apaga dados locais do app nesse celular.")) return;
@@ -1211,7 +1317,11 @@
       localStorage.removeItem(KEY_LAST_PHOTO);
       localStorage.removeItem(KEY_DIETA_LAST);
       localStorage.removeItem(KEY_TREINO_LAST);
-      localStorage.removeItem("cp_treino_custom_v1");
+      localStorage.removeItem(KEY_ACCESS);
+      localStorage.removeItem(KEY_CAD_DRAFT);
+      localStorage.removeItem(KEY_TIMER);
+      localStorage.removeItem(KEY_LAST_SCREEN);
+      localStorage.removeItem(KEY_TREINO_CUSTOM);
 
       stateCad = {
         avatarDataUrl: "",
@@ -1241,6 +1351,7 @@
       activeTimer = null;
 
       currentScreen = "welcome";
+      track('reset_local', { tela: currentScreen });
       render();
     }
 
@@ -1255,6 +1366,7 @@
           const url = await readFileAsDataUrl(f);
           stateCad.avatarDataUrl = url;
           saveDraft();
+          track('avatar_salvo', { tela: currentScreen });
           render();
         }catch(e){
           showToast("Falha ao carregar foto.");
@@ -1264,6 +1376,7 @@
     function removeAvatar(){
       stateCad.avatarDataUrl = "";
       saveDraft();
+      track('avatar_removido', { tela: currentScreen });
       render();
     }
 
@@ -1294,10 +1407,18 @@
       if(!Array.isArray(stateCad.esportes) || stateCad.esportes.length === 0) return showToast("Selecione pelo menos 1 esporte.");
 
       saveProfile({ ...stateCad });
+      persistCadastroDraft();
       setStep(3);
       addXP(10);
 
       currentScreen = "impacto";
+      storageSet(KEY_LAST_SCREEN, currentScreen);
+      track('cadastro_salvo', {
+        objetivo: stateCad.objetivo || '',
+        restricao: stateCad.restricoes || '',
+        pcd: stateCad.pcd ? 'sim' : 'nao',
+        esportes: (stateCad.esportes || []).join(', ')
+      });
       render();
     }
 
@@ -1355,6 +1476,7 @@
           set.has(sport) ? set.delete(sport) : set.add(sport);
           stateCad.esportes = Array.from(set);
           saveDraft();
+          track('esporte_toggle', { esporte: sport, ativo: set.has(sport) ? 'sim' : 'nao' });
           chipEl.classList.toggle("on");
         };
       }
@@ -1372,9 +1494,10 @@
         try{
           const url = await readFileAsDataUrl(file);
           plateDataUrl = url;
-          localStorage.setItem(KEY_LAST_PHOTO, url);
+          storageSet(KEY_LAST_PHOTO, url);
           plateAI = null;
           plateConfirmText = "";
+          track('foto_prato_carregada', { origem: file === (cam && cam.files && cam.files[0]) ? 'camera' : 'galeria' });
           render();
         }catch(e){
           showToast("Falha ao carregar foto.");
@@ -1413,6 +1536,7 @@
       arr.unshift({ t: Date.now(), text: txt, macros: plateAI || null, img: plateDataUrl || "" });
       savePlates(arr.slice(0, 20));
       addXP(2);
+      track('prato_confirmado', { calorias: String(plateAI?.calories ?? ''), tela: currentScreen });
       showToast("Salvo no histórico ✅");
       document.getElementById("plateConfirm").style.display = "none";
     }
@@ -1444,8 +1568,9 @@
       `;
     }
     function gerarDietaNova(){
-      localStorage.setItem(KEY_DIETA_LAST, JSON.stringify(makeDiet(dietaMode)));
+      storageSet(KEY_DIETA_LAST, makeDiet(dietaMode));
       addXP(2);
+      track('dieta_gerada', { modo: dietaMode });
       showToast("Dieta nova gerada ✅");
       render();
     }
@@ -1456,8 +1581,9 @@
       const pick = parts[Math.floor(Math.random()*parts.length)];
       last[pick] = pickFrom(m[pick]);
       last.createdAt = Date.now();
-      localStorage.setItem(KEY_DIETA_LAST, JSON.stringify(last));
+      storageSet(KEY_DIETA_LAST, last);
       addXP(1);
+      track('dieta_trocada', { modo: dietaMode, refeicao: pick });
       showToast("Alimentos trocados ✅");
       render();
     }
@@ -1481,7 +1607,7 @@
 
           <div class="cp-card">
             <div class="cp-label tcenter">Tipo</div>
-            <select class="cp-input" onchange="dietaMode=this.value; saveDraft(); render();">
+            <select class="cp-input" onchange="dietaMode=this.value; saveDraft(); track('dieta_modo', { modo: this.value }); render();">
               <option value="emagrecimento" ${dietaMode==="emagrecimento"?"selected":""}>Emagrecimento</option>
               <option value="hipertrofia" ${dietaMode==="hipertrofia"?"selected":""}>Hipertrofia</option>
               <option value="lowcarb" ${dietaMode==="lowcarb"?"selected":""}>Low Carb</option>
@@ -1510,6 +1636,8 @@
     }
     function startExercise(exId, min){
       activeTimer = { id: exId, startedAt: Date.now(), min: Number(min||3) };
+      persistTimer();
+      track('treino_timer_iniciado', { exercicio: exId, minutos: String(min||3) });
       showToast("Timer iniciado ▶");
       render();
     }
@@ -1531,13 +1659,16 @@
       if(!done.includes(activeTimer.id)) done.push(activeTimer.id);
       saveTrainDone(done);
       addXP(2);
+      track('treino_exercicio_concluido', { exercicio: activeTimer.id, minutos: String(activeTimer.min || '') });
       showToast("Concluído ✅");
       activeTimer = null;
+      persistTimer();
       render();
     }
     function limparTreinoConcluidos(){
       if(!confirm("Limpar exercícios concluídos?")) return;
       saveTrainDone([]);
+      track('treino_concluidos_limpos', { modo: treinoMode });
       showToast("Concluídos limpos.");
       render();
     }
@@ -1545,8 +1676,9 @@
       const base = TREINO_BASE[treinoMode] || [];
       const shuffled = [...base].map(d=>({ ...d, ex:[...d.ex].sort(()=>Math.random()-0.5) }))
                                .sort(()=>Math.random()-0.5);
-      localStorage.setItem("cp_treino_custom_v1", JSON.stringify({ mode: treinoMode, data: shuffled }));
+      storageSet(KEY_TREINO_CUSTOM, { mode: treinoMode, data: shuffled });
       addXP(2);
+      track('treino_trocado', { modo: treinoMode });
       showToast("Treino trocado ✅");
       render();
     }
@@ -1580,8 +1712,10 @@
       const nivel = (profile.nivel || stateCad.nivel || "Iniciante");
       const min = (nivel==="Iniciante") ? 3 : (nivel==="Médio" ? 5 : 8);
 
-      const treinoCustom = safeParse(localStorage.getItem("cp_treino_custom_v1") || "null", null);
+      const treinoCustom = safeParse(localStorage.getItem(KEY_TREINO_CUSTOM) || "null", null);
       const treino = (treinoCustom && treinoCustom.mode === treinoMode) ? treinoCustom.data : buildWorkout(treinoMode);
+      const availableModes = getWorkoutModes();
+      if(!availableModes.includes(treinoMode)) treinoMode = availableModes[0] || 'Musculação';
 
       const done = loadTrainDone();
       const timerInfo = activeTimer ? getTimerLeft(activeTimer) : null;
@@ -1600,10 +1734,8 @@
 
           <div class="cp-card">
             <div class="cp-label tcenter">Esporte</div>
-            <select class="cp-input" onchange="treinoMode=this.value; localStorage.setItem(KEY_TREINO_LAST, treinoMode); saveDraft(); render();">
-              <option value="Musculação" ${treinoMode==="Musculação"?"selected":""}>Musculação</option>
-              <option value="Corrida" ${treinoMode==="Corrida"?"selected":""}>Corrida</option>
-              <option value="CrossFit" ${treinoMode==="CrossFit"?"selected":""}>CrossFit</option>
+            <select class="cp-input" onchange="treinoMode=this.value; storageSet(KEY_TREINO_LAST, treinoMode); saveDraft(); track('treino_modo', { modo: treinoMode }); render();">
+              ${availableModes.map(mode => `<option value="${esc(mode)}" ${treinoMode===mode?"selected":""}>${esc(mode)}</option>`).join("")}
             </select>
 
             <div class="cp-label tcenter">Tempo mínimo por exercício</div>
@@ -1740,6 +1872,7 @@
     function shareApp(){
       const msg = "Estou usando o CheckPrato Elite. Top pra dieta, treino e progresso! 🔥";
       if(navigator.share){
+        track('convite_share', { via: 'navigator' });
         navigator.share({ text: msg }).catch(()=>{});
       }else{
         openModal("Compartilhar", "Seu celular não suportou compartilhamento automático. Use copiar mensagem.");
@@ -1748,7 +1881,7 @@
 
     function copyInvite(){
       const msg = "Estou usando o CheckPrato Elite. Top pra dieta, treino e progresso! 🔥";
-      navigator.clipboard?.writeText(msg).then(()=> showToast("Mensagem copiada ✅"))
+      navigator.clipboard?.writeText(msg).then(()=> { track('convite_copiado', { tela: currentScreen }); showToast("Mensagem copiada ✅"); })
       .catch(()=> openModal("Copiar", esc(msg)));
     }
 
@@ -1801,6 +1934,7 @@
         return showToast("Análise indisponível.");
       }
 
+      track('prato_analise_iniciada', { tela: currentScreen });
       showToast("Analisando...");
       try{
         const base64 = plateDataUrl.split(",")[1] || "";
@@ -1824,28 +1958,72 @@
 
         plateConfirmText = confirmText;
         showConfirmBox(confirmText);
+        track('prato_analise_sucesso', { calorias: String(data.calories ?? '') });
         showToast("Confirme o resultado ✅");
       }catch(e){
+        track('prato_analise_erro', { mensagem: String(e?.message || 'erro') });
         showToast("Erro na análise. Tente novamente.");
       }
     }
 
     function boot(){
       mountOnce();
+
+      const access = safeParse(localStorage.getItem(KEY_ACCESS) || "null", null);
+      if(access){
+        stateAccessEmail = access.email || "";
+        stateAccessPass = access.pass || "";
+      }
+
+      const draft = safeParse(localStorage.getItem(KEY_CAD_DRAFT) || "null", null);
       const p = loadProfile();
+      if(draft) stateCad = { ...stateCad, ...draft };
       if(p) stateCad = { ...stateCad, ...p };
 
       const tLast = localStorage.getItem(KEY_TREINO_LAST);
-      if(tLast) treinoMode = tLast;
+      if(tLast && TREINO_BASE[tLast]) treinoMode = tLast;
+
+      const lastDiet = safeParse(localStorage.getItem(KEY_DIETA_LAST) || "null", null);
+      if(!lastDiet){
+        const preferredMode = stateCad.objetivo === 'Hipertrofia' ? 'hipertrofia' : (String(stateCad.restricoes || '').toLowerCase().includes('glúten') ? 'lowcarb' : 'emagrecimento');
+        dietaMode = preferredMode;
+        storageSet(KEY_DIETA_LAST, makeDiet(dietaMode));
+      }
+
+      if(activeTimer){
+        const total = (Number(activeTimer.min || 0) * 60 * 1000);
+        const spent = Date.now() - Number(activeTimer.startedAt || 0);
+        if(spent > total + (12 * 60 * 60 * 1000)){
+          activeTimer = null;
+          persistTimer();
+        }
+      }
 
       const step = getStep();
+      const savedScreen = localStorage.getItem(KEY_LAST_SCREEN) || "";
       if(step <= 0) currentScreen = "welcome";
       else if(step === 1) currentScreen = "acesso";
       else if(step === 2) currentScreen = "cadastro";
-      else currentScreen = "prato";
+      else currentScreen = canAccess(savedScreen) ? (savedScreen || "prato") : "prato";
 
       render();
+      track('app_aberto', { tela_inicial: currentScreen, versao: 'elite-final' });
     }
+
+
+    window.addEventListener('pagehide', ()=>{
+      persistAccess();
+      persistCadastroDraft();
+      persistTimer();
+    });
+
+    document.addEventListener('visibilitychange', ()=>{
+      if(document.hidden){
+        persistAccess();
+        persistCadastroDraft();
+        persistTimer();
+      }
+    });
 
     boot();
   </script>
