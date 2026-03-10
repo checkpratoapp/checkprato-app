@@ -16,18 +16,34 @@
 
   <style>
     *{ box-sizing:border-box; margin:0; padding:0; }
-    html, body{ width:100%; height:100%; background:#02050b; color:#eaf2ff; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; overflow-x:hidden; }
-    body{ background: radial-gradient(circle at 20% 0%, #0a1f38, #000) fixed; min-height:100vh; }
-    body, .app-shell, .page-wrap { -webkit-font-smoothing: antialiased; transform: translateZ(0); }
+    html, body{
+      width:100%;
+      height:100%;
+      background:#02050b;
+      color:#eaf2ff;
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+      overflow-x:hidden;
+    }
+    body{
+      background: radial-gradient(circle at 20% 0%, #0a1f38, #000) fixed;
+      min-height:100vh;
+    }
+    body, .app-shell, .page-wrap{
+      -webkit-font-smoothing: antialiased;
+      transform: translateZ(0);
+    }
 
     :root{
       --blue:#3b82f6;
       --blue2:#2563eb;
+      --blue3:#60a5fa;
       --bgCard1:#0b1a2d;
       --bgCard2:#07111f;
       --muted:#8aa0c7;
       --stroke:rgba(255,255,255,0.08);
       --max:430px;
+      --danger:#ef4444;
+      --success:#22c55e;
     }
 
     .app-shell{
@@ -55,39 +71,73 @@
     .bg-overlay{
       position:absolute; inset:0;
       background:
-        radial-gradient(circle at 30% 10%, rgba(59,130,246,.22), transparent 55%),
+        radial-gradient(circle at 30% 10%, rgba(59,130,246,.20), transparent 55%),
         radial-gradient(circle at 70% 30%, rgba(37,99,235,.18), transparent 60%),
-        linear-gradient(180deg, rgba(2,5,11,.58), rgba(2,5,11,.90));
+        linear-gradient(180deg, rgba(2,5,11,.56), rgba(2,5,11,.92));
       pointer-events:none;
     }
 
     .screen-enter{ animation: screenIn .18s ease-out forwards; }
-    @keyframes screenIn{ from{ opacity:0; transform: translateY(10px);} to{ opacity:1; transform: translateY(0);} }
+    @keyframes screenIn{
+      from{ opacity:0; transform: translateY(10px);}
+      to{ opacity:1; transform: translateY(0);}
+    }
 
     .page-wrap{
       width:100%;
-      max-width: var(--max);
+      max-width:var(--max);
       padding:18px 18px 130px;
       overflow-y:auto;
       position:relative;
       z-index:5;
     }
 
-    .logo-wrap{ display:flex; align-items:center; gap:8px; justify-content:center; margin-bottom:8px; }
+    .logo-wrap{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      justify-content:center;
+      margin-bottom:8px;
+    }
     .logo-icon{
-      width:32px; height:32px;
+      width:32px;
+      height:32px;
       background: linear-gradient(135deg, var(--blue), var(--blue2));
-      border-radius: 8px;
-      display:flex; align-items:center; justify-content:center;
-      box-shadow: 0 0 20px rgba(59,130,246,0.35);
+      border-radius:8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 0 20px rgba(59,130,246,0.35);
       font-weight:900;
     }
-    .logo-text{ font-size:20px; font-weight:900; color:#eaf2ff; }
-    .logo-text span{ color: var(--blue); }
+    .logo-text{
+      font-size:20px;
+      font-weight:900;
+      color:#eaf2ff;
+    }
+    .logo-text span{ color:var(--blue); }
 
-    .cp-h1{ font-size:30px; font-weight:900; color:#eaf2ff; margin:8px 0 4px; }
-    .cp-hint{ font-size:13px; color: var(--muted); font-weight:650; line-height:1.45; }
-    .cp-label{ font-size:11px; font-weight:850; letter-spacing:.8px; text-transform:uppercase; color: var(--muted); margin-top:14px; margin-bottom:4px; }
+    .cp-h1{
+      font-size:30px;
+      font-weight:900;
+      color:#eaf2ff;
+      margin:8px 0 4px;
+    }
+    .cp-hint{
+      font-size:13px;
+      color:var(--muted);
+      font-weight:650;
+      line-height:1.45;
+    }
+    .cp-label{
+      font-size:11px;
+      font-weight:850;
+      letter-spacing:.8px;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-top:14px;
+      margin-bottom:4px;
+    }
     .tcenter{ text-align:center; }
 
     .cp-card{
@@ -95,8 +145,111 @@
       border-radius:22px;
       padding:18px;
       margin-top:14px;
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow:0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    .hero-3d{
+      width:100%;
+      min-height:190px;
+      border-radius:22px;
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.08);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(96,165,250,.35), transparent 36%),
+        radial-gradient(circle at 75% 35%, rgba(37,99,235,.25), transparent 42%),
+        linear-gradient(145deg, rgba(11,26,45,.95), rgba(7,17,31,.96));
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.58),
+        inset 0 1px 0 rgba(255,255,255,.05);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      margin-top:14px;
+    }
+    .hero-3d::before{
+      content:"";
+      position:absolute;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      top:-70px;
+      right:-60px;
+      background: radial-gradient(circle, rgba(59,130,246,.30), rgba(59,130,246,0) 70%);
+      filter: blur(10px);
+    }
+    .hero-3d::after{
+      content:"";
+      position:absolute;
+      inset:-45px;
+      background: radial-gradient(circle at 50% 20%, rgba(255,255,255,.10), transparent 40%);
+      transform: rotate(9deg);
+      pointer-events:none;
+    }
+    .hero-small{
+      position:relative;
+      z-index:2;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      color:#b8ccf4;
+    }
+    .hero-title{
+      position:relative;
+      z-index:2;
+      font-size:26px;
+      line-height:1.1;
+      font-weight:1000;
+      color:#fff;
+      margin-top:8px;
+      text-shadow:0 0 18px rgba(59,130,246,.16);
+    }
+    .hero-sub{
+      position:relative;
+      z-index:2;
+      margin-top:10px;
+      font-size:13px;
+      color:#d3e3ff;
+      line-height:1.5;
+      max-width:92%;
+    }
+    .hero-bottom{
+      position:relative;
+      z-index:2;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-end;
+      margin-top:16px;
+    }
+    .hero-badge{
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:900;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.06);
+      backdrop-filter: blur(10px);
+    }
+    .hero-score{
+      text-align:right;
+      color:#fff;
+    }
+    .hero-score b{
+      display:block;
+      font-size:24px;
+      line-height:1;
+      font-weight:1000;
+      color:#fff;
+    }
+    .hero-score span{
+      font-size:11px;
+      color:#bfd2fb;
+      font-weight:800;
     }
 
     .cp-input{
@@ -110,10 +263,10 @@
       font-size:14px;
       outline:none;
     }
-    .cp-input:focus{ border-color: rgba(59,130,246,0.55); }
+    .cp-input:focus{ border-color:rgba(59,130,246,0.55); }
 
-    .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-    .btn-row{ display:flex; gap:10px; margin-top:12px; }
+    .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .btn-row{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
 
     .btn-neon{
       background: linear-gradient(135deg, var(--blue), var(--blue2));
@@ -124,16 +277,16 @@
       padding:14px 24px;
       width:100%;
       font-size:16px;
-      box-shadow: 0 0 20px rgba(59,130,246,0.35), 0 4px 16px rgba(0,0,0,0.45);
-      transition: all .15s ease;
+      box-shadow:0 0 20px rgba(59,130,246,0.35), 0 4px 16px rgba(0,0,0,0.45);
+      transition:all .15s ease;
       cursor:pointer;
       user-select:none;
-      -webkit-tap-highlight-color: transparent;
+      -webkit-tap-highlight-color:transparent;
     }
-    .btn-neon:active{ transform: translateY(1px) scale(.995); }
+    .btn-neon:active{ transform:translateY(1px) scale(.995); }
 
     .btn-outline{
-      background: transparent;
+      background:transparent;
       color:#eaf2ff;
       font-weight:800;
       border:1.5px solid rgba(234,242,255,0.28);
@@ -141,26 +294,27 @@
       padding:13px 24px;
       width:100%;
       font-size:15px;
-      transition: all .15s ease;
+      transition:all .15s ease;
       cursor:pointer;
       user-select:none;
-      -webkit-tap-highlight-color: transparent;
+      -webkit-tap-highlight-color:transparent;
     }
 
     .btn-secondary{
-      background: rgba(255,255,255,0.06);
+      background:rgba(255,255,255,0.06);
       color:#eaf2ff;
       font-weight:800;
       border:1px solid rgba(255,255,255,0.10);
       border-radius:14px;
       padding:12px 18px;
       font-size:14px;
-      transition: all .15s ease;
+      transition:all .15s ease;
       flex:1;
       cursor:pointer;
       user-select:none;
-      -webkit-tap-highlight-color: transparent;
+      -webkit-tap-highlight-color:transparent;
       white-space:nowrap;
+      min-width:120px;
     }
 
     .cp-divider{
@@ -173,7 +327,7 @@
       position:fixed;
       top:20px;
       left:50%;
-      transform: translateX(-50%) translateY(-90px);
+      transform:translateX(-50%) translateY(-90px);
       background:#0b1a2d;
       border:1px solid rgba(59,130,246,0.40);
       color:#eaf2ff;
@@ -182,26 +336,26 @@
       font-weight:800;
       font-size:14px;
       z-index:9999;
-      transition: transform .25s ease;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.55);
-      max-width: calc(100vw - 24px);
+      transition:transform .25s ease;
+      box-shadow:0 8px 32px rgba(0,0,0,0.55);
+      max-width:calc(100vw - 24px);
       overflow:hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      text-overflow:ellipsis;
+      white-space:nowrap;
     }
-    .cp-toast.show{ transform: translateX(-50%) translateY(0); }
+    .cp-toast.show{ transform:translateX(-50%) translateY(0); }
 
     .bottom-nav{
       position:fixed;
       bottom:0;
       left:50%;
-      transform: translateX(-50%);
+      transform:translateX(-50%);
       width:100%;
-      max-width: var(--max);
-      background: rgba(7, 23, 40, 0.97);
-      backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(255,255,255,0.08);
-      padding: 8px 12px calc(18px + env(safe-area-inset-bottom));
+      max-width:var(--max);
+      background:rgba(7,23,40,0.97);
+      backdrop-filter:blur(20px);
+      border-top:1px solid rgba(255,255,255,0.08);
+      padding:8px 12px calc(18px + env(safe-area-inset-bottom));
       z-index:100;
     }
     .bottom-nav-inner{ display:flex; gap:4px; }
@@ -211,36 +365,39 @@
       padding:8px 4px;
       border-radius:14px;
       background:transparent;
-      color: var(--muted);
+      color:var(--muted);
       font-weight:800;
       font-size:10px;
       display:flex;
       flex-direction:column;
       align-items:center;
       gap:4px;
-      transition: all .15s ease;
+      transition:all .15s ease;
       cursor:pointer;
       user-select:none;
-      -webkit-tap-highlight-color: transparent;
+      -webkit-tap-highlight-color:transparent;
     }
     .nav-btn .nav-icon{ font-size:20px; }
-    .nav-btn.active{ color: var(--blue); background: rgba(59,130,246,0.10); }
+    .nav-btn.active{ color:var(--blue); background:rgba(59,130,246,0.10); }
 
     .mini-profile{
       display:flex;
       align-items:center;
       gap:12px;
       padding:12px;
-      background: rgba(255,255,255,0.03);
+      background:rgba(255,255,255,0.03);
       border-radius:14px;
       margin-bottom:12px;
-      border: 1px solid rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.05);
     }
     .mini-avatar{
-      width:44px; height:44px;
+      width:44px;
+      height:44px;
       border-radius:50%;
-      background: linear-gradient(135deg, var(--blue), var(--blue2));
-      display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(135deg, var(--blue), var(--blue2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
       color:#fff;
       font-weight:900;
       flex-shrink:0;
@@ -249,26 +406,26 @@
     }
     .mini-avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
     .mini-name{ font-weight:900; font-size:14px; color:#eaf2ff; }
-    .mini-sub{ font-size:12px; color: var(--muted); font-weight:700; }
+    .mini-sub{ font-size:12px; color:var(--muted); font-weight:700; }
 
     .chips{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
     .chip{
       padding:10px 12px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.04);
-      color: rgba(234,242,255,0.85);
+      background:rgba(255,255,255,0.04);
+      color:rgba(234,242,255,0.85);
       font-weight:900;
       cursor:pointer;
       user-select:none;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
       pointer-events:auto;
     }
     .chip.on{
-      border-color: rgba(59,130,246,0.55);
-      background: rgba(59,130,246,0.18);
-      box-shadow: 0 0 0 6px rgba(59,130,246,0.10);
+      border-color:rgba(59,130,246,0.55);
+      background:rgba(59,130,246,0.18);
+      box-shadow:0 0 0 6px rgba(59,130,246,0.10);
     }
 
     .photo-preview{
@@ -282,90 +439,129 @@
       align-items:center;
       justify-content:center;
       margin-top:10px;
-      color: rgba(234,242,255,0.70);
+      color:rgba(234,242,255,0.70);
       font-weight:900;
     }
     .photo-preview img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-    .stat-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:12px; }
+    .stat-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
     .stat-box{
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.07);
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.07);
       border-radius:16px;
       padding:12px;
       text-align:center;
     }
-    .stat-val{ font-size:22px; font-weight:1000; color: var(--blue); line-height:1.1; margin:4px 0 2px; }
-    .stat-key{ font-size:11px; font-weight:850; color: var(--muted); text-transform:uppercase; }
+    .stat-val{
+      font-size:22px;
+      font-weight:1000;
+      color:var(--blue);
+      line-height:1.1;
+      margin:4px 0 2px;
+    }
+    .stat-key{
+      font-size:11px;
+      font-weight:850;
+      color:var(--muted);
+      text-transform:uppercase;
+    }
 
     .confirm-box{
       margin-top:12px;
       padding:12px;
       border-radius:16px;
       border:1px solid rgba(59,130,246,0.25);
-      background: rgba(59,130,246,0.08);
+      background:rgba(59,130,246,0.08);
       display:none;
     }
     .confirm-title{ font-weight:1000; margin-bottom:8px; color:#eaf2ff; }
-    .confirm-actions{ display:flex; gap:10px; margin-top:10px; }
+    .confirm-actions{ display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
 
     .day-card{
-      background: rgba(255,255,255,0.03);
+      background:rgba(255,255,255,0.03);
       border:1px solid rgba(255,255,255,0.06);
       border-radius:14px;
       padding:12px;
       margin-bottom:10px;
     }
     .day-head{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
       margin-bottom:10px;
     }
-    .day-title{ font-weight:1000; font-size:13px; color: var(--blue); }
+    .day-title{ font-weight:1000; font-size:13px; color:var(--blue); }
+
     .exercise{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
       padding:10px 0;
       border-bottom:1px solid rgba(255,255,255,0.04);
     }
     .exercise:last-child{ border-bottom:none; }
     .ex-left{ display:flex; align-items:center; gap:10px; min-width:0; }
     .ex-img{
-      width:44px; height:44px;
+      width:44px;
+      height:44px;
       border-radius:12px;
-      background: rgba(59,130,246,0.12);
+      background:rgba(59,130,246,0.12);
       border:1px solid rgba(59,130,246,0.22);
       overflow:hidden;
       flex:0 0 auto;
-      display:flex; align-items:center; justify-content:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       font-weight:1000;
-      color: rgba(234,242,255,0.9);
+      color:rgba(234,242,255,0.9);
     }
     .ex-img img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .ex-name{ font-weight:900; font-size:13px; color:#eaf2ff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:170px; }
-    .ex-detail{ font-size:12px; color: var(--muted); font-weight:700; }
+    .ex-name{
+      font-weight:900;
+      font-size:13px;
+      color:#eaf2ff;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:170px;
+    }
+    .ex-detail{ font-size:12px; color:var(--muted); font-weight:700; }
 
     .modal-back{
       position:fixed; inset:0;
-      background: rgba(0,0,0,0.60);
+      background:rgba(0,0,0,0.60);
       display:none;
-      z-index: 2000;
-      padding: 18px;
+      z-index:2000;
+      padding:18px;
       overflow:auto;
     }
     .modal{
       width:100%;
-      max-width: 520px;
-      margin: 60px auto;
-      background: #0b1a2d;
+      max-width:520px;
+      margin:60px auto;
+      background:#0b1a2d;
       border:1px solid rgba(255,255,255,0.10);
-      border-radius: 18px;
-      box-shadow: 0 25px 80px rgba(0,0,0,0.60);
-      padding: 16px;
+      border-radius:18px;
+      box-shadow:0 25px 80px rgba(0,0,0,0.60);
+      padding:16px;
     }
     .modal h3{ margin:0 0 10px; }
-    .modal .xrow{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .modal .xrow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
     .xbtn{
       border:1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.06);
+      background:rgba(255,255,255,0.06);
       color:#eaf2ff;
       border-radius:12px;
       padding:8px 10px;
@@ -376,13 +572,13 @@
     .orb{
       width:100%;
       height:190px;
-      border-radius: 20px;
+      border-radius:20px;
       border:1px solid rgba(255,255,255,0.08);
       background:
         radial-gradient(circle at 30% 30%, rgba(59,130,246,0.40), transparent 55%),
         radial-gradient(circle at 70% 60%, rgba(37,99,235,0.35), transparent 55%),
         linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-      box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+      box-shadow:0 20px 60px rgba(0,0,0,0.55);
       position:relative;
       overflow:hidden;
     }
@@ -397,7 +593,7 @@
       display:flex; justify-content:space-between; gap:10px; align-items:flex-end;
     }
     .orb-label b{ font-size:16px; font-weight:1000; }
-    .orb-label span{ font-size:12px; color: rgba(234,242,255,0.78); font-weight:800; }
+    .orb-label span{ font-size:12px; color:rgba(234,242,255,0.78); font-weight:800; }
 
     .password-wrap{ position:relative; margin-top:10px; }
     .password-wrap .cp-input{ padding-right:84px; margin-top:0; }
@@ -413,6 +609,77 @@
       font-size:13px;
       cursor:pointer;
       padding:6px 8px;
+    }
+
+    .health-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    .health-item{
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.07);
+      border-radius:16px;
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .health-icon{
+      font-size:28px;
+      line-height:1;
+    }
+    .health-title{
+      font-size:13px;
+      font-weight:900;
+      color:#fff;
+    }
+    .health-text{
+      font-size:12px;
+      line-height:1.45;
+      color:var(--muted);
+      font-weight:700;
+    }
+    .health-link{
+      margin-top:auto;
+      border:none;
+      border-radius:12px;
+      padding:10px 12px;
+      background:rgba(59,130,246,.12);
+      color:#dbeafe;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .list-lines{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-top:8px;
+    }
+    .line-item{
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+      color:#dbeafe;
+      font-size:13px;
+      font-weight:700;
+      line-height:1.45;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(59,130,246,.12);
+      border:1px solid rgba(59,130,246,.20);
+      color:#dbeafe;
+      font-size:11px;
+      font-weight:900;
     }
   </style>
 </head>
@@ -442,19 +709,19 @@
       treino:"", progresso:"", saude:"", loja:"", convite:"", perfil:""
     };
 
-    const KEY_PROFILE = "cp_profile_v3";
-    const KEY_STEP = "cp_step_v3";
-    const KEY_XP = "cp_xp_v3";
-    const KEY_PLATES = "cp_plates_v3";
-    const KEY_TRAIN_DONE = "cp_train_done_v3";
-    const KEY_LAST_PHOTO = "cp_last_photo_v3";
-    const KEY_DIETA_LAST = "cp_dieta_last_v3";
-    const KEY_TREINO_LAST = "cp_treino_last_v3";
-    const KEY_ACCESS = "cp_access_v3";
-    const KEY_CAD_DRAFT = "cp_cadastro_draft_v3";
-    const KEY_TIMER = "cp_active_timer_v3";
-    const KEY_TREINO_CUSTOM = "cp_treino_custom_v3";
-    const KEY_LAST_SCREEN = "cp_last_screen_v3";
+    const KEY_PROFILE = "cp_profile_v4";
+    const KEY_STEP = "cp_step_v4";
+    const KEY_XP = "cp_xp_v4";
+    const KEY_PLATES = "cp_plates_v4";
+    const KEY_TRAIN_DONE = "cp_train_done_v4";
+    const KEY_LAST_PHOTO = "cp_last_photo_v4";
+    const KEY_DIETA_LAST = "cp_dieta_last_v4";
+    const KEY_TREINO_LAST = "cp_treino_last_v4";
+    const KEY_ACCESS = "cp_access_v4";
+    const KEY_CAD_DRAFT = "cp_cadastro_draft_v4";
+    const KEY_TIMER = "cp_active_timer_v4";
+    const KEY_TREINO_CUSTOM = "cp_treino_custom_v4";
+    const KEY_LAST_SCREEN = "cp_last_screen_v4";
 
     function safeParse(s, fb){ try{return JSON.parse(s);}catch{return fb;} }
     function storageSet(key, value){
@@ -522,6 +789,7 @@
         if(typeof window.gtag === "function") gtag("event", eventName, params || {});
       }catch(e){}
     }
+
     function trackScreen(screen){
       try{
         if(typeof window.gtag === "function"){
@@ -595,7 +863,8 @@
       "Burpees":"https://i.ibb.co/Vv6V6Kx/run.jpg",
       "Box jump":"https://i.ibb.co/Vv6V6Kx/squat.jpg",
       "Kettlebell swing":"https://i.ibb.co/vYvV9V0/back.jpg",
-      "Wall ball":"https://i.ibb.co/Vv6V6Kx/squat.jpg"
+      "Wall ball":"https://i.ibb.co/Vv6V6Kx/squat.jpg",
+      "Sombra":"https://i.ibb.co/Vv6V6Kx/run.jpg"
     };
 
     const TREINO_BASE = {
@@ -629,17 +898,30 @@
     };
 
     function getWorkoutModes(){
-      const selected = Array.isArray(stateCad.esportes) && stateCad.esportes.length ? stateCad.esportes : (loadProfile()?.esportes || []);
-      const base = Array.from(new Set([...(selected||[]), "Musculação", "Corrida", "CrossFit"]));
+      const selected = Array.isArray(stateCad.esportes) && stateCad.esportes.length
+        ? stateCad.esportes
+        : (loadProfile()?.esportes || []);
+      const base = Array.from(new Set([...(selected || []), "Musculação", "Corrida", "CrossFit"]));
       return base.filter(mode => TREINO_BASE[mode]);
     }
 
-    function esc(s){ return String(s??"").replace(/[&<>"]/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m])); }
+    function esc(s){
+      return String(s ?? "").replace(/[&<>"]/g, m => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;"
+      }[m]));
+    }
+
     function showToast(msg){
       toastMsg = msg;
       toastShow = true;
       renderToast();
-      setTimeout(()=>{ toastShow=false; renderToast(); }, 2400);
+      setTimeout(()=>{
+        toastShow = false;
+        renderToast();
+      }, 2400);
     }
 
     function openModal(title, html){
@@ -647,12 +929,15 @@
       document.getElementById("modalBody").innerHTML = html || "";
       document.getElementById("modalBack").style.display = "block";
     }
-    function closeModal(){ document.getElementById("modalBack").style.display = "none"; }
+
+    function closeModal(){
+      document.getElementById("modalBack").style.display = "none";
+    }
 
     function readFileAsDataUrl(file){
       return new Promise((resolve,reject)=>{
         const r = new FileReader();
-        r.onload = ()=> resolve(String(r.result||""));
+        r.onload = ()=> resolve(String(r.result || ""));
         r.onerror = ()=> reject(new Error("Falha ao ler arquivo"));
         r.readAsDataURL(file);
       });
@@ -660,7 +945,7 @@
 
     function getProfileDisplay(){
       const p = loadProfile();
-      const fullName = p ? `${p.nome||""} ${p.sobrenome||""}`.trim() : "";
+      const fullName = p ? `${p.nome || ""} ${p.sobrenome || ""}`.trim() : "";
       return { name: fullName || "Visitante", avatar: p?.avatarDataUrl || "" };
     }
 
@@ -710,7 +995,7 @@
 
     function renderToast(){
       const slot = document.getElementById("toastSlot");
-      if(slot) slot.innerHTML = `<div class="cp-toast ${toastShow?"show":""}">${esc(toastMsg)}</div>`;
+      if(slot) slot.innerHTML = `<div class="cp-toast ${toastShow ? "show" : ""}">${esc(toastMsg)}</div>`;
     }
 
     function renderNav(){
@@ -732,13 +1017,32 @@
       slot.innerHTML = `
         <nav class="bottom-nav">
           <div class="bottom-nav-inner">
-            ${items.map(n=>`
-              <button class="nav-btn ${currentScreen===n.id?"active":""}" onclick="goTo('${n.id}')">
+            ${items.map(n => `
+              <button class="nav-btn ${currentScreen===n.id ? "active" : ""}" onclick="goTo('${n.id}')">
                 <span class="nav-icon">${n.icon}</span>${n.label}
               </button>
             `).join("")}
           </div>
         </nav>
+      `;
+    }
+
+    function renderHero(cfg){
+      return `
+        <div class="hero-3d">
+          <div>
+            <div class="hero-small">${esc(cfg.kicker || "CheckPrato Elite")}</div>
+            <div class="hero-title">${cfg.title || ""}</div>
+            <div class="hero-sub">${cfg.sub || ""}</div>
+          </div>
+          <div class="hero-bottom">
+            <div class="hero-badge">${esc(cfg.badge || "Evolua 1% por dia")}</div>
+            <div class="hero-score">
+              <b>${esc(cfg.score || "—")}</b>
+              <span>${esc(cfg.scoreLabel || "nível atual")}</span>
+            </div>
+          </div>
+        </div>
       `;
     }
 
@@ -778,23 +1082,28 @@
 
     function renderWelcome(animate){
       return `
-        <div class="page-wrap ${animate?"screen-enter":""}">
+        <div class="page-wrap ${animate ? "screen-enter" : ""}">
           <div class="logo-wrap">
             <div class="logo-icon">✓</div>
             <div class="logo-text">Check<span>Prato</span></div>
           </div>
 
-          <div class="cp-card" style="text-align:center">
-            <div style="font-size:46px">🚀</div>
-            <div class="cp-h1" style="margin-top:8px">Olá! Seja muito bem-vindo.</div>
-            <div class="cp-hint" style="margin-top:8px">
-              Vamos montar seu perfil e liberar o app completo:
-              <b>Prato</b>, <b>Dieta</b>, <b>Treino</b> e <b>Progresso</b>.
+          ${renderHero({
+            kicker:"Boas-vindas",
+            title:"Olá, seja muito bem-vindo.",
+            sub:"Vamos montar seu perfil e liberar prato, dieta, treino, progresso, saúde, loja e perfil em um fluxo fácil.",
+            badge:"Seu app está aqui",
+            score:"Elite",
+            scoreLabel:"modo inicial"
+          })}
+
+          <div class="cp-card">
+            <div class="cp-hint tcenter">
+              Crie seu acesso e deixe tudo salvo no seu celular para entrar mais rápido depois.
             </div>
-
-            <div class="cp-divider"></div>
-
-            <button class="btn-neon" onclick="startFlow()">Começar agora</button>
+            <div class="btn-row">
+              <button class="btn-neon" onclick="startFlow()">Começar agora</button>
+            </div>
             <button class="btn-outline" style="margin-top:12px" onclick="goTo('acesso')">Entrar / Criar acesso</button>
           </div>
         </div>
@@ -803,16 +1112,20 @@
 
     function renderAcesso(animate){
       return `
-        <div class="page-wrap ${animate?"screen-enter":""}">
+        <div class="page-wrap ${animate ? "screen-enter" : ""}">
           <div class="logo-wrap">
             <div class="logo-icon">✓</div>
             <div class="logo-text">Check<span>Prato</span></div>
           </div>
 
-          <div class="cp-h1 tcenter">Acesso</div>
-          <div class="cp-hint tcenter" style="margin-top:6px">
-            Seus dados ficam salvos automaticamente no celular.
-          </div>
+          ${renderHero({
+            kicker:"Acesso rápido",
+            title:"Entre e continue do ponto em que parou.",
+            sub:"Depois do primeiro cadastro, seus dados ficam salvos para facilitar o próximo acesso.",
+            badge:"Entrada simplificada",
+            score: stateAccessEmail ? "OK" : "Novo",
+            scoreLabel:"status"
+          })}
 
           <div class="cp-card">
             <button class="btn-neon" onclick="googleLoginInfo()">G Entrar com Google</button>
@@ -839,9 +1152,15 @@
       const selected = new Set(stateCad.esportes || []);
 
       return `
-        <div class="page-wrap ${animate?"screen-enter":""}">
-          <div class="cp-h1">Cadastro</div>
-          <div class="cp-hint">Preencha tudo para liberar o app completo.</div>
+        <div class="page-wrap ${animate ? "screen-enter" : ""}">
+          ${renderHero({
+            kicker:"Cadastro",
+            title:"Monte seu perfil de evolução.",
+            sub:"Escolha seus dados, nível, condição, restrições e esportes para liberar sugestões melhores.",
+            badge:"Tudo salvo localmente",
+            score: `${(stateCad.esportes||[]).length}`,
+            scoreLabel:"esportes"
+          })}
 
           <div class="cp-card">
             <div class="cp-label">Foto do perfil</div>
@@ -855,7 +1174,7 @@
               <div class="mini-avatar">${avatar ? `<img src="${esc(avatar)}" alt="avatar">` : "👤"}</div>
               <div>
                 <div class="mini-name">${esc((stateCad.nome||"") + (stateCad.sobrenome?(" "+stateCad.sobrenome):"")) || "Seu perfil"}</div>
-                <div class="mini-sub">Você pode editar isso depois pelo Perfil.</div>
+                <div class="mini-sub">Você pode editar isso depois no Perfil.</div>
               </div>
             </div>
 
@@ -947,7 +1266,7 @@
 
             <div class="cp-label">Esportes</div>
             <div class="chips" id="chipsEsportes">
-              ${ESPORTES_FIXOS.map(sp=>{
+              ${ESPORTES_FIXOS.map(sp => {
                 const on = selected.has(sp) ? "on" : "";
                 const js = String(sp).replace(/\\/g,"\\\\").replace(/'/g,"\\'");
                 return `
@@ -960,7 +1279,7 @@
 
             <div class="cp-divider"></div>
 
-            <label style="display:flex; gap:10px; align-items:center; font-weight:900; color: rgba(234,242,255,0.92); margin-top:8px;">
+            <label style="display:flex; gap:10px; align-items:center; font-weight:900; color:rgba(234,242,255,0.92); margin-top:8px;">
               <input id="cadTermo" type="checkbox" style="width:22px;height:22px" ${stateCad.termo?"checked":""} />
               Aceito o termo (conteúdo informativo)
             </label>
@@ -976,12 +1295,17 @@
       const b = FRASES_EMOCIONAIS[Math.floor(Math.random()*FRASES_EMOCIONAIS.length)];
       const c = FRASES_MENTAIS[Math.floor(Math.random()*FRASES_MENTAIS.length)];
       return `
-        <div class="page-wrap ${animate?"screen-enter":""}">
-          <div class="cp-card" style="text-align:center">
-            <div style="font-size:48px">🏆</div>
-            <div class="cp-h1" style="margin-top:8px">Você entrou no jogo.</div>
-            <div class="cp-hint" style="margin-top:10px"><b>${esc(a[0])}</b><br>${esc(a[1])}</div>
-            <div class="cp-divider"></div>
+        <div class="page-wrap ${animate ? "screen-enter" : ""}">
+          ${renderHero({
+            kicker:"Ativação",
+            title:"Você entrou no jogo.",
+            sub:`${a[0]} ${a[1]}`,
+            badge:"Agora é com você",
+            score:"+10",
+            scoreLabel:"XP no cadastro"
+          })}
+
+          <div class="cp-card">
             <div class="cp-hint"><b>${esc(b[0])}</b><br>${esc(b[1]||"")}</div>
             <div class="cp-divider"></div>
             <div class="cp-hint"><b>${esc(c[0])}</b><br>${esc(c[1]||"")}</div>
@@ -993,8 +1317,10 @@
 
     function renderPrato(animate){
       const {name, avatar} = getProfileDisplay();
+      const plateCount = loadPlates().length;
+
       return `
-        <div class="page-wrap ${animate?"screen-enter":""}">
+        <div class="page-wrap ${animate ? "screen-enter" : ""}">
           <div class="mini-profile">
             <div class="mini-avatar">${avatar ? `<img src="${esc(avatar)}" alt="avatar">` : "🍽️"}</div>
             <div>
@@ -1003,7 +1329,14 @@
             </div>
           </div>
 
-          <div class="cp-h1 tcenter">Prato</div>
+          ${renderHero({
+            kicker:"Leitura do prato",
+            title:"Registre suas refeições com foto.",
+            sub:"Envie a foto, analise, confirme o resultado e salve no histórico para acompanhar sua evolução.",
+            badge:"Histórico ativo",
+            score:String(plateCount),
+            scoreLabel:"pratos"
+          })}
 
           <div class="cp-card">
             <div class="cp-label tcenter">Foto do prato</div>
@@ -1015,7 +1348,9 @@
             <input id="fileCam" type="file" accept="image/*" capture="environment" style="display:none">
             <input id="fileGal" type="file" accept="image/*" style="display:none">
 
-            <div class="photo-preview" id="photoPreview">${plateDataUrl ? `<img src="${esc(plateDataUrl)}" alt="prato">` : "📸 Envie uma foto para analisar"}</div>
+            <div class="photo-preview" id="photoPreview">
+              ${plateDataUrl ? `<img src="${esc(plateDataUrl)}" alt="prato">` : "📸 Envie uma foto para analisar"}
+            </div>
 
             <button class="btn-neon" style="margin-top:14px" onclick="analisarPrato()">🔍 Analisar prato</button>
 
@@ -1069,7 +1404,7 @@
       const last = safeParse(localStorage.getItem(KEY_DIETA_LAST) || "null", null) || makeDiet(dietaMode);
 
       return `
-        <div class="page-wrap ${animate?"screen-enter":""}">
+        <div class="page-wrap ${animate ? "screen-enter" : ""}">
           <div class="mini-profile">
             <div class="mini-avatar">${avatar ? `<img src="${esc(avatar)}" alt="avatar">` : "🥗"}</div>
             <div>
@@ -1078,7 +1413,14 @@
             </div>
           </div>
 
-          <div class="cp-h1 tcenter">Dieta</div>
+          ${renderHero({
+            kicker:"Plano alimentar",
+            title:"Gere e troque dietas com facilidade.",
+            sub:"Escolha o tipo de dieta, gere novas combinações e troque alimentos sem ficar repetitivo.",
+            badge:"Variedade real",
+            score:dietaMode === "hipertrofia" ? "Massa" : (dietaMode === "lowcarb" ? "Low" : "Fit"),
+            scoreLabel:"modo"
+          })}
 
           <div class="cp-card">
             <div class="cp-label tcenter">Tipo</div>
@@ -1114,7 +1456,7 @@
       const timerInfo = activeTimer ? getTimerLeft(activeTimer) : null;
 
       return `
-        <div class="page-wrap ${animate?"screen-enter":""}">
+        <div class="page-wrap ${animate ? "screen-enter" : ""}">
           <div class="mini-profile">
             <div class="mini-avatar">${avatar ? `<img src="${esc(avatar)}" alt="avatar">` : "💪"}</div>
             <div>
@@ -1123,7 +1465,14 @@
             </div>
           </div>
 
-          <div class="cp-h1 tcenter">Treinos</div>
+          ${renderHero({
+            kicker:"Treino inteligente",
+            title:"Movimento com direção e controle.",
+            sub:"Escolha o esporte, veja imagem do exercício, abra no YouTube e só conclua após o tempo mínimo.",
+            badge:`${nivel}`,
+            score:String(min),
+            scoreLabel:"min/ex"
+          })}
 
           <div class="cp-card">
             <div class="cp-label tcenter">Esporte</div>
@@ -1174,7 +1523,7 @@
                           <div class="ex-detail">${esc(exDetail)} • mínimo ${min} min</div>
                         </div>
                       </div>
-                      <div style="display:flex; gap:8px; align-items:center">
+                      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
                         <button class="btn-secondary" style="width:auto" onclick="openYouTube('${esc(exName)}')">YouTube</button>
                         <button class="btn-secondary" style="width:auto" onclick="startExercise('${esc(exId)}', ${min})">${isDone ? "✅" : "▶"}</button>
                       </div>
@@ -1197,18 +1546,25 @@
       const xp = getXP();
       const plates = loadPlates();
       const last = plates[0];
+      const treinos = loadTrainDone().length;
 
       return `
-        <div class="page-wrap ${animate?"screen-enter":""}">
-          <div class="cp-h1 tcenter">Progresso</div>
-          <div class="cp-hint tcenter">Seu histórico básico.</div>
+        <div class="page-wrap ${animate ? "screen-enter" : ""}">
+          ${renderHero({
+            kicker:"Progresso",
+            title:"Sua consistência está ficando visível.",
+            sub:"Acompanhe XP, pratos salvos, histórico e o reflexo da sua rotina ao longo do tempo.",
+            badge:"Visual 3D",
+            score:String(xp),
+            scoreLabel:"XP"
+          })}
 
           <div class="cp-card">
-            <div class="orb">
-              <div class="orb-label">
-                <div><b>XP: ${esc(xp)}</b><br><span>consistência acumulada</span></div>
-                <div style="text-align:right"><b>${esc(plates.length)}</b><br><span>pratos salvos</span></div>
-              </div>
+            <div class="stat-grid">
+              <div class="stat-box"><div class="stat-key">XP</div><div class="stat-val">${xp}</div></div>
+              <div class="stat-box"><div class="stat-key">Pratos</div><div class="stat-val">${plates.length}</div></div>
+              <div class="stat-box"><div class="stat-key">Treinos</div><div class="stat-val">${treinos}</div></div>
+              <div class="stat-box"><div class="stat-key">Nível</div><div class="stat-val">${esc((loadProfile()?.nivel || "—"))}</div></div>
             </div>
 
             <div class="cp-divider"></div>
@@ -1238,28 +1594,79 @@
 
     function renderSaude(animate){
       const p = loadProfile() || stateCad || {};
+      const healthCards = [
+        {
+          icon:"💧",
+          title:"Hidratação",
+          text:"Meta prática: 2L por dia ou ajuste conforme seu peso, treino e calor.",
+          url:"https://www.gov.br/saude/pt-br"
+        },
+        {
+          icon:"😴",
+          title:"Sono",
+          text:"Dormir 7 a 8 horas ajuda recuperação muscular, foco e humor.",
+          url:"https://www.who.int/"
+        },
+        {
+          icon:"🫀",
+          title:"Pressão e coração",
+          text:"Se houver tontura, falta de ar, dor ou pressão alterada, procure atendimento.",
+          url:"https://www.cardiol.br/"
+        },
+        {
+          icon:"🦴",
+          title:"Mobilidade",
+          text:"Alongar e aquecer antes do treino reduz rigidez e melhora execução.",
+          url:"https://bvsms.saude.gov.br/"
+        },
+        {
+          icon:"🩺",
+          title:"Condição atual",
+          text:`Condição: ${p.condicao || "—"} • Mobilidade: ${p.mobilidade || "—"}`,
+          url:"https://www.gov.br/saude/pt-br"
+        },
+        {
+          icon:"🥗",
+          title:"Restrições",
+          text:`Restrições informadas: ${p.restricoes || "—"}. Respeite sua rotina alimentar.`,
+          url:"https://www.gov.br/saude/pt-br"
+        }
+      ];
+
       return `
-        <div class="page-wrap ${animate?"screen-enter":""}">
-          <div class="cp-h1 tcenter">Saúde</div>
+        <div class="page-wrap ${animate ? "screen-enter" : ""}">
+          ${renderHero({
+            kicker:"Saúde",
+            title:"Cuidado diário para corpo e mente.",
+            sub:"Aqui ficam orientações rápidas, temas importantes e atalhos para fontes oficiais.",
+            badge:"Conteúdo útil",
+            score: p.condicao ? "Ativo" : "Base",
+            scoreLabel:"perfil"
+          })}
+
           <div class="cp-card">
-            <div class="cp-hint">
-              <b>Condição:</b> ${esc(p.condicao || "—")}<br>
-              <b>Mobilidade:</b> ${esc(p.mobilidade || "—")}<br>
-              <b>Restrições:</b> ${esc(p.restricoes || "—")}
+            <div class="pill">Perfil: ${esc(p.condicao || "Geral")} • ${esc(p.mobilidade || "Sem mobilidade definida")}</div>
+
+            <div class="health-grid">
+              ${healthCards.map(item => `
+                <div class="health-item">
+                  <div class="health-icon">${item.icon}</div>
+                  <div class="health-title">${esc(item.title)}</div>
+                  <div class="health-text">${esc(item.text)}</div>
+                  <button class="health-link" onclick="window.open('${item.url}','_blank')">Abrir site oficial</button>
+                </div>
+              `).join("")}
             </div>
 
             <div class="cp-divider"></div>
 
-            <div class="day-card">
-              <div class="day-head">
-                <div class="day-title">Dica prática</div>
-                <div class="cp-hint">hoje</div>
-              </div>
-              <div class="cp-hint" style="line-height:1.6">
-                • 2L de água por dia.<br>
-                • 7–8h de sono.<br>
-                • 10 min de caminhada já contam.
-              </div>
+            <div class="cp-label">Assuntos importantes</div>
+            <div class="list-lines">
+              <div class="line-item">• Alimentação equilibrada ajuda energia, recuperação e constância.</div>
+              <div class="line-item">• Dor persistente não é normal: reduza intensidade e procure avaliação.</div>
+              <div class="line-item">• Idosos e pessoas com limitação devem priorizar segurança, apoio e controle de movimento.</div>
+              <div class="line-item">• Ansiedade, estresse e sono ruim afetam treino, fome e motivação.</div>
+              <div class="line-item">• Começar leve e manter consistência é melhor do que exagerar e parar.</div>
             </div>
           </div>
         </div>
@@ -1268,8 +1675,16 @@
 
     function renderLoja(animate){
       return `
-        <div class="page-wrap ${animate?"screen-enter":""}">
-          <div class="cp-h1 tcenter">Loja</div>
+        <div class="page-wrap ${animate ? "screen-enter" : ""}">
+          ${renderHero({
+            kicker:"Loja",
+            title:"Itens úteis para sua rotina.",
+            sub:"Acesse roupas, suplementos, equipamentos e acessórios direto dos sites oficiais.",
+            badge:"Links externos",
+            score:"3+",
+            scoreLabel:"categorias"
+          })}
+
           <div class="cp-card">
             <div class="day-card">
               <div class="day-title">Suplementos</div>
@@ -1301,8 +1716,16 @@
 
     function renderConvite(animate){
       return `
-        <div class="page-wrap ${animate?"screen-enter":""}">
-          <div class="cp-h1 tcenter">Convite</div>
+        <div class="page-wrap ${animate ? "screen-enter" : ""}">
+          ${renderHero({
+            kicker:"Convite",
+            title:"Chame alguém para evoluir com você.",
+            sub:"Compartilhe o app com amigos e motive mais gente a cuidar da alimentação e do treino.",
+            badge:"Compartilhar",
+            score:"Agora",
+            scoreLabel:"ação"
+          })}
+
           <div class="cp-card">
             <div class="cp-hint">Compartilhe com um amigo:</div>
             <div class="cp-divider"></div>
@@ -1319,8 +1742,15 @@
       const avatar = p.avatarDataUrl || "";
 
       return `
-        <div class="page-wrap ${animate?"screen-enter":""}">
-          <div class="cp-h1 tcenter">Perfil</div>
+        <div class="page-wrap ${animate ? "screen-enter" : ""}">
+          ${renderHero({
+            kicker:"Perfil",
+            title:"Seu resumo dentro do app.",
+            sub:"Veja suas informações principais e edite o cadastro quando quiser.",
+            badge:"Conta ativa",
+            score: esc(p.nivel || "—"),
+            scoreLabel:"nível"
+          })}
 
           <div class="cp-card">
             <div class="mini-profile">
@@ -1338,7 +1768,8 @@
               <b>Peso:</b> ${esc(p.peso||"—")} kg<br>
               <b>Altura:</b> ${esc(p.altura||"—")} cm<br>
               <b>Esportes:</b> ${esc((p.esportes||[]).join(", ") || "—")}<br>
-              <b>Treinar:</b> ${esc(p.localTreino||"—")}
+              <b>Treinar:</b> ${esc(p.localTreino||"—")}<br>
+              <b>Condição:</b> ${esc(p.condicao||"—")}
             </div>
 
             <div class="btn-row" style="margin-top:14px">
@@ -1369,7 +1800,7 @@
 
     function startFlow(){
       setStep(1);
-      currentScreen="acesso";
+      currentScreen = "acesso";
       storageSet(KEY_LAST_SCREEN, currentScreen);
       track("inicio_fluxo", { etapa:"acesso" });
       render();
@@ -1389,14 +1820,14 @@
       if(profile && profile.nome && profile.objetivo && getStep() >= 3){
         currentScreen = "prato";
         storageSet(KEY_LAST_SCREEN, currentScreen);
-        track("login_rapido", { retorno: "sim" });
+        track("login_rapido", { retorno:"sim" });
         showToast("Bem-vindo de volta ✅");
         render();
         return;
       }
 
       setStep(2);
-      currentScreen="cadastro";
+      currentScreen = "cadastro";
       storageSet(KEY_LAST_SCREEN, currentScreen);
       track("acesso_continuar", { has_email: stateAccessEmail ? "sim" : "nao" });
       render();
@@ -1404,7 +1835,7 @@
 
     function finishOnboarding(){
       setStep(3);
-      currentScreen="prato";
+      currentScreen = "prato";
       storageSet(KEY_LAST_SCREEN, currentScreen);
       track("onboarding_finalizado", { esportes: (stateCad.esportes || []).join(", ") });
       render();
@@ -1443,7 +1874,7 @@
       stateCad.esportes = Array.from(set);
       saveDraft();
       if(el) el.classList.toggle("on");
-      track("esporte_toggle", { esporte: sport, ativo: set.has(sport) ? "sim" : "nao" });
+      track("esporte_toggle", { esporte:sport, ativo:set.has(sport) ? "sim" : "nao" });
     }
 
     function saveCadastroAndContinue(){
@@ -1573,10 +2004,14 @@
     }
 
     function fillMacros(data){
-      document.getElementById("kcalBox").textContent = (data?.calories ?? "—");
-      document.getElementById("protBox").textContent = (data?.protein ?? "—");
-      document.getElementById("carbBox").textContent = (data?.carbs ?? "—");
-      document.getElementById("fatBox").textContent  = (data?.fat ?? "—");
+      const kcal = document.getElementById("kcalBox");
+      const prot = document.getElementById("protBox");
+      const carb = document.getElementById("carbBox");
+      const fat = document.getElementById("fatBox");
+      if(kcal) kcal.textContent = (data?.calories ?? "—");
+      if(prot) prot.textContent = (data?.protein ?? "—");
+      if(carb) carb.textContent = (data?.carbs ?? "—");
+      if(fat) fat.textContent = (data?.fat ?? "—");
     }
 
     function confirmarPrato(){
@@ -1587,10 +2022,12 @@
       addXP(2);
       track("prato_confirmado", { calorias: String(plateAI?.calories ?? "") });
       showToast("Salvo no histórico ✅");
-      document.getElementById("plateConfirm").style.display = "none";
+      const box = document.getElementById("plateConfirm");
+      if(box) box.style.display = "none";
     }
 
     function pickFrom(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
     function makeDiet(mode){
       const m = DIETA_POOL[mode] || DIETA_POOL.emagrecimento;
       return {
@@ -1628,20 +2065,20 @@
     function buildWorkout(mode){ return TREINO_BASE[mode] || TREINO_BASE["Musculação"]; }
 
     function openYouTube(query){
-      const q = encodeURIComponent(String(query||"exercício"));
+      const q = encodeURIComponent(String(query || "exercício"));
       window.open(`https://www.youtube.com/results?search_query=${q}`, "_blank");
     }
 
     function startExercise(exId, min){
-      activeTimer = { id: exId, startedAt: Date.now(), min: Number(min||3) };
+      activeTimer = { id: exId, startedAt: Date.now(), min: Number(min || 3) };
       persistTimer();
-      track("treino_timer_iniciado", { exercicio: exId, minutos: String(min||3) });
+      track("treino_timer_iniciado", { exercicio: exId, minutos: String(min || 3) });
       showToast("Timer iniciado ▶");
       render();
     }
 
     function getTimerLeft(t){
-      const total = (t.min * 60 * 1000);
+      const total = t.min * 60 * 1000;
       const spent = Date.now() - t.startedAt;
       const left = Math.max(0, total - spent);
       const mm = Math.floor(left / 60000);
@@ -1651,7 +2088,7 @@
 
     function tryFinishExercise(){
       if(!activeTimer) return;
-      const total = (activeTimer.min * 60 * 1000);
+      const total = activeTimer.min * 60 * 1000;
       const spent = Date.now() - activeTimer.startedAt;
       if(spent < total) return showToast("Ainda não. Espere o tempo mínimo.");
 
@@ -1676,8 +2113,7 @@
 
     function gerarTreinoNovo(){
       const base = TREINO_BASE[treinoMode] || [];
-      const shuffled = [...base].map(d=>({ ...d, ex:[...d.ex].sort(()=>Math.random()-0.5) }))
-        .sort(()=>Math.random()-0.5);
+      const shuffled = [...base].map(d=>({ ...d, ex:[...d.ex].sort(()=>Math.random()-0.5) })).sort(()=>Math.random()-0.5);
       storageSet(KEY_TREINO_CUSTOM, { mode: treinoMode, data: shuffled });
       addXP(2);
       track("treino_trocado", { modo: treinoMode });
@@ -1711,7 +2147,10 @@
 
     function showHistory(){
       const plates = loadPlates();
-      if(!plates.length){ openModal("Histórico", "Você ainda não salvou nenhum prato."); return; }
+      if(!plates.length){
+        openModal("Histórico", "Você ainda não salvou nenhum prato.");
+        return;
+      }
       const html = plates.slice(0,10).map(p=>`
         <div class="day-card">
           <div class="day-head">
@@ -1727,7 +2166,7 @@
     function shareApp(){
       const msg = "Estou usando o CheckPrato Elite. Top pra dieta, treino e progresso! 🔥";
       if(navigator.share){
-        track("convite_share", { via: "navigator" });
+        track("convite_share", { via:"navigator" });
         navigator.share({ text: msg }).catch(()=>{});
       }else{
         openModal("Compartilhar", "Seu celular não suportou compartilhamento automático. Use copiar mensagem.");
@@ -1737,7 +2176,10 @@
     function copyInvite(){
       const msg = "Estou usando o CheckPrato Elite. Top pra dieta, treino e progresso! 🔥";
       navigator.clipboard?.writeText(msg)
-        .then(()=>{ track("convite_copiado", { tela: currentScreen }); showToast("Mensagem copiada ✅"); })
+        .then(()=>{
+          track("convite_copiado", { tela: currentScreen });
+          showToast("Mensagem copiada ✅");
+        })
         .catch(()=> openModal("Copiar", esc(msg)));
     }
 
@@ -1837,7 +2279,75 @@
       }
 
       render();
-      track("app_aberto", { tela_inicial: currentScreen, versao: "elite-blindado-v3" });
+      track("app_aberto", { tela_inicial: currentScreen, versao: "elite-unico-v4" });
+    }
+
+    window.addEventListener("pagehide", ()=>{
+      persistAccess();
+      persistCadastroDraft();
+      persistTimer();
+    });
+
+    document.addEventListener("visibilitychange", ()=>{
+      if(document.hidden){
+        persistAccess();
+        persistCadastroDraft();
+        persistTimer();
+      }
+    });
+     function boot(){
+      mountOnce();
+
+      const access = safeParse(localStorage.getItem(KEY_ACCESS) || "null", null);
+      if(access){
+        stateAccessEmail = access.email || "";
+        stateAccessPass = access.pass || "";
+      }
+
+      const draft = safeParse(localStorage.getItem(KEY_CAD_DRAFT) || "null", null);
+      const p = loadProfile();
+      if(draft) stateCad = { ...stateCad, ...draft };
+      if(p) stateCad = { ...stateCad, ...p };
+
+      const tLast = localStorage.getItem(KEY_TREINO_LAST);
+      if(tLast && TREINO_BASE[tLast]) treinoMode = tLast;
+
+      const lastDiet = safeParse(localStorage.getItem(KEY_DIETA_LAST) || "null", null);
+      if(!lastDiet){
+        const preferredMode =
+          stateCad.objetivo === "Hipertrofia" ? "hipertrofia" :
+          (String(stateCad.restricoes || "").toLowerCase().includes("glúten") ? "lowcarb" : "emagrecimento");
+        dietaMode = preferredMode;
+        storageSet(KEY_DIETA_LAST, makeDiet(dietaMode));
+      }
+
+      if(activeTimer){
+        const total = (Number(activeTimer.min || 0) * 60 * 1000);
+        const spent = Date.now() - Number(activeTimer.startedAt || 0);
+        if(spent > total + (12 * 60 * 60 * 1000)){
+          activeTimer = null;
+          persistTimer();
+        }
+      }
+
+      const profile = loadProfile();
+      const step = getStep();
+      const savedScreen = localStorage.getItem(KEY_LAST_SCREEN) || "";
+
+      if(profile && profile.nome && profile.objetivo && step >= 3){
+        currentScreen = canAccess(savedScreen) ? (savedScreen || "prato") : "prato";
+      }else if(step <= 0){
+        currentScreen = "welcome";
+      }else if(step === 1){
+        currentScreen = "acesso";
+      }else if(step === 2){
+        currentScreen = "cadastro";
+      }else{
+        currentScreen = "prato";
+      }
+
+      render();
+      track("app_aberto", { tela_inicial: currentScreen, versao: "elite-unico-v4" });
     }
 
     window.addEventListener("pagehide", ()=>{
@@ -1854,6 +2364,10 @@
       }
     });
 
+    boot();
+  </script>
+</body>
+</html>
     boot();
   </script>
 </body>
