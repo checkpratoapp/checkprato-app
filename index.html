@@ -1,763 +1,85 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
-  <title>CheckPrato Elite — Dieta • Treino • Prato • Progresso</title>
-
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K0EDRW9FRS"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-K0EDRW9FRS', { send_page_view: false });
-  </script>
+  <meta charset="UTF-8">
+  <title>CheckPrato</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    /* =========================================
-       CSS BASE & ACESSIBILIDADE
-       ========================================= */
-    *{ box-sizing:border-box; margin:0; padding:0; }
-    html, body{
-      width:100%; height:100%;
-      background:#02050b; color:#eaf2ff;
-      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
-      overflow-x:hidden;
-    }
-    body{ background: radial-gradient(circle at 20% 0%, #0a1f38, #000) fixed; min-height:100vh; }
-    body, .app-shell, .page-wrap{ -webkit-font-smoothing: antialiased; transform: translateZ(0); }
-
-    :root{
-      --blue:#3b82f6; --blue2:#2563eb; --blue3:#60a5fa;
-      --bgCard1:#0b1a2d; --bgCard2:#07111f;
-      --muted:#8aa0c7; --stroke:rgba(255,255,255,0.08);
-      --max:430px; --danger:#ef4444; --success:#22c55e;
-      --xp-color: #fbbf24;
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: white;
+      text-align: center;
+      padding: 20px;
     }
 
-    /* Otimização de alvo de toque (Acessibilidade) */
-    button, input, select { min-height: 48px; }
-
-    .app-shell{ width:100%; min-height:100vh; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; background: radial-gradient(circle at 20% 0%, #0a1f38, #000); }
-    #bgSlot{ position:absolute; inset:0; z-index:0; }
-    .bg-layer{ position:absolute; inset:0; background-size:cover; background-position:center; filter:saturate(1.05) contrast(1.05); opacity:.95; }
-    .bg-overlay{ position:absolute; inset:0; background: radial-gradient(circle at 30% 10%, rgba(59,130,246,.20), transparent 55%), radial-gradient(circle at 70% 30%, rgba(37,99,235,.18), transparent 60%), linear-gradient(180deg, rgba(2,5,11,.66), rgba(2,5,11,.96)); pointer-events:none; }
-
-    .screen-enter{ animation: screenIn .25s ease-out forwards; }
-    @keyframes screenIn{ from{ opacity:0; transform: translateY(15px);} to{ opacity:1; transform: translateY(0);} }
-
-    .page-wrap{ width:100%; max-width:var(--max); padding:18px 18px 130px; overflow-y:auto; position:relative; z-index:5; }
-
-    /* =========================================
-       TYPOGRAFIA & CARDS 3D
-       ========================================= */
-    .logo-wrap{ display:flex; align-items:center; gap:8px; justify-content:center; margin-bottom:8px; }
-    .logo-icon{ width:32px; height:32px; background: linear-gradient(135deg, var(--blue), var(--blue2)); border-radius:8px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 20px rgba(59,130,246,0.35); font-weight:900; }
-    .logo-text{ font-size:20px; font-weight:900; color:#eaf2ff; }
-    .logo-text span{ color:var(--blue); }
-
-    .cp-h1{ font-size:32px; font-weight:900; color:#eaf2ff; margin:8px 0 4px; line-height: 1.1; }
-    .cp-hint{ font-size:13px; color:var(--muted); font-weight:650; line-height:1.45; }
-    .cp-label{ font-size:11px; font-weight:850; letter-spacing:.8px; text-transform:uppercase; color:var(--muted); margin-top:14px; margin-bottom:4px; }
-    .tcenter{ text-align:center; }
-
-    /* Cards com textura e Efeito 3D */
-    .cp-card{
-      background: linear-gradient(180deg, var(--bgCard1), var(--bgCard2));
-      background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.02' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
-      border-radius:24px; padding:20px; margin-top:16px; border:1px solid rgba(255,255,255,0.06);
-      box-shadow:0 15px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05);
+    h1 {
+      color: #00ff88;
     }
 
-    /* Botões Modernos */
-    .btn-row{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
-    .btn-neon{
-      background: linear-gradient(135deg, var(--blue), var(--blue2));
-      color:#fff; font-weight:900; border:none; border-radius:50px; padding:14px 24px;
-      width:100%; font-size:16px; box-shadow:0 0 20px rgba(59,130,246,0.4), 0 4px 16px rgba(0,0,0,0.5);
-      transition:all .15s ease; cursor:pointer; -webkit-tap-highlight-color:transparent;
-    }
-    .btn-neon:active{ transform:translateY(2px) scale(.98); }
-    .btn-outline{
-      background:transparent; color:#eaf2ff; font-weight:800; border:2px solid rgba(234,242,255,0.2);
-      border-radius:50px; padding:13px 24px; width:100%; font-size:15px; cursor:pointer; -webkit-tap-highlight-color:transparent;
-    }
-    .btn-secondary{
-      background:rgba(255,255,255,0.06); color:#eaf2ff; font-weight:800; border:1px solid rgba(255,255,255,0.10);
-      border-radius:14px; padding:12px 18px; font-size:14px; flex:1; cursor:pointer; min-width:120px;
+    button {
+      background: #00ff88;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      margin-top: 20px;
     }
 
-    .cp-input{
-      width:100%; padding:14px; margin-top:10px; border-radius:14px;
-      border:1px solid rgba(255,255,255,0.08); background:#071728; color:#eaf2ff; font-size:15px; outline:none;
+    button:hover {
+      background: #00cc6a;
     }
-    .cp-input:focus{ border-color:rgba(59,130,246,0.6); box-shadow: 0 0 10px rgba(59,130,246,0.2); }
-    .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .cp-divider{ height:1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); margin:20px 0; }
-
-    /* =========================================
-       SISTEMA DE GAMIFICAÇÃO & MASCOTE
-       ========================================= */
-    .top-bar-game {
-      background: rgba(11,26,45,0.85); backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.08); border-radius: 20px;
-      padding: 12px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px;
-    }
-    .mascote-avatar {
-      width: 50px; height: 50px; border-radius: 12px; background: rgba(0,0,0,0.3);
-      border: 2px solid var(--blue); display: flex; align-items: center; justify-content: center; overflow: hidden;
-    }
-    .mascote-avatar img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.2); }
-    
-    .xp-info { flex: 1; }
-    .xp-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 900; margin-bottom: 6px; }
-    .xp-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
-    .xp-bar-fill { height: 100%; background: var(--xp-color); border-radius: 10px; transition: width 0.5s ease; box-shadow: 0 0 10px var(--xp-color); }
-    .streak-badge { background: rgba(251,191,36,0.15); color: #fbbf24; padding: 4px 8px; border-radius: 8px; font-weight: 900; font-size: 11px; border: 1px solid rgba(251,191,36,0.3); }
-
-    .plate-score-badge {
-      display: inline-block; padding: 6px 12px; border-radius: 12px; font-weight: 900; font-size: 16px;
-      background: rgba(34,197,94,0.15); border: 1px solid var(--success); color: var(--success); margin-bottom: 10px;
-    }
-
-    /* Toast animado melhorado */
-    .cp-toast{
-      position:fixed; top:20px; left:50%; transform:translateX(-50%) translateY(-90px);
-      background:#0b1a2d; border:1px solid rgba(59,130,246,0.40); color:#eaf2ff;
-      padding:14px 24px; border-radius:50px; font-weight:800; font-size:15px; z-index:9999;
-      transition:transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow:0 10px 40px rgba(0,0,0,0.6); white-space:nowrap;
-    }
-    .cp-toast.show{ transform:translateX(-50%) translateY(0); }
-
-    /* Navegação Inferior Simplificada */
-    .bottom-nav{
-      position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:var(--max);
-      background:rgba(7,23,40,0.97); backdrop-filter:blur(20px); border-top:1px solid rgba(255,255,255,0.08);
-      padding:8px 12px calc(18px + env(safe-area-inset-bottom)); z-index:100;
-    }
-    .bottom-nav-inner{ display:flex; gap:4px; justify-content: space-around; }
-    .nav-btn{
-      flex:1; border:none; padding:10px 4px; border-radius:14px; background:transparent;
-      color:var(--muted); font-weight:800; font-size:11px; display:flex; flex-direction:column;
-      align-items:center; gap:4px; transition:all .15s ease; cursor:pointer;
-    }
-    .nav-btn .nav-icon{ font-size:22px; }
-    .nav-btn.active{ color:var(--blue); background:rgba(59,130,246,0.15); }
-
-    /* Componentes Gerais */
-    .chips{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
-    .chip{ padding:12px 16px; border-radius:999px; border:1px solid rgba(255,255,255,0.10); background:rgba(255,255,255,0.04); color:#eaf2ff; font-weight:900; cursor:pointer; }
-    .chip.on{ border-color:var(--blue); background:rgba(59,130,246,0.18); box-shadow:0 0 0 4px rgba(59,130,246,0.10); }
-
-    .photo-preview{ width:100%; height:220px; border-radius:18px; background:#071728; border:1px solid rgba(255,255,255,0.08); overflow:hidden; display:flex; align-items:center; justify-content:center; margin-top:10px; color:rgba(234,242,255,0.70); font-weight:900; }
-    .photo-preview img{ width:100%; height:100%; object-fit:cover; display:block; }
-
-    .stat-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
-    .stat-box{ background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:14px; text-align:center; }
-    .stat-val{ font-size:24px; font-weight:1000; color:var(--blue); line-height:1.1; margin:4px 0 2px; }
-    .stat-key{ font-size:11px; font-weight:850; color:var(--muted); text-transform:uppercase; }
-
-    .day-card{ background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:18px; padding:16px; margin-bottom:12px; }
-    .day-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; }
-    .day-title{ font-weight:1000; font-size:14px; color:var(--blue); }
-
-    .exercise{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
-    .exercise:last-child{ border-bottom:none; }
-    .ex-left{ display:flex; align-items:center; gap:12px; min-width:0; }
-    .ex-img{ width:50px; height:50px; border-radius:12px; background:rgba(59,130,246,0.12); border:1px solid rgba(59,130,246,0.22); overflow:hidden; flex:0 0 auto; display:flex; align-items:center; justify-content:center; font-size: 24px; }
-    .ex-name{ font-weight:900; font-size:14px; color:#eaf2ff; }
-    .ex-detail{ font-size:12px; color:var(--muted); font-weight:700; }
-
-    .password-wrap{ position:relative; margin-top:10px; }
-    .password-wrap .cp-input{ padding-right:84px; margin-top:0; }
-    .password-toggle{ position:absolute; right:10px; top:50%; transform:translateY(-50%); border:none; background:rgba(255,255,255,0.1); color:#fff; border-radius: 8px; font-weight:900; font-size:12px; cursor:pointer; padding:8px 12px; }
-    
-    .timer-giant { font-size: 42px; font-weight: 1000; color: var(--xp-color); text-shadow: 0 0 20px rgba(251,191,36,0.4); text-align: center; margin: 10px 0; font-variant-numeric: tabular-nums; }
   </style>
 </head>
 
 <body>
-  <div id="root"></div>
 
-  <div id="modalBack" class="modal-back" style="position:fixed; inset:0; background:rgba(0,0,0,0.7); display:none; z-index:2000; padding:18px; overflow:auto;">
-    <div class="modal" style="width:100%; max-width:400px; margin:60px auto; background:#0b1a2d; border:1px solid rgba(255,255,255,0.10); border-radius:24px; box-shadow:0 25px 80px rgba(0,0,0,0.8); padding:20px;">
-      <h3 id="modalTitle" style="margin-bottom:10px; font-weight:900;">Dica</h3>
-      <div id="modalBody" class="cp-hint" style="margin-bottom:20px; font-size:14px; color:#fff;"></div>
-      <button class="btn-neon" onclick="closeModal()">Entendi</button>
-    </div>
-  </div>
+  <h1>CheckPrato 🍽️</h1>
+  <p>Teste de salvamento no Firestore</p>
 
-  <script>
-    // ==========================================
-    // ESTADOS & CONFIGURAÇÕES
-    // ==========================================
-    const AI_ENDPOINT = ""; 
-    const BG_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663388243015/7hwT4Rcpzmt9PDwsiCfqK7/checkprato-hero-PJzdhsav9GuvFxECAtVKXF.webp";
+  <button onclick="salvarRefeicao()">Salvar refeição</button>
 
-    const KEYS = {
-      PROFILE: "cp_profile_v5", STEP: "cp_step_v5", XP: "cp_xp_v5", STREAK: "cp_streak_v5",
-      LAST_LOGIN: "cp_lastlogin_v5", PLATES: "cp_plates_v5", TRAIN_DONE: "cp_train_done_v5",
-      LAST_PHOTO: "cp_last_photo_v5", DIETA: "cp_dieta_v5", ACCESS: "cp_access_v5",
-      TIMER: "cp_timer_v5", LAST_SCREEN: "cp_last_screen_v5"
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // 🔥 COLE AQUI SUA CONFIG DO FIREBASE
+    const firebaseConfig = {
+      apiKey: "SUA_API_KEY",
+      authDomain: "SEU_PROJETO.firebaseapp.com",
+      projectId: "SEU_PROJETO",
+      storageBucket: "SEU_PROJETO.appspot.com",
+      messagingSenderId: "XXXX",
+      appId: "XXXX"
     };
 
-    function safeParse(s, fb){ try{return JSON.parse(s);}catch{return fb;} }
-    function storageSet(key, value){ localStorage.setItem(key, typeof value === "string" ? value : JSON.stringify(value)); }
-    function storageGet(key, fb){ return localStorage.getItem(key) || fb; }
+    // Inicializa Firebase
+    const app = initializeApp(firebaseConfig);
 
-    // Gamificação (XP, Nível, Streak)
-    function getXP(){ return Number(storageGet(KEYS.XP, "0")); }
-    function addXP(v){ 
-        const newXP = getXP() + Number(v);
-        storageSet(KEYS.XP, newXP); 
-        return newXP;
-    }
-    function getLevelInfo(xp) {
-        const lvl = Math.floor(xp / 10) + 1;
-        let title = "Semente";
-        if(lvl >= 2) title = "Broto";
-        if(lvl >= 3) title = "Aprendiz";
-        if(lvl >= 4) title = "Atleta";
-        if(lvl >= 5) title = "Elite";
-        if(lvl >= 6) title = "Inexorável";
-        if(lvl >= 7) title = "Mestre";
-        if(lvl >= 8) title = "Titã";
-        if(lvl >= 9) title = "Imortal";
-        if(lvl >= 10) title = "Divino 💪";
-        
-        let rank = "Iniciante";
-        if(lvl >= 4) rank = "Focado";
-        if(lvl >= 8) rank = "Monstro 💪";
+    // Inicializa Firestore
+    const db = getFirestore(app);
 
-        return { level: lvl, title, rank, nextXp: (lvl * 10), progress: ((xp % 10) / 10) * 100 };
-    }
+    // Função para salvar dados
+    async function salvarRefeicao() {
+      try {
+        await addDoc(collection(db, "refeicoes"), {
+          nome: "Arroz e frango",
+          calorias: 500,
+          data: new Date()
+        });
 
-    function checkDailyLogin() {
-        const today = new Date().toISOString().split('T')[0];
-        const lastLogin = storageGet(KEYS.LAST_LOGIN, "");
-        if (today !== lastLogin) {
-            let streak = Number(storageGet(KEYS.STREAK, "0"));
-            
-            // Verifica se perdeu o streak (mais de 1 dia de diferença)
-            if (lastLogin) {
-                const lastDate = new Date(lastLogin);
-                const currDate = new Date(today);
-                const diffTime = Math.abs(currDate - lastDate);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-                if (diffDays > 1) streak = 0;
-            }
-            
-            streak += 1;
-            storageSet(KEYS.STREAK, streak);
-            storageSet(KEYS.LAST_LOGIN, today);
-            addXP(1);
-            showToast("🔥 +1 XP Check-in Diário!");
-        }
-    }
-
-    // Perfil e Dados Básicos
-    function getStep(){ return Number(storageGet(KEYS.STEP, "0")); }
-    function setStep(n){ storageSet(KEYS.STEP, String(n)); }
-    function loadProfile(){ return safeParse(storageGet(KEYS.PROFILE, "{}"), {}); }
-    function saveProfile(p){ storageSet(KEYS.PROFILE, p); }
-    function loadPlates(){ return safeParse(storageGet(KEYS.PLATES, "[]"), []); }
-    
-    let currentScreen = "welcome";
-    let toastMsg = "";
-    let toastShow = false;
-    let stateAccessEmail = "";
-    let stateAccessPass = "";
-    
-    // Objeto Simplificado de Cadastro
-    let stateCad = { objetivo: "", peso: "", altura: "", sexo: "Masculino" };
-    
-    let plateDataUrl = storageGet(KEYS.LAST_PHOTO, "");
-    let plateAI = null;
-    let activeTimer = safeParse(storageGet(KEYS.TIMER, "null"), null);
-
-    // ==========================================
-    // UI HELPERS
-    // ==========================================
-    function esc(s){ return String(s ?? "").replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m])); }
-
-    function showToast(msg){
-      toastMsg = msg; toastShow = true; renderToast();
-      setTimeout(()=>{ toastShow = false; renderToast(); }, 2500);
-    }
-    function openModal(title, html){
-      document.getElementById("modalTitle").textContent = title;
-      document.getElementById("modalBody").innerHTML = html;
-      document.getElementById("modalBack").style.display = "block";
-    }
-    function closeModal(){ document.getElementById("modalBack").style.display = "none"; }
-    function togglePassword(id, btn){
-        const el = document.getElementById(id);
-        if(el.type === "password"){ el.type = "text"; btn.textContent = "Ocultar"; }
-        else{ el.type = "password"; btn.textContent = "Ver"; }
-    }
-
-    // ==========================================
-    // COMPONENTES REUTILIZÁVEIS
-    // ==========================================
-    function renderMascotBar() {
-        const xp = getXP();
-        const info = getLevelInfo(xp);
-        const streak = Number(storageGet(KEYS.STREAK, "0"));
-        const gender = loadProfile().sexo || stateCad.sexo || "Masculino";
-        
-        // Cor baseada no gênero
-        const color = gender === "Feminino" ? "ec4899" : "3b82f6";
-        const mascotUrl = `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${info.level}&backgroundColor=${color}&eyes=happy`;
-
-        return `
-            <div class="top-bar-game">
-                <div class="mascote-avatar">
-                    <img src="${mascotUrl}" alt="Mascote Nível ${info.level}">
-                </div>
-                <div class="xp-info">
-                    <div class="xp-header">
-                        <span style="color:var(--blue)">Lvl ${info.level} • ${info.title}</span>
-                        <div class="streak-badge">${streak} 🔥</div>
-                    </div>
-                    <div class="xp-bar-bg">
-                        <div class="xp-bar-fill" style="width: ${info.progress}%"></div>
-                    </div>
-                    <div style="font-size:10px; color:var(--muted); margin-top:4px; text-align:right;">
-                        ${xp} / ${info.nextXp} XP
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-
-    function renderNav(){
-      const slot = document.getElementById("navSlot");
-      if(!slot) return;
-      if(getStep() < 3){ slot.innerHTML = ""; return; }
-
-      // Menus agrupados/simplificados conforme pedido
-      const items = [
-        {id:"prato", icon:"🍽️", label:"Prato"},
-        {id:"treino", icon:"💪", label:"Treino"},
-        {id:"saude", icon:"❤️", label:"Saúde"},
-        {id:"progresso", icon:"📈", label:"Evolução"}
-      ];
-
-      slot.innerHTML = `
-        <nav class="bottom-nav">
-          <div class="bottom-nav-inner">
-            ${items.map(n => `
-              <button class="nav-btn ${currentScreen===n.id ? "active" : ""}" onclick="goTo('${n.id}')">
-                <span class="nav-icon">${n.icon}</span>${n.label}
-              </button>
-            `).join("")}
-          </div>
-        </nav>
-      `;
-    }
-
-    function renderToast(){
-      const slot = document.getElementById("toastSlot");
-      if(slot) slot.innerHTML = `<div class="cp-toast ${toastShow ? "show" : ""}">${esc(toastMsg)}</div>`;
-    }
-
-    // ==========================================
-    // TELAS DO FLUXO
-    // ==========================================
-    
-    function renderWelcome(animate){
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}" style="display:flex; flex-direction:column; justify-content:center; min-height:80vh;">
-          <div class="logo-wrap" style="margin-bottom: 20px;">
-            <div class="logo-icon" style="width:40px; height:40px; font-size:24px;">✓</div>
-          </div>
-          <h1 class="cp-h1 tcenter" style="font-size:38px; text-shadow: 0 4px 20px rgba(59,130,246,0.3);">
-            Controle sua alimentação e treino em <span style="color:var(--blue)">segundos</span>
-          </h1>
-          <p class="cp-hint tcenter" style="font-size:16px; margin: 20px 0 40px;">Sem termos técnicos. Apenas resultados. Transforme sua rotina em um jogo.</p>
-          
-          <button class="btn-neon" style="padding: 20px; font-size: 18px;" onclick="goTo('cadastro_obj')">Começar agora</button>
-          
-          <div class="cp-divider"></div>
-          
-          <div class="password-wrap" style="margin-bottom:10px;">
-            <input id="loginEmail" class="cp-input" type="email" placeholder="Email já cadastrado" value="${esc(stateAccessEmail)}" />
-          </div>
-          <div class="password-wrap">
-            <input id="loginPass" class="cp-input" type="password" placeholder="Senha" value="${esc(stateAccessPass)}" />
-            <button type="button" class="password-toggle" onclick="togglePassword('loginPass', this)">Ver</button>
-          </div>
-          <button class="btn-secondary" style="width:100%; margin-top:14px; padding:16px;" onclick="loginDireto()">Entrar na minha conta</button>
-        </div>
-      `;
-    }
-
-    // Fluxo Simplificado: Etapa 1 - Objetivo
-    function renderCadastroObj(animate){
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <h2 class="cp-h1" style="font-size:28px">Qual o seu objetivo principal?</h2>
-          <p class="cp-hint">Vamos alinhar o jogo para você.</p>
-
-          <div class="cp-card">
-            <button class="btn-outline" style="margin-bottom:10px; border-color:var(--blue); background:rgba(59,130,246,0.1)" onclick="setObjetivo('Emagrecer')">🔥 Emagrecer</button>
-            <button class="btn-outline" style="margin-bottom:10px" onclick="setObjetivo('Ganhar Massa')">💪 Ganhar Massa</button>
-            <button class="btn-outline" onclick="setObjetivo('Manter Saúde')">❤️ Manter Saúde</button>
-          </div>
-        </div>
-      `;
-    }
-
-    // Fluxo Simplificado: Etapa 2 - Básico
-    function renderCadastroBasico(animate){
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          <h2 class="cp-h1" style="font-size:28px">Dados base</h2>
-          <p class="cp-hint">Para calcular suas metas e definir seu avatar.</p>
-
-          <div class="cp-card">
-            <select id="cadSexo" class="cp-input">
-              <option value="Masculino" ${stateCad.sexo==="Masculino"?"selected":""}>Avatar: Masculino</option>
-              <option value="Feminino" ${stateCad.sexo==="Feminino"?"selected":""}>Avatar: Feminino</option>
-            </select>
-            
-            <div class="grid-2" style="margin-top:10px">
-              <input id="cadPeso" class="cp-input" type="number" placeholder="Peso (kg)" value="${esc(stateCad.peso)}" style="margin-top:0" />
-              <input id="cadAltura" class="cp-input" type="number" placeholder="Altura (cm)" value="${esc(stateCad.altura)}" style="margin-top:0" />
-            </div>
-
-            <button class="btn-neon" style="margin-top:24px" onclick="finalizarCadastro()">Entrar no Jogo 🎮</button>
-          </div>
-        </div>
-      `;
-    }
-
-    // Tela Principal - Prato
-    function renderPrato(animate){
-      const platesCount = loadPlates().length;
-      
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          ${renderMascotBar()}
-
-          <div class="cp-card" style="margin-top:0;">
-            <h3 style="font-size:18px; font-weight:900; margin-bottom:10px;">O que vamos comer?</h3>
-            
-            <div class="photo-preview" id="photoPreview">
-              ${plateDataUrl ? `<img src="${esc(plateDataUrl)}" alt="prato">` : `<div style="text-align:center; font-size:40px;">📸</div>`}
-            </div>
-
-            <div class="btn-row">
-              <button class="btn-neon" onclick="openCamera()">Tirar Foto</button>
-            </div>
-            <input id="fileCam" type="file" accept="image/*" capture="environment" style="display:none" onchange="handleFoto(this)">
-
-            ${plateDataUrl ? `
-              <div class="cp-divider"></div>
-              <div class="tcenter">
-                <div class="plate-score-badge">Nota do Prato: 8/10 🌟</div>
-              </div>
-              <div class="stat-grid">
-                <div class="stat-box"><div class="stat-key">Kcal</div><div class="stat-val">~450</div></div>
-                <div class="stat-box"><div class="stat-key">Proteína</div><div class="stat-val">35g</div></div>
-                <div class="stat-box"><div class="stat-key">Carbo</div><div class="stat-val">40g</div></div>
-                <div class="stat-box"><div class="stat-key">Gordura</div><div class="stat-val">12g</div></div>
-              </div>
-              <button class="btn-neon" style="margin-top:15px; background: var(--success);" onclick="salvarPrato()">✅ Confirmar e Ganhar +2 XP</button>
-            ` : ''}
-          </div>
-          
-          <div style="text-align:center; margin-top:20px;">
-            <p class="cp-hint">Você já registrou <b>${platesCount}</b> pratos na sua jornada.</p>
-          </div>
-        </div>
-      `;
-    }
-
-    // Tela de Treino
-    function renderTreino(animate){
-      const timerInfo = activeTimer ? getTimerLeft(activeTimer) : null;
-      const trainCount = safeParse(storageGet(KEYS.TRAIN_DONE, "[]"), []).length;
-
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          ${renderMascotBar()}
-
-          ${activeTimer ? `
-            <div class="cp-card" style="border-color:var(--xp-color); box-shadow: 0 0 20px rgba(251,191,36,0.1);">
-              <div class="cp-label tcenter">Em execução</div>
-              <div class="timer-giant" id="timerLeft">${esc(timerInfo)}</div>
-              <button class="btn-neon" style="background:var(--success);" onclick="tryFinishExercise()">✅ Concluir Exercício (+3 XP)</button>
-            </div>
-          ` : `
-            <div class="cp-card" style="margin-top:0;">
-              <div class="day-head">
-                <div class="day-title" style="font-size:18px;">Treino de Hoje</div>
-                <div class="cp-hint">Mínimo 3 min/ex</div>
-              </div>
-
-              <div class="exercise">
-                <div class="ex-left">
-                  <div class="ex-img">🏋️</div>
-                  <div>
-                    <div class="ex-name">Agachamento Livre</div>
-                    <div class="ex-detail">4 séries x 10 reps</div>
-                  </div>
-                </div>
-              </div>
-              <div class="btn-row" style="margin-top:0; margin-bottom:15px;">
-                <button class="btn-secondary" style="font-size:12px; padding:8px;" onclick="window.open('https://youtube.com/results?search_query=agachamento+livre+execucao', '_blank')">▶️ Ver no YouTube</button>
-                <button class="btn-neon" style="font-size:12px; padding:8px;" onclick="startExercise('Agachamento')">⏱️ Iniciar</button>
-              </div>
-
-              <div class="exercise">
-                <div class="ex-left">
-                  <div class="ex-img">💪</div>
-                  <div>
-                    <div class="ex-name">Supino Reto</div>
-                    <div class="ex-detail">4 séries x 10 reps</div>
-                  </div>
-                </div>
-              </div>
-              <div class="btn-row" style="margin-top:0;">
-                <button class="btn-secondary" style="font-size:12px; padding:8px;" onclick="window.open('https://youtube.com/results?search_query=supino+reto+execucao', '_blank')">▶️ Ver no YouTube</button>
-                <button class="btn-neon" style="font-size:12px; padding:8px;" onclick="startExercise('Supino')">⏱️ Iniciar</button>
-              </div>
-            </div>
-            
-            <div style="text-align:center; margin-top:20px;">
-              <p class="cp-hint"><b>${trainCount}</b> treinos concluídos até agora. Siga firme!</p>
-            </div>
-          `}
-        </div>
-      `;
-    }
-
-    // Tela de Saúde (Dicas Rápidas e Emocional)
-    function renderSaude(animate){
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          ${renderMascotBar()}
-
-          <div class="cp-card" style="background: linear-gradient(135deg, #0f172a, #1e293b); border-left: 4px solid var(--blue);">
-            <h3 style="font-size:20px; font-weight:900; margin-bottom:10px;">Mentalidade Mestra</h3>
-            <p style="font-size:16px; font-style:italic; line-height:1.5;">"A disciplina é a ponte entre o objetivo e a conquista. O que você faz hoje, decide seu amanhã."</p>
-          </div>
-
-          <div class="cp-card">
-            <h3 style="margin-bottom:15px;">Ações Rápidas (Saúde)</h3>
-            
-            <div class="exercise" style="padding:15px 0;">
-              <div class="ex-left">
-                <div class="ex-img" style="background:rgba(59,130,246,0.2); font-size:28px;">💧</div>
-                <div>
-                  <div class="ex-name">Beba Água</div>
-                  <div class="ex-detail">Meta: 2 Litros hoje.</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="exercise" style="padding:15px 0;">
-              <div class="ex-left">
-                <div class="ex-img" style="background:rgba(168,85,247,0.2); font-size:28px;">😴</div>
-                <div>
-                  <div class="ex-name">Durma Melhor</div>
-                  <div class="ex-detail">Desligue telas 30min antes.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    // Tela de Progresso
-    function renderProgresso(animate){
-      const xp = getXP();
-      const plates = loadPlates();
-      const info = getLevelInfo(xp);
-
-      return `
-        <div class="page-wrap ${animate ? "screen-enter" : ""}">
-          ${renderMascotBar()}
-
-          <div class="cp-card" style="text-align:center;">
-            <div style="font-size:48px; margin-bottom:10px;">🏆</div>
-            <h2 style="font-size:24px; font-weight:900;">Nível atual: ${info.rank}</h2>
-            <p class="cp-hint" style="margin-top:5px;">Você está dominando o jogo da consistência.</p>
-            
-            <div class="stat-grid" style="margin-top:20px;">
-              <div class="stat-box"><div class="stat-key">Total XP</div><div class="stat-val">${xp}</div></div>
-              <div class="stat-box"><div class="stat-key">Pratos Salvos</div><div class="stat-val">${plates.length}</div></div>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    // ==========================================
-    // CONTROLADORES DE FLUXO & LÓGICA
-    // ==========================================
-
-    function goTo(screen){
-      currentScreen = screen;
-      storageSet(KEYS.LAST_SCREEN, screen);
-      render();
-    }
-
-    function render(){
-      const slot = document.getElementById("screenSlot");
-      if(!slot) return;
-
-      let html = "";
-      if(currentScreen==="welcome") html = renderWelcome(true);
-      else if(currentScreen==="cadastro_obj") html = renderCadastroObj(true);
-      else if(currentScreen==="cadastro_basico") html = renderCadastroBasico(true);
-      else if(currentScreen==="prato") html = renderPrato(true);
-      else if(currentScreen==="treino") html = renderTreino(true);
-      else if(currentScreen==="saude") html = renderSaude(true);
-      else if(currentScreen==="progresso") html = renderProgresso(true);
-      else html = renderWelcome(true);
-
-      slot.innerHTML = html;
-      renderNav();
-      renderToast();
-    }
-
-    function setObjetivo(obj){
-      stateCad.objetivo = obj;
-      goTo("cadastro_basico");
-    }
-
-    function finalizarCadastro(){
-      stateCad.sexo = document.getElementById("cadSexo").value;
-      stateCad.peso = document.getElementById("cadPeso").value;
-      stateCad.altura = document.getElementById("cadAltura").value;
-      
-      saveProfile(stateCad);
-      setStep(3);
-      addXP(10); // Bônus inicial
-      showToast("🔥 Perfil criado com sucesso!");
-      
-      // Salva credenciais automaticamente (Simulação do pedido "salvar automático")
-      storageSet(KEYS.ACCESS, { email: "usuario@app.com", pass: "123456" });
-      
-      goTo("prato");
-    }
-
-    function loginDireto(){
-      const email = document.getElementById("loginEmail").value;
-      const pass = document.getElementById("loginPass").value;
-      if(email && pass) {
-          storageSet(KEYS.ACCESS, { email, pass });
-          setStep(3);
-          checkDailyLogin();
-          goTo("prato");
-      } else {
-          showToast("Digite email e senha");
+        alert("Refeição salva com sucesso!");
+      } catch (erro) {
+        console.error("Erro:", erro);
+        alert("Erro ao salvar!");
       }
     }
 
-    function openCamera(){ document.getElementById("fileCam").click(); }
-    
-    function handleFoto(input) {
-        if(input.files && input.files[0]) {
-            const r = new FileReader();
-            r.onload = () => {
-                plateDataUrl = r.result;
-                storageSet(KEYS.LAST_PHOTO, plateDataUrl);
-                render();
-            };
-            r.readAsDataURL(input.files[0]);
-        }
-    }
-
-    function salvarPrato(){
-        const arr = loadPlates();
-        arr.unshift({ t: Date.now(), img: plateDataUrl });
-        storageSet(KEYS.PLATES, arr);
-        addXP(2);
-        plateDataUrl = "";
-        storageSet(KEYS.LAST_PHOTO, "");
-        showToast("✅ Salvo com sucesso! +2 XP");
-        render();
-    }
-
-    // Cronômetro de Treino
-    function startExercise(nome){
-      activeTimer = { id: nome, startedAt: Date.now(), min: 3 }; // 3 min padrão
-      storageSet(KEYS.TIMER, activeTimer);
-      showToast("⏱️ Timer Iniciado!");
-      render();
-    }
-
-    function getTimerLeft(t){
-      const total = t.min * 60 * 1000;
-      const spent = Date.now() - t.startedAt;
-      const left = Math.max(0, total - spent);
-      const mm = Math.floor(left / 60000);
-      const ss = Math.floor((left % 60000) / 1000);
-      return `${String(mm).padStart(2,"0")}:${String(ss).padStart(2,"0")}`;
-    }
-
-    function tryFinishExercise(){
-      if(!activeTimer) return;
-      
-      // Simula a conclusão sem obrigar a esperar para fins de teste rápido
-      const done = safeParse(storageGet(KEYS.TRAIN_DONE, "[]"), []);
-      done.push(activeTimer.id);
-      storageSet(KEYS.TRAIN_DONE, done);
-      
-      addXP(3);
-      activeTimer = null;
-      storageSet(KEYS.TIMER, null);
-      
-      showToast("🔥 Mandou bem! +3 XP");
-      render();
-    }
-
-    setInterval(()=>{
-      if(activeTimer && currentScreen === "treino"){
-        const el = document.getElementById("timerLeft");
-        if(el) el.textContent = getTimerLeft(activeTimer);
-      }
-    }, 1000);
-
-    // Boot Inicial
-    function boot(){
-      const root = document.getElementById("root");
-      root.innerHTML = `
-        <div class="app-shell">
-          <div id="bgSlot">
-            <div class="bg-layer" style="background-image:url('${BG_URL}')"></div>
-            <div class="bg-overlay"></div>
-          </div>
-          <div id="screenSlot"></div>
-          <div id="navSlot"></div>
-          <div id="toastSlot"></div>
-        </div>
-      `;
-
-      stateCad = { ...stateCad, ...loadProfile() };
-      
-      const creds = safeParse(storageGet(KEYS.ACCESS, "null"), null);
-      if(creds){
-          stateAccessEmail = creds.email;
-          stateAccessPass = creds.pass;
-      }
-
-      if(getStep() >= 3){
-          checkDailyLogin();
-          currentScreen = storageGet(KEYS.LAST_SCREEN, "prato");
-      } else {
-          currentScreen = "welcome";
-      }
-
-      render();
-    }
-
-    boot();
+    // Torna função global
+    window.salvarRefeicao = salvarRefeicao;
   </script>
+
 </body>
 </html>
