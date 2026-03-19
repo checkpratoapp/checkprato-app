@@ -1,106 +1,162 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>CheckPrato</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CheckPrato Pro Nível 6</title>  <style>
+    body { font-family: Arial; background: #0f172a; color: white; margin: 0; text-align:center; }
+    header { background:#020617; padding:15px; font-weight:bold; }
+    .menu { display:flex; background:#020617; flex-wrap:wrap; }
+    .menu button { flex:1; padding:10px; border:none; background:#00ff88; }
+    .aba { display:none; padding:20px; }
+    .ativa { display:block; }
+    input { padding:10px; margin:5px; border-radius:8px; border:none; width:80%; }
+    .card { background:#1e293b; margin:10px; padding:10px; border-radius:10px; }
+    .danger { background:red; color:white; border:none; padding:5px; }
+    img { max-width:200px; margin-top:10px; border-radius:10px; }
+  </style></head><body><header>CheckPrato 👑 Nível 6</header><div class="menu">
+  <button onclick="trocarAba('home')">Home</button>
+  <button onclick="trocarAba('refeicoes')">Adicionar</button>
+  <button onclick="trocarAba('historico')">Histórico</button>
+  <button onclick="trocarAba('foto')">Foto IA</button>
+  <button onclick="trocarAba('treino')">Treino</button>
+  <button onclick="trocarAba('admin')">Admin</button>
+</div><div id="home" class="aba ativa">
+  <h2>Bem-vindo</h2>
+  <p id="usuario"></p>
+  <button onclick="login()">Login Google</button>
+</div><div id="refeicoes" class="aba">
+  <h2>Nova Refeição</h2>
+  <input id="nome" placeholder="Comida">
+  <input id="calorias" type="number" placeholder="Calorias">
+  <br>
+  <button onclick="salvarRefeicao()">Salvar</button>
+</div><div id="historico" class="aba">
+  <h2>Histórico</h2>
+  <button onclick="carregarRefeicoes()">Atualizar</button>
+  <div id="total"></div>
+  <div id="lista"></div>
+</div><div id="foto" class="aba">
+  <h2>Analisar Prato 📸</h2>
+  <input type="file" accept="image/*" onchange="previewImagem(event)">
+  <br>
+  <img id="preview" />
+  <p id="analise"></p>
+  <button onclick="analisar()">Analisar com IA</button>
+</div><!-- TREINO --><div id="treino" class="aba">
+  <h2>Treino do Dia 🏋️</h2>
+  <div class="card">Flexão - 3x10</div>
+  <div class="card">Agachamento - 3x15</div>
+  <div class="card">Corrida - 10 min</div>
+</div><!-- ADMIN --><div id="admin" class="aba">
+  <h2>Painel Admin 👑</h2>
+  <button onclick="verTudo()">Ver todas refeições</button>
+  <div id="adminLista"></div>
+</div><script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #121212;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
+const firebaseConfig = {
+  apiKey: "AIzaSyCZTpsIEJqdxjc6E4KZaqogtkuyLn9uTDY",
+  authDomain: "checkprato-a900b.firebaseapp.com",
+  projectId: "checkprato-a900b",
+  storageBucket: "checkprato-a900b.firebasestorage.app",
+  messagingSenderId: "242390673985",
+  appId: "1:242390673985:web:f658e933fc4e8b1e8834c0"
+};
 
-    h1 {
-      color: #00ff88;
-    }
-
-    button {
-      background: #00ff88;
-      border: none;
-      padding: 12px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 8px;
-      margin-top: 20px;
-    }
-
-    button:hover {
-      background: #00cc6a;
-    }
-  </style>
-</head>
-
-<body>
-
-  <h1>CheckPrato 🍽️</h1>
-  <p>Teste de salvamento no Firestore</p>
-<input type="text" id="nomeRefeicao" placeholder="Digite a refeição">
-<input type="number" id="calorias" placeholder="Calorias">
-<br><br>
-  <button onclick="salvarRefeicao()">Salvar refeição</button>
-  <button onclick="login()">Login com Google</button>
-  
-  <script type="module">
-  // Importações do Firebase
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-
-  // Configuração do Firebase (a sua já está correta)
-  const firebaseConfig = {
-    apiKey: "AIzaSyCZTpsIEJqdxjc6E4KZaqogtkuyLn9uTDY",
-    authDomain: "checkprato-a900b.firebaseapp.com",
-    databaseURL: "https://checkprato-a900b-default-rtdb.firebaseio.com",
-    projectId: "checkprato-a900b",
-    storageBucket: "checkprato-a900b.firebasestorage.app",
-    messagingSenderId: "242390673985",
-    appId: "1:242390673985:web:f658e933fc4e8b1e8834c0"
-  };
-
-  // Inicializa Firebase
-  const app = initializeApp(firebaseConfig);
-
-  // 🔥 Inicializa Firestore (ESSENCIAL)
-  const db = getFirestore(app);
-
-  // Função de teste para salvar dados
-  async function salvarRefeicao() {
-  try {
-    const nome = document.getElementById("nomeRefeicao").value;
-    const calorias = document.getElementById("calorias").value;
-
-    await addDoc(collection(db, "refeicoes"), {
-      nome: nome,
-      calorias: Number(calorias),
-      data: new Date()
-    });
-
-    alert("Refeição salva!");
-
-  } catch (e) {
-    console.error("Erro:", e);
-    alert("Erro ao salvar!");
-  }
-  }
-
-  // Tornar função acessível no botão
-  window.salvarRefeicao = salvarRefeicao;
-    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-async function login() {
-  await signInWithPopup(auth, provider);
-  alert("Logado com sucesso!");
+const adminEmail = "SEUEMAIL@gmail.com";
+
+window.trocarAba = function(aba) {
+  document.querySelectorAll('.aba').forEach(el => el.classList.remove('ativa'));
+  document.getElementById(aba).classList.add('ativa');
 }
 
-window.login = login;
-    
-</script>
-  
-</body>
+window.login = async function() {
+  await signInWithPopup(auth, provider);
+}
+
+onAuthStateChanged(auth, (user) => {
+  if (user) document.getElementById("usuario").innerText = "Logado: " + user.email;
+});
+
+window.salvarRefeicao = async function() {
+  const user = auth.currentUser;
+  if (!user) return alert("Faça login!");
+
+  const nome = document.getElementById("nome").value;
+  const calorias = document.getElementById("calorias").value;
+
+  await addDoc(collection(db, "usuarios", user.uid, "refeicoes"), {
+    nome,
+    calorias: Number(calorias),
+    data: new Date()
+  });
+
+  alert("Salvo!");
+}
+
+window.carregarRefeicoes = async function() {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const querySnapshot = await getDocs(collection(db, "usuarios", user.uid, "refeicoes"));
+
+  let total = 0;
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
+
+  querySnapshot.forEach(docSnap => {
+    const d = docSnap.data();
+    total += d.calorias;
+
+    lista.innerHTML += `
+      <div class="card">
+        <p>${d.nome} - ${d.calorias} kcal</p>
+        <button class="danger" onclick="deletar('${docSnap.id}')">Excluir</button>
+      </div>
+    `;
+  });
+
+  document.getElementById("total").innerText = "Total: " + total + " kcal";
+}
+
+window.deletar = async function(id) {
+  const user = auth.currentUser;
+  await deleteDoc(doc(db, "usuarios", user.uid, "refeicoes", id));
+  carregarRefeicoes();
+}
+
+// ADMIN
+window.verTudo = async function() {
+  const user = auth.currentUser;
+  if (!user || user.email !== adminEmail) return alert("Acesso negado");
+
+  const snapshot = await getDocs(collection(db, "usuarios"));
+  const lista = document.getElementById("adminLista");
+  lista.innerHTML = "";
+
+  snapshot.forEach(doc => {
+    lista.innerHTML += `<div class='card'>Usuário: ${doc.id}</div>`;
+  });
+}
+
+// FOTO
+window.previewImagem = function(event) {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  reader.onload = () => document.getElementById("preview").src = reader.result;
+  if (file) reader.readAsDataURL(file);
+}
+
+window.analisar = function() {
+  document.getElementById("analise").innerText = "🍗 IA: Prato estimado 600 kcal";
+}
+
+</script></body>
 </html>
