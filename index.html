@@ -38,7 +38,9 @@
 
   <h1>CheckPrato 🍽️</h1>
   <p>Teste de salvamento no Firestore</p>
-
+<input type="text" id="nomeRefeicao" placeholder="Digite a refeição">
+<input type="number" id="calorias" placeholder="Calorias">
+<br><br>
   <button onclick="salvarRefeicao()">Salvar refeição</button>
   
   <script type="module">
@@ -65,18 +67,22 @@
 
   // Função de teste para salvar dados
   async function salvarRefeicao() {
-    try {
-      await addDoc(collection(db, "refeicoes"), {
-        nome: "Arroz e frango",
-        calorias: 500,
-        data: new Date()
-      });
+  try {
+    const nome = document.getElementById("nomeRefeicao").value;
+    const calorias = document.getElementById("calorias").value;
 
-      alert("Salvo no Firestore!");
-    } catch (e) {
-      console.error("Erro:", e);
-      alert("Erro ao salvar!");
-    }
+    await addDoc(collection(db, "refeicoes"), {
+      nome: nome,
+      calorias: Number(calorias),
+      data: new Date()
+    });
+
+    alert("Refeição salva!");
+
+  } catch (e) {
+    console.error("Erro:", e);
+    alert("Erro ao salvar!");
+  }
   }
 
   // Tornar função acessível no botão
