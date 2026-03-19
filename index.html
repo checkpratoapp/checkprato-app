@@ -42,6 +42,7 @@
 <input type="number" id="calorias" placeholder="Calorias">
 <br><br>
   <button onclick="salvarRefeicao()">Salvar refeição</button>
+  <button onclick="login()">Login com Google</button>
   
   <script type="module">
   // Importações do Firebase
@@ -87,6 +88,18 @@
 
   // Tornar função acessível no botão
   window.salvarRefeicao = salvarRefeicao;
+    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+async function login() {
+  await signInWithPopup(auth, provider);
+  alert("Logado com sucesso!");
+}
+
+window.login = login;
+    
 </script>
   
 </body>
