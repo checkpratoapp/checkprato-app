@@ -40,46 +40,48 @@
   <p>Teste de salvamento no Firestore</p>
 
   <button onclick="salvarRefeicao()">Salvar refeição</button>
-
+  
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  // Importações do Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-    // 🔥 COLE AQUI SUA CONFIG DO FIREBASE
-    const firebaseConfig = {
-      apiKey: "SUA_API_KEY",
-      authDomain: "SEU_PROJETO.firebaseapp.com",
-      projectId: "SEU_PROJETO",
-      storageBucket: "SEU_PROJETO.appspot.com",
-      messagingSenderId: "XXXX",
-      appId: "XXXX"
-    };
+  // Configuração do Firebase (a sua já está correta)
+  const firebaseConfig = {
+    apiKey: "AIzaSyCZTpsIEJqdxjc6E4KZaqogtkuyLn9uTDY",
+    authDomain: "checkprato-a900b.firebaseapp.com",
+    databaseURL: "https://checkprato-a900b-default-rtdb.firebaseio.com",
+    projectId: "checkprato-a900b",
+    storageBucket: "checkprato-a900b.firebasestorage.app",
+    messagingSenderId: "242390673985",
+    appId: "1:242390673985:web:f658e933fc4e8b1e8834c0"
+  };
 
-    // Inicializa Firebase
-    const app = initializeApp(firebaseConfig);
+  // Inicializa Firebase
+  const app = initializeApp(firebaseConfig);
 
-    // Inicializa Firestore
-    const db = getFirestore(app);
+  // 🔥 Inicializa Firestore (ESSENCIAL)
+  const db = getFirestore(app);
 
-    // Função para salvar dados
-    async function salvarRefeicao() {
-      try {
-        await addDoc(collection(db, "refeicoes"), {
-          nome: "Arroz e frango",
-          calorias: 500,
-          data: new Date()
-        });
+  // Função de teste para salvar dados
+  async function salvarRefeicao() {
+    try {
+      await addDoc(collection(db, "refeicoes"), {
+        nome: "Arroz e frango",
+        calorias: 500,
+        data: new Date()
+      });
 
-        alert("Refeição salva com sucesso!");
-      } catch (erro) {
-        console.error("Erro:", erro);
-        alert("Erro ao salvar!");
-      }
+      alert("Salvo no Firestore!");
+    } catch (e) {
+      console.error("Erro:", e);
+      alert("Erro ao salvar!");
     }
+  }
 
-    // Torna função global
-    window.salvarRefeicao = salvarRefeicao;
-  </script>
-
+  // Tornar função acessível no botão
+  window.salvarRefeicao = salvarRefeicao;
+</script>
+  
 </body>
 </html>
