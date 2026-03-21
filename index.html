@@ -2,109 +2,157 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CheckPrato PRO + Avatar Nível 2</title><style>
-body {margin:0;font-family:Arial;background:#0f172a;color:white;}
-header {padding:15px;text-align:center;background:#020617;font-size:20px;}
-.menu {display:flex;position:fixed;bottom:0;width:100%;background:#020617;}
-.menu button {flex:1;padding:12px;border:none;background:#020617;color:white;}
-.aba {display:none;padding:15px;padding-bottom:70px;}
-.ativa {display:block;}
-.card {background:#1e293b;margin:10px 0;padding:15px;border-radius:12px;}
-input, select {width:100%;margin:5px 0;padding:10px;border:none;border-radius:8px;}
-button.acao {background:#00ff88;border:none;padding:10px;border-radius:8px;margin-top:5px;width:100%;}
-.avatar {font-size:60px;}
-</style></head><body>
-<header>CheckPrato 🎮 Avatar PRO</header><!-- CADASTRO --><div id="cadastro" class="aba ativa">
-<h3>Cadastro</h3>
+<title>CheckPrato</title>
+<style>
+body{margin:0;font-family:Arial;background:#111;color:#fff}
+header{background:#000;padding:15px;text-align:center;font-weight:bold}
+.menu{display:flex;position:fixed;bottom:0;width:100%;background:#000}
+.menu button{flex:1;padding:12px;border:none;background:#000;color:#fff}
+.aba{display:none;padding:15px;padding-bottom:70px}
+.ativa{display:block}
+.card{background:#222;margin:10px 0;padding:15px;border-radius:10px}
+input{width:100%;padding:10px;margin:5px 0;border:none;border-radius:8px}
+button{padding:10px;border:none;border-radius:8px;background:#00ff88;margin-top:5px;width:100%}
+</style>
+</head>
+<body>
+<header>CheckPrato</header><!-- LOGIN --><div id="login" class="aba ativa">
+<h3>Login</h3>
 <input id="email" placeholder="Email">
 <input id="senha" type="password" placeholder="Senha">
-<input id="confirmar" type="password" placeholder="Confirmar senha">
-<select id="sexo">
-<option value="">Sexo</option>
-<option value="homem">Homem</option>
-<option value="mulher">Mulher</option>
-</select>
-<input id="idade" type="number" placeholder="Idade">
-<button class="acao" onclick="cadastrar()">Cadastrar</button>
+<button onclick="entrar()">Entrar</button>
+<button onclick="cadastrar()">Criar Conta</button>
 </div><!-- HOME --><div id="home" class="aba">
-<h3>Seu Avatar</h3>
-<div class="avatar" id="avatar"></div>
-<p id="nivel"></p><div class="card">
-<button class="acao" onclick="ganharXP('refeicao')">🍽️ Registrar refeição</button>
-<button class="acao" onclick="ganharXP('treino')">🏋️ Fazer treino</button>
-<button class="acao" onclick="ganharXP('meta')">🎯 Bater meta</button>
-</div><div class="card" id="conquistas"></div>
+<h3>Resumo</h3>
+<div id="resumo" class="card"></div>
+</div><div id="refeicoes" class="aba">
+<h3>Adicionar Refeição</h3>
+<input id="nome" placeholder="Comida">
+<input id="calorias" type="number" placeholder="Calorias">
+<input type="file" id="foto">
+<button onclick="tirarFoto()">Salvar</button>
+</div><div id="historico" class="aba">
+<h3>Histórico</h3>
+<div id="lista"></div>
+</div><div id="premium" class="aba">
+<h3>Plano Premium</h3>
+<div class="card">
+<p>✔️ Fotos ilimitadas</p>
+<button onclick="virarPremium()">Virar Premium</button>
+</div>
 </div><div class="menu">
-<button onclick="trocar('home')">🎮</button>
-</div><script>
-let usuario = null;
+<button onclick="trocar('home')">🏠</button>
+<button onclick="trocar('refeicoes')">🍽️</button>
+<button onclick="trocar('historico')">📊</button>
+<button onclick="trocar('premium')">💎</button>
+</div><script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
-window.trocar = (aba) => {
+const firebaseConfig = {
+apiKey: "AIzaSyCZTpsIEJqdxjc6E4KZaqogtkuyLn9uTDY",
+authDomain: "checkprato-a900b.firebaseapp.com",
+projectId: "checkprato-a900b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+let usuarioAtual = null;
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    usuarioAtual = user;
+    trocar('home');
+    carregar();
+  }
+});
+
+window.trocar = (aba)=>{
 document.querySelectorAll('.aba').forEach(a=>a.classList.remove('ativa'));
 document.getElementById(aba).classList.add('ativa');
 }
 
-window.cadastrar = () => {
-if (senha.value !== confirmar.value) {
-alert("Senhas diferentes"); return;
+window.cadastrar = async()=>{
+await createUserWithEmailAndPassword(auth,email.value,senha.value);
+alert("Conta criada!");
 }
 
-usuario = {
-sexo: sexo.value,
-idade: idade.value,
-xp: 0,
-nivel: 1,
-conquistas: []
-};
-
-atualizarAvatar();
-trocar('home');
+window.entrar = async()=>{
+await signInWithEmailAndPassword(auth,email.value,senha.value);
+alert("Logado!");
 }
 
-function ganharXP(tipo){
-if(!usuario) return;
+let limiteFotos=3;
+let premium=false;
 
-if(tipo === 'refeicao') usuario.xp += 20;
-if(tipo === 'treino') usuario.xp += 40;
-if(tipo === 'meta') usuario.xp += 60;
-
-verificarNivel();
-verificarConquistas();
-atualizarAvatar();
+function podeUsarFoto(){
+if(premium) return true;
+if(limiteFotos<=0){
+alert("Limite atingido!");
+return false;
+}
+limiteFotos--;
+return true;
 }
 
-function verificarNivel(){
-if(usuario.xp >= 100){
-usuario.nivel++;
-usuario.xp = 0;
-}
+function virarPremium(){
+window.open("https://mpago.la/2eJvx1d","_blank");
 }
 
-function verificarConquistas(){
-if(usuario.nivel === 2 && !usuario.conquistas.includes('iniciante')){
-usuario.conquistas.push('iniciante');
+function toBase64(file){
+return new Promise(res=>{
+const r=new FileReader();
+r.onload=()=>res(r.result);
+r.readAsDataURL(file);
+});
 }
 
-if(usuario.nivel === 5 && !usuario.conquistas.includes('focado')){
-usuario.conquistas.push('focado');
-}
-}
-
-function atualizarAvatar(){
-let avatarIcon = "👤";
-
-if(usuario.sexo === "homem") avatarIcon = "👨";
-if(usuario.sexo === "mulher") avatarIcon = "👩";
-
-if(usuario.nivel >= 3) avatarIcon = "🏃";
-if(usuario.nivel >= 5) avatarIcon = "💪";
-if(usuario.nivel >= 8) avatarIcon = "🦾";
-
-avatar.innerText = avatarIcon;
-nivel.innerText = `Nível: ${usuario.nivel} | XP: ${usuario.xp}/100`;
-
-conquistas.innerHTML = "<b>Conquistas:</b><br>" + usuario.conquistas.join('<br>');
+window.tirarFoto=async()=>{
+if(!usuarioAtual){
+alert("Faça login primeiro!");
+return;
 }
 
+if(!podeUsarFoto()) return;
+
+const nome=document.getElementById('nome').value;
+const calorias=Number(document.getElementById('calorias').value);
+const file=document.getElementById('foto').files[0];
+let img=null;
+if(file) img=await toBase64(file);
+
+await addDoc(collection(db,'refeicoes'),{
+  nome,
+  calorias,
+  img,
+  uid: usuarioAtual.uid
+});
+
+carregar();
+}
+
+async function carregar(){
+if(!usuarioAtual) return;
+
+const q = query(
+  collection(db,'refeicoes'),
+  where("uid","==",usuarioAtual.uid)
+);
+
+const snap = await getDocs(q);
+lista.innerHTML='';
+let total=0;
+
+snap.forEach(doc=>{
+const d=doc.data();
+total+=d.calorias;
+lista.innerHTML+=`<div class='card'>${d.nome} - ${d.calorias} kcal ${d.img?`<img src='${d.img}' width='100%'>`:''}</div>`;
+});
+
+resumo.innerText='Total: '+total+' kcal';
+}
 </script></body>
 </html>
