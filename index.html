@@ -1,161 +1,109 @@
 <!DOCTYPE html><html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CheckPrato Pro Nível 6</title>  <style>
-    body { font-family: Arial; background: #0f172a; color: white; margin: 0; text-align:center; }
-    header { background:#020617; padding:15px; font-weight:bold; }
-    .menu { display:flex; background:#020617; flex-wrap:wrap; }
-    .menu button { flex:1; padding:10px; border:none; background:#00ff88; }
-    .aba { display:none; padding:20px; }
-    .ativa { display:block; }
-    input { padding:10px; margin:5px; border-radius:8px; border:none; width:80%; }
-    .card { background:#1e293b; margin:10px; padding:10px; border-radius:10px; }
-    .danger { background:red; color:white; border:none; padding:5px; }
-    img { max-width:200px; margin-top:10px; border-radius:10px; }
-  </style></head><body><header>CheckPrato 👑 Nível 6</header><div class="menu">
-  <button onclick="trocarAba('home')">Home</button>
-  <button onclick="trocarAba('refeicoes')">Adicionar</button>
-  <button onclick="trocarAba('historico')">Histórico</button>
-  <button onclick="trocarAba('foto')">Foto IA</button>
-  <button onclick="trocarAba('treino')">Treino</button>
-  <button onclick="trocarAba('admin')">Admin</button>
-</div><div id="home" class="aba ativa">
-  <h2>Bem-vindo</h2>
-  <p id="usuario"></p>
-  <button onclick="login()">Login Google</button>
-</div><div id="refeicoes" class="aba">
-  <h2>Nova Refeição</h2>
-  <input id="nome" placeholder="Comida">
-  <input id="calorias" type="number" placeholder="Calorias">
-  <br>
-  <button onclick="salvarRefeicao()">Salvar</button>
-</div><div id="historico" class="aba">
-  <h2>Histórico</h2>
-  <button onclick="carregarRefeicoes()">Atualizar</button>
-  <div id="total"></div>
-  <div id="lista"></div>
-</div><div id="foto" class="aba">
-  <h2>Analisar Prato 📸</h2>
-  <input type="file" accept="image/*" onchange="previewImagem(event)">
-  <br>
-  <img id="preview" />
-  <p id="analise"></p>
-  <button onclick="analisar()">Analisar com IA</button>
-</div><!-- TREINO --><div id="treino" class="aba">
-  <h2>Treino do Dia 🏋️</h2>
-  <div class="card">Flexão - 3x10</div>
-  <div class="card">Agachamento - 3x15</div>
-  <div class="card">Corrida - 10 min</div>
-</div><!-- ADMIN --><div id="admin" class="aba">
-  <h2>Painel Admin 👑</h2>
-  <button onclick="verTudo()">Ver todas refeições</button>
-  <div id="adminLista"></div>
-</div><script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CheckPrato PRO + Avatar Nível 2</title><style>
+body {margin:0;font-family:Arial;background:#0f172a;color:white;}
+header {padding:15px;text-align:center;background:#020617;font-size:20px;}
+.menu {display:flex;position:fixed;bottom:0;width:100%;background:#020617;}
+.menu button {flex:1;padding:12px;border:none;background:#020617;color:white;}
+.aba {display:none;padding:15px;padding-bottom:70px;}
+.ativa {display:block;}
+.card {background:#1e293b;margin:10px 0;padding:15px;border-radius:12px;}
+input, select {width:100%;margin:5px 0;padding:10px;border:none;border-radius:8px;}
+button.acao {background:#00ff88;border:none;padding:10px;border-radius:8px;margin-top:5px;width:100%;}
+.avatar {font-size:60px;}
+</style></head><body>
+<header>CheckPrato 🎮 Avatar PRO</header><!-- CADASTRO --><div id="cadastro" class="aba ativa">
+<h3>Cadastro</h3>
+<input id="email" placeholder="Email">
+<input id="senha" type="password" placeholder="Senha">
+<input id="confirmar" type="password" placeholder="Confirmar senha">
+<select id="sexo">
+<option value="">Sexo</option>
+<option value="homem">Homem</option>
+<option value="mulher">Mulher</option>
+</select>
+<input id="idade" type="number" placeholder="Idade">
+<button class="acao" onclick="cadastrar()">Cadastrar</button>
+</div><!-- HOME --><div id="home" class="aba">
+<h3>Seu Avatar</h3>
+<div class="avatar" id="avatar"></div>
+<p id="nivel"></p><div class="card">
+<button class="acao" onclick="ganharXP('refeicao')">🍽️ Registrar refeição</button>
+<button class="acao" onclick="ganharXP('treino')">🏋️ Fazer treino</button>
+<button class="acao" onclick="ganharXP('meta')">🎯 Bater meta</button>
+</div><div class="card" id="conquistas"></div>
+</div><div class="menu">
+<button onclick="trocar('home')">🎮</button>
+</div><script>
+let usuario = null;
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCZTpsIEJqdxjc6E4KZaqogtkuyLn9uTDY",
-  authDomain: "checkprato-a900b.firebaseapp.com",
-  projectId: "checkprato-a900b",
-  storageBucket: "checkprato-a900b.firebasestorage.app",
-  messagingSenderId: "242390673985",
-  appId: "1:242390673985:web:f658e933fc4e8b1e8834c0"
+window.trocar = (aba) => {
+document.querySelectorAll('.aba').forEach(a=>a.classList.remove('ativa'));
+document.getElementById(aba).classList.add('ativa');
+}
+
+window.cadastrar = () => {
+if (senha.value !== confirmar.value) {
+alert("Senhas diferentes"); return;
+}
+
+usuario = {
+sexo: sexo.value,
+idade: idade.value,
+xp: 0,
+nivel: 1,
+conquistas: []
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-
-const adminEmail = "SEUEMAIL@gmail.com";
-
-window.trocarAba = function(aba) {
-  document.querySelectorAll('.aba').forEach(el => el.classList.remove('ativa'));
-  document.getElementById(aba).classList.add('ativa');
+atualizarAvatar();
+trocar('home');
 }
 
-window.login = async function() {
-  await signInWithPopup(auth, provider);
+function ganharXP(tipo){
+if(!usuario) return;
+
+if(tipo === 'refeicao') usuario.xp += 20;
+if(tipo === 'treino') usuario.xp += 40;
+if(tipo === 'meta') usuario.xp += 60;
+
+verificarNivel();
+verificarConquistas();
+atualizarAvatar();
 }
 
-onAuthStateChanged(auth, (user) => {
-  if (user) document.getElementById("usuario").innerText = "Logado: " + user.email;
-});
-
-window.salvarRefeicao = async function() {
-  const user = auth.currentUser;
-  if (!user) return alert("Faça login!");
-
-  const nome = document.getElementById("nome").value;
-  const calorias = document.getElementById("calorias").value;
-
-  await addDoc(collection(db, "usuarios", user.uid, "refeicoes"), {
-    nome,
-    calorias: Number(calorias),
-    data: new Date()
-  });
-
-  alert("Salvo!");
+function verificarNivel(){
+if(usuario.xp >= 100){
+usuario.nivel++;
+usuario.xp = 0;
+}
 }
 
-window.carregarRefeicoes = async function() {
-  const user = auth.currentUser;
-  if (!user) return;
-
-  const querySnapshot = await getDocs(collection(db, "usuarios", user.uid, "refeicoes"));
-
-  let total = 0;
-  const lista = document.getElementById("lista");
-  lista.innerHTML = "";
-
-  querySnapshot.forEach(docSnap => {
-    const d = docSnap.data();
-    total += d.calorias;
-
-    lista.innerHTML += `
-      <div class="card">
-        <p>${d.nome} - ${d.calorias} kcal</p>
-        <button class="danger" onclick="deletar('${docSnap.id}')">Excluir</button>
-      </div>
-    `;
-  });
-
-  document.getElementById("total").innerText = "Total: " + total + " kcal";
+function verificarConquistas(){
+if(usuario.nivel === 2 && !usuario.conquistas.includes('iniciante')){
+usuario.conquistas.push('iniciante');
 }
 
-window.deletar = async function(id) {
-  const user = auth.currentUser;
-  await deleteDoc(doc(db, "usuarios", user.uid, "refeicoes", id));
-  carregarRefeicoes();
+if(usuario.nivel === 5 && !usuario.conquistas.includes('focado')){
+usuario.conquistas.push('focado');
+}
 }
 
-// ADMIN
-window.verTudo = async function() {
-  const user = auth.currentUser;
-  if (!user || user.email !== adminEmail) return alert("Acesso negado");
+function atualizarAvatar(){
+let avatarIcon = "👤";
 
-  const snapshot = await getDocs(collection(db, "usuarios"));
-  const lista = document.getElementById("adminLista");
-  lista.innerHTML = "";
+if(usuario.sexo === "homem") avatarIcon = "👨";
+if(usuario.sexo === "mulher") avatarIcon = "👩";
 
-  snapshot.forEach(doc => {
-    lista.innerHTML += `<div class='card'>Usuário: ${doc.id}</div>`;
-  });
-}
+if(usuario.nivel >= 3) avatarIcon = "🏃";
+if(usuario.nivel >= 5) avatarIcon = "💪";
+if(usuario.nivel >= 8) avatarIcon = "🦾";
 
-// FOTO
-window.previewImagem = function(event) {
-  const file = event.target.files[0];
-  const reader = new FileReader();
-  reader.onload = () => document.getElementById("preview").src = reader.result;
-  if (file) reader.readAsDataURL(file);
-}
+avatar.innerText = avatarIcon;
+nivel.innerText = `Nível: ${usuario.nivel} | XP: ${usuario.xp}/100`;
 
-window.analisar = function() {
-  document.getElementById("analise").innerText = "🍗 IA: Prato estimado 600 kcal";
+conquistas.innerHTML = "<b>Conquistas:</b><br>" + usuario.conquistas.join('<br>');
 }
 
 </script></body>
