@@ -1,241 +1,133 @@
-<!-- INDEX FINAL SIMPLIFICADO COM:
-- Firebase ativo
-- Abas: Prato, Dieta, Treino, Evolução, Perfil
-- Avatar dinâmico (base estrutural pronta)
-- Primeiro acesso Premium liberado
-- Modo gratuito depois
-- Estrutura pronta para Gemini via endpoint
---><!DOCTYPE html><html lang="pt-br">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>CheckPrato Elite</title><style>
-/* VISUAL ORIGINAL PRESERVADO */
-body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#0b0f1a;
-  color:#fff;
-}
-
-.menu{
-  position:fixed;
-  bottom:0;
-  width:100%;
-  display:flex;
-  justify-content:space-around;
-  background:#111827;
-  padding:10px 0;
-}
-
-.menu button{
-  background:none;
-  border:none;
-  color:#fff;
-  font-size:12px;
-}
-
-.page{
-  padding:20px;
-  padding-bottom:80px;
-}
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CheckPrato Elite</title>
+<style>
+body{margin:0;font-family:sans-serif;background:#0b0f1a;color:#fff}
+.page{padding:20px}
+.card{background:#111827;border-radius:16px;padding:16px;margin-top:12px}
+.btn{padding:10px 14px;border:none;border-radius:12px;background:#3b82f6;color:#fff;font-weight:bold}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .avatar{
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  background:#1f2937;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:40px;
-  margin:auto;
-  transition:0.3s;
+  width:120px;height:120px;margin:auto;
+  background:#1f2937;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:40px;animation:float 3s infinite ease-in-out
 }
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+</style>
+</head>
+<body><div id="app"></div><script>
+/************* CONFIG *************/
+const AI_ENDPOINT = "COLE_SEU_ENDPOINT_AQUI";
 
-</style></head><body><div id="app"></div><div class="menu">
-  <button onclick="go('prato')">🍽️</button>
-  <button onclick="go('dieta')">🥗</button>
-  <button onclick="go('treino')">💪</button>
-  <button onclick="go('evolucao')">📈</button>
-  <button onclick="go('perfil')">👤</button>
-</div><script type="module">
+/************* FIREBASE *************/
+import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js").then(async ({initializeApp})=>{
+  const config = {
+    apiKey:"SUA_API_KEY",
+    authDomain:"checkprato-a900b.firebaseapp.com",
+    databaseURL:"https://checkprato-a900b-default-rtdb.firebaseio.com",
+    projectId:"checkprato-a900b",
+    storageBucket:"checkprato-a900b.appspot.com",
+    messagingSenderId:"242390673985",
+    appId:"1:242390673985:web:f658e933fc4e8b1e8834c0"
+  };
+  initializeApp(config);
+});
 
-// FIREBASE
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "SUA_API_KEY_AQUI",
-  authDomain: "checkprato-a900b.firebaseapp.com",
-  databaseURL: "https://checkprato-a900b-default-rtdb.firebaseio.com",
-  projectId: "checkprato-a900b",
-  storageBucket: "checkprato-a900b.firebasestorage.app",
-  messagingSenderId: "242390673985",
-  appId: "1:242390673985:web:f658e933fc4e8b1e8834c0"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// ESTADO
-let current = "prato";
-let firstAccess = !localStorage.getItem("visited");
+/************* ESTADO *************/
+let screen = "dashboard";
+let xp = 0;
+let firstAccess = !localStorage.getItem("first_access_done");
 
 if(firstAccess){
-  alert("🔥 Premium liberado no primeiro acesso!");
-  localStorage.setItem("visited","1");
+  xp += 50;
+  localStorage.setItem("first_access_done","1");
 }
 
-function go(p){
-  current = p;
-  render();
-}
-
-// AVATAR DINÂMICO
+/************* AVATAR *************/
 function getAvatar(){
-  const xp = Number(localStorage.getItem("xp")||0);
-
   if(xp < 50) return "🙂";
   if(xp < 150) return "😎";
-  if(xp < 300) return "🧢";
-  if(xp < 600) return "🏋️";
+  if(xp < 300) return "💪";
   return "🔥";
 }
 
-// TELAS
+/************* UI *************/
 function render(){
-  const el = document.getElementById("app");
+  const app = document.getElementById("app");
 
-  if(current === "perfil"){
-    el.innerHTML = `
-      <div class="page">
-        <div class="avatar">${getAvatar()}</div>
-        <h2 style="text-align:center">Seu Avatar</h2>
-        <p style="text-align:center">Evolui conforme seu progresso</p>
-      </div>
-    `;
-    return;
-  }
+  app.innerHTML = `
+  <div class="page">
+    <div class="avatar">${getAvatar()}</div>
+    <h2 style="text-align:center">XP: ${xp}</h2>
 
-  if(current === "prato"){
-    el.innerHTML = `
-      <div class="page">
-        <h2>Prato</h2>
-        <button onclick="analisar()">Analisar (IA)</button>
-      </div>
-    `;
-    return;
-  }
+    ${firstAccess ? `<div class="card">🎁 Primeiro acesso liberado com tudo desbloqueado!</div>` : ``}
 
-  if(current === "dieta"){
-    el.innerHTML = `
-      <div class="page">
-        <h2>Dieta</h2>
-        <button onclick="xp(5)">Gerar dieta</button>
-      </div>
-    `;
-    return;
-  }
-
-  if(current === "treino"){
-    el.innerHTML = `
-      <div class="page">
-        <h2>Treino</h2>
-        <button onclick="validarTreino()">Concluir treino</button>
-      </div>
-    `;
-    return;
-  }
-
-  if(current === "evolucao"){
-    el.innerHTML = `
-      <div class="page">
-        <h2>Evolução</h2>
-        <p>XP: ${localStorage.getItem("xp")||0}</p>
-      </div>
-    `;
-    return;
-  }
-}
-
-// IA (GEMINI VIA ENDPOINT)
-async function analisar(){
-  alert("Aqui vai chamar seu endpoint Gemini");
-}
-
-// XP
-function xp(v){
-  let x = Number(localStorage.getItem("xp")||0);
-  x += v;
-  localStorage.setItem("xp", x);
-  render();
-}
-
-// ANTI-BURLA TREINO
-let lastAction = 0;
-
-function validarTreino(){
-  const now = Date.now();
-
-  if(now - lastAction < 15000){
-    alert("Muito rápido. Faça o treino de verdade.");
-    return;
-  }
-
-  lastAction = now;
-  xp(10);
-}
-
-render();
-
-</script><script>
-/***********************
- * AVATAR REAL (EVOLUTIVO)
- ***********************/
-function getAvatarLevel(xp){
-  if(xp < 50) return 1;
-  if(xp < 150) return 2;
-  if(xp < 300) return 3;
-  return 4;
-}
-
-function renderAvatar(xp){
-  const level = getAvatarLevel(xp);
-
-  const styles = [
-    "🧍",
-    "🏃",
-    "💪",
-    "🦾"
-  ];
-
-  const el = document.getElementById("avatarDisplay");
-  if(!el) return;
-
-  el.innerHTML = `
-    <div style="font-size:48px; animation: float 2s infinite ease-in-out;">
-      ${styles[level-1]}
+    <div class="grid">
+      <button class="btn" onclick="go('prato')">🍽️ Prato</button>
+      <button class="btn" onclick="go('dieta')">🥗 Dieta</button>
+      <button class="btn" onclick="go('treino')">💪 Treino</button>
+      <button class="btn" onclick="go('evolucao')">📈 Evolução</button>
     </div>
-    <div style="margin-top:6px; font-weight:800;">Nível ${level}</div>
+
+    ${renderScreen()}
+  </div>
   `;
 }
 
-const style = document.createElement("style");
-style.innerHTML = `
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0px); }
-}`;
-document.head.appendChild(style);
+function renderScreen(){
+  if(screen==="prato"){
+    return `<div class="card">
+      <h3>Análise de Prato</h3>
+      <button class="btn" onclick="analisar()">Analisar (Gemini)</button>
+    </div>`;
+  }
 
-// Hook no render geral
-const _oldRender = render;
-render = function(){
-  _oldRender();
-  const xp = getXP ? getXP() : 0;
-  renderAvatar(xp);
+  if(screen==="dieta"){
+    return `<div class="card">
+      <h3>Dieta</h3>
+      <p>Plano automático baseado no objetivo</p>
+    </div>`;
+  }
+
+  if(screen==="treino"){
+    return `<div class="card">
+      <h3>Treino</h3>
+      <button class="btn" onclick="ganharXP()">Concluir treino</button>
+    </div>`;
+  }
+
+  if(screen==="evolucao"){
+    return `<div class="card">
+      <h3>Evolução</h3>
+      <p>Seu progresso aparece aqui</p>
+    </div>`;
+  }
+
+  return `<div class="card">Dashboard</div>`;
 }
+
+/************* AÇÕES *************/
+function go(s){screen=s;render();}
+
+function ganharXP(){
+  xp += 10;
+  render();
+}
+
+async function analisar(){
+  if(!AI_ENDPOINT.includes("http")){
+    alert("Configure o endpoint Gemini");
+    return;
+  }
+  alert("Chamando IA...");
+}
+
+render();
 </script></body>
 </html>
