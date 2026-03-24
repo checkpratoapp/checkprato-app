@@ -1,229 +1,180 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CheckPrato Elite</title>
+<title>CheckPrato Elite</title><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script><style>
+body{margin:0;background:#05070a;color:white;font-family:Poppins}
+#app{max-width:480px;margin:auto;height:100vh;display:flex;flex-direction:column}
+.page{flex:1;overflow:auto;padding:20px}
+.card{background:#111827;padding:15px;border-radius:15px;margin-top:15px}
+.btn{width:100%;padding:14px;margin-top:10px;border:none;border-radius:10px;background:#3b82f6;color:white;font-weight:bold}
+.nav{display:flex;justify-content:space-around;background:#000;padding:10px}
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+.avatar-wrap{display:flex;justify-content:center;margin-bottom:10px}
+.avatar-body{width:120px;height:180px}
 
-<style>
-:root {
-    --bg-dark: #05070a;
-    --bg-panel: rgba(17, 24, 39, 0.7);
-    --primary: #3b82f6;
-    --text-main: #f3f4f6;
-    --border: rgba(255,255,255,0.1);
-}
+@keyframes idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.avatar-body{animation:idle 3s infinite}
 
-body{
-    margin:0;
-    font-family:Poppins;
-    background: radial-gradient(circle at 50% -20%, #1e293b 0%, #05070a 100%);
-    color:white;
-}
+</style></head><body>
+<div id="app"></div><script>
 
-#app{max-width:480px;margin:auto;height:100vh;display:flex;flex-direction:column;}
-
-.page{flex:1;padding:25px;overflow:auto;}
-
-.avatar{
-    text-align:center;
-}
-
-.avatar-box{
-    font-size:80px;
-    animation: float 3s infinite;
-}
-
-@keyframes float{
-    50%{transform:translateY(-10px);}
-}
-
-.card{
-    background:var(--bg-panel);
-    border:1px solid var(--border);
-    padding:20px;
-    border-radius:20px;
-    margin-top:15px;
-}
-
-.btn{
-    width:100%;
-    padding:15px;
-    margin-top:10px;
-    border:none;
-    border-radius:15px;
-    background:var(--primary);
-    color:white;
-    font-weight:bold;
-}
-
-.nav{
-    display:flex;
-    justify-content:space-around;
-    background:#000;
-    padding:10px;
-}
-</style>
-</head>
-
-<body>
-
-<div id="app"></div>
-
-<script>
-
-// ================= ESTADO =================
-let state = {
-    screen:"home",
-    xp: parseInt(localStorage.getItem("xp"))||0,
-    lastXP: parseInt(localStorage.getItem("lastXP"))||0,
-    dailyXP: parseInt(localStorage.getItem("dailyXP"))||0,
-    firstAccess: localStorage.getItem("firstAccess") !== "false"
+// CONFIG FIREBASE (JÁ USAR O SEU)
+const firebaseConfig = {
+apiKey: "SUA_KEY",
+authDomain: "SEU_AUTH",
+databaseURL: "SEU_DB"
 };
+firebase.initializeApp(firebaseConfig);
 
-// ================= AVATAR =================
-const AVATAR_STAGES = [
-    {xp:0, icon:"🧍"},
-    {xp:100, icon:"🧍‍♂️"},
-    {xp:300, icon:"🦾"},
-    {xp:700, icon:"🔥"},
-    {xp:1500, icon:"👑"}
-];
+const auth = firebase.auth();
+const db = firebase.database();
 
-function getAvatar(){
-    return [...AVATAR_STAGES].reverse().find(a=>state.xp>=a.xp);
+let state={screen:"dashboard",xp:0,user:null,premium:false,last:0};
+
+// LOGIN
+function login(){
+const provider=new firebase.auth.GoogleAuthProvider();
+auth.signInWithPopup(provider);
 }
 
-// ================= PREMIUM =================
-function isPremium(){
-    if(state.firstAccess) return true;
-    return localStorage.getItem("premium")==="true";
+auth.onAuthStateChanged(u=>{
+if(u){state.user=u;syncUser();}
+render();
+});
+
+function syncUser(){
+const ref=db.ref("users/"+state.user.uid);
+ref.once("value",snap=>{
+if(snap.exists()){
+state.xp=snap.val().xp||0;
+state.premium=snap.val().premium||false;
+}else{
+ref.set({xp:0,premium:false});
+}
+});
 }
 
-// ================= XP =================
-function ganharXP(valor){
-
-    const agora = Date.now();
-
-    // trava tempo
-    if(agora - state.lastXP < 8000){
-        alert("Ação muito rápida.");
-        return;
-    }
-
-    // limite diário
-    if(state.dailyXP >= 200){
-        alert("Limite diário atingido.");
-        return;
-    }
-
-    state.xp += valor;
-    state.dailyXP += valor;
-    state.lastXP = agora;
-
-    localStorage.setItem("xp",state.xp);
-    localStorage.setItem("dailyXP",state.dailyXP);
-    localStorage.setItem("lastXP",state.lastXP);
-
-    render();
+function save(){
+db.ref("users/"+state.user.uid).update({xp:state.xp});
 }
 
-// ================= GEMINI =================
-async function analisar(){
-    if(!isPremium()){
-        alert("Recurso Premium");
-        return;
-    }
+// ===== AVATAR FULL GAME =====
+function avatar(){
+let lvl=Math.floor(state.xp/100);
 
-    ganharXP(20);
-    alert("Análise feita (Gemini depois)");
+let shirt = lvl>=2 ? '#3b82f6' : '#666';
+let pants = lvl>=4 ? '#10b981' : '#444';
+let hat = lvl>=6 ? true : false;
+let aura = lvl>=10 ? true : false;
+
+return `
+<svg class="avatar-body" viewBox="0 0 120 180">
+${aura?'<circle cx="60" cy="90" r="70" fill="rgba(59,130,246,0.2)"/>' : ''}
+<circle cx="60" cy="30" r="15" fill="#f1c27d"/>
+${hat?'<rect x="45" y="5" width="30" height="10" fill="#111"/>' : ''}
+<rect x="45" y="45" width="30" height="40" fill="'+shirt+'"/>
+<rect x="45" y="85" width="12" height="50" fill="'+pants+'"/>
+<rect x="63" y="85" width="12" height="50" fill="'+pants+'"/>
+</svg>`;
 }
 
-// ================= TELAS =================
+// ===== XP ANTI BURRO =====
+function gainXP(v){
+let now=Date.now();
+if(now-state.last<8000)return alert("Sem spam");
+state.last=now;
+state.xp+=v;
+save();
+render();
+}
+
+// ===== IA DIETA =====
+function dietaIA(){
+let base=["Frango","Arroz","Ovos","Salada"];
+return base.map(x=>"• "+x).join("<br>");
+}
+
+// ===== IA TREINO =====
+function treinoIA(){
+return ["Agachamento","Flexão","Corrida"].map(x=>`<p>${x}</p>`).join("");
+}
+
+// ===== RANKING =====
+function ranking(){
+db.ref("users").orderByChild("xp").limitToLast(10).once("value",snap=>{
+let pos=1;
+let txt="";
+snap.forEach(s=>{
+txt+=pos+"º - "+(s.val().xp||0)+" XP\n";
+pos++;
+});
+alert(txt);
+});
+}
+
+// ===== PREMIUM =====
+function checkPremium(){
+if(!state.premium){
+alert("Função Premium 🔒");
+return false;
+}
+return true;
+}
+
+// NAV
+function go(s){state.screen=s;render();}
+
 function render(){
 
-    const avatar = getAvatar();
+document.getElementById("app").innerHTML=`
+<div class="page">
 
-    document.getElementById("app").innerHTML = `
-    <div class="page">
+<div class="avatar-wrap">
+${avatar()}
+</div>
 
-        <div class="avatar">
-            <div class="avatar-box">${avatar.icon}</div>
-            <h2>XP: ${state.xp}</h2>
-        </div>
+<p style="text-align:center">XP ${state.xp} | LVL ${Math.floor(state.xp/100)}</p>
 
-        ${screen()}
+${screen()}
 
-    </div>
+</div>
 
-    <div class="nav">
-        <button onclick="go('home')">Home</button>
-        <button onclick="go('prato')">Prato</button>
-        <button onclick="go('treino')">Treino</button>
-        <button onclick="go('evolucao')">Evolução</button>
-    </div>
-    `;
+<div class="nav">
+<button onclick="go('dashboard')">Home</button>
+<button onclick="go('prato')">Prato</button>
+<button onclick="go('treino')">Treino</button>
+<button onclick="go('perfil')">Perfil</button>
+</div>
+`;
 }
 
 function screen(){
 
-    if(state.screen==="prato") return `
-        <div class="card">
-            <h3>Prato</h3>
-            <button class="btn" onclick="analisar()">Analisar com IA</button>
-        </div>
-    `;
+if(!state.user)return `<div class="card"><button class="btn" onclick="login()">Login Google</button></div>`;
 
-    if(state.screen==="treino") return `
-        <div class="card">
-            <h3>Treino</h3>
-            <button class="btn" onclick="ganharXP(50)">Concluir</button>
-        </div>
-    `;
+if(state.screen==='dashboard')return `<div class="card">Seu progresso desbloqueia roupas</div>`;
 
-    if(state.screen==="evolucao") return `
-        <div class="card">
-            <h3>Evolução</h3>
-            <p>Seu avatar evolui com XP</p>
-        </div>
-    `;
+if(state.screen==='prato')return `
+<div class="card">
+<input type="file" accept="image/*">
+<button class="btn" onclick="gainXP(20)">Analisar (+XP)</button>
+</div>`;
 
-    return `
-        <div class="card">
-            <h3>Dashboard</h3>
-            <p>Continue evoluindo</p>
+if(state.screen==='treino')return `
+<div class="card">
+${treinoIA()}
+<button class="btn" onclick="gainXP(50)">Treino concluído</button>
+</div>`;
 
-            ${state.firstAccess ? `
-            <div style="margin-top:10px;color:#10b981;">
-                🎁 Premium liberado no primeiro acesso!
-            </div>`:""}
-
-            <button class="btn" onclick="ativarPago()">Ativar Premium</button>
-        </div>
-    `;
-}
-
-// ================= NAV =================
-function go(s){
-    state.screen=s;
-    render();
-}
-
-// ================= PAGAMENTO =================
-function ativarPago(){
-    window.open("SEU_LINK_MERCADO_PAGO_AQUI");
-}
-
-// ================= INIT =================
-if(state.firstAccess){
-    localStorage.setItem("firstAccess","false");
+if(state.screen==='perfil')return `
+<div class="card">
+<button class="btn" onclick="ranking()">Ranking Global</button>
+<button class="btn" onclick="checkPremium()">Função Premium</button>
+</div>`;
 }
 
 render();
 
-</script>
-
-</body>
+</script></body>
 </html>
