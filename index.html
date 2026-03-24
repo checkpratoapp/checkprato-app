@@ -1,195 +1,229 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CheckPrato Elite</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-dark: #05070a;
-            --bg-panel: rgba(17, 24, 39, 0.7);
-            --primary: #3b82f6;
-            --accent: #10b981;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --glass: blur(15px) saturate(160%);
-            --border: rgba(255, 255, 255, 0.1);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CheckPrato Elite</title>
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body {
-            margin: 0; font-family: 'Poppins', sans-serif;
-            background: var(--bg-dark);
-            background-image: radial-gradient(circle at 50% -20%, #1e293b 0%, #05070a 100%);
-            color: var(--text-main);
-            height: 100vh; overflow: hidden;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-        #app {
-            display: flex; flex-direction: column;
-            height: 100%; max-width: 480px; margin: 0 auto;
-            position: relative;
-        }
+<style>
+:root {
+    --bg-dark: #05070a;
+    --bg-panel: rgba(17, 24, 39, 0.7);
+    --primary: #3b82f6;
+    --text-main: #f3f4f6;
+    --border: rgba(255,255,255,0.1);
+}
 
-        .page-container {
-            flex: 1; overflow-y: auto;
-            padding: 30px 20px 100px 20px;
-        }
+body{
+    margin:0;
+    font-family:Poppins;
+    background: radial-gradient(circle at 50% -20%, #1e293b 0%, #05070a 100%);
+    color:white;
+}
 
-        /* Avatar & Progress */
-        .avatar-section { text-align: center; margin-bottom: 30px; }
-        .avatar-container {
-            width: 150px; height: 150px; margin: 0 auto 15px;
-            border-radius: 50%; border: 2px solid var(--border);
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-            display: flex; align-items: center; justify-content: center;
-            position: relative;
-        }
-        .avatar-real { 
-            width: 80%; height: 80%; object-fit: contain; 
-            animation: idle 3s infinite ease-in-out;
-        }
-        @keyframes idle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        
-        .level-badge {
-            position: absolute; bottom: 5px; right: 5px;
-            background: var(--primary); padding: 4px 10px; border-radius: 10px; font-size: 0.7rem; font-weight: 700;
-        }
+#app{max-width:480px;margin:auto;height:100vh;display:flex;flex-direction:column;}
 
-        .xp-bar {
-            width: 200px; height: 6px; background: rgba(255,255,255,0.1);
-            margin: 10px auto; border-radius: 10px; overflow: hidden;
-        }
-        .xp-fill { height: 100%; background: var(--primary); transition: width 0.5s; }
+.page{flex:1;padding:25px;overflow:auto;}
 
-        /* Cards */
-        .card {
-            background: var(--bg-panel); backdrop-filter: var(--glass);
-            border: 1px solid var(--border); border-radius: 20px;
-            padding: 20px; margin-bottom: 15px;
-        }
+.avatar{
+    text-align:center;
+}
 
-        .btn {
-            width: 100%; padding: 15px; border: none; border-radius: 15px;
-            font-weight: 700; cursor: pointer; transition: 0.3s;
-            background: var(--primary); color: white;
-        }
-        .btn:active { transform: scale(0.96); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.avatar-box{
+    font-size:80px;
+    animation: float 3s infinite;
+}
 
-        /* Nav */
-        .bottom-nav {
-            position: absolute; bottom: 0; width: 100%; height: 80px;
-            background: rgba(10, 15, 26, 0.9); backdrop-filter: blur(10px);
-            display: flex; justify-content: space-around; align-items: center;
-            border-top: 1px solid var(--border);
-        }
-        .nav-item { 
-            background: none; border: none; color: var(--text-muted); 
-            display: flex; flex-direction: column; align-items: center; font-size: 0.7rem;
-        }
-        .nav-item.active { color: var(--primary); }
-        .nav-item i { font-size: 1.2rem; margin-bottom: 4px; }
-    </style>
+@keyframes float{
+    50%{transform:translateY(-10px);}
+}
+
+.card{
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    padding:20px;
+    border-radius:20px;
+    margin-top:15px;
+}
+
+.btn{
+    width:100%;
+    padding:15px;
+    margin-top:10px;
+    border:none;
+    border-radius:15px;
+    background:var(--primary);
+    color:white;
+    font-weight:bold;
+}
+
+.nav{
+    display:flex;
+    justify-content:space-around;
+    background:#000;
+    padding:10px;
+}
+</style>
 </head>
+
 <body>
 
 <div id="app"></div>
 
 <script>
-    // --- ESTADO ---
-    let state = {
-        screen: "dashboard",
-        xp: parseInt(localStorage.getItem("xp")) || 0,
-        lastAction: parseInt(localStorage.getItem("lastAction")) || 0,
-        dailyCount: parseInt(localStorage.getItem("dailyCount")) || 0
-    };
 
-    const AVATARS = [
-        { min: 0,   name: "Recruta", img: "👤", color: "#94a3b8" },
-        { min: 100, name: "Elite",   img: "🛡️", color: "#3b82f6" },
-        { min: 500, name: "Mestre",  img: "🔥", color: "#10b981" }
-    ];
+// ================= ESTADO =================
+let state = {
+    screen:"home",
+    xp: parseInt(localStorage.getItem("xp"))||0,
+    lastXP: parseInt(localStorage.getItem("lastXP"))||0,
+    dailyXP: parseInt(localStorage.getItem("dailyXP"))||0,
+    firstAccess: localStorage.getItem("firstAccess") !== "false"
+};
 
-    function getAvatar() {
-        return [...AVATARS].reverse().find(a => state.xp >= a.min);
+// ================= AVATAR =================
+const AVATAR_STAGES = [
+    {xp:0, icon:"🧍"},
+    {xp:100, icon:"🧍‍♂️"},
+    {xp:300, icon:"🦾"},
+    {xp:700, icon:"🔥"},
+    {xp:1500, icon:"👑"}
+];
+
+function getAvatar(){
+    return [...AVATAR_STAGES].reverse().find(a=>state.xp>=a.xp);
+}
+
+// ================= PREMIUM =================
+function isPremium(){
+    if(state.firstAccess) return true;
+    return localStorage.getItem("premium")==="true";
+}
+
+// ================= XP =================
+function ganharXP(valor){
+
+    const agora = Date.now();
+
+    // trava tempo
+    if(agora - state.lastXP < 8000){
+        alert("Ação muito rápida.");
+        return;
     }
 
-    // --- AÇÕES ---
-    function save() {
-        localStorage.setItem("xp", state.xp);
-        localStorage.setItem("lastAction", state.lastAction);
-        localStorage.setItem("dailyCount", state.dailyCount);
+    // limite diário
+    if(state.dailyXP >= 200){
+        alert("Limite diário atingido.");
+        return;
     }
 
-    function go(screen) {
-        state.screen = screen;
-        render();
-    }
+    state.xp += valor;
+    state.dailyXP += valor;
+    state.lastXP = agora;
 
-    function ganharXP(val) {
-        const agora = Date.now();
-        // ANTI-BURLA: Trava de 10 segundos entre ganhos de XP (Front)
-        if (agora - state.lastAction < 10000) {
-            alert("Calma! Respire um pouco entre as ações.");
-            return;
-        }
-        state.xp += val;
-        state.lastAction = agora;
-        save();
-        render();
-    }
+    localStorage.setItem("xp",state.xp);
+    localStorage.setItem("dailyXP",state.dailyXP);
+    localStorage.setItem("lastXP",state.lastXP);
 
-    // --- RENDERIZAÇÃO ---
-    function render() {
-        const app = document.getElementById("app");
-        const avatar = getAvatar();
-        
-        app.innerHTML = `
-            <div class="page-container">
-                <div class="avatar-section">
-                    <div class="avatar-container">
-                        <div style="font-size: 4rem">${avatar.img}</div>
-                        <div class="level-badge">LVL ${Math.floor(state.xp/100) + 1}</div>
-                    </div>
-                    <h2>${avatar.name}</h2>
-                    <div class="xp-bar"><div class="xp-fill" style="width:${state.xp % 100}%"></div></div>
-                    <small>XP Total: ${state.xp}</small>
-                </div>
-
-                <div id="content">${renderScreen()}</div>
-            </div>
-
-            <nav class="bottom-nav">
-                <button class="nav-item ${state.screen==='dashboard'?'active':''}" onclick="go('dashboard')"><i class="fas fa-home"></i>Home</button>
-                <button class="nav-item ${state.screen==='prato'?'active':''}" onclick="go('prato')"><i class="fas fa-utensils"></i>Prato</button>
-                <button class="nav-item ${state.screen==='treino'?'active':''}" onclick="go('treino')"><i class="fas fa-dumbbell"></i>Treino</button>
-                <button class="nav-item ${state.screen==='evolucao'?'active':''}" onclick="go('evolucao')"><i class="fas fa-bolt"></i>Skills</button>
-            </nav>
-        `;
-    }
-
-    function renderScreen() {
-        if(state.screen === "prato") return `
-            <div class="card">
-                <h3>Análise Gemini</h3>
-                <p>Tire uma foto para calcular macros.</p>
-                <button class="btn" style="margin-top:15px" onclick="ganharXP(20)">Simular Análise (+20 XP)</button>
-            </div>`;
-        
-        if(state.screen === "treino") return `
-            <div class="card">
-                <h3>Treino do Dia</h3>
-                <button class="btn" onclick="ganharXP(50)">Concluir Treino (+50 XP)</button>
-            </div>`;
-
-        return `<div class="card"><h3>Dashboard</h3><p>Continue evoluindo seu avatar para desbloquear novas roupas.</p></div>`;
-    }
-
-    // Inicialização
     render();
+}
+
+// ================= GEMINI =================
+async function analisar(){
+    if(!isPremium()){
+        alert("Recurso Premium");
+        return;
+    }
+
+    ganharXP(20);
+    alert("Análise feita (Gemini depois)");
+}
+
+// ================= TELAS =================
+function render(){
+
+    const avatar = getAvatar();
+
+    document.getElementById("app").innerHTML = `
+    <div class="page">
+
+        <div class="avatar">
+            <div class="avatar-box">${avatar.icon}</div>
+            <h2>XP: ${state.xp}</h2>
+        </div>
+
+        ${screen()}
+
+    </div>
+
+    <div class="nav">
+        <button onclick="go('home')">Home</button>
+        <button onclick="go('prato')">Prato</button>
+        <button onclick="go('treino')">Treino</button>
+        <button onclick="go('evolucao')">Evolução</button>
+    </div>
+    `;
+}
+
+function screen(){
+
+    if(state.screen==="prato") return `
+        <div class="card">
+            <h3>Prato</h3>
+            <button class="btn" onclick="analisar()">Analisar com IA</button>
+        </div>
+    `;
+
+    if(state.screen==="treino") return `
+        <div class="card">
+            <h3>Treino</h3>
+            <button class="btn" onclick="ganharXP(50)">Concluir</button>
+        </div>
+    `;
+
+    if(state.screen==="evolucao") return `
+        <div class="card">
+            <h3>Evolução</h3>
+            <p>Seu avatar evolui com XP</p>
+        </div>
+    `;
+
+    return `
+        <div class="card">
+            <h3>Dashboard</h3>
+            <p>Continue evoluindo</p>
+
+            ${state.firstAccess ? `
+            <div style="margin-top:10px;color:#10b981;">
+                🎁 Premium liberado no primeiro acesso!
+            </div>`:""}
+
+            <button class="btn" onclick="ativarPago()">Ativar Premium</button>
+        </div>
+    `;
+}
+
+// ================= NAV =================
+function go(s){
+    state.screen=s;
+    render();
+}
+
+// ================= PAGAMENTO =================
+function ativarPago(){
+    window.open("SEU_LINK_MERCADO_PAGO_AQUI");
+}
+
+// ================= INIT =================
+if(state.firstAccess){
+    localStorage.setItem("firstAccess","false");
+}
+
+render();
+
 </script>
+
 </body>
 </html>
