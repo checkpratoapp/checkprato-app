@@ -1,180 +1,154 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CheckPrato Elite</title><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script><style>
-body{margin:0;background:#05070a;color:white;font-family:Poppins}
-#app{max-width:480px;margin:auto;height:100vh;display:flex;flex-direction:column}
-.page{flex:1;overflow:auto;padding:20px}
-.card{background:#111827;padding:15px;border-radius:15px;margin-top:15px}
-.btn{width:100%;padding:14px;margin-top:10px;border:none;border-radius:10px;background:#3b82f6;color:white;font-weight:bold}
-.nav{display:flex;justify-content:space-around;background:#000;padding:10px}
+<title>CheckPrato PRO</title>
 
-.avatar-wrap{display:flex;justify-content:center;margin-bottom:10px}
-.avatar-body{width:120px;height:180px}
+<style>
+body{font-family:Arial;background:#0f172a;color:white;margin:0;text-align:center}
+header{background:#020617;padding:15px;font-weight:bold}
+.menu{display:flex;background:#020617}
+.menu button{flex:1;padding:12px;border:none;background:#00ff88;font-weight:bold}
+.aba{display:none;padding:20px}
+.ativa{display:block}
+input{padding:10px;margin:5px;border-radius:8px;border:none;width:80%}
+.card{background:#1e293b;margin:10px;padding:10px;border-radius:10px}
+</style>
+</head>
 
-@keyframes idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.avatar-body{animation:idle 3s infinite}
+<body>
 
-</style></head><body>
-<div id="app"></div><script>
+<header>CheckPrato 🔒 PRO</header>
 
-// CONFIG FIREBASE (JÁ USAR O SEU)
+<div class="menu">
+<button onclick="trocarAba('home')">Home</button>
+<button onclick="trocarAba('refeicoes')">Adicionar</button>
+<button onclick="trocarAba('historico')">Histórico</button>
+<button onclick="trocarAba('ranking')">Ranking</button>
+</div>
+
+<div id="home" class="aba ativa">
+<h2>Conta</h2>
+<p id="usuario">Não logado</p>
+<p id="xp"></p>
+<button onclick="login()">Login Google</button>
+</div>
+
+<div id="refeicoes" class="aba">
+<h2>Nova Refeição</h2>
+<input id="nome" placeholder="Comida">
+<input id="calorias" type="number" placeholder="Calorias">
+<br>
+<button onclick="salvarRefeicao()">Salvar + XP</button>
+</div>
+
+<div id="historico" class="aba">
+<h2>Histórico</h2>
+<button onclick="carregarRefeicoes()">Atualizar</button>
+<div id="lista"></div>
+</div>
+
+<div id="ranking" class="aba">
+<h2>Ranking Global</h2>
+<button onclick="carregarRanking()">Atualizar</button>
+<div id="rankingLista"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-functions.js";
+
+// 🔥 CONFIG
 const firebaseConfig = {
-apiKey: "SUA_KEY",
-authDomain: "SEU_AUTH",
-databaseURL: "SEU_DB"
+apiKey:"AIzaSyCZTpsIEJqdxjc6E4KZaqogtkuyLn9uTDY",
+authDomain:"checkprato-a900b.firebaseapp.com",
+projectId:"checkprato-a900b",
+storageBucket:"checkprato-a900b.firebasestorage.app",
+messagingSenderId:"242390673985",
+appId:"1:242390673985:web:f658e933fc4e8b1e8834c0"
 };
-firebase.initializeApp(firebaseConfig);
 
-const auth = firebase.auth();
-const db = firebase.database();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
-let state={screen:"dashboard",xp:0,user:null,premium:false,last:0};
+// 🔥 FUNCTIONS (SEGURANÇA REAL)
+const functions = getFunctions(app);
+const salvarSeguro = httpsCallable(functions, "salvarRefeicaoSegura");
 
-// LOGIN
-function login(){
-const provider=new firebase.auth.GoogleAuthProvider();
-auth.signInWithPopup(provider);
+// --- UI ---
+window.trocarAba = (aba)=>{
+document.querySelectorAll('.aba').forEach(el=>el.classList.remove('ativa'));
+document.getElementById(aba).classList.add('ativa');
 }
 
-auth.onAuthStateChanged(u=>{
-if(u){state.user=u;syncUser();}
-render();
-});
+// --- LOGIN ---
+window.login = async ()=>{
+await signInWithPopup(auth, provider);
+}
 
-function syncUser(){
-const ref=db.ref("users/"+state.user.uid);
-ref.once("value",snap=>{
-if(snap.exists()){
-state.xp=snap.val().xp||0;
-state.premium=snap.val().premium||false;
+onAuthStateChanged(auth,(user)=>{
+if(user){
+document.getElementById("usuario").innerText = "Logado: "+user.email;
 }else{
-ref.set({xp:0,premium:false});
+document.getElementById("usuario").innerText = "Não logado";
 }
 });
+
+// --- SALVAR COM SEGURANÇA (SERVER) ---
+window.salvarRefeicao = async ()=>{
+const nome = document.getElementById("nome").value;
+const calorias = Number(document.getElementById("calorias").value);
+
+try{
+const res = await salvarSeguro({ nome, calorias });
+
+document.getElementById("xp").innerText = "XP: "+res.data.xp;
+
+alert("Salvo com XP seguro ✅");
+
+}catch(e){
+alert("Erro: "+e.message);
 }
+};
 
-function save(){
-db.ref("users/"+state.user.uid).update({xp:state.xp});
-}
+// --- HISTÓRICO ---
+window.carregarRefeicoes = async ()=>{
+const user = auth.currentUser;
+if(!user) return;
 
-// ===== AVATAR FULL GAME =====
-function avatar(){
-let lvl=Math.floor(state.xp/100);
+const snap = await getDocs(collection(db,"usuarios",user.uid,"refeicoes"));
 
-let shirt = lvl>=2 ? '#3b82f6' : '#666';
-let pants = lvl>=4 ? '#10b981' : '#444';
-let hat = lvl>=6 ? true : false;
-let aura = lvl>=10 ? true : false;
+const lista = document.getElementById("lista");
+lista.innerHTML="";
 
-return `
-<svg class="avatar-body" viewBox="0 0 120 180">
-${aura?'<circle cx="60" cy="90" r="70" fill="rgba(59,130,246,0.2)"/>' : ''}
-<circle cx="60" cy="30" r="15" fill="#f1c27d"/>
-${hat?'<rect x="45" y="5" width="30" height="10" fill="#111"/>' : ''}
-<rect x="45" y="45" width="30" height="40" fill="'+shirt+'"/>
-<rect x="45" y="85" width="12" height="50" fill="'+pants+'"/>
-<rect x="63" y="85" width="12" height="50" fill="'+pants+'"/>
-</svg>`;
-}
-
-// ===== XP ANTI BURRO =====
-function gainXP(v){
-let now=Date.now();
-if(now-state.last<8000)return alert("Sem spam");
-state.last=now;
-state.xp+=v;
-save();
-render();
-}
-
-// ===== IA DIETA =====
-function dietaIA(){
-let base=["Frango","Arroz","Ovos","Salada"];
-return base.map(x=>"• "+x).join("<br>");
-}
-
-// ===== IA TREINO =====
-function treinoIA(){
-return ["Agachamento","Flexão","Corrida"].map(x=>`<p>${x}</p>`).join("");
-}
-
-// ===== RANKING =====
-function ranking(){
-db.ref("users").orderByChild("xp").limitToLast(10).once("value",snap=>{
-let pos=1;
-let txt="";
-snap.forEach(s=>{
-txt+=pos+"º - "+(s.val().xp||0)+" XP\n";
-pos++;
+snap.forEach(doc=>{
+const d = doc.data();
+lista.innerHTML += `<div class="card">${d.nome} - ${d.calorias} kcal</div>`;
 });
-alert(txt);
+};
+
+// --- RANKING GLOBAL ---
+window.carregarRanking = async ()=>{
+const q = query(collection(db,"ranking"), orderBy("xp","desc"), limit(10));
+const snap = await getDocs(q);
+
+const lista = document.getElementById("rankingLista");
+lista.innerHTML="";
+
+let pos = 1;
+
+snap.forEach(doc=>{
+const d = doc.data();
+lista.innerHTML += `<div class="card">#${pos++} - XP: ${d.xp}</div>`;
 });
-}
+};
 
-// ===== PREMIUM =====
-function checkPremium(){
-if(!state.premium){
-alert("Função Premium 🔒");
-return false;
-}
-return true;
-}
+</script>
 
-// NAV
-function go(s){state.screen=s;render();}
-
-function render(){
-
-document.getElementById("app").innerHTML=`
-<div class="page">
-
-<div class="avatar-wrap">
-${avatar()}
-</div>
-
-<p style="text-align:center">XP ${state.xp} | LVL ${Math.floor(state.xp/100)}</p>
-
-${screen()}
-
-</div>
-
-<div class="nav">
-<button onclick="go('dashboard')">Home</button>
-<button onclick="go('prato')">Prato</button>
-<button onclick="go('treino')">Treino</button>
-<button onclick="go('perfil')">Perfil</button>
-</div>
-`;
-}
-
-function screen(){
-
-if(!state.user)return `<div class="card"><button class="btn" onclick="login()">Login Google</button></div>`;
-
-if(state.screen==='dashboard')return `<div class="card">Seu progresso desbloqueia roupas</div>`;
-
-if(state.screen==='prato')return `
-<div class="card">
-<input type="file" accept="image/*">
-<button class="btn" onclick="gainXP(20)">Analisar (+XP)</button>
-</div>`;
-
-if(state.screen==='treino')return `
-<div class="card">
-${treinoIA()}
-<button class="btn" onclick="gainXP(50)">Treino concluído</button>
-</div>`;
-
-if(state.screen==='perfil')return `
-<div class="card">
-<button class="btn" onclick="ranking()">Ranking Global</button>
-<button class="btn" onclick="checkPremium()">Função Premium</button>
-</div>`;
-}
-
-render();
-
-</script></body>
+</body>
 </html>
