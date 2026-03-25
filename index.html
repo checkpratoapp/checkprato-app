@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CheckPrato Elite V3</title>
+    <title>CheckPrato Elite V3.5</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -12,61 +12,77 @@
             --primary: #00ff88;
             --bg-glass: rgba(15, 23, 42, 0.7);
             --border: rgba(255, 255, 255, 0.1);
+            --accent-blue: #3b82f6;
+            --accent-red: #ef4444;
         }
 
-        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { margin: 0; background: #05070a; color: white; min-height: 100vh; overflow-x: hidden; }
+        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: all 0.3s ease; }
+        body { margin: 0; background: #05070a; color: white; min-height: 100vh; overflow: hidden; }
 
-        /* Fundo Animado Natural */
+        /* Fundo Dinâmico por Aba */
         #fundo-dinamico {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; transition: background 1.5s ease;
-            background-size: 200% 200%; animation: moveBG 20s infinite;
+            z-index: -1; background-size: 200% 200%; animation: moveBG 20s infinite;
         }
         @keyframes moveBG { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-
-        .fundo-home { background: radial-gradient(circle at 10% 10%, #1e293b, #05070a); }
+        
+        .fundo-home { background: radial-gradient(circle at 20% 20%, #1e293b, #05070a); }
         .fundo-dieta { background: radial-gradient(circle at 50% 50%, #064e3b, #05070a); }
-        .fundo-treino { background: radial-gradient(circle at 90% 10%, #450a0a, #05070a); }
+        .fundo-treino { background: radial-gradient(circle at 80% 80%, #450a0a, #05070a); }
 
-        header { padding: 20px; text-align: center; font-weight: 700; letter-spacing: 2px; background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); }
-
-        /* Palco do Avatar 3D */
+        /* Avatar Stage */
         .avatar-stage {
-            height: 250px; display: flex; align-items: center; justify-content: center;
-            position: relative; margin-bottom: 20px;
+            height: 280px; display: flex; align-items: center; justify-content: center;
+            position: relative; margin-top: 10px;
         }
         #canvas-3d { 
-            width: 200px; height: 200px; background: rgba(255,255,255,0.05); 
-            border-radius: 50%; border: 1px solid var(--border);
+            width: 180px; height: 180px; border-radius: 50%;
+            border: 2px solid var(--border); background: rgba(255,255,255,0.03);
             display: flex; align-items: center; justify-content: center;
-            font-size: 5rem; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 5rem; position: relative;
+            box-shadow: 0 0 30px rgba(0,255,136,0.1);
         }
+        .aura { 
+            position: absolute; width: 220px; height: 220px; 
+            border-radius: 50%; border: 1px dashed var(--primary);
+            animation: rotate 10s linear infinite; opacity: 0.3;
+        }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .aba { display: none; padding: 20px; animation: fadeIn 0.5s ease; padding-bottom: 100px; }
-        .ativa { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* UI Elements */
+        header { padding: 15px; text-align: center; font-weight: 700; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+        .aba { display: none; padding: 20px; height: calc(100vh - 160px); overflow-y: auto; padding-bottom: 100px; }
+        .ativa { display: block; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         .card-elite {
-            background: var(--bg-glass); backdrop-filter: blur(15px);
+            background: var(--bg-glass); backdrop-filter: blur(12px);
             border: 1px solid var(--border); border-radius: 20px;
-            padding: 20px; margin-bottom: 15px; text-align: left;
+            padding: 15px; margin-bottom: 12px;
         }
 
-        .grid-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        
+        /* Filtros de Treino */
+        .filter-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none; }
+        .filter-row::-webkit-scrollbar { display: none; }
+        .btn-filter { 
+            background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid var(--border);
+            padding: 8px 16px; border-radius: 20px; white-space: nowrap; font-size: 0.8rem; cursor: pointer;
+        }
+        .btn-filter.active { background: var(--primary); color: #000; border-color: var(--primary); font-weight: 600; }
+
         .btn-action {
             background: var(--primary); color: #000; border: none; padding: 12px;
-            border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer;
+            border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer; margin-top: 10px;
         }
 
+        /* Nav */
         .nav-bar {
             position: fixed; bottom: 0; width: 100%; height: 80px;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);
+            background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px);
             display: flex; justify-content: space-around; align-items: center;
             border-top: 1px solid var(--border); z-index: 100;
         }
-        .nav-btn { background: none; border: none; color: #64748b; font-size: 0.7rem; cursor: pointer; }
+        .nav-btn { background: none; border: none; color: #64748b; font-size: 0.7rem; cursor: pointer; text-align: center; }
         .nav-btn.active { color: var(--primary); }
         .nav-btn i { font-size: 1.4rem; display: block; margin-bottom: 4px; }
     </style>
@@ -80,75 +96,72 @@
 <div id="app">
     <div id="home" class="aba ativa">
         <div class="avatar-stage">
+            <div class="aura"></div>
             <div id="canvas-3d">👤</div> 
         </div>
         <div class="card-elite" style="text-align:center">
-            <h2 id="user-name">Carregando...</h2>
-            <p id="user-xp">XP: 0</p>
-            <button class="btn-action" onclick="login()">LOGIN GOOGLE</button>
+            <h2 id="user-name">Recruta Elite</h2>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px; margin-bottom: 15px;">
+                <span id="user-xp" style="color: var(--primary); font-weight: 700;">XP: 0</span>
+            </div>
+            <button class="btn-action" style="background: var(--accent-blue); color: white;" onclick="login()">CONECTAR GOOGLE</button>
         </div>
     </div>
 
     <div id="dieta" class="aba">
-        <h3>🌱 Planos Nutricionais</h3>
+        <h3 style="margin-top:0"><i class="fas fa-leaf"></i> Planos de Nutrição</h3>
         <div id="lista-dietas"></div>
     </div>
 
     <div id="treino" class="aba">
-        <h3>🏋️ Treinos Elite</h3>
+        <h3 style="margin-top:0"><i class="fas fa-dumbbell"></i> Atividades & Esportes</h3>
+        <div class="filter-row">
+            <button class="btn-filter active" onclick="filtrar('todos')">Todos</button>
+            <button class="btn-filter" onclick="filtrar('academia')">Academia</button>
+            <button class="btn-filter" onclick="filtrar('casa')">Em Casa</button>
+            <button class="btn-filter" onclick="filtrar('rua')">Na Rua</button>
+            <button class="btn-filter" onclick="filtrar('esporte')">Esportes</button>
+        </div>
         <div id="lista-treinos"></div>
     </div>
 
     <div id="ranking" class="aba">
-        <h3>🏆 Ranking Global</h3>
+        <h3><i class="fas fa-trophy"></i> Hall da Fama</h3>
         <div id="lista-ranking"></div>
     </div>
 </div>
 
 <nav class="nav-bar">
-    <button class="nav-btn active" onclick="trocarAba('home')"><i class="fas fa-user"></i>Perfil</button>
-    <button class="nav-btn" onclick="trocarAba('dieta')"><i class="fas fa-leaf"></i>Dieta</button>
-    <button class="nav-btn" onclick="trocarAba('treino')"><i class="fas fa-dumbbell"></i>Treino</button>
-    <button class="nav-btn" onclick="trocarAba('ranking')"><i class="fas fa-trophy"></i>Ranking</button>
+    <button class="nav-btn active" onclick="trocarAba('home')"><i class="fas fa-user-astronaut"></i>Perfil</button>
+    <button class="nav-btn" onclick="trocarAba('dieta')"><i class="fas fa-apple-alt"></i>Dieta</button>
+    <button class="nav-btn" onclick="trocarAba('treino')"><i class="fas fa-running"></i>Treino</button>
+    <button class="nav-btn" onclick="trocarAba('ranking')"><i class="fas fa-medal"></i>Global</button>
 </nav>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-functions.js";
-
-    // --- CONFIG FIREBASE ---
-    const firebaseConfig = {
-        apiKey:"AIzaSyCZTpsIEJqdxjc6E4KZaqogtkuyLn9uTDY",
-        authDomain:"checkprato-a900b.firebaseapp.com",
-        projectId:"checkprato-a900b",
-        storageBucket:"checkprato-a900b.firebasestorage.app",
-        messagingSenderId:"242390673985",
-        appId:"1:242390673985:web:f658e933fc4e8b1e8834c0"
-    };
-
-    const fbApp = initializeApp(firebaseConfig);
-    const db = getFirestore(fbApp);
-    const auth = getAuth(fbApp);
-    const functions = getFunctions(fbApp);
-    const salvarSeguro = httpsCallable(functions, "salvarAcaoSegura");
-
-    // --- DADOS ELITE (VARIEDADES) ---
-    const CONTEUDO = {
+    // --- BIBLIOTECA DE CONTEÚDO ---
+    const DATABASE = {
         dietas: [
-            { id: 1, nome: "Cutting Elite", kcal: "1800", icon: "🔥", desc: "Definição extrema e queima de gordura." },
-            { id: 2, nome: "Bulking Limpo", kcal: "3200", icon: "💪", desc: "Ganho de massa muscular sem gordura." },
-            { id: 3, nome: "Equilíbrio Natural", kcal: "2400", icon: "🌿", desc: "Manutenção com foco em micronutrientes." }
+            { id: 1, nome: "Definição Máxima", kcal: "1800", icon: "🔥", desc: "Foco em queima calórica intensa." },
+            { id: 2, nome: "Ganho Alpha", kcal: "3400", icon: "🥩", desc: "Superavit focado em hipertrofia." },
+            { id: 3, nome: "Performance Plant", kcal: "2200", icon: "🥗", desc: "Dieta baseada em plantas de alta energia." }
         ],
         treinos: [
-            { id: 1, nome: "Push (Empurrar)", tempo: "50min", xp: 40, icon: "⚡" },
-            { id: 2, nome: "Pull (Puxar)", tempo: "55min", xp: 45, icon: "🎯" },
-            { id: 3, nome: "Leg Day Alpha", tempo: "65min", xp: 60, icon: "🦵" }
+            { cat: "academia", nome: "Treino ABC", tempo: "60m", xp: 50, icon: "🏋️" },
+            { cat: "academia", nome: "Powerlifting", tempo: "80m", xp: 70, icon: "⚙️" },
+            { cat: "casa", nome: "HIIT Sala", tempo: "20m", xp: 30, icon: "🏠" },
+            { cat: "casa", nome: "Yoga Flow", tempo: "40m", xp: 25, icon: "🧘" },
+            { cat: "rua", nome: "Corrida Park", tempo: "30m", xp: 45, icon: "🏃" },
+            { cat: "rua", nome: "Calistenia Barra", tempo: "50m", xp: 55, icon: "🌳" },
+            { cat: "esporte", nome: "Futebol", tempo: "90m", xp: 100, icon: "⚽" },
+            { cat: "esporte", nome: "Beach Tennis", tempo: "60m", xp: 60, icon: "🎾" },
+            { cat: "esporte", nome: "Natação", tempo: "45m", xp: 80, icon: "🏊" }
         ]
     };
 
-    // --- LÓGICA DE INTERFACE ---
+    let userXP = parseInt(localStorage.getItem('elite_xp')) || 0;
+
+    // --- LÓGICA DE NAVEGAÇÃO ---
     window.trocarAba = (aba) => {
         document.querySelectorAll('.aba').forEach(el => el.classList.remove('ativa'));
         document.getElementById(aba).classList.add('ativa');
@@ -156,91 +169,71 @@
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
         event.currentTarget.classList.add('active');
 
-        // Troca o fundo natural
-        const fundo = document.getElementById('fundo-dinamico');
-        fundo.className = `fundo-${aba}`;
+        document.getElementById('fundo-dinamico').className = `fundo-${aba}`;
 
         if(aba === 'dieta') renderDietas();
-        if(aba === 'treino') renderTreinos();
-        if(aba === 'ranking') carregarRanking();
+        if(aba === 'treino') filtrar('todos');
     }
 
-    // --- RENDERIZAÇÃO DE CONTEÚDO ---
+    // --- FILTROS E RENDER ---
+    window.filtrar = (cat) => {
+        const btns = document.querySelectorAll('.btn-filter');
+        btns.forEach(b => b.classList.toggle('active', b.innerText.toLowerCase().includes(cat) || (cat==='todos' && b.innerText==='Todos')));
+
+        const container = document.getElementById('lista-treinos');
+        const dados = cat === 'todos' ? DATABASE.treinos : DATABASE.treinos.filter(t => t.cat === cat);
+        
+        container.innerHTML = dados.map(t => `
+            <div class="card-elite" style="border-left: 4px solid var(--primary)">
+                <div style="display:flex; justify-content:space-between; align-items:center">
+                    <span>${t.icon} <b>${t.nome}</b></span>
+                    <span style="color:var(--primary); font-size:0.8rem">+${t.xp} XP</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-top:10px; align-items:center">
+                    <small><i class="far fa-clock"></i> ${t.tempo}</small>
+                    <button class="btn-action" style="width:auto; margin:0; padding:5px 15px" onclick="addXP(${t.xp})">CONCLUIR</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
     function renderDietas() {
-        const lista = document.getElementById('lista-dietas');
-        lista.innerHTML = CONTEUDO.dietas.map(d => `
+        const container = document.getElementById('lista-dietas');
+        container.innerHTML = DATABASE.dietas.map(d => `
             <div class="card-elite">
                 <div style="display:flex; justify-content:space-between">
                     <span>${d.icon} <b>${d.nome}</b></span>
                     <span style="color:var(--primary)">${d.kcal} kcal</span>
                 </div>
-                <p style="font-size:0.8rem; color:#94a3b8">${d.desc}</p>
-                <button class="btn-action" style="font-size:0.7rem; padding:5px" onclick="selecionarDieta(${d.id})">ATIVAR PLANO</button>
+                <p style="font-size:0.75rem; color:#94a3b8; margin:8px 0">${d.desc}</p>
+                <button class="btn-action" style="font-size:0.7rem; padding:8px" onclick="alert('Plano Ativado!')">ATIVAR DIETA</button>
             </div>
         `).join('');
     }
 
-    function renderTreinos() {
-        const lista = document.getElementById('lista-treinos');
-        lista.innerHTML = CONTEUDO.treinos.map(t => `
-            <div class="card-elite">
-                <div style="display:flex; justify-content:space-between">
-                    <span>${t.icon} <b>${t.nome}</b></span>
-                    <span>${t.tempo}</span>
-                </div>
-                <button class="btn-action" style="margin-top:10px" onclick="concluirAcao('treino', ${t.xp})">CONCLUIR (+${t.xp} XP)</button>
-            </div>
-        `).join('');
+    // --- SISTEMA DE EVOLUÇÃO ---
+    window.addXP = (val) => {
+        userXP += val;
+        localStorage.setItem('elite_xp', userXP);
+        document.getElementById('user-xp').innerText = `XP: ${userXP}`;
+        atualizarAvatar();
+        alert(`Excelente! +${val} XP garantido.`);
     }
 
-    // --- AVATAR 3D EVOLUTION ---
-    function atualizarAvatar(xp) {
+    function atualizarAvatar() {
         const avatar = document.getElementById('canvas-3d');
-        // Escala o boneco: quanto mais XP, maior ele fica (Crescimento Real)
-        const escala = 1 + (xp / 5000); 
-        avatar.style.transform = `scale(${Math.min(escala, 1.8)})`;
+        const scale = 1 + (userXP / 10000);
+        avatar.style.transform = `scale(${Math.min(scale, 1.7)})`;
         
-        // Troca visual simples (Avatar placeholder)
-        if(xp > 500) avatar.innerHTML = "🛡️";
-        if(xp > 2000) avatar.innerHTML = "🔥";
+        // Troca de "Roupas" baseada em XP
+        if(userXP > 500) avatar.innerHTML = "🛡️";
+        if(userXP > 2000) avatar.innerHTML = "🥋";
+        if(userXP > 5000) avatar.innerHTML = "🌌";
     }
 
-    // --- FIREBASE ACTIONS ---
-    window.login = () => signInWithPopup(auth, new GoogleAuthProvider());
-
-    onAuthStateChanged(auth, (user) => {
-        if(user) {
-            document.getElementById("user-name").innerText = user.displayName;
-            carregarDadosUsuario(user.uid);
-        }
-    });
-
-    async function carregarDadosUsuario(uid) {
-        const snap = await getDocs(collection(db, "usuarios")); 
-        // Aqui você buscaria o XP real do Firestore
-        atualizarAvatar(1200); // Exemplo de XP vindo do banco
-    }
-
-    window.concluirAcao = async (tipo, valorXP) => {
-        try {
-            const res = await salvarSeguro({ tipo, xp: valorXP });
-            alert("Ação validada pelo servidor! XP computado.");
-            atualizarAvatar(res.data.novoXP);
-        } catch(e) {
-            alert("Erro de segurança: " + e.message);
-        }
-    }
-
-    window.carregarRanking = async () => {
-        const q = query(collection(db, "ranking"), orderBy("xp", "desc"), limit(5));
-        const snap = await getDocs(q);
-        const lista = document.getElementById('lista-ranking');
-        lista.innerHTML = "";
-        snap.forEach(doc => {
-            const d = doc.data();
-            lista.innerHTML += `<div class="card-elite">🏅 XP: ${d.xp}</div>`;
-        });
-    }
+    // Início
+    atualizarAvatar();
+    document.getElementById('user-xp').innerText = `XP: ${userXP}`;
 
 </script>
 </body>
