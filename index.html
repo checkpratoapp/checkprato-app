@@ -1,154 +1,247 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CheckPrato PRO</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CheckPrato Elite V3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00ff88;
+            --bg-glass: rgba(15, 23, 42, 0.7);
+            --border: rgba(255, 255, 255, 0.1);
+        }
 
-<style>
-body{font-family:Arial;background:#0f172a;color:white;margin:0;text-align:center}
-header{background:#020617;padding:15px;font-weight:bold}
-.menu{display:flex;background:#020617}
-.menu button{flex:1;padding:12px;border:none;background:#00ff88;font-weight:bold}
-.aba{display:none;padding:20px}
-.ativa{display:block}
-input{padding:10px;margin:5px;border-radius:8px;border:none;width:80%}
-.card{background:#1e293b;margin:10px;padding:10px;border-radius:10px}
-</style>
+        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { margin: 0; background: #05070a; color: white; min-height: 100vh; overflow-x: hidden; }
+
+        /* Fundo Animado Natural */
+        #fundo-dinamico {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; transition: background 1.5s ease;
+            background-size: 200% 200%; animation: moveBG 20s infinite;
+        }
+        @keyframes moveBG { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+        .fundo-home { background: radial-gradient(circle at 10% 10%, #1e293b, #05070a); }
+        .fundo-dieta { background: radial-gradient(circle at 50% 50%, #064e3b, #05070a); }
+        .fundo-treino { background: radial-gradient(circle at 90% 10%, #450a0a, #05070a); }
+
+        header { padding: 20px; text-align: center; font-weight: 700; letter-spacing: 2px; background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); }
+
+        /* Palco do Avatar 3D */
+        .avatar-stage {
+            height: 250px; display: flex; align-items: center; justify-content: center;
+            position: relative; margin-bottom: 20px;
+        }
+        #canvas-3d { 
+            width: 200px; height: 200px; background: rgba(255,255,255,0.05); 
+            border-radius: 50%; border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 5rem; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .aba { display: none; padding: 20px; animation: fadeIn 0.5s ease; padding-bottom: 100px; }
+        .ativa { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card-elite {
+            background: var(--bg-glass); backdrop-filter: blur(15px);
+            border: 1px solid var(--border); border-radius: 20px;
+            padding: 20px; margin-bottom: 15px; text-align: left;
+        }
+
+        .grid-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        .btn-action {
+            background: var(--primary); color: #000; border: none; padding: 12px;
+            border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer;
+        }
+
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%; height: 80px;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);
+            display: flex; justify-content: space-around; align-items: center;
+            border-top: 1px solid var(--border); z-index: 100;
+        }
+        .nav-btn { background: none; border: none; color: #64748b; font-size: 0.7rem; cursor: pointer; }
+        .nav-btn.active { color: var(--primary); }
+        .nav-btn i { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+    </style>
 </head>
-
 <body>
 
-<header>CheckPrato 🔒 PRO</header>
+<div id="fundo-dinamico" class="fundo-home"></div>
 
-<div class="menu">
-<button onclick="trocarAba('home')">Home</button>
-<button onclick="trocarAba('refeicoes')">Adicionar</button>
-<button onclick="trocarAba('historico')">Histórico</button>
-<button onclick="trocarAba('ranking')">Ranking</button>
+<header>CHECKPRATO <span style="color:var(--primary)">ELITE</span></header>
+
+<div id="app">
+    <div id="home" class="aba ativa">
+        <div class="avatar-stage">
+            <div id="canvas-3d">👤</div> 
+        </div>
+        <div class="card-elite" style="text-align:center">
+            <h2 id="user-name">Carregando...</h2>
+            <p id="user-xp">XP: 0</p>
+            <button class="btn-action" onclick="login()">LOGIN GOOGLE</button>
+        </div>
+    </div>
+
+    <div id="dieta" class="aba">
+        <h3>🌱 Planos Nutricionais</h3>
+        <div id="lista-dietas"></div>
+    </div>
+
+    <div id="treino" class="aba">
+        <h3>🏋️ Treinos Elite</h3>
+        <div id="lista-treinos"></div>
+    </div>
+
+    <div id="ranking" class="aba">
+        <h3>🏆 Ranking Global</h3>
+        <div id="lista-ranking"></div>
+    </div>
 </div>
 
-<div id="home" class="aba ativa">
-<h2>Conta</h2>
-<p id="usuario">Não logado</p>
-<p id="xp"></p>
-<button onclick="login()">Login Google</button>
-</div>
-
-<div id="refeicoes" class="aba">
-<h2>Nova Refeição</h2>
-<input id="nome" placeholder="Comida">
-<input id="calorias" type="number" placeholder="Calorias">
-<br>
-<button onclick="salvarRefeicao()">Salvar + XP</button>
-</div>
-
-<div id="historico" class="aba">
-<h2>Histórico</h2>
-<button onclick="carregarRefeicoes()">Atualizar</button>
-<div id="lista"></div>
-</div>
-
-<div id="ranking" class="aba">
-<h2>Ranking Global</h2>
-<button onclick="carregarRanking()">Atualizar</button>
-<div id="rankingLista"></div>
-</div>
+<nav class="nav-bar">
+    <button class="nav-btn active" onclick="trocarAba('home')"><i class="fas fa-user"></i>Perfil</button>
+    <button class="nav-btn" onclick="trocarAba('dieta')"><i class="fas fa-leaf"></i>Dieta</button>
+    <button class="nav-btn" onclick="trocarAba('treino')"><i class="fas fa-dumbbell"></i>Treino</button>
+    <button class="nav-btn" onclick="trocarAba('ranking')"><i class="fas fa-trophy"></i>Ranking</button>
+</nav>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-functions.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-functions.js";
 
-// 🔥 CONFIG
-const firebaseConfig = {
-apiKey:"AIzaSyCZTpsIEJqdxjc6E4KZaqogtkuyLn9uTDY",
-authDomain:"checkprato-a900b.firebaseapp.com",
-projectId:"checkprato-a900b",
-storageBucket:"checkprato-a900b.firebasestorage.app",
-messagingSenderId:"242390673985",
-appId:"1:242390673985:web:f658e933fc4e8b1e8834c0"
-};
+    // --- CONFIG FIREBASE ---
+    const firebaseConfig = {
+        apiKey:"AIzaSyCZTpsIEJqdxjc6E4KZaqogtkuyLn9uTDY",
+        authDomain:"checkprato-a900b.firebaseapp.com",
+        projectId:"checkprato-a900b",
+        storageBucket:"checkprato-a900b.firebasestorage.app",
+        messagingSenderId:"242390673985",
+        appId:"1:242390673985:web:f658e933fc4e8b1e8834c0"
+    };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+    const fbApp = initializeApp(firebaseConfig);
+    const db = getFirestore(fbApp);
+    const auth = getAuth(fbApp);
+    const functions = getFunctions(fbApp);
+    const salvarSeguro = httpsCallable(functions, "salvarAcaoSegura");
 
-// 🔥 FUNCTIONS (SEGURANÇA REAL)
-const functions = getFunctions(app);
-const salvarSeguro = httpsCallable(functions, "salvarRefeicaoSegura");
+    // --- DADOS ELITE (VARIEDADES) ---
+    const CONTEUDO = {
+        dietas: [
+            { id: 1, nome: "Cutting Elite", kcal: "1800", icon: "🔥", desc: "Definição extrema e queima de gordura." },
+            { id: 2, nome: "Bulking Limpo", kcal: "3200", icon: "💪", desc: "Ganho de massa muscular sem gordura." },
+            { id: 3, nome: "Equilíbrio Natural", kcal: "2400", icon: "🌿", desc: "Manutenção com foco em micronutrientes." }
+        ],
+        treinos: [
+            { id: 1, nome: "Push (Empurrar)", tempo: "50min", xp: 40, icon: "⚡" },
+            { id: 2, nome: "Pull (Puxar)", tempo: "55min", xp: 45, icon: "🎯" },
+            { id: 3, nome: "Leg Day Alpha", tempo: "65min", xp: 60, icon: "🦵" }
+        ]
+    };
 
-// --- UI ---
-window.trocarAba = (aba)=>{
-document.querySelectorAll('.aba').forEach(el=>el.classList.remove('ativa'));
-document.getElementById(aba).classList.add('ativa');
-}
+    // --- LÓGICA DE INTERFACE ---
+    window.trocarAba = (aba) => {
+        document.querySelectorAll('.aba').forEach(el => el.classList.remove('ativa'));
+        document.getElementById(aba).classList.add('ativa');
+        
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        event.currentTarget.classList.add('active');
 
-// --- LOGIN ---
-window.login = async ()=>{
-await signInWithPopup(auth, provider);
-}
+        // Troca o fundo natural
+        const fundo = document.getElementById('fundo-dinamico');
+        fundo.className = `fundo-${aba}`;
 
-onAuthStateChanged(auth,(user)=>{
-if(user){
-document.getElementById("usuario").innerText = "Logado: "+user.email;
-}else{
-document.getElementById("usuario").innerText = "Não logado";
-}
-});
+        if(aba === 'dieta') renderDietas();
+        if(aba === 'treino') renderTreinos();
+        if(aba === 'ranking') carregarRanking();
+    }
 
-// --- SALVAR COM SEGURANÇA (SERVER) ---
-window.salvarRefeicao = async ()=>{
-const nome = document.getElementById("nome").value;
-const calorias = Number(document.getElementById("calorias").value);
+    // --- RENDERIZAÇÃO DE CONTEÚDO ---
+    function renderDietas() {
+        const lista = document.getElementById('lista-dietas');
+        lista.innerHTML = CONTEUDO.dietas.map(d => `
+            <div class="card-elite">
+                <div style="display:flex; justify-content:space-between">
+                    <span>${d.icon} <b>${d.nome}</b></span>
+                    <span style="color:var(--primary)">${d.kcal} kcal</span>
+                </div>
+                <p style="font-size:0.8rem; color:#94a3b8">${d.desc}</p>
+                <button class="btn-action" style="font-size:0.7rem; padding:5px" onclick="selecionarDieta(${d.id})">ATIVAR PLANO</button>
+            </div>
+        `).join('');
+    }
 
-try{
-const res = await salvarSeguro({ nome, calorias });
+    function renderTreinos() {
+        const lista = document.getElementById('lista-treinos');
+        lista.innerHTML = CONTEUDO.treinos.map(t => `
+            <div class="card-elite">
+                <div style="display:flex; justify-content:space-between">
+                    <span>${t.icon} <b>${t.nome}</b></span>
+                    <span>${t.tempo}</span>
+                </div>
+                <button class="btn-action" style="margin-top:10px" onclick="concluirAcao('treino', ${t.xp})">CONCLUIR (+${t.xp} XP)</button>
+            </div>
+        `).join('');
+    }
 
-document.getElementById("xp").innerText = "XP: "+res.data.xp;
+    // --- AVATAR 3D EVOLUTION ---
+    function atualizarAvatar(xp) {
+        const avatar = document.getElementById('canvas-3d');
+        // Escala o boneco: quanto mais XP, maior ele fica (Crescimento Real)
+        const escala = 1 + (xp / 5000); 
+        avatar.style.transform = `scale(${Math.min(escala, 1.8)})`;
+        
+        // Troca visual simples (Avatar placeholder)
+        if(xp > 500) avatar.innerHTML = "🛡️";
+        if(xp > 2000) avatar.innerHTML = "🔥";
+    }
 
-alert("Salvo com XP seguro ✅");
+    // --- FIREBASE ACTIONS ---
+    window.login = () => signInWithPopup(auth, new GoogleAuthProvider());
 
-}catch(e){
-alert("Erro: "+e.message);
-}
-};
+    onAuthStateChanged(auth, (user) => {
+        if(user) {
+            document.getElementById("user-name").innerText = user.displayName;
+            carregarDadosUsuario(user.uid);
+        }
+    });
 
-// --- HISTÓRICO ---
-window.carregarRefeicoes = async ()=>{
-const user = auth.currentUser;
-if(!user) return;
+    async function carregarDadosUsuario(uid) {
+        const snap = await getDocs(collection(db, "usuarios")); 
+        // Aqui você buscaria o XP real do Firestore
+        atualizarAvatar(1200); // Exemplo de XP vindo do banco
+    }
 
-const snap = await getDocs(collection(db,"usuarios",user.uid,"refeicoes"));
+    window.concluirAcao = async (tipo, valorXP) => {
+        try {
+            const res = await salvarSeguro({ tipo, xp: valorXP });
+            alert("Ação validada pelo servidor! XP computado.");
+            atualizarAvatar(res.data.novoXP);
+        } catch(e) {
+            alert("Erro de segurança: " + e.message);
+        }
+    }
 
-const lista = document.getElementById("lista");
-lista.innerHTML="";
-
-snap.forEach(doc=>{
-const d = doc.data();
-lista.innerHTML += `<div class="card">${d.nome} - ${d.calorias} kcal</div>`;
-});
-};
-
-// --- RANKING GLOBAL ---
-window.carregarRanking = async ()=>{
-const q = query(collection(db,"ranking"), orderBy("xp","desc"), limit(10));
-const snap = await getDocs(q);
-
-const lista = document.getElementById("rankingLista");
-lista.innerHTML="";
-
-let pos = 1;
-
-snap.forEach(doc=>{
-const d = doc.data();
-lista.innerHTML += `<div class="card">#${pos++} - XP: ${d.xp}</div>`;
-});
-};
+    window.carregarRanking = async () => {
+        const q = query(collection(db, "ranking"), orderBy("xp", "desc"), limit(5));
+        const snap = await getDocs(q);
+        const lista = document.getElementById('lista-ranking');
+        lista.innerHTML = "";
+        snap.forEach(doc => {
+            const d = doc.data();
+            lista.innerHTML += `<div class="card-elite">🏅 XP: ${d.xp}</div>`;
+        });
+    }
 
 </script>
-
 </body>
 </html>
