@@ -3,238 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CheckPrato Elite V3.5</title>
+    <title>CheckPrato Elite V4 - Personalizado</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <style>
-        :root {
-            --primary: #00ff88;
-            --bg-glass: rgba(15, 23, 42, 0.7);
-            --border: rgba(255, 255, 255, 0.1);
-            --accent-blue: #3b82f6;
-            --accent-red: #ef4444;
-        }
-
-        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: all 0.3s ease; }
+        :root { --primary: #00ff88; --bg-glass: rgba(15, 23, 42, 0.8); --border: rgba(255, 255, 255, 0.1); }
+        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { margin: 0; background: #05070a; color: white; min-height: 100vh; overflow: hidden; }
 
-        /* Fundo Dinâmico por Aba */
-        #fundo-dinamico {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; background-size: 200% 200%; animation: moveBG 20s infinite;
-        }
-        @keyframes moveBG { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-        
+        /* Backgrounds Naturais */
+        #fundo-dinamico { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; transition: 1s; }
         .fundo-home { background: radial-gradient(circle at 20% 20%, #1e293b, #05070a); }
-        .fundo-dieta { background: radial-gradient(circle at 50% 50%, #064e3b, #05070a); }
         .fundo-treino { background: radial-gradient(circle at 80% 80%, #450a0a, #05070a); }
 
-        /* Avatar Stage */
-        .avatar-stage {
-            height: 280px; display: flex; align-items: center; justify-content: center;
-            position: relative; margin-top: 10px;
+        /* TELA DE CADASTRO / ESCOLHA (ONBOARDING) */
+        #onboarding {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #05070a; z-index: 1000; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 20px; text-align: center;
         }
-        #canvas-3d { 
-            width: 180px; height: 180px; border-radius: 50%;
-            border: 2px solid var(--border); background: rgba(255,255,255,0.03);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 5rem; position: relative;
-            box-shadow: 0 0 30px rgba(0,255,136,0.1);
+        .opcoes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; width: 100%; }
+        .tag-choice {
+            padding: 15px; border: 1px solid var(--border); border-radius: 15px;
+            background: rgba(255,255,255,0.05); cursor: pointer; transition: 0.3s;
         }
-        .aura { 
-            position: absolute; width: 220px; height: 220px; 
-            border-radius: 50%; border: 1px dashed var(--primary);
-            animation: rotate 10s linear infinite; opacity: 0.3;
-        }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .tag-choice.selected { border-color: var(--primary); background: rgba(0,255,136,0.1); color: var(--primary); }
 
-        /* UI Elements */
-        header { padding: 15px; text-align: center; font-weight: 700; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
-        .aba { display: none; padding: 20px; height: calc(100vh - 160px); overflow-y: auto; padding-bottom: 100px; }
-        .ativa { display: block; animation: slideUp 0.4s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* Interface Principal */
+        header { padding: 15px; text-align: center; font-weight: 700; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
+        .aba { display: none; padding: 20px; height: calc(100vh - 160px); overflow-y: auto; }
+        .ativa { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .card-elite {
-            background: var(--bg-glass); backdrop-filter: blur(12px);
+            background: var(--bg-glass); backdrop-filter: blur(10px);
             border: 1px solid var(--border); border-radius: 20px;
-            padding: 15px; margin-bottom: 12px;
+            padding: 15px; margin-bottom: 15px;
         }
-
-        /* Filtros de Treino */
-        .filter-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none; }
-        .filter-row::-webkit-scrollbar { display: none; }
-        .btn-filter { 
-            background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid var(--border);
-            padding: 8px 16px; border-radius: 20px; white-space: nowrap; font-size: 0.8rem; cursor: pointer;
-        }
-        .btn-filter.active { background: var(--primary); color: #000; border-color: var(--primary); font-weight: 600; }
-
         .btn-action {
             background: var(--primary); color: #000; border: none; padding: 12px;
             border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer; margin-top: 10px;
         }
 
-        /* Nav */
         .nav-bar {
             position: fixed; bottom: 0; width: 100%; height: 80px;
-            background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px);
-            display: flex; justify-content: space-around; align-items: center;
-            border-top: 1px solid var(--border); z-index: 100;
+            background: rgba(2, 6, 23, 0.95); display: flex; justify-content: space-around; 
+            align-items: center; border-top: 1px solid var(--border);
         }
-        .nav-btn { background: none; border: none; color: #64748b; font-size: 0.7rem; cursor: pointer; text-align: center; }
+        .nav-btn { background: none; border: none; color: #64748b; font-size: 0.7rem; cursor: pointer; }
         .nav-btn.active { color: var(--primary); }
-        .nav-btn i { font-size: 1.4rem; display: block; margin-bottom: 4px; }
     </style>
 </head>
 <body>
 
 <div id="fundo-dinamico" class="fundo-home"></div>
 
-<header>CHECKPRATO <span style="color:var(--primary)">ELITE</span></header>
-
-<div id="app">
-    <div id="home" class="aba ativa">
-        <div class="avatar-stage">
-            <div class="aura"></div>
-            <div id="canvas-3d">👤</div> 
-        </div>
-        <div class="card-elite" style="text-align:center">
-            <h2 id="user-name">Recruta Elite</h2>
-            <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px; margin-bottom: 15px;">
-                <span id="user-xp" style="color: var(--primary); font-weight: 700;">XP: 0</span>
-            </div>
-            <button class="btn-action" style="background: var(--accent-blue); color: white;" onclick="login()">CONECTAR GOOGLE</button>
-        </div>
+<div id="onboarding">
+    <h2>Bem-vindo ao Elite ⚔️</h2>
+    <p>Escolha seu estilo de vida (Selecione até 3)</p>
+    <div class="opcoes-grid">
+        <div class="tag-choice" onclick="toggleChoice(this, 'muay-thai')">🥊 Muay Thai</div>
+        <div class="tag-choice" onclick="toggleChoice(this, 'crossfit')">🏋️ CrossFit</div>
+        <div class="tag-choice" onclick="toggleChoice(this, 'academia')">💪 Musculação</div>
+        <div class="tag-choice" onclick="toggleChoice(this, 'corrida')">🏃 Corrida</div>
+        <div class="tag-choice" onclick="toggleChoice(this, 'futebol')">⚽ Esportes</div>
+        <div class="tag-choice" onclick="toggleChoice(this, 'yoga')">🧘 Yoga</div>
     </div>
+    <button class="btn-action" style="margin-top:40px; width:80%" onclick="finalizarCadastro()">COMEÇAR JORNADA</button>
+</div>
 
-    <div id="dieta" class="aba">
-        <h3 style="margin-top:0"><i class="fas fa-leaf"></i> Planos de Nutrição</h3>
-        <div id="lista-dietas"></div>
+<div id="main-content" style="display:none">
+    <header>CHECKPRATO <span style="color:var(--primary)">ELITE</span></header>
+    
+    <div id="home" class="aba ativa">
+        <div class="card-elite" style="text-align:center">
+            <div id="avatar" style="font-size:5rem; margin-bottom:10px">👤</div>
+            <h3 id="display-nome">Atleta Elite</h3>
+            <p id="display-xp">XP: 0</p>
+        </div>
     </div>
 
     <div id="treino" class="aba">
-        <h3 style="margin-top:0"><i class="fas fa-dumbbell"></i> Atividades & Esportes</h3>
-        <div class="filter-row">
-            <button class="btn-filter active" onclick="filtrar('todos')">Todos</button>
-            <button class="btn-filter" onclick="filtrar('academia')">Academia</button>
-            <button class="btn-filter" onclick="filtrar('casa')">Em Casa</button>
-            <button class="btn-filter" onclick="filtrar('rua')">Na Rua</button>
-            <button class="btn-filter" onclick="filtrar('esporte')">Esportes</button>
-        </div>
-        <div id="lista-treinos"></div>
-    </div>
-
-    <div id="ranking" class="aba">
-        <h3><i class="fas fa-trophy"></i> Hall da Fama</h3>
-        <div id="lista-ranking"></div>
+        <h3>🎯 Seu Treino Personalizado</h3>
+        <div id="lista-personalizada"></div>
+        <hr style="border:0; border-top:1px solid var(--border); margin:20px 0">
+        <h3>🌍 Explorar Outros</h3>
+        <div id="lista-explorar"></div>
     </div>
 </div>
 
-<nav class="nav-bar">
-    <button class="nav-btn active" onclick="trocarAba('home')"><i class="fas fa-user-astronaut"></i>Perfil</button>
-    <button class="nav-btn" onclick="trocarAba('dieta')"><i class="fas fa-apple-alt"></i>Dieta</button>
-    <button class="nav-btn" onclick="trocarAba('treino')"><i class="fas fa-running"></i>Treino</button>
-    <button class="nav-btn" onclick="trocarAba('ranking')"><i class="fas fa-medal"></i>Global</button>
+<nav id="nav-principal" class="nav-bar" style="display:none">
+    <button class="nav-btn active" onclick="trocarAba('home')"><i class="fas fa-user"></i><br>Perfil</button>
+    <button class="nav-btn" onclick="trocarAba('treino')"><i class="fas fa-dumbbell"></i><br>Treino</button>
 </nav>
 
-<script type="module">
-    // --- BIBLIOTECA DE CONTEÚDO ---
-    const DATABASE = {
-        dietas: [
-            { id: 1, nome: "Definição Máxima", kcal: "1800", icon: "🔥", desc: "Foco em queima calórica intensa." },
-            { id: 2, nome: "Ganho Alpha", kcal: "3400", icon: "🥩", desc: "Superavit focado em hipertrofia." },
-            { id: 3, nome: "Performance Plant", kcal: "2200", icon: "🥗", desc: "Dieta baseada em plantas de alta energia." }
-        ],
-        treinos: [
-            { cat: "academia", nome: "Treino ABC", tempo: "60m", xp: 50, icon: "🏋️" },
-            { cat: "academia", nome: "Powerlifting", tempo: "80m", xp: 70, icon: "⚙️" },
-            { cat: "casa", nome: "HIIT Sala", tempo: "20m", xp: 30, icon: "🏠" },
-            { cat: "casa", nome: "Yoga Flow", tempo: "40m", xp: 25, icon: "🧘" },
-            { cat: "rua", nome: "Corrida Park", tempo: "30m", xp: 45, icon: "🏃" },
-            { cat: "rua", nome: "Calistenia Barra", tempo: "50m", xp: 55, icon: "🌳" },
-            { cat: "esporte", nome: "Futebol", tempo: "90m", xp: 100, icon: "⚽" },
-            { cat: "esporte", nome: "Beach Tennis", tempo: "60m", xp: 60, icon: "🎾" },
-            { cat: "esporte", nome: "Natação", tempo: "45m", xp: 80, icon: "🏊" }
-        ]
-    };
+<script>
+    const TREINOS_MASTER = [
+        { id: 1, cat: 'muay-thai', nome: "Sombra e Sacos", xp: 60, desc: "Sequência de cotovelos e joelhos." },
+        { id: 2, cat: 'crossfit', nome: "WOD Metcon", xp: 80, desc: "Máxima intensidade por tempo." },
+        { id: 3, cat: 'academia', nome: "Push Day", xp: 50, desc: "Peito, ombros e tríceps." },
+        { id: 4, cat: 'corrida', nome: "Tiros de 400m", xp: 45, desc: "Explosão aeróbica na rua." },
+        { id: 5, cat: 'futebol', nome: "Partida Amigável", xp: 100, desc: "Gasto calórico de jogo real." },
+        { id: 6, cat: 'yoga', nome: "Saudação ao Sol", xp: 30, desc: "Flexibilidade e controle mental." }
+    ];
 
+    let escolhas = [];
     let userXP = parseInt(localStorage.getItem('elite_xp')) || 0;
 
-    // --- LÓGICA DE NAVEGAÇÃO ---
-    window.trocarAba = (aba) => {
-        document.querySelectorAll('.aba').forEach(el => el.classList.remove('ativa'));
+    // --- CADASTRO ---
+    function toggleChoice(el, esporte) {
+        if (el.classList.contains('selected')) {
+            el.classList.remove('selected');
+            escolhas = escolhas.filter(i => i !== esporte);
+        } else {
+            if (escolhas.length < 3) {
+                el.classList.add('selected');
+                escolhas.push(esporte);
+            } else {
+                alert("Escolha no máximo 3 estilos!");
+            }
+        }
+    }
+
+    function finalizarCadastro() {
+        if (escolhas.length === 0) return alert("Escolha pelo menos 1 estilo!");
+        localStorage.setItem('elite_escolhas', JSON.stringify(escolhas));
+        document.getElementById('onboarding').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+        document.getElementById('nav-principal').style.display = 'flex';
+        renderTreinos();
+    }
+
+    // --- NAVEGAÇÃO ---
+    function trocarAba(aba) {
+        document.querySelectorAll('.aba').forEach(a => a.classList.remove('ativa'));
         document.getElementById(aba).classList.add('ativa');
-        
-        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-        event.currentTarget.classList.add('active');
-
         document.getElementById('fundo-dinamico').className = `fundo-${aba}`;
-
-        if(aba === 'dieta') renderDietas();
-        if(aba === 'treino') filtrar('todos');
     }
 
-    // --- FILTROS E RENDER ---
-    window.filtrar = (cat) => {
-        const btns = document.querySelectorAll('.btn-filter');
-        btns.forEach(b => b.classList.toggle('active', b.innerText.toLowerCase().includes(cat) || (cat==='todos' && b.innerText==='Todos')));
-
-        const container = document.getElementById('lista-treinos');
-        const dados = cat === 'todos' ? DATABASE.treinos : DATABASE.treinos.filter(t => t.cat === cat);
+    // --- RENDERIZAR TREINOS COM BASE NA ESCOLHA ---
+    function renderTreinos() {
+        const personal = document.getElementById('lista-personalizada');
+        const explorar = document.getElementById('lista-explorar');
         
-        container.innerHTML = dados.map(t => `
+        const meusTreinos = TREINOS_MASTER.filter(t => escolhas.includes(t.cat));
+        const outrosTreinos = TREINOS_MASTER.filter(t => !escolhas.includes(t.cat));
+
+        const cardHTML = (t) => `
             <div class="card-elite" style="border-left: 4px solid var(--primary)">
-                <div style="display:flex; justify-content:space-between; align-items:center">
-                    <span>${t.icon} <b>${t.nome}</b></span>
-                    <span style="color:var(--primary); font-size:0.8rem">+${t.xp} XP</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; margin-top:10px; align-items:center">
-                    <small><i class="far fa-clock"></i> ${t.tempo}</small>
-                    <button class="btn-action" style="width:auto; margin:0; padding:5px 15px" onclick="addXP(${t.xp})">CONCLUIR</button>
-                </div>
+                <b>${t.nome}</b> <span style="float:right; color:var(--primary)">+${t.xp} XP</span>
+                <p style="font-size:0.8rem; color:#94a3b8; margin:5px 0">${t.desc}</p>
+                <button class="btn-action" onclick="ganharXP(${t.xp})">CONCLUIR</button>
             </div>
-        `).join('');
+        `;
+
+        personal.innerHTML = meusTreinos.map(t => cardHTML(t)).join('');
+        explorar.innerHTML = outrosTreinos.map(t => cardHTML(t)).join('');
     }
 
-    function renderDietas() {
-        const container = document.getElementById('lista-dietas');
-        container.innerHTML = DATABASE.dietas.map(d => `
-            <div class="card-elite">
-                <div style="display:flex; justify-content:space-between">
-                    <span>${d.icon} <b>${d.nome}</b></span>
-                    <span style="color:var(--primary)">${d.kcal} kcal</span>
-                </div>
-                <p style="font-size:0.75rem; color:#94a3b8; margin:8px 0">${d.desc}</p>
-                <button class="btn-action" style="font-size:0.7rem; padding:8px" onclick="alert('Plano Ativado!')">ATIVAR DIETA</button>
-            </div>
-        `).join('');
-    }
-
-    // --- SISTEMA DE EVOLUÇÃO ---
-    window.addXP = (val) => {
+    function ganharXP(val) {
         userXP += val;
         localStorage.setItem('elite_xp', userXP);
-        document.getElementById('user-xp').innerText = `XP: ${userXP}`;
-        atualizarAvatar();
-        alert(`Excelente! +${val} XP garantido.`);
-    }
-
-    function atualizarAvatar() {
-        const avatar = document.getElementById('canvas-3d');
-        const scale = 1 + (userXP / 10000);
-        avatar.style.transform = `scale(${Math.min(scale, 1.7)})`;
+        document.getElementById('display-xp').innerText = `XP: ${userXP}`;
         
-        // Troca de "Roupas" baseada em XP
-        if(userXP > 500) avatar.innerHTML = "🛡️";
-        if(userXP > 2000) avatar.innerHTML = "🥋";
-        if(userXP > 5000) avatar.innerHTML = "🌌";
+        // Crescimento do Boneco
+        const scale = 1 + (userXP / 5000);
+        document.getElementById('avatar').style.transform = `scale(${Math.min(scale, 1.6)})`;
+        alert(`Treino finalizado! +${val} XP.`);
     }
 
-    // Início
-    atualizarAvatar();
-    document.getElementById('user-xp').innerText = `XP: ${userXP}`;
-
+    // Verificar se já tem cadastro
+    const salvo = localStorage.getItem('elite_escolhas');
+    if (salvo) {
+        escolhas = JSON.parse(salvo);
+        finalizarCadastro();
+    }
 </script>
 </body>
 </html>
