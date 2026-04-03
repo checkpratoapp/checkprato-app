@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
-  <title>CheckPrato Elite — Saúde & Performance</title>
+  <title>CheckPrato Elite — Saúde Integral</title>
   <style>
-    /* CSS PREMIUM - CENTRALIZADO E MODERNO */
+    /* DESIGN PREMIUM SISTEMA CENTRALIZADO */
     :root {
       --bg: #050a14;
-      --card: rgba(13, 25, 45, 0.95);
+      --card: rgba(13, 25, 45, 0.98);
       --blue: #3b82f6;
-      --blue-glow: rgba(59, 130, 246, 0.5);
+      --blue-glow: rgba(59, 130, 246, 0.4);
       --green: #22c55e;
       --text: #eaf2ff;
       --muted: #8aa0c7;
       --stroke: rgba(255, 255, 255, 0.1);
-      --max-w: 480px;
+      --max-w: 450px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
@@ -25,170 +25,149 @@
       color: var(--text); 
       display: flex; 
       justify-content: center; 
+      align-items: flex-start;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* Container Principal Centralizado */
-    .app-container {
+    /* Container Principal - Estilo iPhone/Android */
+    .app-shell {
       width: 100%;
       max-width: var(--max-w);
-      position: relative;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #0a1f38, #050a14);
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
-      background: radial-gradient(circle at top, #0a1f38, var(--bg));
+      position: relative;
+      box-shadow: 0 0 50px rgba(0,0,0,0.8);
     }
 
-    .page { display: none; padding: 25px; padding-bottom: 120px; width: 100%; animation: slideUp 0.4s ease; }
-    .page.active { display: block; }
+    .page { display: none; padding: 25px; padding-bottom: 120px; width: 100%; flex-direction: column; }
+    .page.active { display: flex; animation: fadeIn 0.5s ease forwards; }
 
-    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Cards e Botões Estilizados */
     .glass-card {
       background: var(--card);
       border-radius: 28px;
-      padding: 24px;
+      padding: 25px;
       border: 1px solid var(--stroke);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
       margin-bottom: 20px;
     }
 
     .btn-main {
       background: linear-gradient(135deg, var(--blue), #1d4ed8);
-      color: white;
-      border: none;
-      border-radius: 16px;
-      padding: 18px;
-      width: 100%;
-      font-weight: 700;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px var(--blue-glow);
-      transition: 0.3s;
+      color: white; border: none; border-radius: 18px; padding: 20px;
+      width: 100%; font-weight: 700; font-size: 16px; cursor: pointer;
+      box-shadow: 0 8px 20px var(--blue-glow); transition: 0.3s;
     }
+    .btn-main:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    .btn-main:active { transform: scale(0.96); }
-
-    /* Avatar e XP Bar */
-    .header-game { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
-    .avatar-circle { 
-      width: 65px; height: 65px; border-radius: 20px; 
+    /* Avatar e Header */
+    .user-bar { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+    .avatar-box { 
+      width: 60px; height: 60px; border-radius: 18px; 
       border: 2px solid var(--blue); background: #000; overflow: hidden;
-      box-shadow: 0 0 15px var(--blue-glow);
     }
-    .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+    .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
     
-    .xp-container { flex: 1; }
-    .xp-bar { height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 8px; overflow: hidden; }
-    .xp-fill { height: 100%; background: var(--green); box-shadow: 0 0 10px var(--green); transition: width 1s; }
+    .xp-line { flex: 1; }
+    .xp-track { height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 8px; overflow: hidden; }
+    .xp-bar { height: 100%; background: var(--green); box-shadow: 0 0 10px var(--green); width: 0%; transition: width 1s; }
 
-    /* Seleção de Esporte/Saúde */
-    .grid-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-    .opt-chip { 
+    /* Chips de Seleção */
+    .grid-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+    .chip { 
       padding: 15px; border-radius: 16px; border: 1px solid var(--stroke); 
       background: rgba(255,255,255,0.03); text-align: center; cursor: pointer; font-size: 14px;
     }
-    .opt-chip.selected { border-color: var(--blue); background: rgba(59, 130, 246, 0.15); color: var(--blue); font-weight: bold; }
+    .chip.selected { border-color: var(--blue); background: rgba(59, 130, 246, 0.2); font-weight: bold; }
 
-    /* Nav Inferior Fixa */
-    .nav-bar {
+    /* Nav Inferior */
+    .nav-bottom {
       position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      width: calc(100% - 40px); max-width: 400px;
-      background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(15px);
+      width: 90%; max-width: 380px;
+      background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px);
       border-radius: 24px; display: none; justify-content: space-around;
-      padding: 12px; border: 1px solid var(--stroke); z-index: 1000;
+      padding: 15px; border: 1px solid var(--stroke); z-index: 9999;
     }
-    .nav-bar.active { display: flex; }
-    .nav-item { background: none; border: none; color: var(--muted); font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .nav-bottom.active { display: flex; }
+    .nav-item { background: none; border: none; color: var(--muted); font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
     .nav-item.active { color: var(--blue); }
-    .nav-item i { font-size: 22px; }
 
-    /* Login Screen */
-    #login-page { text-align: center; justify-content: center; display: flex; flex-direction: column; height: 100vh; }
+    /* Loading Overlay */
+    #loading { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 10000; flex-direction: column; }
   </style>
 </head>
 <body>
 
-  <div class="app-container">
+  <div id="loading">
+     <h2 style="margin-bottom: 10px;">CheckPrato</h2>
+     <p style="color:var(--muted)">Sincronizando Saúde...</p>
+  </div>
+
+  <div class="app-shell">
     
-    <div id="login-page" class="page active">
-      <div class="glass-card">
-        <h1 style="font-size: 32px; margin-bottom: 10px;">CheckPrato <span style="color:var(--blue)">Elite</span></h1>
-        <p style="color:var(--muted); margin-bottom:40px;">Sua inteligência nutricional e de saúde.</p>
-        <button id="btn-login" class="btn-main">Entrar com Google</button>
+    <div id="page-login" class="page">
+      <div style="text-align: center; margin-top: 80px;">
+        <h1 style="font-size: 38px; letter-spacing: -1px;">CheckPrato <span style="color:var(--blue)">Elite</span></h1>
+        <p style="color:var(--muted); margin: 15px 0 60px;">Sua jornada para uma vida saudável.</p>
+        <div class="glass-card">
+           <button id="btn-google" class="btn-main">Entrar com conta Google</button>
+        </div>
       </div>
     </div>
 
-    <div id="setup-page" class="page">
-      <h2>Perfil de Saúde</h2>
-      <p style="color:var(--muted); margin-bottom:20px;">Personalize sua experiência.</p>
+    <div id="page-setup" class="page">
+      <h2>Dados de Saúde</h2>
+      <p style="color:var(--muted); margin-bottom:20px;">Como a IA deve te ajudar?</p>
       
       <div class="glass-card">
-        <p style="font-weight:600;">Esporte Principal</p>
-        <div class="grid-options" id="grid-sports">
-          <div class="opt-chip" onclick="selectOne(this)">🏋️ Musculação</div>
-          <div class="opt-chip" onclick="selectOne(this)">🥋 Jiu-Jitsu</div>
-          <div class="opt-chip" onclick="selectOne(this)">🥊 Muay Thai</div>
-          <div class="opt-chip" onclick="selectOne(this)">🏃 Corrida</div>
+        <p style="font-weight:600;">Qual seu esporte?</p>
+        <div class="grid-opts" id="setup-sport">
+          <div class="chip" onclick="selOne(this)">🏋️ Musculação</div>
+          <div class="chip" onclick="selOne(this)">🥋 Jiu-Jitsu</div>
+          <div class="chip" onclick="selOne(this)">🥊 Muay Thai</div>
+          <div class="chip" onclick="selOne(this)">🏃 Corrida</div>
         </div>
       </div>
 
       <div class="glass-card">
-        <p style="font-weight:600;">Condições de Saúde</p>
-        <div class="grid-options" id="grid-health">
-          <div class="opt-chip" onclick="this.classList.toggle('selected')">Diabetes</div>
-          <div class="opt-chip" onclick="this.classList.toggle('selected')">Hipertensão</div>
-          <div class="opt-chip" onclick="this.classList.toggle('selected')">Lactose</div>
-          <div class="opt-chip" onclick="this.classList.toggle('selected')">Nenhuma</div>
+        <p style="font-weight:600;">Possui restrição?</p>
+        <div class="grid-opts">
+          <div class="chip" onclick="this.classList.toggle('selected')">Diabetes</div>
+          <div class="chip" onclick="this.classList.toggle('selected')">Lactose</div>
         </div>
       </div>
 
-      <button class="btn-main" onclick="saveProfile()">Salvar e Começar</button>
+      <button class="btn-main" onclick="saveData()">Finalizar Cadastro</button>
     </div>
 
-    <div id="home-page" class="page">
-      <div id="user-header"></div>
-      
+    <div id="page-home" class="page">
+      <div class="dynamic-header"></div>
       <div class="glass-card">
-        <h3>Dashboard de Saúde</h3>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:15px;">
-           <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px; text-align:center;">
-              <span style="font-size:24px;">💧</span><br><small>1.5L Água</small>
-           </div>
-           <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px; text-align:center;">
-              <span style="font-size:24px;">🧘</span><br><small>Saúde OK</small>
-           </div>
-        </div>
-      </div>
-
-      <div class="glass-card">
-        <h3>Curiosidade IA</h3>
-        <p style="color:var(--muted); font-size:14px; margin-top:10px;">Sabia que o descanso é tão importante quanto o treino para sua longevidade?</p>
+        <h3>Painel de Saúde</h3>
+        <p style="color:var(--muted); font-size:14px; margin-top:10px;">Você completou 30% da sua meta de hidratação hoje.</p>
       </div>
     </div>
 
-    <div id="plate-page" class="page">
-      <div id="user-header-plate"></div>
+    <div id="page-plate" class="page">
+      <div class="dynamic-header"></div>
       <div class="glass-card">
-        <h3>Analisar Refeição</h3>
-        <div id="preview" style="height:250px; background:#000; border-radius:20px; margin:20px 0; border:1px dashed var(--muted); display:flex; align-items:center; justify-content:center;">
-          <span style="color:var(--muted)">📸 Capturar Foto</span>
+        <h3>Analisar Alimento</h3>
+        <div id="cam-box" style="height:220px; border:1px dashed var(--muted); border-radius:20px; margin:20px 0; display:flex; align-items:center; justify-content:center; background:#000;">
+           📸 Foto do Prato
         </div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-          <button class="btn-main" style="background:#1e293b;" onclick="document.getElementById('cam').click()">Câmera</button>
-          <button class="btn-main" style="background:#1e293b;" onclick="document.getElementById('gal').click()">Galeria</button>
-        </div>
-        <input type="file" id="cam" capture="environment" accept="image/*" style="display:none">
-        <input type="file" id="gal" accept="image/*" style="display:none">
+        <button class="btn-main" onclick="document.getElementById('file-in').click()">Capturar Agora</button>
+        <input type="file" id="file-in" capture="environment" accept="image/*" style="display:none">
       </div>
     </div>
 
-    <nav class="nav-bar" id="nav-bar">
-      <button class="nav-item active" onclick="switchTab('home-page', this)"><i>❤️</i><span>Saúde</span></button>
-      <button class="nav-item" onclick="switchTab('plate-page', this)"><i>🍽️</i><span>Prato</span></button>
-      <button class="nav-item" onclick="logout()"><i>🚪</i><span>Sair</span></button>
+    <nav class="nav-bottom" id="main-nav">
+      <button class="nav-item active" onclick="tab('page-home', this)"><span>❤️</span>Saúde</button>
+      <button class="nav-item" onclick="tab('page-plate', this)"><span>🍽️</span>Prato</button>
+      <button class="nav-item" onclick="logout()"><span>🚪</span>Sair</button>
     </nav>
 
   </div>
@@ -212,89 +191,86 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    // Login Action
-    document.getElementById('btn-login').onclick = () => signInWithRedirect(auth, provider);
+    // LOGIN
+    document.getElementById('btn-google').onclick = () => signInWithRedirect(auth, provider);
 
-    // Monitor de Autenticação (AQUI ESTÁ A CHAVE PARA NÃO VOLTAR PRO INÍCIO)
+    // O OBSERVADOR DE ENTRADA (Destrava o aplicativo)
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const userRef = doc(db, "users", user.uid);
-        const snap = await getDoc(userRef);
-
-        if (!snap.exists() || !snap.data().setupDone) {
-          showPage('setup-page');
-        } else {
-          loadApp(snap.data());
+        try {
+          const snap = await getDoc(doc(db, "users", user.uid));
+          if (snap.exists() && snap.data().setupDone) {
+            startApp(snap.data());
+          } else {
+            navigate('page-setup');
+          }
+        } catch (e) {
+          // Se der erro de permissão no Firestore, ainda assim mostramos o setup
+          navigate('page-setup');
         }
       } else {
-        showPage('login-page');
+        navigate('page-login');
       }
+      document.getElementById('loading').style.display = 'none';
     });
 
-    function showPage(id) {
+    function navigate(id) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-      if(id !== 'login-page' && id !== 'setup-page') {
-        document.getElementById('nav-bar').classList.add('active');
+      if(id === 'page-home' || id === 'page-plate') {
+        document.getElementById('main-nav').classList.add('active');
       } else {
-        document.getElementById('nav-bar').classList.remove('active');
+        document.getElementById('main-nav').classList.remove('active');
       }
     }
 
-    window.selectOne = (el) => {
-      el.parentNode.querySelectorAll('.opt-chip').forEach(c => c.classList.remove('selected'));
+    window.selOne = (el) => {
+      el.parentNode.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
       el.classList.add('selected');
     };
 
-    window.saveProfile = async () => {
-      const sport = document.querySelector('#grid-sports .selected')?.innerText || "Saúde";
+    window.saveData = async () => {
+      const sport = document.querySelector('#setup-sport .selected')?.innerText || "Saúde";
       const user = auth.currentUser;
-      const data = { name: user.displayName, sport, xp: 50, setupDone: true };
-      await setDoc(doc(db, "users", user.uid), data, { merge: true });
-      loadApp(data);
+      const payload = { name: user.displayName, sport, xp: 10, setupDone: true };
+      await setDoc(doc(db, "users", user.uid), payload, { merge: true });
+      startApp(payload);
     };
 
-    function loadApp(data) {
-      showPage('home-page');
-      const avatar = `https://api.dicebear.com/7.x/adventurer/svg?seed=${data.name}`;
-      const headerHtml = `
-        <div class="header-game">
-          <div class="avatar-circle"><img src="${avatar}"></div>
-          <div class="xp-container">
-            <div style="display:flex; justify-content:space-between; font-size:14px; font-weight:bold;">
+    function startApp(data) {
+      navigate('page-home');
+      const seed = encodeURIComponent(data.name);
+      const header = `
+        <div class="user-bar">
+          <div class="avatar-box"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}"></div>
+          <div class="xp-line">
+            <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700;">
               <span>${data.name}</span>
-              <span style="color:var(--green)">Lvl 1</span>
+              <span style="color:var(--green)">Nível 1</span>
             </div>
-            <div class="xp-bar"><div class="xp-fill" style="width: 30%"></div></div>
+            <div class="xp-track"><div class="xp-bar" style="width:20%"></div></div>
           </div>
         </div>
       `;
-      document.getElementById('user-header').innerHTML = headerHtml;
-      document.getElementById('user-header-plate').innerHTML = headerHtml;
+      document.querySelectorAll('.dynamic-header').forEach(h => h.innerHTML = header);
     }
 
-    window.switchTab = (id, btn) => {
-      showPage(id);
+    window.tab = (id, btn) => {
+      navigate(id);
       document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
       btn.classList.add('active');
     };
 
     window.logout = () => signOut(auth).then(() => location.reload());
 
-    // Preview de Imagem
-    const handleImg = (e) => {
-      const file = e.target.files[0];
-      if(file) {
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          document.getElementById('preview').innerHTML = `<img src="${ev.target.result}" style="width:100%; height:100%; object-fit:cover; border-radius:20px;">`;
-        }
-        reader.readAsDataURL(file);
-      }
+    document.getElementById('file-in').onchange = (e) => {
+       const file = e.target.files[0];
+       if(file) {
+         const reader = new FileReader();
+         reader.onload = (ev) => document.getElementById('cam-box').innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:20px;">`;
+         reader.readAsDataURL(file);
+       }
     };
-    document.getElementById('cam').onchange = handleImg;
-    document.getElementById('gal').onchange = handleImg;
-
   </script>
 </body>
 </html>
