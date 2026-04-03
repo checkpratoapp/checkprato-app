@@ -3,181 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
-  <title>CheckPrato Elite — Saúde Integral</title>
+  <title>CheckPrato Elite — Saúde</title>
   <style>
-    /* DESIGN PREMIUM SISTEMA CENTRALIZADO */
     :root {
-      --bg: #050a14;
-      --card: rgba(13, 25, 45, 0.98);
-      --blue: #3b82f6;
-      --blue-glow: rgba(59, 130, 246, 0.4);
-      --green: #22c55e;
-      --text: #eaf2ff;
-      --muted: #8aa0c7;
-      --stroke: rgba(255, 255, 255, 0.1);
+      --bg: #050a14; --card: rgba(13, 25, 45, 0.98);
+      --blue: #3b82f6; --text: #eaf2ff; --muted: #8aa0c7;
       --max-w: 450px;
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+    body { background: var(--bg); color: var(--text); display: flex; justify-content: center; min-height: 100vh; }
     
-    body { 
-      background: var(--bg); 
-      color: var(--text); 
-      display: flex; 
-      justify-content: center; 
-      align-items: flex-start;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* Container Principal - Estilo iPhone/Android */
-    .app-shell {
-      width: 100%;
-      max-width: var(--max-w);
-      min-height: 100vh;
-      background: radial-gradient(circle at top, #0a1f38, #050a14);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      box-shadow: 0 0 50px rgba(0,0,0,0.8);
-    }
-
-    .page { display: none; padding: 25px; padding-bottom: 120px; width: 100%; flex-direction: column; }
-    .page.active { display: flex; animation: fadeIn 0.5s ease forwards; }
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    .glass-card {
-      background: var(--card);
-      border-radius: 28px;
-      padding: 25px;
-      border: 1px solid var(--stroke);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-      margin-bottom: 20px;
-    }
-
-    .btn-main {
-      background: linear-gradient(135deg, var(--blue), #1d4ed8);
-      color: white; border: none; border-radius: 18px; padding: 20px;
-      width: 100%; font-weight: 700; font-size: 16px; cursor: pointer;
-      box-shadow: 0 8px 20px var(--blue-glow); transition: 0.3s;
-    }
-    .btn-main:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    /* Avatar e Header */
-    .user-bar { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
-    .avatar-box { 
-      width: 60px; height: 60px; border-radius: 18px; 
-      border: 2px solid var(--blue); background: #000; overflow: hidden;
-    }
-    .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+    .app-shell { width: 100%; max-width: var(--max-w); background: #050a14; display: flex; flex-direction: column; min-height: 100vh; position: relative; border-left: 1px solid rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.05); }
     
-    .xp-line { flex: 1; }
-    .xp-track { height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 8px; overflow: hidden; }
-    .xp-bar { height: 100%; background: var(--green); box-shadow: 0 0 10px var(--green); width: 0%; transition: width 1s; }
+    .page { display: none; padding: 30px; flex-direction: column; animation: fadeIn 0.4s ease; }
+    .page.active { display: flex; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    /* Chips de Seleção */
-    .grid-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-    .chip { 
-      padding: 15px; border-radius: 16px; border: 1px solid var(--stroke); 
-      background: rgba(255,255,255,0.03); text-align: center; cursor: pointer; font-size: 14px;
-    }
-    .chip.selected { border-color: var(--blue); background: rgba(59, 130, 246, 0.2); font-weight: bold; }
+    .glass-card { background: var(--card); border-radius: 24px; padding: 25px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    
+    .btn-main { background: linear-gradient(135deg, var(--blue), #1d4ed8); color: white; border: none; border-radius: 15px; padding: 18px; width: 100%; font-weight: bold; cursor: pointer; font-size: 16px; }
+    
+    /* Nav */
+    .nav { position: fixed; bottom: 0; width: 100%; max-width: var(--max-w); background: #0a1628; display: none; justify-content: space-around; padding: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .nav.active { display: flex; }
+    .nav-item { background: none; border: none; color: var(--muted); cursor: pointer; display: flex; flex-direction: column; align-items: center; font-size: 12px; }
 
-    /* Nav Inferior */
-    .nav-bottom {
-      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      width: 90%; max-width: 380px;
-      background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px);
-      border-radius: 24px; display: none; justify-content: space-around;
-      padding: 15px; border: 1px solid var(--stroke); z-index: 9999;
-    }
-    .nav-bottom.active { display: flex; }
-    .nav-item { background: none; border: none; color: var(--muted); font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
-    .nav-item.active { color: var(--blue); }
-
-    /* Loading Overlay */
-    #loading { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 10000; flex-direction: column; }
+    /* Avatar */
+    .header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 20px; }
+    .avt { width: 55px; height: 55px; border-radius: 15px; border: 2px solid var(--blue); }
   </style>
 </head>
 <body>
 
-  <div id="loading">
-     <h2 style="margin-bottom: 10px;">CheckPrato</h2>
-     <p style="color:var(--muted)">Sincronizando Saúde...</p>
-  </div>
-
   <div class="app-shell">
-    
-    <div id="page-login" class="page">
-      <div style="text-align: center; margin-top: 80px;">
-        <h1 style="font-size: 38px; letter-spacing: -1px;">CheckPrato <span style="color:var(--blue)">Elite</span></h1>
-        <p style="color:var(--muted); margin: 15px 0 60px;">Sua jornada para uma vida saudável.</p>
+    <div id="p-login" class="page active">
+      <div style="text-align: center; margin-top: 100px;">
+        <h1 style="font-size: 35px; margin-bottom: 10px;">CheckPrato <span style="color:var(--blue)">Elite</span></h1>
+        <p style="color:var(--muted); margin-bottom: 50px;">Foco total em sua saúde.</p>
         <div class="glass-card">
-           <button id="btn-google" class="btn-main">Entrar com conta Google</button>
+           <button id="btn-auth" class="btn-main">Entrar com Google (Pop-up)</button>
+           <p id="msg-erro" style="color: #ff4d4d; font-size: 12px; margin-top: 15px; display: none;"></p>
         </div>
       </div>
     </div>
 
-    <div id="page-setup" class="page">
-      <h2>Dados de Saúde</h2>
-      <p style="color:var(--muted); margin-bottom:20px;">Como a IA deve te ajudar?</p>
-      
-      <div class="glass-card">
-        <p style="font-weight:600;">Qual seu esporte?</p>
-        <div class="grid-opts" id="setup-sport">
-          <div class="chip" onclick="selOne(this)">🏋️ Musculação</div>
-          <div class="chip" onclick="selOne(this)">🥋 Jiu-Jitsu</div>
-          <div class="chip" onclick="selOne(this)">🥊 Muay Thai</div>
-          <div class="chip" onclick="selOne(this)">🏃 Corrida</div>
-        </div>
+    <div id="p-setup" class="page">
+      <h2>Perfil de Saúde</h2>
+      <div class="glass-card" style="margin-top:20px;">
+        <p>Qual seu esporte?</p>
+        <select id="set-sport" style="width:100%; padding:12px; margin:10px 0; border-radius:10px; background:#111; color:white; border:1px solid #333;">
+          <option>Musculação</option>
+          <option>Jiu-Jitsu</option>
+          <option>Muay Thai</option>
+          <option>Corrida</option>
+        </select>
+        <button class="btn-main" onclick="save()">Concluir</button>
       </div>
-
-      <div class="glass-card">
-        <p style="font-weight:600;">Possui restrição?</p>
-        <div class="grid-opts">
-          <div class="chip" onclick="this.classList.toggle('selected')">Diabetes</div>
-          <div class="chip" onclick="this.classList.toggle('selected')">Lactose</div>
-        </div>
-      </div>
-
-      <button class="btn-main" onclick="saveData()">Finalizar Cadastro</button>
     </div>
 
-    <div id="page-home" class="page">
-      <div class="dynamic-header"></div>
+    <div id="p-home" class="page">
+      <div id="user-info"></div>
       <div class="glass-card">
         <h3>Painel de Saúde</h3>
-        <p style="color:var(--muted); font-size:14px; margin-top:10px;">Você completou 30% da sua meta de hidratação hoje.</p>
+        <p style="color:var(--muted); margin-top:10px;">IA: Lembre-se de beber água para sua recuperação muscular.</p>
       </div>
     </div>
 
-    <div id="page-plate" class="page">
-      <div class="dynamic-header"></div>
-      <div class="glass-card">
-        <h3>Analisar Alimento</h3>
-        <div id="cam-box" style="height:220px; border:1px dashed var(--muted); border-radius:20px; margin:20px 0; display:flex; align-items:center; justify-content:center; background:#000;">
-           📸 Foto do Prato
-        </div>
-        <button class="btn-main" onclick="document.getElementById('file-in').click()">Capturar Agora</button>
-        <input type="file" id="file-in" capture="environment" accept="image/*" style="display:none">
-      </div>
-    </div>
-
-    <nav class="nav-bottom" id="main-nav">
-      <button class="nav-item active" onclick="tab('page-home', this)"><span>❤️</span>Saúde</button>
-      <button class="nav-item" onclick="tab('page-plate', this)"><span>🍽️</span>Prato</button>
+    <nav class="nav" id="main-nav">
+      <button class="nav-item" onclick="show('p-home')"><span>❤️</span>Saúde</button>
       <button class="nav-item" onclick="logout()"><span>🚪</span>Sair</button>
     </nav>
-
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-    import { getAuth, signInWithRedirect, getRedirectResult, onAuthStateChanged, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+    import { getAuth, signInWithPopup, onAuthStateChanged, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
-    const firebaseConfig = {
+    const config = {
       apiKey: "AIzaSyCZTpsIEJqdxjc6E4KZaqogtkuyLn9uTDY",
       authDomain: "checkprato-a900b.firebaseapp.com",
       projectId: "checkprato-a900b",
@@ -186,91 +89,64 @@
       appId: "1:588806296180:web:77918231454174a7d6e87a"
     };
 
-    const app = initializeApp(firebaseConfig);
+    const app = initializeApp(config);
     const auth = getAuth(app);
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    // LOGIN
-    document.getElementById('btn-google').onclick = () => signInWithRedirect(auth, provider);
-
-    // O OBSERVADOR DE ENTRADA (Destrava o aplicativo)
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
-          const snap = await getDoc(doc(db, "users", user.uid));
-          if (snap.exists() && snap.data().setupDone) {
-            startApp(snap.data());
-          } else {
-            navigate('page-setup');
-          }
-        } catch (e) {
-          // Se der erro de permissão no Firestore, ainda assim mostramos o setup
-          navigate('page-setup');
-        }
-      } else {
-        navigate('page-login');
+    // LOGIN POR POP-UP (MUITO MAIS SEGURO PARA GITHUB PAGES)
+    document.getElementById('btn-auth').onclick = async () => {
+      try {
+        const res = await signInWithPopup(auth, provider);
+        checkUser(res.user);
+      } catch (e) {
+        document.getElementById('msg-erro').innerText = "Erro: " + e.message;
+        document.getElementById('msg-erro').style.display = "block";
       }
-      document.getElementById('loading').style.display = 'none';
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) checkUser(user);
+      else show('p-login');
     });
 
-    function navigate(id) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      if(id === 'page-home' || id === 'page-plate') {
-        document.getElementById('main-nav').classList.add('active');
+    async function checkUser(user) {
+      const snap = await getDoc(doc(db, "users", user.uid));
+      if (snap.exists() && snap.data().done) {
+        start(snap.data());
       } else {
-        document.getElementById('main-nav').classList.remove('active');
+        show('p-setup');
       }
     }
 
-    window.selOne = (el) => {
-      el.parentNode.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-    };
-
-    window.saveData = async () => {
-      const sport = document.querySelector('#setup-sport .selected')?.innerText || "Saúde";
+    window.save = async () => {
       const user = auth.currentUser;
-      const payload = { name: user.displayName, sport, xp: 10, setupDone: true };
-      await setDoc(doc(db, "users", user.uid), payload, { merge: true });
-      startApp(payload);
+      const data = { name: user.displayName, sport: document.getElementById('set-sport').value, done: true };
+      await setDoc(doc(db, "users", user.uid), data, { merge: true });
+      start(data);
     };
 
-    function startApp(data) {
-      navigate('page-home');
-      const seed = encodeURIComponent(data.name);
-      const header = `
-        <div class="user-bar">
-          <div class="avatar-box"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}"></div>
-          <div class="xp-line">
-            <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700;">
-              <span>${data.name}</span>
-              <span style="color:var(--green)">Nível 1</span>
-            </div>
-            <div class="xp-track"><div class="xp-bar" style="width:20%"></div></div>
+    function start(data) {
+      show('p-home');
+      document.getElementById('main-nav').classList.add('active');
+      document.getElementById('user-info').innerHTML = `
+        <div class="header">
+          <img class="avt" src="https://api.dicebear.com/7.x/adventurer/svg?seed=${data.name}">
+          <div>
+            <p><strong>${data.name}</strong></p>
+            <p style="font-size:12px; color:var(--blue)">Esporte: ${data.sport}</p>
           </div>
         </div>
       `;
-      document.querySelectorAll('.dynamic-header').forEach(h => h.innerHTML = header);
     }
 
-    window.tab = (id, btn) => {
-      navigate(id);
-      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-      btn.classList.add('active');
-    };
+    function show(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      if(id === 'p-login' || id === 'p-setup') document.getElementById('main-nav').classList.remove('active');
+    }
 
     window.logout = () => signOut(auth).then(() => location.reload());
-
-    document.getElementById('file-in').onchange = (e) => {
-       const file = e.target.files[0];
-       if(file) {
-         const reader = new FileReader();
-         reader.onload = (ev) => document.getElementById('cam-box').innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:20px;">`;
-         reader.readAsDataURL(file);
-       }
-    };
   </script>
 </body>
 </html>
