@@ -3,99 +3,95 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
-  <title>CheckPrato Elite — Saúde & Bem-Estar</title>
+  <title>CheckPrato Elite — Saúde Integral</title>
   <style>
-    /* CSS REFINADO PARA LINHA SAÚDE */
-    *{ box-sizing:border-box; margin:0; padding:0; }
-    body{ background: #02050b; color:#eaf2ff; font-family:sans-serif; }
-    :root{ --blue:#3b82f6; --blue2:#2563eb; --muted:#8aa0c7; --stroke:rgba(255,255,255,0.08); --max:430px; --xp-color: #22c55e; /* Verde para Saúde */ }
+    *{ box-sizing:border-box; margin:0; padding:0; outline: none; }
+    body{ background: #02050b; color:#eaf2ff; font-family: 'Segoe UI', sans-serif; overflow-x:hidden; }
+    :root{ --blue:#3b82f6; --blue2:#2563eb; --muted:#8aa0c7; --stroke:rgba(255,255,255,0.08); --max:430px; --health-green: #22c55e; }
     
     .app-shell{ width:100%; min-height:100vh; display:flex; justify-content:center; }
-    .page-wrap{ width:100%; max-width:var(--max); padding:18px 18px 130px; display:none; }
-    .page-wrap.active{ display:block; animation: fadeIn 0.3s; }
-    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+    .page-wrap{ width:100%; max-width:var(--max); padding:20px 20px 140px; display:none; }
+    .page-wrap.active{ display:block; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from {opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);} }
 
-    .cp-card{ background: rgba(11,26,45,0.9); border-radius:24px; padding:20px; margin-top:16px; border:1px solid var(--stroke); }
-    .btn-neon{ background: linear-gradient(135deg, var(--blue), var(--blue2)); color:#fff; font-weight:900; border:none; border-radius:50px; padding:15px; width:100%; cursor:pointer; margin-top:10px; }
+    .cp-card{ background: rgba(11,26,45,0.95); border-radius:28px; padding:22px; margin-top:16px; border:1px solid var(--stroke); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+    .btn-neon{ background: linear-gradient(135deg, var(--blue), var(--blue2)); color:#fff; font-weight:bold; border:none; border-radius:50px; padding:16px; width:100%; cursor:pointer; font-size:16px; transition: 0.3s; }
     
-    .input-saude { width:100%; padding:12px; background:#071728; border:1px solid var(--stroke); border-radius:12px; color:#fff; margin-top:8px; }
-    
-    /* Avatar Evolutivo */
-    .top-bar-game { background: rgba(11,26,45,0.8); border-radius: 20px; padding: 12px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; border: 1px solid var(--stroke); }
-    .mascote-avatar { width: 55px; height: 55px; border-radius: 12px; border: 2px solid var(--blue); background:#000; overflow:hidden; }
+    .top-bar-game { background: rgba(11,26,45,0.8); border-radius: 20px; padding: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; border: 1px solid var(--stroke); }
+    .mascote-avatar { width: 55px; height: 55px; border-radius: 15px; border: 2px solid var(--health-green); background:#000; overflow:hidden; }
     .mascote-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    
-    /* Botões de Categoria */
-    .chip-saude { padding:10px; border:1px solid var(--stroke); border-radius:10px; font-size:12px; text-align:center; cursor:pointer; background:rgba(255,255,255,0.03); }
-    .chip-saude.selected { border-color:var(--blue); background:rgba(59,130,246,0.2); }
+    .xp-bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top:6px; overflow:hidden; }
+    .xp-bar-fill { height: 100%; background: var(--health-green); transition: width 0.6s ease; box-shadow: 0 0 10px var(--health-green); }
 
-    .bottom-nav{ position:fixed; bottom:0; width:100%; max-width:var(--max); background:rgba(7,23,40,0.95); backdrop-filter:blur(15px); border-top:1px solid var(--stroke); padding:10px; z-index:100; display:none; }
+    .chip-item { padding:12px; border:1px solid var(--stroke); border-radius:14px; font-size:13px; text-align:center; cursor:pointer; background:rgba(255,255,255,0.03); transition: 0.2s; }
+    .chip-item.selected { border-color:var(--blue); background:rgba(59,130,246,0.2); color: white; font-weight: bold; }
+
+    .bottom-nav{ position:fixed; bottom:0; width:100%; max-width:var(--max); background:rgba(7,23,40,0.98); backdrop-filter:blur(20px); border-top:1px solid var(--stroke); padding:12px; z-index:100; display:none; border-radius: 20px 20px 0 0; }
     .bottom-nav.active{ display:block; }
     .bottom-nav-inner{ display:flex; justify-content: space-around; }
-    .nav-btn{ background:none; border:none; color:var(--muted); font-size:11px; display:flex; flex-direction:column; align-items:center; cursor:pointer; }
+    .nav-btn{ background:none; border:none; color:var(--muted); font-size:11px; display:flex; flex-direction:column; align-items:center; cursor:pointer; gap:5px; }
     .nav-btn.active{ color:var(--blue); }
   </style>
 </head>
-
 <body>
   <div class="app-shell">
+    
     <div id="screen-login" class="page-wrap active">
-      <div style="text-align:center; margin-top:80px;">
-        <h1>CheckPrato <span style="color:var(--blue)">Elite</span></h1>
-        <p style="margin-top:10px; color:var(--muted);">Sua saúde monitorada por IA.</p>
-        <button id="btn-login-google" class="btn-neon" style="margin-top:40px;">Começar Jornada de Saúde</button>
+      <div style="text-align:center; margin-top:100px;">
+        <h1 style="font-size:32px;">CheckPrato <span style="color:var(--blue)">Elite</span></h1>
+        <p style="color:var(--muted); margin: 10px 0 50px;">Sua Saúde sob medida com IA</p>
+        <button id="btn-login-google" class="btn-neon">Acessar Meu Painel de Saúde</button>
       </div>
     </div>
 
     <div id="screen-setup" class="page-wrap">
-        <h2>Seu Perfil de Saúde</h2>
-        <p style="color:var(--muted); margin-bottom:20px;">Personalize o app para suas necessidades.</p>
-        
-        <label style="font-size:12px; font-weight:bold;">Possui alguma restrição ou condição?</label>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px;" id="restricoes-list">
-            <div class="chip-saude" onclick="toggleSelection(this)">Diabetes</div>
-            <div class="chip-saude" onclick="toggleSelection(this)">Hipertensão</div>
-            <div class="chip-saude" onclick="toggleSelection(this)">Intol. Lactose</div>
-            <div class="chip-saude" onclick="toggleSelection(this)">Glúten</div>
-            <div class="chip-saude" onclick="toggleSelection(this)">Nenhuma</div>
+        <h2>Perfil de Saúde</h2>
+        <div class="cp-card">
+            <p style="font-weight:bold; margin-bottom:12px; font-size:14px;">Esporte Praticado:</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;" id="sports-grid">
+                <div class="chip-item" onclick="selectSingle(this)">🏋️ Musculação</div>
+                <div class="chip-item" onclick="selectSingle(this)">🥋 Jiu-Jitsu</div>
+                <div class="chip-item" onclick="selectSingle(this)">🥊 Muay Thai</div>
+                <div class="chip-item" onclick="selectSingle(this)">🤸 Crossfit</div>
+            </div>
         </div>
-
-        <label style="font-size:12px; font-weight:bold; display:block; margin-top:20px;">Qual seu foco principal?</label>
-        <select id="foco-saude" class="input-saude">
-            <option value="longevidade">Longevidade e Vitalidade</option>
-            <option value="emagrecimento">Controle de Peso Saudável</option>
-            <option value="disposicao">Mais Energia no Dia a Dia</option>
-            <option value="patologia">Monitoramento de Condição Específica</option>
-        </select>
-
-        <button class="btn-neon" onclick="saveHealthProfile()">Salvar Perfil de Saúde</button>
+        <div class="cp-card">
+            <p style="font-weight:bold; margin-bottom:12px; font-size:14px;">Restrições / Condições:</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;" id="health-grid">
+                <div class="chip-item" onclick="toggleMulti(this)">Diabetes</div>
+                <div class="chip-item" onclick="toggleMulti(this)">Hipertensão</div>
+                <div class="chip-item" onclick="toggleMulti(this)">Lactose</div>
+                <div class="chip-item" onclick="toggleMulti(this)">Nenhuma</div>
+            </div>
+        </div>
+        <button class="btn-neon" style="margin-top:25px;" onclick="finishSetup()">Começar Jornada</button>
     </div>
 
     <div id="main-content" style="width:100%;">
         <div id="tab-saude" class="page-wrap">
             <div class="header-slot"></div>
             <div class="cp-card">
-                <h3>Minha Saúde</h3>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px;">
-                    <div class="chip-saude">💧 Água: 1.5L / 2.5L</div>
-                    <div class="chip-saude">😴 Sono: 7h / 8h</div>
+                <h3>Minha Evolução</h3>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:15px;">
+                    <div style="text-align:center; padding:10px; background:rgba(255,255,255,0.05); border-radius:15px;"><span style="display:block; font-size:20px;">💧</span><small>Água: 1.2L</small></div>
+                    <div style="text-align:center; padding:10px; background:rgba(255,255,255,0.05); border-radius:15px;"><span style="display:block; font-size:20px;">🍏</span><small>Saúde: 90%</small></div>
                 </div>
-            </div>
-            
-            <div class="cp-card">
-                <h3>Curiosidades & IA</h3>
-                <p style="font-size:13px; color:var(--muted);">Pergunte qualquer assunto de saúde:</p>
-                <input type="text" class="input-saude" placeholder="Ex: Benefícios do Magnésio...">
-                <button class="btn-neon" style="font-size:14px; background:#1e293b;">Consultar IA</button>
             </div>
         </div>
 
         <div id="tab-prato" class="page-wrap">
             <div class="header-slot"></div>
             <div class="cp-card">
-                <h3>Análise da Refeição</h3>
-                <div style="height:180px; background:#071728; border-radius:15px; margin:15px 0; display:flex; align-items:center; justify-content:center; border:1px dashed var(--muted);">📸 Analisar Prato</div>
-                <button class="btn-neon">Verificar se é seguro para mim</button>
+                <h3>Verificar Refeição</h3>
+                <div style="height:220px; background:#071728; border-radius:20px; margin:20px 0; display:flex; align-items:center; justify-content:center; border:1px dashed var(--muted); overflow:hidden;" id="preview-foto">
+                    <span style="color:var(--muted)">📸 Capturar Foto</span>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <button class="btn-neon" style="background:#1e293b;" onclick="document.getElementById('in-cam').click()">Câmera</button>
+                    <button class="btn-neon" style="background:#1e293b;" onclick="document.getElementById('in-gal').click()">Galeria</button>
+                </div>
+                <input type="file" id="in-cam" accept="image/*" capture="environment" style="display:none">
+                <input type="file" id="in-gal" accept="image/*" style="display:none">
             </div>
         </div>
     </div>
@@ -115,7 +111,7 @@
     import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
     const firebaseConfig = {
-      apiKey: "SUA_API_KEY", // Coloque sua chave aqui
+      apiKey: "AIzaSyCZTpsIEJqdxjc6E4KZaqogtkuyLn9uTDY", 
       authDomain: "checkprato-a900b.firebaseapp.com",
       projectId: "checkprato-a900b",
       storageBucket: "checkprato-a900b.firebasestorage.app",
@@ -130,7 +126,7 @@
 
     let currentUser = null;
 
-    getRedirectResult(auth).catch(e => console.error(e));
+    getRedirectResult(auth).catch(err => console.error(err));
     document.getElementById('btn-login-google').addEventListener('click', () => signInWithRedirect(auth, provider));
 
     onAuthStateChanged(auth, async (user) => {
@@ -138,52 +134,52 @@
         currentUser = user;
         const userRef = doc(db, "users", user.uid);
         const snap = await getDoc(userRef);
-
-        if (!snap.exists() || !snap.data().foco) {
+        if (!snap.exists() || !snap.data().setupDone) {
             document.getElementById('screen-login').classList.remove('active');
             document.getElementById('screen-setup').classList.add('active');
         } else {
-            startApp(snap.data());
+            initApp(snap.data());
         }
       }
     });
 
-    window.toggleSelection = (el) => el.classList.toggle('selected');
+    window.selectSingle = (el) => {
+        el.parentNode.querySelectorAll('.chip-item').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+    };
+    window.toggleMulti = (el) => el.classList.toggle('selected');
 
-    window.saveHealthProfile = async () => {
-        const restricoes = Array.from(document.querySelectorAll('.chip-saude.selected')).map(el => el.innerText);
-        const foco = document.getElementById('foco-saude').value;
-        
-        const data = { name: currentUser.displayName, restricoes, foco, xp: 0 };
+    window.finishSetup = async () => {
+        const sport = document.querySelector('#sports-grid .selected')?.innerText || "Foco Saúde";
+        const res = Array.from(document.querySelectorAll('#health-grid .selected')).map(el => el.innerText);
+        const data = { name: currentUser.displayName, sport, restricoes: res, xp: 20, setupDone: true };
         await setDoc(doc(db, "users", currentUser.uid), data, { merge: true });
-        startApp(data);
+        initApp(data);
     };
 
-    function startApp(userData) {
+    function initApp(data) {
         document.querySelectorAll('.page-wrap').forEach(p => p.classList.remove('active'));
         document.getElementById('tab-saude').classList.add('active');
         document.getElementById('bottom-nav').classList.add('active');
-        updateUI(userData);
+        updateHeader(data);
     }
 
-    function updateUI(data) {
-        // Avatar que muda baseado no progresso de saúde
-        const level = Math.floor(data.xp / 100) + 1;
-        const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${data.name}&backgroundColor=b6e3f4`;
-
-        const headerHtml = `
+    function updateHeader(data) {
+        const lvl = Math.floor(data.xp / 100) + 1;
+        const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${data.name}`;
+        const html = `
             <div class="top-bar-game">
                 <div class="mascote-avatar"><img src="${avatarUrl}"></div>
                 <div style="flex:1">
                     <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:bold;">
-                        <span>${data.name} (Saúde Nível ${level})</span>
-                        <span style="color:var(--xp-color)">XP Saúde: ${data.xp}</span>
+                        <span>${data.name}</span>
+                        <span style="color:var(--health-green)">Lvl ${lvl}</span>
                     </div>
                     <div class="xp-bar-bg"><div class="xp-bar-fill" style="width:${data.xp % 100}%"></div></div>
                 </div>
             </div>
         `;
-        document.querySelectorAll('.header-slot').forEach(slot => slot.innerHTML = headerHtml);
+        document.querySelectorAll('.header-slot').forEach(s => s.innerHTML = html);
     }
 
     window.showTab = (id) => {
@@ -192,6 +188,19 @@
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         event.currentTarget.classList.add('active');
     };
+
+    const preview = (e) => {
+        const file = e.target.files[0];
+        if(file){
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                document.getElementById('preview-foto').innerHTML = `<img src="${ev.target.result}" style="width:100%; height:100%; object-fit:cover;">`;
+            }
+            reader.readAsDataURL(file);
+        }
+    };
+    document.getElementById('in-cam').onchange = preview;
+    document.getElementById('in-gal').onchange = preview;
 
     window.logout = () => signOut(auth).then(() => location.reload());
   </script>
