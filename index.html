@@ -1,155 +1,126 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CheckPrato Elite V5.5</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root { --primary: #00ff88; --glass: rgba(15, 23, 42, 0.85); --border: rgba(255, 255, 255, 0.1); }
-        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; background: #05070a; color: white; height: 100vh; overflow: hidden; }
-        #fundo-master { position: fixed; width: 100%; height: 100%; z-index: -1; transition: 1.5s; background-size: 200% 200%; }
-        .f-perfil { background: radial-gradient(circle at 10% 10%, #1e293b, #05070a); }
-        header { height: 60px; display: flex; align-items: center; justify-content: center; font-weight: 700; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
-        .aba { display: none; height: calc(100vh - 140px); overflow-y: auto; padding: 20px; padding-bottom: 80px; }
-        .ativa { display: block; animation: fadeInUp 0.4s ease; }
-        .card { background: var(--glass); border: 1px solid var(--border); border-radius: 20px; padding: 18px; margin-bottom: 15px; }
-        .btn-main { background: var(--primary); color: #000; border: none; padding: 14px; border-radius: 14px; font-weight: 700; width: 100%; cursor: pointer; margin-top: 10px; }
-        .btn-youtube { background: #ff0000; color: white; padding: 8px 12px; border-radius: 8px; text-decoration: none; font-size: 0.8rem; font-weight: bold; display: inline-flex; align-items: center; gap: 5px; margin-top: 10px;}
-        
-        nav { position: fixed; bottom: 0; width: 100%; height: 80px; background: rgba(2, 6, 23, 0.98); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
-        .nav-item { background: none; border: none; color: #64748b; font-size: 0.75rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; }
-        .nav-item i { font-size: 1.2rem; }
-        .nav-item.active { color: var(--primary); }
-        
-        #avatar { font-size: 5rem; text-align: center; margin: 20px 0; }
-        #tela-login { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; text-align: center; }
-        #preview-imagem { max-width: 100%; border-radius: 10px; display: none; margin-top: 10px; }
-        
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
-</head>
-<body>
-
-<div id="fundo-master" class="f-perfil"></div>
-
-<div id="tela-login" style="display:none">
-    <h1 style="margin-bottom:10px;">CHECKPRATO <span style="color:var(--primary)">ELITE</span></h1>
-    <p style="color:#64748b; margin-bottom:30px;">Faça login para acessar seu perfil</p>
-    <button id="btn-login" class="btn-main" style="max-width:300px;"><i class="fab fa-google" style="margin-right: 8px;"></i>Entrar com o Google</button>
-</div>
-
-<div id="app-content" style="display:none">
-    <header>CHECKPRATO <span style="color:var(--primary)">ELITE</span></header>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
+  <title>CheckPrato Elite — Saúde & Bem-Estar</title>
+  <style>
+    /* CSS REFINADO PARA LINHA SAÚDE */
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    body{ background: #02050b; color:#eaf2ff; font-family:sans-serif; }
+    :root{ --blue:#3b82f6; --blue2:#2563eb; --muted:#8aa0c7; --stroke:rgba(255,255,255,0.08); --max:430px; --xp-color: #22c55e; /* Verde para Saúde */ }
     
-    <div id="perfil" class="aba ativa">
-        <div id="avatar">👤</div>
-        <h3 id="user-display" style="text-align:center">Atleta</h3>
+    .app-shell{ width:100%; min-height:100vh; display:flex; justify-content:center; }
+    .page-wrap{ width:100%; max-width:var(--max); padding:18px 18px 130px; display:none; }
+    .page-wrap.active{ display:block; animation: fadeIn 0.3s; }
+    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+
+    .cp-card{ background: rgba(11,26,45,0.9); border-radius:24px; padding:20px; margin-top:16px; border:1px solid var(--stroke); }
+    .btn-neon{ background: linear-gradient(135deg, var(--blue), var(--blue2)); color:#fff; font-weight:900; border:none; border-radius:50px; padding:15px; width:100%; cursor:pointer; margin-top:10px; }
+    
+    .input-saude { width:100%; padding:12px; background:#071728; border:1px solid var(--stroke); border-radius:12px; color:#fff; margin-top:8px; }
+    
+    /* Avatar Evolutivo */
+    .top-bar-game { background: rgba(11,26,45,0.8); border-radius: 20px; padding: 12px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; border: 1px solid var(--stroke); }
+    .mascote-avatar { width: 55px; height: 55px; border-radius: 12px; border: 2px solid var(--blue); background:#000; overflow:hidden; }
+    .mascote-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    
+    /* Botões de Categoria */
+    .chip-saude { padding:10px; border:1px solid var(--stroke); border-radius:10px; font-size:12px; text-align:center; cursor:pointer; background:rgba(255,255,255,0.03); }
+    .chip-saude.selected { border-color:var(--blue); background:rgba(59,130,246,0.2); }
+
+    .bottom-nav{ position:fixed; bottom:0; width:100%; max-width:var(--max); background:rgba(7,23,40,0.95); backdrop-filter:blur(15px); border-top:1px solid var(--stroke); padding:10px; z-index:100; display:none; }
+    .bottom-nav.active{ display:block; }
+    .bottom-nav-inner{ display:flex; justify-content: space-around; }
+    .nav-btn{ background:none; border:none; color:var(--muted); font-size:11px; display:flex; flex-direction:column; align-items:center; cursor:pointer; }
+    .nav-btn.active{ color:var(--blue); }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+    <div id="screen-login" class="page-wrap active">
+      <div style="text-align:center; margin-top:80px;">
+        <h1>CheckPrato <span style="color:var(--blue)">Elite</span></h1>
+        <p style="margin-top:10px; color:var(--muted);">Sua saúde monitorada por IA.</p>
+        <button id="btn-login-google" class="btn-neon" style="margin-top:40px;">Começar Jornada de Saúde</button>
+      </div>
+    </div>
+
+    <div id="screen-setup" class="page-wrap">
+        <h2>Seu Perfil de Saúde</h2>
+        <p style="color:var(--muted); margin-bottom:20px;">Personalize o app para suas necessidades.</p>
         
-        <div class="card" style="text-align:center">
-            <span id="xp-display" style="color:var(--primary); font-weight:700;">XP: 0</span>
+        <label style="font-size:12px; font-weight:bold;">Possui alguma restrição ou condição?</label>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px;" id="restricoes-list">
+            <div class="chip-saude" onclick="toggleSelection(this)">Diabetes</div>
+            <div class="chip-saude" onclick="toggleSelection(this)">Hipertensão</div>
+            <div class="chip-saude" onclick="toggleSelection(this)">Intol. Lactose</div>
+            <div class="chip-saude" onclick="toggleSelection(this)">Glúten</div>
+            <div class="chip-saude" onclick="toggleSelection(this)">Nenhuma</div>
         </div>
 
-        <div class="card">
-            <h4 style="margin-top:0; text-align:center">Configurações do Perfil</h4>
-            <label for="select-genero" style="display:block; margin-bottom:8px; font-size:0.9rem; color:#94a3b8;">Gênero:</label>
-            <select id="select-genero" style="width:100%; padding:10px; border-radius:10px; background:rgba(255,255,255,0.05); color:white; border:1px solid var(--border); margin-bottom:10px; font-family:'Poppins', sans-serif;">
-                <option value="" disabled selected>Selecione...</option>
-                <option value="masculino">Masculino</option>
-                <option value="feminino">Feminino</option>
-                <option value="outro">Prefiro não dizer</option>
-            </select>
-            <button id="btn-salvar-perfil" class="btn-main" style="background:var(--primary); color:#000; font-size:0.9rem; padding:10px;"><i class="fas fa-save"></i> Salvar Alterações</button>
-        </div>
+        <label style="font-size:12px; font-weight:bold; display:block; margin-top:20px;">Qual seu foco principal?</label>
+        <select id="foco-saude" class="input-saude">
+            <option value="longevidade">Longevidade e Vitalidade</option>
+            <option value="emagrecimento">Controle de Peso Saudável</option>
+            <option value="disposicao">Mais Energia no Dia a Dia</option>
+            <option value="patologia">Monitoramento de Condição Específica</option>
+        </select>
 
-        <button class="btn-main" onclick="logout()" style="background:#ff4444; color:white; margin-top:15px;">Sair</button>
+        <button class="btn-neon" onclick="saveHealthProfile()">Salvar Perfil de Saúde</button>
     </div>
 
-    <div id="scanner" class="aba">
-        <h3 style="text-align:center">Analisar Refeição</h3>
-        <div class="card" style="text-align:center">
-            <p>Tire uma foto ou escolha da galeria</p>
-            <input type="file" id="input-foto" accept="image/*" style="display:none" onchange="previewFoto(event)">
-            <button class="btn-main" onclick="document.getElementById('input-foto').click()"><i class="fas fa-camera"></i> Abrir Câmera / Galeria</button>
-            <img id="preview-imagem" src="" alt="Sua refeição">
-            <button id="btn-analisar" class="btn-main" style="display:none; background:#3b82f6; color:white;"><i class="fas fa-brain"></i> Analisar com IA</button>
+    <div id="main-content" style="width:100%;">
+        <div id="tab-saude" class="page-wrap">
+            <div class="header-slot"></div>
+            <div class="cp-card">
+                <h3>Minha Saúde</h3>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px;">
+                    <div class="chip-saude">💧 Água: 1.5L / 2.5L</div>
+                    <div class="chip-saude">😴 Sono: 7h / 8h</div>
+                </div>
+            </div>
+            
+            <div class="cp-card">
+                <h3>Curiosidades & IA</h3>
+                <p style="font-size:13px; color:var(--muted);">Pergunte qualquer assunto de saúde:</p>
+                <input type="text" class="input-saude" placeholder="Ex: Benefícios do Magnésio...">
+                <button class="btn-neon" style="font-size:14px; background:#1e293b;">Consultar IA</button>
+            </div>
         </div>
-        <div id="resultado-ia" class="card" style="display:none;"></div>
-    </div>
 
-    <div id="dietas" class="aba">
-        <h3 style="text-align:center">Gerador de Dietas</h3>
-        <div class="card">
-            <p style="font-size: 0.9rem; color: #94a3b8;">Baseado no seu cadastro, a IA montará sua dieta ideal.</p>
-            <button class="btn-main"><i class="fas fa-magic"></i> Gerar Dieta com Gemini</button>
-        </div>
-        <div id="dieta-gerada" class="card" style="display:none;"></div>
-    </div>
-
-    <div id="treinos" class="aba">
-        <h3 style="text-align:center">Seus Treinos</h3>
-        <div class="card">
-            <h4 style="margin:0 0 5px 0;">Agachamento Livre</h4>
-            <p style="font-size: 0.8rem; color: #94a3b8; margin:0;">Séries: 4 | Repetições: 10 a 12</p>
-            <a href="https://www.youtube.com/results?search_query=como+executar+agachamento+livre+corretamente" target="_blank" class="btn-youtube">
-                <i class="fab fa-youtube"></i> Ver Execução Correta
-            </a>
-        </div>
-        <div class="card">
-            <h4 style="margin:0 0 5px 0;">Supino Reto</h4>
-            <p style="font-size: 0.8rem; color: #94a3b8; margin:0;">Séries: 4 | Repetições: 8 a 10</p>
-            <a href="https://www.youtube.com/results?search_query=como+executar+supino+reto+corretamente" target="_blank" class="btn-youtube">
-                <i class="fab fa-youtube"></i> Ver Execução Correta
-            </a>
+        <div id="tab-prato" class="page-wrap">
+            <div class="header-slot"></div>
+            <div class="cp-card">
+                <h3>Análise da Refeição</h3>
+                <div style="height:180px; background:#071728; border-radius:15px; margin:15px 0; display:flex; align-items:center; justify-content:center; border:1px dashed var(--muted);">📸 Analisar Prato</div>
+                <button class="btn-neon">Verificar se é seguro para mim</button>
+            </div>
         </div>
     </div>
-</div>
 
-<nav id="nav-bar" style="display:none">
-    <button class="nav-item active" onclick="mudarAba('perfil', this)"><i class="fas fa-user"></i>Perfil</button>
-    <button class="nav-item" onclick="mudarAba('scanner', this)"><i class="fas fa-camera"></i>Scanner</button>
-    <button class="nav-item" onclick="mudarAba('dietas', this)"><i class="fas fa-apple-alt"></i>Dietas</button>
-    <button class="nav-item" onclick="mudarAba('treinos', this)"><i class="fas fa-dumbbell"></i>Treinos</button>
-</nav>
+    <nav id="bottom-nav" class="bottom-nav">
+      <div class="bottom-nav-inner">
+        <button class="nav-btn active" onclick="showTab('tab-saude')"><span>❤️</span>Saúde</button>
+        <button class="nav-btn" onclick="showTab('tab-prato')"><span>🍽️</span>Prato</button>
+        <button class="nav-btn" onclick="logout()"><span>🚪</span>Sair</button>
+      </div>
+    </nav>
+  </div>
 
-<script>
-    function mudarAba(abaId, elemento) {
-        document.querySelectorAll('.aba').forEach(aba => aba.classList.remove('ativa'));
-        document.getElementById(abaId).classList.add('ativa');
-        
-        document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-        elemento.classList.add('active');
-    }
-
-    function previewFoto(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.getElementById('preview-imagem');
-                img.src = e.target.result;
-                img.style.display = 'block';
-                document.getElementById('btn-analisar').style.display = 'block';
-            }
-            reader.readAsDataURL(file);
-        }
-    }
-</script>
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-    import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+    import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
     const firebaseConfig = {
-        apiKey: "AIzaSyCZTpsIEJqdxjc6E4KZaqogtkuyLn9uTDY", 
-        authDomain: "checkpratoapp-78232.firebaseapp.com",
-        projectId: "checkpratoapp-78232",
-        storageBucket: "checkpratoapp-78232.appspot.com",
-        messagingSenderId: "242390673985",
-        appId: "1:242390673985:web:f658e933fc4e8b1e8834c0" 
+      apiKey: "SUA_API_KEY", // Coloque sua chave aqui
+      authDomain: "checkprato-a900b.firebaseapp.com",
+      projectId: "checkprato-a900b",
+      storageBucket: "checkprato-a900b.firebasestorage.app",
+      messagingSenderId: "588806296180",
+      appId: "1:588806296180:web:77918231454174a7d6e87a"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -157,75 +128,72 @@
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    const selectGenero = document.getElementById('select-genero');
-    const avatar = document.getElementById('avatar');
-    const btnSalvarPerfil = document.getElementById('btn-salvar-perfil');
-    const xpDisplay = document.getElementById('xp-display');
-    const userDisplay = document.getElementById('user-display');
+    let currentUser = null;
 
-    function atualizarAvatar(genero) {
-        if (genero === 'masculino') {
-            avatar.innerText = '👨'; 
-        } else if (genero === 'feminino') {
-            avatar.innerText = '👩'; 
-        } else {
-            avatar.innerText = '👤'; 
-        }
-    }
-
-    document.getElementById('btn-login').addEventListener('click', () => {
-        signInWithPopup(auth, provider).catch(err => alert("Erro: " + err.message));
-    });
+    getRedirectResult(auth).catch(e => console.error(e));
+    document.getElementById('btn-login-google').addEventListener('click', () => signInWithRedirect(auth, provider));
 
     onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            document.getElementById('tela-login').style.display = 'none';
-            document.getElementById('app-content').style.display = 'block';
-            document.getElementById('nav-bar').style.display = 'flex';
-            userDisplay.innerText = user.displayName;
-            
-            const userDocRef = doc(db, "usuarios", user.uid);
-            const docSnap = await getDoc(userDocRef);
+      if (user) {
+        currentUser = user;
+        const userRef = doc(db, "users", user.uid);
+        const snap = await getDoc(userRef);
 
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                xpDisplay.innerText = "XP: " + data.xp;
-                
-                if (data.genero) {
-                    selectGenero.value = data.genero;
-                    atualizarAvatar(data.genero);
-                } else {
-                    atualizarAvatar(null); 
-                }
-            } else {
-                await setDoc(userDocRef, { nome: user.displayName, xp: 0, genero: "" });
-                atualizarAvatar(null); 
-            }
-
-            btnSalvarPerfil.onclick = async () => {
-                const generoSelecionado = selectGenero.value;
-                if (!generoSelecionado) {
-                    alert("Por favor, selecione um gênero.");
-                    return;
-                }
-                try {
-                    await updateDoc(userDocRef, { genero: generoSelecionado });
-                    atualizarAvatar(generoSelecionado);
-                    alert("Perfil atualizado com sucesso!");
-                } catch (error) {
-                    console.error("Erro ao salvar gênero:", error);
-                    alert("Erro ao salvar as alterações.");
-                }
-            };
-
+        if (!snap.exists() || !snap.data().foco) {
+            document.getElementById('screen-login').classList.remove('active');
+            document.getElementById('screen-setup').classList.add('active');
         } else {
-            document.getElementById('tela-login').style.display = 'flex';
-            document.getElementById('app-content').style.display = 'none';
-            document.getElementById('nav-bar').style.display = 'none';
+            startApp(snap.data());
         }
+      }
     });
 
+    window.toggleSelection = (el) => el.classList.toggle('selected');
+
+    window.saveHealthProfile = async () => {
+        const restricoes = Array.from(document.querySelectorAll('.chip-saude.selected')).map(el => el.innerText);
+        const foco = document.getElementById('foco-saude').value;
+        
+        const data = { name: currentUser.displayName, restricoes, foco, xp: 0 };
+        await setDoc(doc(db, "users", currentUser.uid), data, { merge: true });
+        startApp(data);
+    };
+
+    function startApp(userData) {
+        document.querySelectorAll('.page-wrap').forEach(p => p.classList.remove('active'));
+        document.getElementById('tab-saude').classList.add('active');
+        document.getElementById('bottom-nav').classList.add('active');
+        updateUI(userData);
+    }
+
+    function updateUI(data) {
+        // Avatar que muda baseado no progresso de saúde
+        const level = Math.floor(data.xp / 100) + 1;
+        const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${data.name}&backgroundColor=b6e3f4`;
+
+        const headerHtml = `
+            <div class="top-bar-game">
+                <div class="mascote-avatar"><img src="${avatarUrl}"></div>
+                <div style="flex:1">
+                    <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:bold;">
+                        <span>${data.name} (Saúde Nível ${level})</span>
+                        <span style="color:var(--xp-color)">XP Saúde: ${data.xp}</span>
+                    </div>
+                    <div class="xp-bar-bg"><div class="xp-bar-fill" style="width:${data.xp % 100}%"></div></div>
+                </div>
+            </div>
+        `;
+        document.querySelectorAll('.header-slot').forEach(slot => slot.innerHTML = headerHtml);
+    }
+
+    window.showTab = (id) => {
+        document.querySelectorAll('.page-wrap').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+    };
+
     window.logout = () => signOut(auth).then(() => location.reload());
-</script>
+  </script>
 </body>
 </html>
