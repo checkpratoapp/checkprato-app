@@ -6,81 +6,164 @@
   <title>CheckPrato Elite — Saúde</title>
   <style>
     :root {
-      --bg: #050a14; --card: rgba(13, 25, 45, 0.98);
-      --blue: #3b82f6; --text: #eaf2ff; --muted: #8aa0c7;
-      --max-w: 450px;
+      --bg: #030812;
+      --accent: #3b82f6;
+      --card: rgba(255, 255, 255, 0.04);
+      --stroke: rgba(255, 255, 255, 0.08);
+      --text: #f0f4f8;
+      --muted: #94a3b8;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-    body { background: var(--bg); color: var(--text); display: flex; justify-content: center; min-height: 100vh; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; }
     
-    .app-shell { width: 100%; max-width: var(--max-w); background: #050a14; display: flex; flex-direction: column; min-height: 100vh; position: relative; border-left: 1px solid rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.05); }
-    
-    .page { display: none; padding: 30px; flex-direction: column; animation: fadeIn 0.4s ease; }
+    body { 
+      background: var(--bg); 
+      color: var(--text); 
+      display: flex; 
+      justify-content: center; 
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Container Central Estilo App */
+    .app-shell {
+      width: 100%;
+      max-width: 480px;
+      background: linear-gradient(180deg, #0a192f 0%, #030812 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 0 100px rgba(0,0,0,0.8);
+    }
+
+    /* Telas */
+    .page { display: none; padding: 30px; flex-direction: column; animation: fadeIn 0.4s ease-out; }
     .page.active { display: flex; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-    .glass-card { background: var(--card); border-radius: 24px; padding: 25px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    /* Estética dos Cards */
+    .card {
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--stroke);
+      border-radius: 30px;
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+
+    .btn-primary {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 18px;
+      padding: 20px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+    }
+    .btn-primary:active { transform: scale(0.97); }
+
+    /* Header com Avatar */
+    .user-header { display: flex; align-items: center; gap: 15px; margin-bottom: 35px; }
+    .avatar-ring { 
+      width: 60px; height: 60px; border-radius: 20px; 
+      border: 2px solid var(--accent); background: #000; overflow: hidden;
+    }
     
-    .btn-main { background: linear-gradient(135deg, var(--blue), #1d4ed8); color: white; border: none; border-radius: 15px; padding: 18px; width: 100%; font-weight: bold; cursor: pointer; font-size: 16px; }
-    
-    /* Nav */
-    .nav { position: fixed; bottom: 0; width: 100%; max-width: var(--max-w); background: #0a1628; display: none; justify-content: space-around; padding: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .nav {
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 90%; max-width: 400px;
+      background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px);
+      border-radius: 25px; display: none; justify-content: space-around;
+      padding: 15px; border: 1px solid var(--stroke); z-index: 1000;
+    }
     .nav.active { display: flex; }
-    .nav-item { background: none; border: none; color: var(--muted); cursor: pointer; display: flex; flex-direction: column; align-items: center; font-size: 12px; }
+    .nav-item { background: none; border: none; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 11px; cursor: pointer; }
+    .nav-item.active { color: var(--accent); }
 
-    /* Avatar */
-    .header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 20px; }
-    .avt { width: 55px; height: 55px; border-radius: 15px; border: 2px solid var(--blue); }
+    /* Opções de Saúde */
+    .grid-health { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+    .chip { 
+      padding: 15px; border-radius: 15px; border: 1px solid var(--stroke); 
+      background: rgba(255,255,255,0.03); text-align: center; cursor: pointer; 
+    }
+    .chip.selected { border-color: var(--accent); background: rgba(59, 130, 246, 0.1); color: white; font-weight: bold; }
+
+    #loader { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
   </style>
 </head>
 <body>
 
+  <div id="loader">
+    <div style="text-align: center;">
+      <h2 style="letter-spacing: 2px;">CHECKPRATO</h2>
+      <p style="color:var(--muted); font-size: 12px; margin-top: 5px;">Sincronizando Perfil...</p>
+    </div>
+  </div>
+
   <div class="app-shell">
-    <div id="p-login" class="page active">
+    
+    <div id="page-login" class="page">
       <div style="text-align: center; margin-top: 100px;">
-        <h1 style="font-size: 35px; margin-bottom: 10px;">CheckPrato <span style="color:var(--blue)">Elite</span></h1>
-        <p style="color:var(--muted); margin-bottom: 50px;">Foco total em sua saúde.</p>
-        <div class="glass-card">
-           <button id="btn-auth" class="btn-main">Entrar com Google (Pop-up)</button>
-           <p id="msg-erro" style="color: #ff4d4d; font-size: 12px; margin-top: 15px; display: none;"></p>
+        <h1 style="font-size: 34px; margin-bottom: 10px;">Elite <span style="color:var(--accent)">Saúde</span></h1>
+        <p style="color:var(--muted); margin-bottom: 60px;">Seu monitor inteligente de bem-estar.</p>
+        <button id="do-login" class="btn-primary" style="width: 100%;">Entrar com Conta Google</button>
+      </div>
+    </div>
+
+    <div id="page-setup" class="page">
+      <h2>Seu Perfil</h2>
+      <p style="color:var(--muted); margin-bottom: 25px;">Personalize sua jornada de saúde.</p>
+      
+      <div class="card">
+        <p style="font-weight: 600; margin-bottom: 15px;">Qual seu esporte?</p>
+        <div class="grid-health" id="sport-select">
+          <div class="chip" onclick="sel(this, 's')">🏋️ Musculação</div>
+          <div class="chip" onclick="sel(this, 's')">🥋 Jiu-Jitsu</div>
+          <div class="chip" onclick="sel(this, 's')">🏃 Corrida</div>
+          <div class="chip" onclick="sel(this, 's')">🥊 Muay Thai</div>
         </div>
       </div>
+
+      <div class="card">
+        <p style="font-weight: 600; margin-bottom: 15px;">Restrições?</p>
+        <div class="grid-health">
+          <div class="chip" onclick="this.classList.toggle('selected')">Diabetes</div>
+          <div class="chip" onclick="this.classList.toggle('selected')">Hipertensão</div>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="completeSetup()">Concluir Cadastro</button>
     </div>
 
-    <div id="p-setup" class="page">
-      <h2>Perfil de Saúde</h2>
-      <div class="glass-card" style="margin-top:20px;">
-        <p>Qual seu esporte?</p>
-        <select id="set-sport" style="width:100%; padding:12px; margin:10px 0; border-radius:10px; background:#111; color:white; border:1px solid #333;">
-          <option>Musculação</option>
-          <option>Jiu-Jitsu</option>
-          <option>Muay Thai</option>
-          <option>Corrida</option>
-        </select>
-        <button class="btn-main" onclick="save()">Concluir</button>
+    <div id="page-home" class="page">
+      <div id="header-render"></div>
+      <div class="card">
+        <h3>Meta de Hidratação</h3>
+        <p style="color:var(--muted); font-size: 14px; margin-top: 10px;">Consuma 2.5L de água hoje para manter sua saúde celular.</p>
+      </div>
+      <div class="card">
+        <h3>Curiosidade IA</h3>
+        <p style="color:var(--muted); font-size: 14px; margin-top: 10px;">O magnésio ajuda na recuperação muscular e no sono.</p>
       </div>
     </div>
 
-    <div id="p-home" class="page">
-      <div id="user-info"></div>
-      <div class="glass-card">
-        <h3>Painel de Saúde</h3>
-        <p style="color:var(--muted); margin-top:10px;">IA: Lembre-se de beber água para sua recuperação muscular.</p>
-      </div>
-    </div>
-
-    <nav class="nav" id="main-nav">
-      <button class="nav-item" onclick="show('p-home')"><span>❤️</span>Saúde</button>
+    <nav class="nav" id="navbar">
+      <button class="nav-item active"><span>❤️</span>Saúde</button>
       <button class="nav-item" onclick="logout()"><span>🚪</span>Sair</button>
     </nav>
+
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-    import { getAuth, signInWithPopup, onAuthStateChanged, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+    import { getAuth, signInWithPopup, onAuthStateChanged, GoogleAuthProvider, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
-    const config = {
+    const firebaseConfig = {
       apiKey: "AIzaSyCZTpsIEJqdxjc6E4KZaqogtkuyLn9uTDY",
       authDomain: "checkprato-a900b.firebaseapp.com",
       projectId: "checkprato-a900b",
@@ -89,64 +172,74 @@
       appId: "1:588806296180:web:77918231454174a7d6e87a"
     };
 
-    const app = initializeApp(config);
+    const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
-    // LOGIN POR POP-UP (MUITO MAIS SEGURO PARA GITHUB PAGES)
-    document.getElementById('btn-auth').onclick = async () => {
+    // PERSISTÊNCIA: Garante que o login não "suma" ao atualizar
+    setPersistence(auth, browserLocalPersistence);
+
+    // LOGIN POPUP (Evita recarga de página)
+    document.getElementById('do-login').onclick = async () => {
       try {
-        const res = await signInWithPopup(auth, provider);
-        checkUser(res.user);
+        const result = await signInWithPopup(auth, provider);
+        handleUser(result.user);
       } catch (e) {
-        document.getElementById('msg-erro').innerText = "Erro: " + e.message;
-        document.getElementById('msg-erro').style.display = "block";
+        alert("Erro no login: " + e.message);
       }
     };
 
+    // VIGILANTE DE ESTADO
     onAuthStateChanged(auth, (user) => {
-      if (user) checkUser(user);
-      else show('p-login');
+      if (user) handleUser(user);
+      else switchPage('page-login');
+      setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
     });
 
-    async function checkUser(user) {
+    async function handleUser(user) {
       const snap = await getDoc(doc(db, "users", user.uid));
-      if (snap.exists() && snap.data().done) {
-        start(snap.data());
+      if (snap.exists() && snap.data().setupDone) {
+        renderHome(snap.data());
       } else {
-        show('p-setup');
+        switchPage('page-setup');
       }
     }
 
-    window.save = async () => {
-      const user = auth.currentUser;
-      const data = { name: user.displayName, sport: document.getElementById('set-sport').value, done: true };
-      await setDoc(doc(db, "users", user.uid), data, { merge: true });
-      start(data);
+    window.sel = (el, type) => {
+      el.parentNode.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
     };
 
-    function start(data) {
-      show('p-home');
-      document.getElementById('main-nav').classList.add('active');
-      document.getElementById('user-info').innerHTML = `
-        <div class="header">
-          <img class="avt" src="https://api.dicebear.com/7.x/adventurer/svg?seed=${data.name}">
+    window.completeSetup = async () => {
+      const user = auth.currentUser;
+      const sport = document.querySelector('#sport-select .selected')?.innerText || "Saúde";
+      const data = { name: user.displayName, sport, setupDone: true, xp: 30 };
+      await setDoc(doc(db, "users", user.uid), data, { merge: true });
+      renderHome(data);
+    };
+
+    function renderHome(data) {
+      switchPage('page-home');
+      document.getElementById('navbar').classList.add('active');
+      document.getElementById('header-render').innerHTML = `
+        <div class="user-header">
+          <div class="avatar-ring"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=${data.name}" style="width:100%"></div>
           <div>
-            <p><strong>${data.name}</strong></p>
-            <p style="font-size:12px; color:var(--blue)">Esporte: ${data.sport}</p>
+            <p style="font-weight:700;">${data.name}</p>
+            <p style="font-size:12px; color:var(--accent)">Foco: ${data.sport}</p>
           </div>
         </div>
       `;
     }
 
-    function show(id) {
+    function switchPage(id) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-      if(id === 'p-login' || id === 'p-setup') document.getElementById('main-nav').classList.remove('active');
     }
 
     window.logout = () => signOut(auth).then(() => location.reload());
+
   </script>
 </body>
 </html>
