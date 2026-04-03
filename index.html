@@ -6,39 +6,40 @@
   <title>CheckPrato Elite — Saúde Integral</title>
   <style>
     :root {
-      --bg: #030812; --card: rgba(255, 255, 255, 0.04);
+      --bg: #050a14; --card: rgba(255, 255, 255, 0.04);
       --accent: #3b82f6; --text: #f0f4f8; --muted: #94a3b8;
-      --stroke: rgba(255, 255, 255, 0.1); --max-w: 500px;
+      --stroke: rgba(255, 255, 255, 0.08); --max-w: 500px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
     body { background: var(--bg); color: var(--text); display: flex; justify-content: center; min-height: 100vh; }
 
     .app-shell {
-      width: 100%; max-width: var(--max-w); background: #030812;
+      width: 100%; max-width: var(--max-w); background: linear-gradient(180deg, #0a1628 0%, #050a14 100%);
       min-height: 100vh; position: relative; border-left: 1px solid var(--stroke); border-right: 1px solid var(--stroke);
       display: flex; flex-direction: column;
     }
 
-    .page { display: none; padding: 30px; flex-direction: column; animation: fadeIn 0.4s ease; padding-bottom: 100px; }
+    .page { display: none; padding: 30px; flex-direction: column; animation: fadeIn 0.4s ease; padding-bottom: 120px; }
     .page.active { display: flex; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .card { background: var(--card); border-radius: 24px; padding: 22px; border: 1px solid var(--stroke); margin-bottom: 18px; }
+    .card { background: var(--card); border-radius: 24px; padding: 22px; border: 1px solid var(--stroke); margin-bottom: 18px; backdrop-filter: blur(10px); }
     .btn-main { background: var(--accent); color: white; border: none; border-radius: 16px; padding: 18px; width: 100%; font-weight: 700; cursor: pointer; transition: 0.3s; }
-    .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px; border-radius: 10px; cursor: pointer; font-size: 13px; margin-top: 10px; display: inline-block; text-decoration: none; text-align: center; }
+    .btn-link { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px 15px; border-radius: 12px; cursor: pointer; font-size: 13px; text-decoration: none; display: inline-block; margin-top: 10px; }
 
     input, select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--stroke); background: rgba(0,0,0,0.3); color: white; margin-top: 8px; font-size: 14px; }
+    label { font-size: 11px; color: var(--accent); font-weight: bold; text-transform: uppercase; margin-top: 15px; display: block; }
     
-    /* Navegação */
-    .nav { position: fixed; bottom: 0; width: 100%; max-width: var(--max-w); background: rgba(7, 18, 33, 0.98); backdrop-filter: blur(20px); display: none; justify-content: space-around; padding: 15px 5px 25px; border-top: 1px solid var(--stroke); z-index: 1000; }
+    /* Nav */
+    .nav { position: fixed; bottom: 0; width: 100%; max-width: var(--max-w); background: rgba(7, 18, 33, 0.98); backdrop-filter: blur(20px); display: none; justify-content: space-around; padding: 15px 5px 30px; border-top: 1px solid var(--stroke); z-index: 1000; }
     .nav.active { display: flex; }
-    .nav-btn { background: none; border: none; color: var(--muted); font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+    .nav-btn { background: none; border: none; color: var(--muted); font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; }
     .nav-btn.active { color: var(--accent); }
 
-    /* Tags */
-    .tag-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
-    .tag { padding: 12px; border-radius: 12px; border: 1px solid var(--stroke); background: rgba(255,255,255,0.02); text-align: center; cursor: pointer; font-size: 13px; }
-    .tag.selected { border-color: var(--accent); background: rgba(59, 130, 246, 0.1); color: white; }
+    /* Grid Esportes */
+    .sport-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    .chip { padding: 12px; border-radius: 12px; border: 1px solid var(--stroke); background: rgba(255,255,255,0.02); text-align: center; cursor: pointer; font-size: 13px; }
+    .chip.selected { border-color: var(--accent); background: rgba(59, 130, 246, 0.1); color: white; }
   </style>
 </head>
 <body>
@@ -46,92 +47,96 @@
   <div class="app-shell">
     
     <div id="p-auth" class="page active">
-      <h1 style="font-size: 28px; margin-bottom: 5px;">Elite <span style="color:var(--accent)">Saúde</span></h1>
-      <p style="color:var(--muted); font-size: 14px; margin-bottom: 35px;">Sua plataforma de longevidade.</p>
+      <h1 style="font-size: 30px; margin-bottom: 5px;">Elite <span style="color:var(--accent)">Saúde</span></h1>
+      <p style="color:var(--muted); font-size: 14px; margin-bottom: 35px;">Acesso restrito ao sistema profissional.</p>
       
       <div class="card">
-        <label style="font-size: 11px; color: var(--accent); font-weight: bold;">E-MAIL</label>
+        <label>E-MAIL</label>
         <input type="email" id="email" placeholder="nome@exemplo.com">
-        <div style="margin-top: 15px;">
-          <label style="font-size: 11px; color: var(--accent); font-weight: bold;">SENHA</label>
-          <input type="password" id="pass" placeholder="Mínimo 6 caracteres">
-        </div>
+        <label>SENHA</label>
+        <input type="password" id="pass" placeholder="••••••••">
       </div>
 
-      <div id="reg-box" style="font-size: 12px; color: var(--muted); margin-bottom: 20px; display: flex; gap: 8px;">
+      <div id="reg-info" style="font-size: 12px; color: var(--muted); margin-bottom: 20px; display: flex; gap: 10px;">
         <input type="checkbox" id="terms" style="width: 20px; height: 20px;">
-        <span>Aceito os termos de monitoramento de saúde e privacidade.</span>
+        <span>Aceito os termos de uso e política de privacidade de dados sensíveis.</span>
       </div>
 
-      <button id="btn-action" class="btn-main">Acessar Sistema</button>
-      <p id="toggle-auth" style="text-align:center; margin-top:20px; font-size:14px; cursor:pointer;">Novo aqui? <b style="color:var(--accent)">Criar Conta</b></p>
+      <button id="btn-action" class="btn-main">Entrar</button>
+      <p id="toggle-auth" style="text-align:center; margin-top:20px; font-size:14px; cursor:pointer;">Não tem conta? <b style="color:var(--accent)">Cadastre-se agora</b></p>
     </div>
 
     <div id="p-setup" class="page">
-      <h2>Questionário de Saúde</h2>
-      <p style="color:var(--muted); font-size: 14px; margin-bottom: 20px;">Isso ajuda a IA a entender suas necessidades.</p>
+      <h2>Avaliação Inicial</h2>
+      <p style="color:var(--muted); font-size: 14px; margin-bottom: 25px;">Responda para configurar sua IA de saúde.</p>
       
       <div class="card">
-        <p style="font-weight: bold; font-size: 14px;">Como está seu sono?</p>
-        <select id="q-sono">
-          <option>Durmo bem (7h-9h)</option>
-          <option>Durmo pouco (menos de 6h)</option>
-          <option>Sono agitado / Insônia</option>
-        </select>
-
-        <p style="font-weight: bold; font-size: 14px; margin-top: 15px;">Frequência de hidratação?</p>
-        <select id="q-agua">
-          <option>Bebo muita água (+2L)</option>
-          <option>Bebo moderado (1L a 2L)</option>
-          <option>Bebo pouca água (menos de 1L)</option>
-        </select>
-
-        <p style="font-weight: bold; font-size: 14px; margin-top: 15px;">Objetivo Principal?</p>
-        <div class="tag-grid" id="obj-list">
-          <div class="tag" onclick="sel(this)">Longevidade</div>
-          <div class="tag" onclick="sel(this)">Energia</div>
-          <div class="tag" onclick="sel(this)">Peso Ideal</div>
-          <div class="tag" onclick="sel(this)">Foco Mental</div>
+        <label>Qual seu esporte / atividade?</label>
+        <div class="sport-grid" id="sport-select">
+          <div class="chip" onclick="sel(this)">🥋 Jiu-Jitsu</div>
+          <div class="chip" onclick="sel(this)">🏋️ Musculação</div>
+          <div class="chip" onclick="sel(this)">🥊 Muay Thai</div>
+          <div class="chip" onclick="sel(this)">🏃 Corrida</div>
+          <div class="chip" onclick="sel(this)">🧘 Yoga</div>
+          <div class="chip" onclick="sel(this)">🤸 CrossFit</div>
+          <div class="chip" onclick="sel(this)">🏊 Natação</div>
+          <div class="chip" onclick="sel(this)">⚽ Futebol</div>
         </div>
+
+        <label>Como você avalia sua saúde hoje?</label>
+        <select id="q-status">
+          <option>Excelente - Sem restrições</option>
+          <option>Moderada - Busco melhorar</option>
+          <option>Ativa - Foco em performance</option>
+          <option>Sedentário - Início de jornada</option>
+        </select>
+
+        <label>Histórico médico relevante?</label>
+        <select id="q-med">
+          <option value="nenhum">Nenhum</option>
+          <option value="diabetes">Diabetes</option>
+          <option value="hipertensao">Hipertensão</option>
+          <option value="lactose">Intolerância Alimentar</option>
+        </select>
       </div>
 
-      <button class="btn-main" onclick="finishSetup()">Salvar e Entrar</button>
+      <button class="btn-main" onclick="saveProfile()">Concluir Cadastro</button>
     </div>
 
-    <div id="tab-explore" class="page">
-      <h2>Explorar Saúde</h2>
-      <p style="color:var(--muted); margin-bottom: 20px;">Conhecimento para sua evolução.</p>
+    <div id="tab-health" class="page">
+      <h2>Central de Saúde</h2>
+      <p style="color:var(--muted); margin-bottom: 20px;">Conteúdo educativo e monitoramento.</p>
       
       <div class="card">
-        <h4>🍎 Nutrição Celular</h4>
-        <p style="font-size: 13px; color: var(--muted); margin-top: 5px;">Como os micronutrientes afetam sua disposição diária.</p>
-        <a href="https://brasilescola.uol.com.br/saude/nutricao.htm" target="_blank" class="btn-outline">Saber Mais</a>
+        <h4>🍎 Nutrição e Longevidade</h4>
+        <p style="font-size: 13px; color: var(--muted); margin-top: 5px;">Entenda como os alimentos influenciam sua idade biológica.</p>
+        <a href="https://brasilescola.uol.com.br/saude/nutricao.htm" target="_blank" class="btn-link">Ver Conteúdo</a>
       </div>
 
       <div class="card">
-        <h4>🧠 Saúde Mental</h4>
-        <p style="font-size: 13px; color: var(--muted); margin-top: 5px;">Técnicas de manejo de estresse e higiene do sono.</p>
-        <a href="https://antigo.saude.gov.br/saude-mental" target="_blank" class="btn-outline">Ver Guia</a>
+        <h4>🧠 Bem-estar Mental</h4>
+        <p style="font-size: 13px; color: var(--muted); margin-top: 5px;">A importância do controle de cortisol no dia a dia.</p>
+        <a href="https://antigo.saude.gov.br/saude-mental" target="_blank" class="btn-link">Explorar Guia</a>
       </div>
 
       <div class="card">
-        <h4>💧 Hidratação e Longevidade</h4>
-        <p style="font-size: 13px; color: var(--muted); margin-top: 5px;">A ciência por trás da água e o envelhecimento precoce.</p>
-        <a href="https://www.saude.mg.gov.br/saudemental" target="_blank" class="btn-outline">Estudo Científico</a>
+        <h4>💧 Hidratação Inteligente</h4>
+        <p style="font-size: 13px; color: var(--muted); margin-top: 5px;">Mecanismos da água no transporte de nutrientes.</p>
+        <a href="https://vencerocancer.org.br/viver-melhor/alimentacao/a-importancia-da-hidratacao/" target="_blank" class="btn-link">Saber Mais</a>
       </div>
     </div>
 
     <div id="tab-plate" class="page">
-      <h2>Analisar Refeição</h2>
-      <div class="card" id="preview" style="height: 250px; border: 2px dashed var(--stroke); display: flex; align-items: center; justify-content: center; overflow: hidden;">
-        📸 Foto da Comida
+      <h2>Análise IA</h2>
+      <div class="card" id="preview" style="height: 250px; border: 2px dashed var(--stroke); display: flex; align-items: center; justify-content: center;">
+        📸 Capture sua refeição
       </div>
-      <button class="btn-main" onclick="document.getElementById('in-file').click()">Capturar Prato</button>
-      <input type="file" id="in-file" capture="environment" accept="image/*" style="display:none">
+      <button class="btn-main" onclick="document.getElementById('file-in').click()">Capturar Agora</button>
+      <input type="file" id="file-in" capture="environment" accept="image/*" style="display:none">
     </div>
 
     <nav class="nav" id="navbar">
-      <button class="nav-btn active" onclick="tab('tab-explore', this)"><span>📖</span>Saúde</button>
+      <button class="nav-btn active" onclick="tab('tab-health', this)"><span>📖</span>Saúde</button>
       <button class="nav-btn" onclick="tab('tab-plate', this)"><span>🍽️</span>Prato</button>
       <button class="nav-btn" onclick="logout()"><span>🚪</span>Sair</button>
     </nav>
@@ -160,14 +165,14 @@
 
     document.getElementById('toggle-auth').onclick = () => {
       isLogin = !isLogin;
-      document.getElementById('btn-action').innerText = isLogin ? "Acessar Sistema" : "Criar Conta Elite";
-      document.getElementById('toggle-auth').innerHTML = isLogin ? "Novo aqui? <b>Criar Conta</b>" : "Já tem conta? <b>Entrar</b>";
+      document.getElementById('btn-action').innerText = isLogin ? "Entrar" : "Criar Conta Elite";
+      document.getElementById('toggle-auth').innerHTML = isLogin ? "Novo aqui? <b>Cadastre-se agora</b>" : "Já tem conta? <b>Entrar</b>";
     };
 
     document.getElementById('btn-action').onclick = async () => {
       const email = document.getElementById('email').value;
       const pass = document.getElementById('pass').value;
-      if(email.length < 5 || pass.length < 6) return alert("Dados inválidos.");
+      if(email.length < 5 || pass.length < 6) return alert("Dados insuficientes.");
       
       try {
         if(isLogin) await signInWithEmailAndPassword(auth, email, pass);
@@ -175,13 +180,13 @@
           if(!document.getElementById('terms').checked) return alert("Aceite os termos.");
           await createUserWithEmailAndPassword(auth, email, pass);
         }
-      } catch (e) { alert("Erro: " + e.message); }
+      } catch (e) { alert("ERRO FIREBASE: " + e.message); }
     };
 
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         const snap = await getDoc(doc(db, "users", user.uid));
-        if (snap.exists() && snap.data().setupDone) start(snap.data());
+        if (snap.exists() && snap.data().setupDone) startApp();
         else navigate('p-setup');
       } else {
         navigate('p-auth');
@@ -190,19 +195,19 @@
     });
 
     window.sel = (el) => {
-      el.parentNode.querySelectorAll('.tag').forEach(t => t.classList.remove('selected'));
+      el.parentNode.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
       el.classList.add('selected');
     };
 
-    window.finishSetup = async () => {
-      const obj = document.querySelector('.tag.selected')?.innerText || "Longevidade";
-      const data = { obj, sono: document.getElementById('q-sono').value, setupDone: true };
+    window.saveProfile = async () => {
+      const sport = document.querySelector('.chip.selected')?.innerText || "Saúde";
+      const data = { sport, status: document.getElementById('q-status').value, med: document.getElementById('q-med').value, setupDone: true };
       await setDoc(doc(db, "users", auth.currentUser.uid), data, { merge: true });
-      start(data);
+      startApp();
     };
 
-    function start(data) {
-      navigate('tab-explore');
+    function startApp() {
+      navigate('tab-health');
       document.getElementById('navbar').classList.add('active');
     }
 
@@ -219,11 +224,11 @@
 
     window.logout = () => signOut(auth).then(() => location.reload());
 
-    document.getElementById('in-file').onchange = (e) => {
+    document.getElementById('file-in').onchange = (e) => {
       const file = e.target.files[0];
       if(file){
         const reader = new FileReader();
-        reader.onload = (ev) => document.getElementById('preview').innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+        reader.onload = (ev) => document.getElementById('preview').innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:20px;">`;
         reader.readAsDataURL(file);
       }
     };
